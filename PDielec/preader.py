@@ -257,9 +257,9 @@ def read_a_file( calling_parameters):
         # Raman output rows: one row each for total, parallel, and perpendicular activities
         if raman_activities is not None:
             for label, col in (
-                ("Calculated Raman Total Activity (Ang^4/amu)", 0),
-                ("Calculated Raman Parallel Activity (Ang^4/amu)", 1),
-                ("Calculated Raman Perpendicular Activity (Ang^4/amu)", 2),
+                ("Calculated Raman Total Activity (R_epsilon^2, Ang/amu)", 0),
+                ("Calculated Raman Parallel Activity (R_epsilon^2, Ang/amu)", 1),
+                ("Calculated Raman Perpendicular Activity (R_epsilon^2, Ang/amu)", 2),
             ):
                 header = name + "," + label
                 string = header + common_output

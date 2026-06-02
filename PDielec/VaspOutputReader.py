@@ -220,28 +220,24 @@ class VaspOutputReader(GenericOutputReader):
 
         Notes
         -----
-        Both CASTEP and Skelton's group  compute the derivative of the **polarizability volume**
+        Skelton's scripts report the derivative of the polarizability volume
         ``α_vol = V(ε−1)/(4π)`` [Å³] with respect to the mass-weighted normal
-        coordinate ``Q`` [Å·√amu].  The 4π is the standard factor relating the
-        macroscopic dielectric tensor to the cell polarizability volume and is
-        present in both conventions.
+        coordinate ``Q`` [Å·√amu]::
 
-        - Skelton: ``R = ∂α_vol/∂Q = (V/4π) × ∂ε/∂Q``  [Å²·amu⁻¹/²]
-        - CASTEP:  ``T = ∂α_vol/∂Q / √V = R / √V``  [(Å/amu)^{0.5}]
+            R_alpha = ∂α_vol/∂Q = (V/4π) ∂ε/∂Q
 
-        So each tensor element is divided by ``√V_cell`` on read::
-
-            T_PDielec = R_Skelton / √V_cell
+        PDielec stores the AbInit-style bulk Raman tensor convention
+        ``R_epsilon = sqrt(V) ∂ε/∂Q``.  Therefore each Skelton tensor is
+        multiplied by ``4π/sqrt(V)`` on read.
 
         ``self.volume`` must have been set (from OUTCAR or vasprun.xml) before
         this method is called; it always is because Raman-Tensors.yaml is read
         after the main file loop in ``_read_output_files``.
 
         The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
-        NumPy arrays ordered to match PDielec's internal ascending-frequency
-        ordering: zero tensors for acoustic/imaginary modes first (indices 0–2),
-        followed by the optical mode tensors in ascending frequency order
-        (lowest optical frequency first, highest last).
+        NumPy arrays ordered to match PDielec's mode ordering: acoustic/
+        imaginary modes first, followed by optical modes in increasing
+        frequency order.
 
         """
         try:
@@ -256,25 +252,21 @@ class VaspOutputReader(GenericOutputReader):
             logger.warning(f"_read_raman_tensors_yaml: no raman_activities found in {filename}")
             return
         #
-        # Skelton and Castep codes compute ∂α_vol/∂Q where α_vol = V(ε-1)/(4π) [Å³].
-        # Skelton stores R = ∂α_vol/∂Q [Å²·amu⁻¹/²]; CASTEP stores T = R/√V [(Å/amu)^{0.5}].
-        unit_factor = 1.0 / math.sqrt(self.volume)
-
-        # PDielec sorts modes by ascending frequency (acoustic/imaginary modes first,
-        # highest optical mode last).  Skelton's band_index 1 = highest-frequency optical
-        # mode (descending OUTCAR order).  Sort by band_index descending to convert to
-        # ascending frequency order (lowest optical frequency first).
+        # PDielec orders modes as acoustic/imaginary modes first, followed by
+        # optical modes in increasing frequency order.  Skelton's band_index 1 is
+        # the highest-frequency optical mode, so descending band_index gives
+        # increasing optical frequency.
         activities.sort(key=lambda x: x["band_index"], reverse=True)
 
-        # Prepend zero tensors for the acoustic modes (they appear first in ascending
-        # frequency order), then append optical tensors in ascending frequency order.
+        # Prepend zero tensors for acoustic/imaginary modes.
         n_acoustic = 3 * self.nions - len(activities)
         self.raman_tensors = []
+        unit_factor = 4.0 * math.pi / math.sqrt(self.volume)
         for _ in range(n_acoustic):
             self.raman_tensors.append(np.zeros((3, 3)))
         for entry in activities:
-            tensor = np.array(entry["raman_tensor"], dtype=float) * unit_factor
-            self.raman_tensors.append(tensor)
+            tensor = np.array(entry["raman_tensor"], dtype=float)
+            self.raman_tensors.append(tensor * unit_factor)
         if self.debug:
             logger.debug(f"_read_raman_tensors_yaml: read {len(self.raman_tensors)} Raman tensors from {filename}")
         return
@@ -496,6 +488,9 @@ class VaspOutputReader(GenericOutputReader):
             # end for j
             self.mass_weighted_normal_modes.append(a)
         # end of for i in range(n)
+        order = np.argsort(self.frequencies)
+        self.frequencies = [self.frequencies[i] for i in order]
+        self.mass_weighted_normal_modes = [self.mass_weighted_normal_modes[i] for i in order]
         return
 
     def _read_born_charges(self, line):

@@ -875,7 +875,7 @@ class ExperimentOutputReader(GenericOutputReader):
         line : str
             The trigger line, expected format: ``raman_tensors N [units]``
             where *N* is the total number of modes and the optional *units*
-            keyword is either ``castep`` (default) or ``skelton``.
+            keyword is ``castep`` (default), ``epsilon``, or ``skelton``.
 
         Returns
         -------
@@ -898,14 +898,16 @@ class ExperimentOutputReader(GenericOutputReader):
         header line:
 
         ``castep`` (default)
-            Elements are already in PDielec internal units
-            ``(Å / amu)^{0.5}``  — the CASTEP convention
-            ``T = ∂α_vol/∂Q / √V``.
+            Elements are CASTEP-style polarizability-volume tensors divided by
+            ``sqrt(Vcell)`` and are multiplied by ``4π`` on read, matching
+            :class:`PDielec.CastepOutputReader.CastepOutputReader`.
+        ``epsilon``
+            Elements are already in PDielec's ``R_epsilon = sqrt(V)dε/dQ``
+            convention, with units ``(Å/amu)^{0.5}``, and are stored directly.
         ``skelton``
-            Elements are in Skelton/Phonopy units
-            ``Å²·amu^{-0.5}`` — the convention ``R = ∂α_vol/∂Q``.
-            Each element is divided by ``√V_cell`` on read, so ``volume``
-            must already be set before this section is parsed.
+            Elements are Skelton-style polarizability-volume derivatives
+            ``R_alpha = dα_vol/dQ`` in ``Å²·amu^{-0.5}``.  They are converted
+            to ``R_epsilon`` by multiplying by ``4π/sqrt(Vcell)``.
 
         Frequencies are taken from a preceding ``frequencies`` block; this
         section contains only the tensor data.
@@ -932,9 +934,14 @@ class ExperimentOutputReader(GenericOutputReader):
             row1 = [float(x) for x in self._read_line().split()[:3]]
             row2 = [float(x) for x in self._read_line().split()[:3]]
             tensors.append(np.array([row0, row1, row2], dtype=float))
-        if units == "skelton":
-            factor = 1.0 / math.sqrt(self.volume)
+        if units == "castep":
+            factor = 4.0 * math.pi
             tensors = [t * factor for t in tensors]
+        elif units == "skelton":
+            factor = 4.0 * math.pi / math.sqrt(self.volume)
+            tensors = [t * factor for t in tensors]
+        elif units != "epsilon":
+            logger.warning(f"Unknown experimental Raman tensor units '{units}', assuming R_epsilon")
         self.raman_tensors = tensors
         return
 

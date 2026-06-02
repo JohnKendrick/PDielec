@@ -1391,18 +1391,19 @@ class PowderScenarioTab(ScenarioTab):
     def _calculate_raman(self, vs_cm1):
         """Calculate the powder Raman spectrum for the range of frequencies in vs_cm1.
 
-        Implements the macroscopic approach (Section 4.2 of Raman-Theory.pdf) for
+        Implements the macroscopic powder approach in ``Raman-Theory.tex`` for
         small ellipsoidal particles embedded in a non-absorbing matrix.
 
         Two code paths are used depending on particle shape:
 
         * **Sphere** — the depolarisation tensor L = I/3 is rotationally invariant, so
           R_particle(Ω) = R @ R_particle_crystal @ R.T is a pure rank-2 tensor rotation
-          and the analytical rotational invariants (Eqs. 90-99) are exact.
+          and the analytical rotational invariants (``eq-invariants1`` and
+          ``eq-Intensities``) are exact.
         * **Non-sphere** — D^{particle} is diagonalised once in the crystal frame
           (ΔD is orientation-invariant); for each of ``n_samples`` SO(3) orientations
           the orientation-dependent N_bg_lab(Ω) is recomputed and used to evaluate the
-          effective particle Raman tensor R_particle(Ω) (Eq. 60), whose contribution is
+          effective particle Raman tensor R_particle(Ω), whose contribution is
           accumulated into the spectrum.
 
         Parameters
@@ -1463,9 +1464,9 @@ class PowderScenarioTab(ScenarioTab):
             epsilon_e = float(np.real(self.matrixMaterial.get_optical_permittivity()))
             # Depolarisation tensor L from particle shape (same logic as _calculate_infrared)
             L = self.calculate_depolarisation_tensor()
-            # Internal field tensor N (Eq. 47)
+            # Internal field tensor N from eq-internal_external_fields3.
             N = Calculator.compute_internal_field_tensor(L, epsilon_inf_i, epsilon_e)
-            # Particle phonon frequencies (Eqs. 73-74):
+            # Particle phonon frequencies from eq-particle_dynamical and eq-particle_eigenvalues:
             # When Born charges and the hessian are available, diagonalise D^particle
             # to obtain shifted frequencies and transformed Raman tensors.
             has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
@@ -1486,7 +1487,7 @@ class PowderScenarioTab(ScenarioTab):
 
         vs_cm1 = np.array(vs_cm1, dtype=float)
 
-        # Non-sphere: numerical SO(3) averaging with per-orientation N_bg (Eq. 60)
+        # Non-sphere: numerical SO(3) averaging with per-orientation N_bg.
         if not is_sphere and has_correction_data:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: non-sphere numerical average ({n_samples} samples)")
             n_freqs = len(vs_cm1)
@@ -1521,7 +1522,7 @@ class PowderScenarioTab(ScenarioTab):
         # Sphere path (or non-sphere fallback when correction data unavailable):
         # compute particle modes once in crystal frame, then use analytical invariants.
         if has_correction_data:
-            logger.debug(f"{self.settings['Legend']} _calculate_raman: applying particle frequency correction (Eqs. 73-74)")
+            logger.debug(f"{self.settings['Legend']} _calculate_raman: applying particle frequency correction")
             loop_freqs, loop_raman, loop_sigmas, loop_selected = self._compute_particle_modes(
                 N, L, epsilon_e, epsilon_inf_i, I3,
                 raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected)
@@ -1537,7 +1538,7 @@ class PowderScenarioTab(ScenarioTab):
         # Bose-Einstein prefactor: hc/k in units of cm·K
         hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
 
-        # Analytical rotational invariants (Eqs. 90-99) — exact for spheres
+        # Analytical rotational invariants from eq-invariants1 and eq-Intensities; exact for spheres.
         if not is_sphere:
             logger.warning(f"{self.settings['Legend']} _calculate_raman: non-sphere but correction data unavailable, falling back to analytical invariants")
         else:
@@ -1546,14 +1547,14 @@ class PowderScenarioTab(ScenarioTab):
                 if not selected or abs(freq) < 1.0:
                     continue
 
-                # Effective particle Raman tensor (Eq. 60)
+                # Effective particle Raman tensor.
                 if is_none_matrix:
                     R_particle = np.array(R_eps, dtype=complex)
                 else:
                     R_particle = Calculator.compute_particle_raman_tensor(
                         R_eps, N, L, epsilon_inf_i, epsilon_e)
 
-                # Powder-averaged scattering intensity for the chosen polarisation (Eqs. 97-99)
+                # Powder-averaged scattering intensity for the chosen polarisation.
                 if polarisation in ("VV", "VH", "HV"):
                     vv, vh = Calculator.compute_powder_raman_intensities(R_particle)
                     intensity_factor = vv if polarisation == "VV" else vh
@@ -1566,7 +1567,7 @@ class PowderScenarioTab(ScenarioTab):
                     kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
                     intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
 
-                # Bose-Einstein occupation factor n(ν_m) (Eq. 11)
+                # Bose-Einstein occupation factor n(ν_m) from eq-bose.
                 x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
                 n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
 
@@ -1575,10 +1576,10 @@ class PowderScenarioTab(ScenarioTab):
                 if nu_s <= 0.0:
                     continue
 
-                # Scattering strength S_m ∝ ν_s^4 × (n+1)/ν_m × intensity_factor (Eq. 77)
+                # Scattering strength from eq-ramanefficiency_depolarised.
                 S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
 
-                # Add Lorentzian contribution to the spectrum (Eq. 88)
+                # Add Lorentzian contribution to the spectrum from eq-raman-intensity.
                 spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
         self.notebook.progressbars_update(increment=len(vs_cm1))
@@ -1592,7 +1593,8 @@ class PowderScenarioTab(ScenarioTab):
                                 raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected):
         """Compute particle phonon frequencies and Raman tensors in the particle normal-mode basis.
 
-        Implements Eqs. 73-74 of Raman-Theory.pdf.  The particle dynamical matrix
+        Implements ``eq-particle_dynamical`` and ``eq-particle_eigenvalues``.
+        The particle dynamical matrix
 
         .. math::
 
@@ -1600,9 +1602,9 @@ class PowderScenarioTab(ScenarioTab):
                 \\left(Z^{mw}\\right)^T N_{bg} L Z^{mw}
 
         where :math:`Z^{mw}_{\\alpha,\\kappa\\beta} = Z_{\\alpha,\\kappa\\beta}/\\sqrt{M_\\kappa}`
-        (Eq. 64) carries **no volume factor**, and :math:`V` is the unit-cell volume
-        (explicit in the :math:`1/V` prefactor, consistent with Eq. 73).
-        The matrix is diagonalised (Eq. 74) to give phonon frequencies and normal modes
+        (``eq-polarisation-born-mass-weighted``) carries **no volume factor**, and
+        :math:`V` is the unit-cell volume (explicit in the :math:`1/V` prefactor).
+        The matrix is diagonalised to give phonon frequencies and normal modes
         appropriate for a small particle with depolarisation tensor L embedded in a medium
         with permittivity ε_e.  The bulk Raman tensors are transformed into the resulting
         particle normal-mode basis.
@@ -1610,7 +1612,7 @@ class PowderScenarioTab(ScenarioTab):
         Parameters
         ----------
         N_bg : ndarray, shape (3, 3)
-            Background internal field tensor (≈ N from Eqs. 47 and 67-68).
+            Background internal field tensor, analogous to ``eq-internal_external_fields3``.
         L : ndarray, shape (3, 3)
             Depolarisation tensor for the particle shape.
         epsilon_e : float
@@ -1671,7 +1673,8 @@ class PowderScenarioTab(ScenarioTab):
             for beta in range(3):
                 Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
 
-        # Correction to dynamical matrix: ΔD = (4π / (ε_e V)) Z'^T (N_bg L) Z'  (Eq. 73)
+        # Correction to dynamical matrix from eq-particle_dynamical:
+        # ΔD = (4π / (ε_e V)) Z'^T (N_bg L) Z'
         # Derived from F^mw = (e²/(ε₀ε_e V)) Z'^T N_bg L Z' x in atomic units
         # (1/ε₀ → 4π, same Gaussian convention as Calculator.longitudinal_modes).
         # N_bg and L are real for non-absorbing media; take real part to be safe.
@@ -1681,7 +1684,7 @@ class PowderScenarioTab(ScenarioTab):
         # Bulk TO dynamical matrix (mass-weighted hessian in atomic units)
         D_TO = np.array(self.reader.hessian, dtype=float)
 
-        # Particle dynamical matrix (Eq. 73) and its eigendecomposition (Eq. 74)
+        # Particle dynamical matrix and eigendecomposition.
         eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
 
         # Particle frequencies in cm^{-1}; preserve sign for dynamically unstable modes
@@ -1768,9 +1771,10 @@ class PowderScenarioTab(ScenarioTab):
         L, ε_inf, and Z to the lab frame and back always recovers ΔD_crystal), so D^{particle}
         is diagonalised **once** before the orientation loop.  For each sampled orientation
         Ω ∈ SO(3) only the orientation-dependent internal field tensor N_bg_lab(Ω) is
-        recomputed; this is used to apply the local-field correction (Eq. 60) to the
-        pre-rotated Raman tensors.  Scattering strengths (Eq. 77) are accumulated as
-        Lorentzian contributions (Eq. 88) and normalised by ``n_samples``.
+        recomputed; this is used to apply the local-field correction to the
+        pre-rotated Raman tensors.  Scattering strengths from
+        ``eq-ramanefficiency_depolarised`` are accumulated as Lorentzian
+        contributions from ``eq-raman-intensity`` and normalised by ``n_samples``.
 
         Parameters
         ----------
@@ -1834,7 +1838,7 @@ class PowderScenarioTab(ScenarioTab):
         born_charges = np.array(self.reader.born_charges)
 
         # Crystal-frame mass-weighted Born charge matrix Z' (3 × 3N)
-        # Z'[α, κβ] = Z*[κ, α, β] / √M_κ  (Eq. 64, no volume factor)
+        # Z'[α, κβ] = Z*[κ, α, β] / √M_κ from eq-polarisation-born-mass-weighted.
         Z_mat = np.zeros((3, n_modes))
         for kappa in range(nAtoms):
             inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
@@ -1921,7 +1925,7 @@ class PowderScenarioTab(ScenarioTab):
             L_lab   = R @ np.real(L) @ R.T
             eps_lab = R @ np.real(epsilon_inf_i) @ R.T
 
-            # Orientation-dependent internal field tensor N_bg_lab (Eq. 47)
+            # Orientation-dependent internal field tensor N_bg_lab.
             N_bg_lab = Calculator.compute_internal_field_tensor(L_lab, eps_lab, epsilon_e)
 
             # Loop over particle modes (skip inactive ones)
@@ -1933,7 +1937,7 @@ class PowderScenarioTab(ScenarioTab):
                 # Rotate crystal-frame Raman tensor to the lab frame
                 R_eps_lab = R @ R_eps_cryst_list[p_idx] @ R.T
 
-                # Effective particle Raman tensor in the lab frame (Eq. 60)
+                # Effective particle Raman tensor in the lab frame.
                 R_part_lab = Calculator.compute_particle_raman_tensor(
                     R_eps_lab, N_bg_lab, L_lab, eps_lab, epsilon_e)
 
@@ -1948,7 +1952,7 @@ class PowderScenarioTab(ScenarioTab):
                         + abs(e_VH @ R_part_lab @ e_L) ** 2
                     )
 
-                # Scattering strength (Eq. 77) accumulated as Lorentzian (Eq. 88)
+                # Scattering strength accumulated as a Lorentzian line contribution.
                 S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
                 spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
@@ -2526,4 +2530,3 @@ class PowderScenarioTab(ScenarioTab):
             self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
             self.direction = np.array([])
         return self.depolarisation
-

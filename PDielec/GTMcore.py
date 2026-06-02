@@ -355,6 +355,10 @@ class Layer:
         self.largest_exponent = 0.0
         self.exponent_threshold = exponent_threshold
         self.coherent = True
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = False
 
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.cdouble)                  # constitutive relations

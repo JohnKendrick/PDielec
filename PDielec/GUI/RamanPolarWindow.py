@@ -58,6 +58,11 @@ class RamanPolarWindow(QWidget):
         self._raman_tensors = polar_data["raman_tensors"]
         self._modes = polar_data["modes"]
         self._angles_rad = np.linspace(0.0, 2.0 * np.pi, 361)
+        self._activity_display = polar_data.get("raman_activity_display", {
+            "factor": 1.0,
+            "unit_label": "Å/amu",
+            "tooltip": "Displayed in the internal R_epsilon convention.",
+        })
 
         # EO correction data (None when χ^(2) is not available).
         self._chi2 = polar_data.get("chi2_pm_per_v")
@@ -80,7 +85,13 @@ class RamanPolarWindow(QWidget):
         self._mode_table = QTableWidget(self)
         self._mode_table.setColumnCount(5)
         self._mode_table.setHorizontalHeaderLabels(
-            ["Include", "Mode", "TO freq (cm-1)", "LO freq (cm-1)", "Raman total"]
+            [
+                "Include",
+                "Mode",
+                "TO freq (cm-1)",
+                "LO freq (cm-1)",
+                f"Raman total\n({self._activity_display['unit_label']})",
+            ]
         )
         self._mode_table.horizontalHeaderItem(0).setToolTip("Check to include this mode in the polar plot.")
         self._mode_table.horizontalHeaderItem(1).setToolTip("Mode number.")
@@ -88,7 +99,9 @@ class RamanPolarWindow(QWidget):
         self._mode_table.horizontalHeaderItem(3).setToolTip(
             "Longitudinal optical (LO) frequency in cm⁻¹\nfor the current q̂ direction."
         )
-        self._mode_table.horizontalHeaderItem(4).setToolTip("Total Raman scattering activity.")
+        self._mode_table.horizontalHeaderItem(4).setToolTip(
+            f"Total Raman scattering activity. {self._activity_display['tooltip']}"
+        )
         self._mode_table.verticalHeader().setVisible(False)
         self._mode_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self._mode_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -198,6 +211,19 @@ class RamanPolarWindow(QWidget):
         self.resize(1050, 700)
         self._update_plot()
 
+    def _display_activity(self, activity):
+        """Convert an R_epsilon activity to the selected display units."""
+        return float(activity) * float(self._activity_display.get("factor", 1.0))
+
+    def set_activity_display(self, activity_display):
+        """Update Raman activity display units and refresh table/title text."""
+        self._activity_display = activity_display
+        header_item = self._mode_table.horizontalHeaderItem(4)
+        if header_item is not None:
+            header_item.setText(f"Raman total\n({self._activity_display['unit_label']})")
+            header_item.setToolTip(f"Total Raman scattering activity. {self._activity_display['tooltip']}")
+        self._update_plot()
+
     def _populate_mode_table(self):
         """Populate the mode table."""
         self._mode_table.blockSignals(True)
@@ -211,7 +237,7 @@ class RamanPolarWindow(QWidget):
             mode_item     = QTableWidgetItem(str(mode["display_mode"]))
             freq_item     = QTableWidgetItem(f"{mode['frequency_cm1']:.4f}")
             lo_item       = QTableWidgetItem("—")
-            activity_item = QTableWidgetItem(f"{mode['raman_total']:.6g}")
+            activity_item = QTableWidgetItem(f"{self._display_activity(mode['raman_total']):.4f}")
             for item in (mode_item, freq_item, lo_item, activity_item):
                 item.setFlags(ro_flags)
             for item in (freq_item, lo_item, activity_item):
@@ -391,12 +417,12 @@ class RamanPolarWindow(QWidget):
                 item = self._mode_table.item(row, 4)
                 if item is not None:
                     idx = mode["index"]
-                    item.setText(f"{acts[idx, 0]:.6g}" if idx < len(acts) else "—")
+                    item.setText(f"{self._display_activity(acts[idx, 0]):.4f}" if idx < len(acts) else "—")
         else:
             for row, mode in enumerate(self._modes):
                 item = self._mode_table.item(row, 4)
                 if item is not None:
-                    item.setText(f"{mode['raman_total']:.6g}")
+                    item.setText(f"{self._display_activity(mode['raman_total']):.4f}")
         self._mode_table.blockSignals(False)
 
         try:
@@ -423,7 +449,9 @@ class RamanPolarWindow(QWidget):
         if abs(result["orthogonality"]) > 1.0e-6:
             self._orthogonality_label.setText(self._orthogonality_label.text() + " (Pza adjusted for plot)")
         eo_suffix = " +EO" if eo_active else ""
-        ax.set_title(f"Polar Raman intensities{eo_suffix}\n(max: {raw_max:.6g})")
+        display_max = self._display_activity(raw_max)
+        unit_label = self._activity_display["unit_label"]
+        ax.set_title(f"Polar Raman intensities{eo_suffix}\n(max: {display_max:.4f} {unit_label})")
         ax.set_ylim(0.0, 1.05)
         ax.legend(loc="upper right", bbox_to_anchor=(1.05, 1.12))
         self.canvas.draw()

@@ -16,6 +16,7 @@
 """CastepOutputReader module."""
 
 import logging
+import math
 import os
 import re
 
@@ -230,10 +231,13 @@ class CastepOutputReader(GenericOutputReader):
         """Read the Raman susceptibility tensors from the .castep file.
 
         CASTEP prints one 3×3 Raman susceptibility tensor per mode in the block
-        headed ``Raman Susceptibility Tensors ((A/amu)*0.5)``.  The units are
-        ``(Å²/amu^½)`` — i.e. the derivative of the polarisability (in Å³) with
-        respect to the mass-weighted normal coordinate (in Å·amu^½).  Precision
-        is limited to 4 decimal places; no higher-precision text source exists
+        headed ``Raman Susceptibility Tensors ((A/amu)*0.5)``.  CASTEP prints
+        the polarizability-volume tensor divided by ``sqrt(Vcell)``; CASTEP's
+        own ``A**4 amu**(-1)`` activities are recovered as ``Vcell`` times the
+        rotational invariants of the printed tensor.  PDielec stores the shared
+        ``R_epsilon = sqrt(Vcell) dε/dQ`` convention, so the printed tensor is
+        multiplied by ``4*pi``.  Precision is limited to 4 decimal places; no
+        higher-precision text source exists
         (the binary ``castep_bin`` checkpoint holds full double precision but
         cannot be read without a Fortran binary parser).
 
@@ -276,7 +280,7 @@ class CastepOutputReader(GenericOutputReader):
                 [float(row1[1]), float(row1[2]), float(row1[3])],
                 [float(row2[1]), float(row2[2]), float(row2[3])],
             ])
-            self.raman_tensors.append(tensor)
+            self.raman_tensors.append(tensor * 4.0 * math.pi)
         if self.debug:
             logger.debug(f"_read_raman_tensors: read {len(self.raman_tensors)} Raman tensors")
         return
@@ -884,4 +888,3 @@ class CastepOutputReader(GenericOutputReader):
         return    
         
             
-

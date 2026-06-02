@@ -313,7 +313,12 @@ class SettingsTab(QWidget):
         self.settings["Optical permittivity"] = None
         self.settings["Optical permittivity edited"] = False
         self.settings["Spectroscopy type"] = "Powder Infrared"
+        self.settings["Raman activity units"] = "polarizability"
         self.spectroscopy_types = ["Powder Infrared", "Powder ATR", "Powder Raman", "Crystal Infrared", "Crystal Raman"]
+        self.raman_activity_unit_options = [
+            ("polarizability", "Polarizability volume (Å⁴/amu)"),
+            ("epsilon", "R_epsilon (Å/amu)"),
+        ]
         self.masses_dictionary = {}
         self.modes_selected = []
         self.frequencies_cm1 = []
@@ -405,6 +410,18 @@ class SettingsTab(QWidget):
         label = QLabel("Lorentzian width (σ):", self)
         label.setToolTip("Set the default Lorentzian width factor (σ) in cm-1")
         form.addRow(label, self.sigma_sb)
+        #
+        # Raman activity display units
+        self.raman_activity_units_cb = QComboBox(self)
+        self.raman_activity_units_cb.setToolTip(
+            "Choose the units used to display Raman activities in this table and the Raman polar plot."
+        )
+        for _key, label_text in self.raman_activity_unit_options:
+            self.raman_activity_units_cb.addItem(label_text)
+        self.raman_activity_units_cb.activated.connect(self.on_raman_activity_units_cb_activated)
+        self.raman_activity_units_label = QLabel("Raman activity units:", self)
+        self.raman_activity_units_label.setToolTip(self.raman_activity_units_cb.toolTip())
+        form.addRow(self.raman_activity_units_label, self.raman_activity_units_cb)
         #
         # Create the Optical permittivity table widget and block signals until a click on the widget
         self.optical_tw = FixedQTableWidget(3,3,parent=self)
@@ -695,15 +712,20 @@ class SettingsTab(QWidget):
 
         # Set the table headers
         if show_raman_col:
+            raman_display = self._raman_activity_display_metadata()
             self.output_tw.setHorizontalHeaderLabels([
                 "   Sigma   \n(cm-1)", " TO freq \n(cm-1)", " LO freq \n(cm-1)",
                 "  Intensity  \n(Debye²/Å²/amu)",
                 "Integrated Molar Absorption\n(L/mole/cm²)",
                 "Absorption maximum\n(L/mole/cm)",
-                "Raman total\n(Å⁴/amu)",
-                "Raman ∥\n(Å⁴/amu)",
-                "Raman ⟂\n(Å⁴/amu)",
+                f"Raman total\n({raman_display['unit_label']})",
+                f"Raman ∥\n({raman_display['unit_label']})",
+                f"Raman ⟂\n({raman_display['unit_label']})",
             ])
+            for col in (6, 7, 8):
+                header_item = self.output_tw.horizontalHeaderItem(col)
+                if header_item is not None:
+                    header_item.setToolTip(raman_display["tooltip"])
         else:
             self.output_tw.setHorizontalHeaderLabels([
                 "   Sigma   \n(cm-1)", " TO freq \n(cm-1)", " LO freq \n(cm-1)",
@@ -723,6 +745,33 @@ class SettingsTab(QWidget):
             self.output_tw.setColumnWidth(2, to_width)
         logger.debug("Finished:: create_intensity_table")
         return
+
+    def _raman_activity_display_metadata(self):
+        """Return display metadata for Raman activities."""
+        units = self.settings.get("Raman activity units", "polarizability")
+        if units == "epsilon":
+            return {
+                "key": "epsilon",
+                "factor": 1.0,
+                "unit_label": "Å/amu",
+                "tooltip": "Displayed in the internal R_epsilon convention: R_epsilon = sqrt(Vcell) dε/dQ.",
+            }
+        factor = 1.0
+        if self.reader is not None and getattr(self.reader, "volume", None) is not None:
+            factor = self.reader.volume / (16.0 * np.pi * np.pi)
+        return {
+            "key": "polarizability",
+            "factor": factor,
+            "unit_label": "Å⁴/amu",
+            "tooltip": (
+                "Displayed in polarizability-volume units: "
+                "R_alpha = d[Vcell(epsilon-I)/(4*pi)]/dQ = sqrt(Vcell) R_epsilon/(4*pi)."
+            ),
+        }
+
+    def _raman_activity_display_factor(self):
+        """Return the factor converting R_epsilon activities to display units."""
+        return self._raman_activity_display_metadata()["factor"]
 
     def request_refresh(self):
         """Request to refresh the environment or state.
@@ -845,6 +894,7 @@ class SettingsTab(QWidget):
         ncols = self.output_tw.columnCount()
         show_lo_col    = ncols >= 6   # col 2 is LO freq for both IR (6-col) and Raman (9-col)
         show_raman_col = ncols == 9   # Raman-only cols (total/∥/⟂) at cols 6–8
+        raman_display_factor = self._raman_activity_display_factor()
         self.output_tw.blockSignals(True)
 
         # Loop over modes, frequencies, intensities and raman activities
@@ -895,13 +945,13 @@ class SettingsTab(QWidget):
             items.append(QTableWidgetItem(f"{2*intensity*4225.6/self.sigmas_cm1[i]/np.pi:.2f}" ) )
             itemFlags.append( otherFlags )
 
-            # Raman columns (Å⁴/amu): total (col 6), parallel (col 7), perpendicular (col 8)
+            # Raman columns displayed in the selected activity units.
             if show_raman_col:
-                items.append(QTableWidgetItem(f"{raman_act:.6g}"))
+                items.append(QTableWidgetItem(f"{raman_act * raman_display_factor:.4f}"))
                 itemFlags.append(otherFlags)
-                items.append(QTableWidgetItem(f"{raman_par:.6g}"))
+                items.append(QTableWidgetItem(f"{raman_par * raman_display_factor:.4f}"))
                 itemFlags.append(otherFlags)
-                items.append(QTableWidgetItem(f"{raman_perp:.6g}"))
+                items.append(QTableWidgetItem(f"{raman_perp * raman_display_factor:.4f}"))
                 itemFlags.append(otherFlags)
 
             # Set the text alignment
@@ -937,6 +987,7 @@ class SettingsTab(QWidget):
             return
         show_raman_col = (ncols == 9)
         n_rows = self.output_tw.rowCount()
+        raman_display_factor = self._raman_activity_display_factor()
 
         nac_on = hasattr(self, "_nac_apply_cb") and self._nac_apply_cb.isChecked()
         eo_on  = (show_raman_col
@@ -1056,7 +1107,7 @@ class SettingsTab(QWidget):
                     for col_offset in range(3):
                         item = self.output_tw.item(i, 6 + col_offset)
                         if item is not None:
-                            item.setText(f"{lo_raman_acts[i, col_offset]:.6g}")
+                            item.setText(f"{lo_raman_acts[i, col_offset] * raman_display_factor:.4f}")
                 else:
                     to_vals = (
                         self.raman_intensities[i]      if i < len(self.raman_intensities)      else 0.0,
@@ -1066,7 +1117,7 @@ class SettingsTab(QWidget):
                     for col_offset, val in enumerate(to_vals):
                         item = self.output_tw.item(i, 6 + col_offset)
                         if item is not None:
-                            item.setText(f"{val:.6g}")
+                            item.setText(f"{val * raman_display_factor:.4f}")
         self.output_tw.blockSignals(False)
 
     def on_sigma_changed(self):
@@ -1466,6 +1517,20 @@ class SettingsTab(QWidget):
         self.notebook.set_spectroscopy_type(spectroscopy_type)
         logger.debug(f"Finished:: on_spectroscopy_type_cb_activated {index}")
 
+    def on_raman_activity_units_cb_activated(self, index):
+        """Handle changes to the Raman activity display units combo box."""
+        key = self.raman_activity_unit_options[index][0]
+        if self.settings.get("Raman activity units") == key:
+            return
+        self.settings["Raman activity units"] = key
+        self.create_intensity_table()
+        if hasattr(self, "_raman_polar_windows"):
+            display = self._raman_activity_display_metadata()
+            for window in list(self._raman_polar_windows):
+                if window is not None:
+                    window.set_activity_display(display)
+        QCoreApplication.processEvents()
+
     def update_raman_polar_button(self):
         """Show the Raman polar plot button for Raman spectroscopy; NAC options are always shown."""
         if not hasattr(self, "raman_polar_button"):
@@ -1474,6 +1539,9 @@ class SettingsTab(QWidget):
         self.raman_polar_label.setVisible(is_raman)
         self.raman_polar_button.setVisible(is_raman)
         self.raman_polar_button.setEnabled(is_raman)
+        if hasattr(self, "raman_activity_units_cb"):
+            self.raman_activity_units_label.setVisible(is_raman)
+            self.raman_activity_units_cb.setVisible(is_raman)
         # EO checkbox — requires Raman AND χ^(2) data
         if hasattr(self, "_lo_eo_cb"):
             has_chi2 = (is_raman
@@ -1512,7 +1580,11 @@ class SettingsTab(QWidget):
             for mode in modes:
                 mode["selected"] = True
 
-        data = {"raman_tensors": raman_tensors, "modes": modes}
+        data = {
+            "raman_tensors": raman_tensors,
+            "modes": modes,
+            "raman_activity_display": self._raman_activity_display_metadata(),
+        }
 
         # Pass current q̂ so the polar window initialises aligned with SettingsTab.
         if hasattr(self, "_lo_q_spins"):
@@ -1616,6 +1688,11 @@ class SettingsTab(QWidget):
         index = self.spectroscopy_type_cb.findText(self.settings["Spectroscopy type"], Qt.MatchFixedString)
         if index >= 0:
             self.spectroscopy_type_cb.setCurrentIndex(index)
+        if hasattr(self, "raman_activity_units_cb"):
+            unit_keys = [key for key, _label in self.raman_activity_unit_options]
+            unit_key = self.settings.get("Raman activity units", "polarizability")
+            unit_index = unit_keys.index(unit_key) if unit_key in unit_keys else 0
+            self.raman_activity_units_cb.setCurrentIndex(unit_index)
         self.update_raman_polar_button()
         if self.settings["Eckart flag"]:
             self.eckart_cb.setCheckState(Qt.Checked)

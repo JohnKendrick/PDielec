@@ -128,8 +128,8 @@ class AbinitOutputReader(GenericOutputReader):
             ∂χ_αβ / ∂u_κγ  (units: Bohr⁻¹)
 
         This is provided for every atom κ (1…N) and every Cartesian direction γ
-        (x, y, z).  To obtain the per-mode Raman susceptibility tensor that can
-        be compared with CASTEP output, the derivatives are projected onto the
+        (x, y, z).  To obtain the per-mode Raman susceptibility tensor in the
+        shared PDielec convention, the derivatives are projected onto the
         phonon eigenvectors that have already been computed by
         :meth:`_read_dynamical`:
 
@@ -145,8 +145,10 @@ class AbinitOutputReader(GenericOutputReader):
         the atomic mass in amu.  The resulting tensors have units of
         Bohr⁻¹ amu⁻¹/².
 
-        The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
-        NumPy arrays, one per mode in frequency order.  If the phonon
+        The projection is then converted to
+        ``R_epsilon = sqrt(Vcell) dε/dQ`` with ``Vcell`` in Å³ and ``Q`` in
+        Å·amu^0.5.  The tensors are stored in ``self.raman_tensors`` as a list
+        of (3, 3) NumPy arrays, one per mode in frequency order.  If the phonon
         eigenvectors are not yet available the raw derivatives are stored in
         ``self._susceptibility_derivatives`` for later use.
 
@@ -187,12 +189,12 @@ class AbinitOutputReader(GenericOutputReader):
         # Store the raw derivatives in case eigenvectors are needed later
         self._susceptibility_derivatives = dchi
 
-        # Project onto phonon eigenvectors to get per-mode Raman tensors
+        # Project onto phonon eigenvectors to get physical per-mode R_epsilon tensors.
         if self.mass_weighted_normal_modes:
-            # Unit conversion factor: Bohr^-1 amu^-1/2  →  (Å/amu)^1/2
-            # R_CASTEP = sqrt(V [Å³]) × angs2bohr × R_Abinit
-            # Derivation: CASTEP normalises dχ/dQ by sqrt(V_cell), and Q is in Å·sqrt(amu)
-            # rather than Bohr·sqrt(amu), giving an extra factor of angs2bohr.
+            # Unit conversion factor for eq-ramantensor:
+            #   R_epsilon = sqrt(V [Å³]) × angs2bohr × R_Abinit
+            # where Abinit derivatives are per Bohr displacement and Q is in
+            # Bohr·sqrt(amu) before conversion to Å·sqrt(amu).
             unit_factor = math.sqrt(self.volume) * angs2bohr
             nmodes = nions * 3
             self.raman_tensors = []

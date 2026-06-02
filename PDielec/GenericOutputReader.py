@@ -581,7 +581,7 @@ class GenericOutputReader:
         return cell
 
     def get_raman_tensors(self):
-        """Return the Raman susceptibility tensors.
+        """Return the physical bulk Raman tensors ``R_epsilon``.
 
         Parameters
         ----------
@@ -590,8 +590,11 @@ class GenericOutputReader:
         Returns
         -------
         list or None
-            A list of 3×3 Raman susceptibility tensors, one per normal mode, or
-            ``None`` if the reader does not provide Raman data.
+            A list of 3×3 Raman tensors, one per normal mode, in the
+            ``R_epsilon = sqrt(Vcell) dε/dQ`` convention of
+            ``Raman-Theory.tex``.  This is not the polarizability-volume
+            convention ``d[V(ε-I)/(4π)]/dQ``.  Returns ``None`` if the reader
+            does not provide Raman data.
 
         """
         return self.raman_tensors

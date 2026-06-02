@@ -563,9 +563,8 @@ class RamanLayer:
         All phonon frequencies in cm⁻¹, including acoustic branches.
     raman_tensors : list of ndarray, shape (n_modes, 3, 3)
         3×3 Raman susceptibility tensors in the DFT crystal frame, one per
-        mode.  The stored reader tensors have units (Å/amu)^0.5 (i.e. they
-        are divided by √V_cell); multiply by ``np.sqrt(volume_ang3)`` before
-        passing here so that intensities are proportional to Å² × V / amu.
+        mode, using the physical bulk ``R_epsilon`` convention from
+        ``Raman-Theory.tex``.
     rotation_matrix : ndarray, shape (3, 3)
         Combined rotation G that maps crystal-frame vectors to the lab frame:
         ``v_lab = G @ v_crystal``.  Typically this is the product of the

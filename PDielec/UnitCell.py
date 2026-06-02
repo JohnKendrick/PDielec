@@ -993,7 +993,7 @@ class UnitCell:
         """
         atomic_nos = self.get_atomic_numbers()
         if len(atomic_nos) <= 0:
-            return "P1", 1
+            return "P 1", 1
         cell = ( self.lattice, self.fractional_coordinates, atomic_nos )
         spacegroup = spglib.get_spacegroup(cell, symprec=symprec,angle_tolerance=angle_tolerance)
         sp = spacegroup.split()
@@ -1563,4 +1563,3 @@ class UnitCell:
             pmat = np.eye(3)
             logger.debug(f"Centring is not recognised {centring}")
         return np.dot(np.linalg.inv(tmat), pmat)
-

@@ -116,19 +116,22 @@ class CrystalOutputReader(GenericOutputReader):
 
             ∂α_xx/∂u   ∂α_xy/∂u   ∂α_xz/∂u   ∂α_yy/∂u   ∂α_yz/∂u   ∂α_zz/∂u
 
-        The mode Raman tensors stored in ``self.raman_tensors`` are computed by
-        projecting onto the (unit-normalised) mass-weighted normal modes and
-        converting to the CASTEP convention of ``(Å/amu)^{0.5}``::
+        The raw projected tensors are polarizability-volume derivatives
+        ``R_alpha = dα_vol/dQ``.  PDielec stores the AbInit-style bulk Raman
+        convention ``R_epsilon = sqrt(V) dε/dQ``.  Since
+        ``α_vol = V(ε−I)/(4π)``, the final conversion is::
 
-            raman_tensors[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
-                                     / (angs2bohr² × √V)
+            R_epsilon = (4π / sqrt(Vcell)) R_alpha
+
+        The projection is::
+
+            R_alpha[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
+                               / angs2bohr²
 
         where ``mwm[n,k,β]`` is the mass-weighted eigenvector component for mode *n*,
-        atom *k*, Cartesian direction *β*, ``M_k`` is the atomic mass in amu, and
-        ``V`` is the unit-cell volume in Å³.  The conversion factor
-        ``1 / (angs2bohr² × √V)`` maps Crystal's Bohr² amu⁻¹/² to the CASTEP/Abinit
-        convention of ``(Å/amu)^{0.5}`` (i.e. ``∂χ/∂Q``, susceptibility per
-        mass-weighted normal-mode coordinate).
+        atom *k*, Cartesian direction *β*, and ``M_k`` is the atomic mass in amu.
+        The ``1 / angs2bohr²`` factor maps Crystal's Bohr² amu⁻¹/² to
+        Å² amu⁻¹/² before the polarizability-to-``R_epsilon`` conversion.
 
         Parameters
         ----------
@@ -169,11 +172,10 @@ class CrystalOutputReader(GenericOutputReader):
         # Project: raman_raw[n, c] = Σ_{k,β} amp[n, k*3+β] × dalpha[k*3+β, c]
         raman_raw = amp @ dalpha   # (nmodes, 6)
 
-        # Convert from Crystal units (Bohr² amu⁻¹/²) to CASTEP convention ((Å/amu)^{0.5}).
+        # Convert from Crystal polarizability units (Bohr² amu⁻¹/²) to
+        # PDielec's R_epsilon convention sqrt(V) dε/dQ.
         # Crystal dα = ∂α/∂u in Bohr² (polarisability per unit displacement in Bohr).
-        # CASTEP stores dχ/dQ where χ = α/V and Q is in Å√amu, so:
-        #   R_CASTEP [(Å/amu)^{0.5}] = R_Crystal [Bohr² amu⁻¹/²] / (angs2bohr² × √V [Å³])
-        unit_factor = 1.0 / (angs2bohr**2 * math.sqrt(self.volume))
+        unit_factor = (1.0 / (angs2bohr**2)) * (4.0 * math.pi / math.sqrt(self.volume))
 
         # Build symmetric 3×3 tensors from the 6 independent components
         # Column order: α_xx=0, α_xy=1, α_xz=2, α_yy=3, α_yz=4, α_zz=5
@@ -920,4 +922,3 @@ class CrystalOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         self.unit_cells[-1].set_element_names(self.species_list)
         return
-

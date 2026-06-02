@@ -65,8 +65,23 @@ class QEOutputReader(GenericOutputReader):
         self._alat                   = None
         self._alat_from_xml          = False
         self._qe_raman_suscept       = None
+        self._qe_raman_suscept_units = None
+        self._qe_raman_suscept_priority = -1
         self._nlo_susceptibility_from_xml = False
         return
+
+    def _store_qe_raman_susceptibility(self, dchi, units, priority):
+        """Store QE Raman derivatives, keeping the highest-precision source."""
+        if self._qe_raman_suscept is not None and priority < self._qe_raman_suscept_priority:
+            if self.debug:
+                logger.debug(
+                    "_store_qe_raman_susceptibility: ignoring lower-priority "
+                    f"QE Raman source {units}"
+                )
+            return
+        self._qe_raman_suscept = dchi
+        self._qe_raman_suscept_units = units
+        self._qe_raman_suscept_priority = priority
 
     def _read_output_files(self):
         """Process the QE files.
@@ -1285,18 +1300,20 @@ class QEOutputReader(GenericOutputReader):
         """Read the Raman susceptibility tensors from the QE phonon log file.
 
         QE ph.x prints per-atom per-direction 3×3 derivatives of the
-        macroscopic polarisability tensor under the heading
+        macroscopic polarisability-volume tensor under the heading
         ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
         one per atom per Cartesian displacement direction, each labeled
         ``atom # K    pol.  J``.
 
         The "A^2" tensors represent::
 
-            A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+            A2_{κ,γ}[α,β] = ∂α_vol,αβ/∂u_{κγ}
 
-        where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
-        polarisability in Å³ and u_{κγ} is the displacement of atom κ in
-        Cartesian direction γ in Å, giving units of Å².
+        where ``α_vol = V(ε−I)/(4π)`` is the per-cell polarisability volume in
+        Å³ and ``u`` is an atomic displacement in Å.  The volume-dependent
+        conversion to PDielec's ``R_epsilon = sqrt(V) dε/dQ`` convention is
+        deferred until all companion files have been read, so the final cell
+        volume and normal modes are used consistently.
 
         Parameters
         ----------
@@ -1310,7 +1327,7 @@ class QEOutputReader(GenericOutputReader):
 
         """
         nions = self.nions
-        # dchi[κ, γ, α, β] = dα_{αβ}/du_{κγ} in Å²
+        # dchi[κ, γ, α, β] = dα_vol,αβ/du_κγ in Å².
         dchi = np.zeros((nions, 3, 3, 3))
         # Skip the blank line that follows the heading
         self.file_descriptor.readline()
@@ -1321,8 +1338,7 @@ class QEOutputReader(GenericOutputReader):
                 for irow in range(3):
                     tokens = self.file_descriptor.readline().split()
                     dchi[iatom, idir, irow, :] = [float(t) for t in tokens[0:3]]
-        # Store raw derivatives in case they are needed later
-        self._qe_raman_suscept = dchi
+        self._store_qe_raman_susceptibility(dchi, "log_a2", priority=1)
         return
 
     def _read_raman_tensors_xml(self, raman_tns_list):
@@ -1332,14 +1348,14 @@ class QEOutputReader(GenericOutputReader):
         arranged as three consecutive 3×3 blocks corresponding to the x, y,
         and z Cartesian displacement directions respectively::
 
-            rows 0-2  → dα_{αβ}/du_{κ,x}
-            rows 3-5  → dα_{αβ}/du_{κ,y}
-            rows 6-8  → dα_{αβ}/du_{κ,z}
+            rows 0-2  → dε_{αβ}/du_{κ,x}
+            rows 3-5  → dε_{αβ}/du_{κ,y}
+            rows 6-8  → dε_{αβ}/du_{κ,z}
 
-        The result is stored in ``self._qe_raman_suscept`` in the same
-        ``dchi[iatom, idir, irow, icol]`` layout used by
-        :meth:`_read_raman_tensors_log`, so :meth:`_calculate_raman_tensors`
-        can process it without modification.
+        The XML values are ``dε/du`` in ``bohr^-1``.  The result is stored in
+        ``self._qe_raman_suscept`` in the same ``dchi[iatom, idir, irow, icol]``
+        layout used by :meth:`_read_raman_tensors_log`; unit conversion is
+        handled by :meth:`_calculate_raman_tensors`.
 
         Parameters
         ----------
@@ -1354,13 +1370,7 @@ class QEOutputReader(GenericOutputReader):
         """
         nions = len(raman_tns_list)
         # dchi[κ, γ, α, β] in tensors.xml is stored in au^-1 units:
-        #   dε_{αβ}/du_{κγ}  where ε is dimensionless and u is in bohr.
-        # _calculate_raman_tensors expects A² units:
-        #   d(V(ε-1)/4π)/du_{κγ}  where V is in Å³ and u is in Å.
-        # Conversion: A² = au^-1 × V(Å³) × angs2bohr / (4π)
-        #   (= au^-1 × V / (4π × a₀)  where a₀ = 1/angs2bohr Å)
-        unit_conv = self.volume * angs2bohr / (4.0 * math.pi)
-        # dchi[κ, γ, α, β] = dα_{αβ}/du_{κγ} in Å²
+        #   dε_{αβ}/du_{κγ} where ε is dimensionless and u is in bohr.
         dchi = np.zeros((nions, 3, 3, 3))
         for atom_xml in raman_tns_list:
             iatom = int(atom_xml.attrib["atom"]) - 1  # XML is 1-indexed
@@ -1370,41 +1380,37 @@ class QEOutputReader(GenericOutputReader):
                 for irow in range(3):
                     idx = idir * 9 + irow * 3
                     dchi[iatom, idir, irow, :] = values[idx:idx + 3]
-        dchi *= unit_conv
-        self._qe_raman_suscept = dchi
+        self._store_qe_raman_susceptibility(dchi, "xml_epsilon_per_bohr", priority=2)
         if self.debug:
             logger.debug(f"_read_raman_tensors_xml: read Raman tensors for {nions} atoms")
-            logger.debug(f"_read_raman_tensors_xml: unit conversion factor = {unit_conv}")
         return
 
     def _calculate_raman_tensors(self):
         """Calculate the Raman tensors from the susceptibility tensors.
 
         QE ph.x prints per-atom per-direction 3×3 derivatives of the
-        macroscopic polarisability tensor under the heading
+        macroscopic polarisability-volume tensor under the heading
         ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
         one per atom per Cartesian displacement direction, each labeled
         ``atom # K    pol.  J``.
 
         The "A^2" tensors represent::
 
-            A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+            A2_{κ,γ}[α,β] = ∂α_vol,αβ/∂u_{κγ}
 
-        where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
-        polarisability in Å³ and u_{κγ} is the displacement of atom κ in
-        Cartesian direction γ in Å, giving units of Å².
+        where ``α_vol = V(ε−I)/(4π)``.  The log reader stores this native
+        ``A^2`` derivative and the XML reader stores native ``dε/du_bohr``.
+        This routine converts either source to the PDielec convention
+        ``sqrt(V) dε/du_Å`` before projection.
 
-        To obtain the per-mode Raman tensor in the CASTEP convention
-        [(Å/amu)^{1/2}], the raw derivatives are projected onto the
-        mass-weighted phonon eigenvectors and divided by √V::
+        To obtain the physical per-mode bulk Raman tensor ``R_epsilon``, the
+        raw derivatives are projected onto the mass-weighted phonon eigenvectors::
 
-            R_n[α,β] = Σ_{κ,γ}  A2_{κ,γ}[α,β] × mwm[n,κ,γ] / √m_κ
-            T_n[α,β] = R_n[α,β] / √V
+            R_n[α,β] = Σ_{κ,γ}  sqrt(V) dε_{αβ}/du_{κγ}
+                         × mwm[n,κ,γ] / √m_κ
 
         where mwm = ``mass_weighted_normal_modes``, m_κ is in amu, and
-        V is the unit-cell volume in Å³.  The 1/√V factor (not 4π/√V)
-        is correct because the A^2 tensors already incorporate the
-        V/(4π) prefactor of the macroscopic polarisability α.
+        ``u`` is in Å.  The stored tensor is ``R_epsilon = sqrt(V) dε/dQ``.
 
         The normal modes must be available before this method is called;
         they are read from the ``.dynG`` file by :meth:`_read_dyng_file`.
@@ -1423,13 +1429,20 @@ class QEOutputReader(GenericOutputReader):
         if self._qe_raman_suscept is None:
             return
         dchi = self._qe_raman_suscept
+        if self.volume <= 0:
+            logger.warning("_calculate_raman_tensors: QE Raman tensors are present but the unit-cell volume is not")
+            return
+        if self._qe_raman_suscept_units == "log_a2":
+            dchi = dchi * (4.0 * math.pi / math.sqrt(self.volume))
+        elif self._qe_raman_suscept_units == "xml_epsilon_per_bohr":
+            dchi = dchi * (math.sqrt(self.volume) * angs2bohr)
+        else:
+            logger.warning(
+                "_calculate_raman_tensors: unknown QE Raman tensor units "
+                f"{self._qe_raman_suscept_units!r}; assuming sqrt(V) dε/du_Å"
+            )
         nions = self.nions
         if self.mass_weighted_normal_modes:
-            # unit_factor = 1 / √V_Å  converts Å² × amu^{-1/2} → (Å/amu)^{1/2}
-            # The QE "A^2" section already encodes α = V(ε−1)/(4π), so no 4π
-            # factor is needed here; only the √V normalisation to match the
-            # CASTEP convention T = R/√V.
-            unit_factor = 1.0 / math.sqrt(self.volume)
             nmodes = nions * 3
             self.raman_tensors = []
             for n in range(nmodes):
@@ -1439,7 +1452,7 @@ class QEOutputReader(GenericOutputReader):
                     for idir in range(3):
                         eigvec = self.mass_weighted_normal_modes[n][iatom][idir]
                         tensor += dchi[iatom, idir] * (eigvec / sqrt_mass)
-                self.raman_tensors.append(tensor * unit_factor)
+                self.raman_tensors.append(tensor)
             if self.debug:
                 logger.debug(f"_read_raman_tensors_log: computed {len(self.raman_tensors)} Raman tensors")
         else:

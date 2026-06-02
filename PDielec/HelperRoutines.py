@@ -514,7 +514,7 @@ def calculate_crystal_raman_spectrum(frequencies_cm1, reader, layers, incident_a
         [np.sin(psi),  np.cos(psi), 0.0],
         [0.0,          0.0,         1.0],
     ])
-    scaled_tensors = [np.sqrt(reader.volume) * np.asarray(raman_tensor, dtype=float) for raman_tensor in raman_tensors]
+    raman_tensors_physical = [np.asarray(raman_tensor, dtype=float) for raman_tensor in raman_tensors]
     phonon_frequencies = np.asarray(reader.frequencies, dtype=float)
     sigmas_cm1 = _raman_linewidths(reader, sigma)
 
@@ -525,7 +525,7 @@ def calculate_crystal_raman_spectrum(frequencies_cm1, reader, layers, incident_a
         raman_layers.append(RamanLayer(
             layer_index=sys_idx,
             phonon_frequencies_cm1=phonon_frequencies,
-            raman_tensors=scaled_tensors,
+            raman_tensors=raman_tensors_physical,
             rotation_matrix=G_psi @ layer.euler,
         ))
     if not raman_layers:

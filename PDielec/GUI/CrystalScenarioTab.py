@@ -152,7 +152,7 @@ def solve_single_crystal_equations(
     return v,r,R,t,T,epsilon,errors,largest_exponent
 
 def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf,
-                                              volume_au, masses_au, U_TO, scaled_tensors,
+                                              volume_au, masses_au, U_TO, raman_tensors,
                                               to_sigmas, chi2_pm_per_v=None):
     """Module-level NAC computation for a given phonon wavevector direction.
 
@@ -161,8 +161,8 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
 
         D_NAC(q̂) = D_TO + (4π/V) Z^mw,T (q̂ q̂^T / q̂^T ε_∞ q̂) Z^mw
 
-    Optionally applies the electro-optic (EO) correction to each Raman tensor
-    (Eq. 21 of Raman-Theory.pdf) when the second-order NLO susceptibility χ^(2)
+    Optionally applies the electro-optic (EO) correction from ``eq-nonanalytic``
+    and ``eq-nac_ramantensor`` when the second-order NLO susceptibility χ^(2)
     is supplied.
 
     This function is factored out of ``CrystalScenarioTab._compute_nac_dynamical_matrix``
@@ -185,8 +185,8 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
     U_TO : ndarray, shape (n_to_modes, 3N)
         Mass-weighted TO eigenvectors (rows), pre-computed from
         ``reader.mass_weighted_normal_modes``.
-    scaled_tensors : list of ndarray, each (3, 3)
-        Bulk TO Raman tensors scaled by sqrt(V_cell).
+    raman_tensors : list of ndarray, each (3, 3)
+        Physical bulk TO Raman tensors ``R_epsilon``.
     to_sigmas : ndarray, shape (n_to_modes,)
         Bulk TO linewidths in cm⁻¹.
     chi2_pm_per_v : ndarray, shape (3, 3, 3) or None
@@ -238,14 +238,14 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
     for p_idx in range(n_modes):
         R_p = np.zeros((3, 3), dtype=float)
         for n_to in range(n_to_modes):
-            if n_to < len(scaled_tensors):
-                R_p += C[n_to, p_idx] * np.asarray(scaled_tensors[n_to], dtype=float)
+            if n_to < len(raman_tensors):
+                R_p += C[n_to, p_idx] * np.asarray(raman_tensors[n_to], dtype=float)
         nac_tensors.append(R_p)
         dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
         nac_sigmas[p_idx] = sigmas[dominant_to] if dominant_to < len(sigmas) else 5.0
 
-    # Electro-optic (EO) correction to Raman tensors (Eq. 21, Raman-Theory.pdf).
-    # Applied only when χ^(2) is available (non-centrosymmetric polar materials).
+    # Electro-optic (EO) correction to Raman tensors from eq-nonanalytic and
+    # eq-nac_ramantensor. Applied only when χ^(2) is available.
     if chi2_pm_per_v is not None:
         from PDielec.RamanPolarCalculator import apply_eo_correction
         # TODO: Verify unit conversion and prefactor against ZnO CASTEP/Abinit example.
@@ -2657,7 +2657,7 @@ class CrystalScenarioTab(ScenarioTab):
         else:
             logger.error(f"{self.settings['Legend']} calculate: unknown spectroscopy type: {self.spectroscopy}")
 
-    def _compute_nac_dynamical_matrix(self, scaled_tensors, frequencies_cm1, sigmas_cm1,
+    def _compute_nac_dynamical_matrix(self, raman_tensors_physical, frequencies_cm1, sigmas_cm1,
                                        q_hat_crystal, eps_inf):
         """Build NAC dynamical matrix for a given phonon wavevector direction and diagonalize.
 
@@ -2666,8 +2666,8 @@ class CrystalScenarioTab(ScenarioTab):
 
         Parameters
         ----------
-        scaled_tensors : list of ndarray, each (3, 3)
-            Bulk TO Raman tensors in the crystal frame, scaled by sqrt(V_cell).
+        raman_tensors_physical : list of ndarray, each (3, 3)
+            Physical bulk TO Raman tensors ``R_epsilon`` in the crystal frame.
         frequencies_cm1 : array_like, shape (n_to_modes,)
             Bulk TO phonon frequencies in cm⁻¹.
         sigmas_cm1 : array_like, shape (n_to_modes,)
@@ -2706,12 +2706,12 @@ class CrystalScenarioTab(ScenarioTab):
             volume_au,
             masses_au,
             U_TO,
-            scaled_tensors,
+            raman_tensors_physical,
             np.asarray(sigmas_cm1, dtype=float),
             chi2_pm_per_v=chi2,
         )
 
-    def _compute_nac_modes_geometry(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1,
+    def _compute_nac_modes_geometry(self, G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1,
                                      incident_angle_rad, scatter_angle_rad, collection_side):
         """Level 1: Compute NAC-corrected phonon modes using q from macroscopic scattering geometry.
 
@@ -2724,8 +2724,8 @@ class CrystalScenarioTab(ScenarioTab):
         ----------
         G_total : ndarray, shape (3, 3)
             Crystal-to-lab rotation matrix (G_psi @ layer.euler).
-        scaled_tensors : list of ndarray, each (3, 3)
-            Bulk TO Raman tensors scaled by sqrt(V_cell).
+        raman_tensors_physical : list of ndarray, each (3, 3)
+            Physical bulk TO Raman tensors ``R_epsilon``.
         frequencies_cm1 : array_like
             Bulk TO phonon frequencies in cm⁻¹.
         sigmas_cm1 : array_like
@@ -2787,10 +2787,10 @@ class CrystalScenarioTab(ScenarioTab):
             q_hat_crystal /= q_c_norm
 
         return self._compute_nac_dynamical_matrix(
-            scaled_tensors, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf
+            raman_tensors_physical, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf
         )
 
-    def _compute_nac_modes_dominant(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1,
+    def _compute_nac_modes_dominant(self, G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1,
                                      system, layer_idx, incident_angle_rad, scatter_angle_rad,
                                      collection_side, laser_freq_cm1, incident_pol):
         """Level 2: Compute NAC-corrected phonon modes using the dominant Berreman eigenmode.
@@ -2807,8 +2807,8 @@ class CrystalScenarioTab(ScenarioTab):
         ----------
         G_total : ndarray, shape (3, 3)
             Crystal-to-lab rotation matrix.
-        scaled_tensors : list of ndarray, each (3, 3)
-            Bulk TO Raman tensors scaled by sqrt(V_cell).
+        raman_tensors_physical : list of ndarray, each (3, 3)
+            Physical bulk TO Raman tensors ``R_epsilon``.
         frequencies_cm1 : array_like
             Bulk TO phonon frequencies in cm⁻¹.
         sigmas_cm1 : array_like
@@ -2879,10 +2879,10 @@ class CrystalScenarioTab(ScenarioTab):
             q_hat_crystal /= q_c_norm
 
         return self._compute_nac_dynamical_matrix(
-            scaled_tensors, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf
+            raman_tensors_physical, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf
         )
 
-    def _make_nac_function(self, G_total, scaled_tensors, frequencies_cm1, sigmas_cm1):
+    def _make_nac_function(self, G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1):
         """Build a closure for on-demand NAC computation for any phonon wavevector direction.
 
         The returned callable takes a unit phonon wavevector in the lab frame and
@@ -2894,8 +2894,8 @@ class CrystalScenarioTab(ScenarioTab):
         ----------
         G_total : ndarray, shape (3, 3)
             Crystal-to-lab rotation matrix (G_psi @ layer.euler).
-        scaled_tensors : list of ndarray, each (3, 3)
-            Bulk TO Raman tensors scaled by sqrt(V_cell), in crystal frame.
+        raman_tensors_physical : list of ndarray, each (3, 3)
+            Physical bulk TO Raman tensors ``R_epsilon`` in the crystal frame.
         frequencies_cm1 : ndarray
             Bulk TO phonon frequencies in cm⁻¹.
         sigmas_cm1 : ndarray
@@ -2928,7 +2928,7 @@ class CrystalScenarioTab(ScenarioTab):
         # Capture only plain numpy arrays (no self reference)
         hessian = np.array(self.reader.hessian, dtype=float)
         G = G_total.copy()
-        tensors = [np.array(R, dtype=float) for R in scaled_tensors]
+        tensors = [np.array(R, dtype=float) for R in raman_tensors_physical]
         sigmas = np.asarray(sigmas_cm1, dtype=float)
         chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
 
@@ -3018,10 +3018,7 @@ class CrystalScenarioTab(ScenarioTab):
             [ 0.0,              0.0,              1.0],
         ])
 
-        # Scale stored Raman tensors by sqrt(volume) to get actual R = sqrt(V) * T_stored
-        volume_ang3 = self.reader.volume
-        scale = np.sqrt(volume_ang3)
-        scaled_tensors = [scale * np.asarray(R, dtype=float) for R in raman_tensors]
+        raman_tensors_physical = [np.asarray(R, dtype=float) for R in raman_tensors]
 
         # Phonon frequencies and linewidths from SettingsTab
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
@@ -3091,16 +3088,16 @@ class CrystalScenarioTab(ScenarioTab):
 
                 if layer_nac_mode == "modal_pairs":
                     # Level 3: store TO baseline as fallback and build nac_function closure.
-                    corrected_by_layer[i] = (frequencies_cm1, scaled_tensors, sigmas_cm1)
+                    corrected_by_layer[i] = (frequencies_cm1, raman_tensors_physical, sigmas_cm1)
                     nac_fn_by_layer[i] = self._make_nac_function(
-                        G_total, scaled_tensors, frequencies_cm1, sigmas_cm1
+                        G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1
                     )
                     if corrected_sigmas_shared is None:
                         corrected_sigmas_shared = sigmas_cm1
                 elif layer_nac_mode == "dominant_mode":
                     nac_result = self._compute_nac_modes_dominant(
                         G_total=G_total,
-                        scaled_tensors=scaled_tensors,
+                        raman_tensors_physical=raman_tensors_physical,
                         frequencies_cm1=frequencies_cm1,
                         sigmas_cm1=sigmas_cm1,
                         system=system,
@@ -3119,7 +3116,7 @@ class CrystalScenarioTab(ScenarioTab):
                 else:  # 'geometry'
                     nac_result = self._compute_nac_modes_geometry(
                         G_total=G_total,
-                        scaled_tensors=scaled_tensors,
+                        raman_tensors_physical=raman_tensors_physical,
                         frequencies_cm1=frequencies_cm1,
                         sigmas_cm1=sigmas_cm1,
                         incident_angle_rad=angle_of_incidence,
@@ -3151,7 +3148,7 @@ class CrystalScenarioTab(ScenarioTab):
                 rl = RamanLayer(
                     layer_index=sys_idx,
                     phonon_frequencies_cm1=frequencies_cm1,
-                    raman_tensors=scaled_tensors,
+                    raman_tensors=raman_tensors_physical,
                     rotation_matrix=G_total,
                 )
             raman_layer_list.append(rl)

@@ -434,27 +434,21 @@ def raman_intensities(raman_tensors, volume):
 
     .. math::
 
-        R_m^{\\rm total} = V \\left(45|\\alpha|^2 + 7G^{(2)} + 5G^{(1)}\\right)
+        R_m^{\\rm total} = 45|\\alpha|^2 + 7G^{(2)} + 5G^{(1)}
 
-        R_m^{\\parallel}  = V \\left(30|\\alpha|^2 + 4G^{(2)}\\right)
+        R_m^{\\parallel}  = 30|\\alpha|^2 + 4G^{(2)}
 
-        R_m^{\\perp}      = V \\left(15|\\alpha|^2 + 3G^{(2)}\\right)
+        R_m^{\\perp}      = 15|\\alpha|^2 + 3G^{(2)}
 
     where :math:`\\alpha = \\operatorname{Tr}(R)/3` is the isotropic invariant,
     :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squared
     magnitudes of the traceless symmetric part), :math:`G^{(1)}` is the
     antisymmetric invariant (sum of squared magnitudes of the antisymmetric
-    part), and :math:`V` is the unit-cell volume in Å³.
+    part).  Reader-provided tensors are expected to use the physical bulk
+    convention :math:`R_\\epsilon` from ``eq-ramantensor`` and
+    ``eq-dft_raman_tensor``.
 
-    The factor of :math:`V` converts from the code's internal tensor convention
-    (CASTEP-style, units ``(Å/amu)^{0.5}``, i.e. divided by ``√V_cell``) to the
-    convention used in Raman-Theory.pdf (Eq. 18), where the Raman tensor is
-    defined as :math:`\\mathbf{R}^{(m)} = \\partial\\boldsymbol{\\alpha}/\\partial Q_m`
-    without the ``√V`` normalisation.  Because the stored tensors :math:`T`
-    satisfy :math:`\\mathbf{R}^{(m)} = \\sqrt{V}\\,T`, squaring gives an extra
-    factor of :math:`V`.
-
-    The parallel and perpendicular components follow Eqs. 26–27 of Raman-Theory.pdf
+    The parallel and perpendicular components follow the legacy activity split
     (:math:`R^{\\parallel} = 10G^{(0)} + 4G^{(2)}`,
     :math:`R^{\\perp} = 5G^{(0)} + 3G^{(2)}` with :math:`G^{(0)} = 3\\alpha^2`),
     and their sum equals :math:`R^{\\rm total}` when :math:`G^{(1)} = 0`.
@@ -462,18 +456,19 @@ def raman_intensities(raman_tensors, volume):
     Parameters
     ----------
     raman_tensors : list of array_like
-        Per-mode 3×3 Raman tensors as stored by the output readers.
-        Units are ``(Å/amu)^{0.5}`` per element (i.e. the derivative of the
-        polarisability volume with respect to the mass-weighted normal
-        coordinate, divided by ``√V_cell``).
+        Per-mode 3×3 bulk Raman tensors ``R_epsilon = sqrt(Vcell) dε/dQ`` as
+        stored by the output readers.
     volume : float
-        Unit-cell volume in Å³.
+        Unit-cell volume in Å³.  Kept for API compatibility; reader tensors
+        already include the ``sqrt(Vcell)`` factor, so no additional volume
+        scaling is applied here.
 
     Returns
     -------
     np.ndarray, shape (nmodes, 3)
-        Per-mode Raman activities in units of ``Å⁴/amu``, consistent with the
-        Raman-Theory.pdf convention.  Columns are
+        Per-mode Raman activities in the ``R_epsilon`` convention.  Since
+        ``R_epsilon`` has units ``(Å/amu)^0.5``, these activities have units
+        ``Å/amu`` rather than polarizability-volume ``Å⁴/amu`` units.  Columns are
         ``[:, 0]`` total, ``[:, 1]`` parallel, ``[:, 2]`` perpendicular.
 
     Notes
@@ -497,14 +492,14 @@ def raman_intensities(raman_tensors, volume):
         alpha2 = float(np.real(alpha * np.conj(alpha)))
         gamma2 = 3.0 / 2.0 * float(np.real(np.sum(R_traceless * np.conj(R_traceless))))
         kappa2 = 3.0 / 2.0 * float(np.real(np.sum(R_anti * np.conj(R_anti))))
-        activities[i, 0] = volume * (45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2)
-        activities[i, 1] = volume * (30.0 * alpha2 + 4.0 * gamma2)
-        activities[i, 2] = volume * (15.0 * alpha2 + 3.0 * gamma2)
+        activities[i, 0] = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
+        activities[i, 1] = 30.0 * alpha2 + 4.0 * gamma2
+        activities[i, 2] = 15.0 * alpha2 + 3.0 * gamma2
     return activities
 
 
 def compute_internal_field_tensor(L, epsilon_i, epsilon_e):
-    """Compute the internal field tensor N (Eq. 47 of Raman-Theory.pdf).
+    """Compute the internal field tensor N from ``eq-internal_external_fields3``.
 
     N = [I + (1/ε_e) L (ε_i - ε_e I)]^{-1}
 
@@ -531,7 +526,7 @@ def compute_internal_field_tensor(L, epsilon_i, epsilon_e):
 
 
 def compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e):
-    """Compute the effective particle Raman tensor (Eq. 60 of Raman-Theory.pdf).
+    """Compute the effective particle Raman tensor from the Raman-Theory local-field expression.
 
     R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
 
@@ -566,8 +561,8 @@ def compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e):
 def compute_powder_raman_intensities(R):
     """Compute powder-averaged VV and VH Raman intensities from a Raman tensor.
 
-    Implements the Placzek rotational-invariant formula (Eqs. 90-99 of
-    Raman-Theory.pdf).  Uses the 3/2 Placzek normalisation for γ² and κ²,
+    Implements the Placzek rotational-invariant formula (``eq-invariants1``
+    and ``eq-Intensities``).  Uses the 3/2 Placzek normalisation for γ² and κ²,
     which is consistent with the numerical SO(3)-averaging path.
 
     Parameters

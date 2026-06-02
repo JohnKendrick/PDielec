@@ -324,7 +324,8 @@ def build_eigvecs_from_normal_modes(mass_weighted_normal_modes):
 def apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, eps_inf):
     """Apply the electro-optic (EO) q-dependent correction to Raman tensors.
 
-    Implements Eq. 21 of Raman-Theory.pdf.  For each mode *p* the correction is::
+    Implements the electro-optic term in ``eq-nonanalytic`` and ``eq-nac_ramantensor``.
+    For each mode *p* the correction is::
 
         ΔR_p = −2 · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
 
@@ -334,7 +335,8 @@ def apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, e
     Parameters
     ----------
     tensors : list of ndarray, each (3, 3)
-        Input Raman tensors (not modified; corrected copies are returned).
+        Input physical bulk Raman tensors ``R_epsilon`` (not modified; corrected
+        copies are returned).
     chi2_pm_per_v : ndarray, shape (3, 3, 3)
         Second-order NLO susceptibility χ^(2) in pm/V.
     q_hat_crystal : ndarray, shape (3,)
