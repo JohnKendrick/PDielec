@@ -30,7 +30,7 @@ import numpy as np
 import pytest
 from PDielec.GTMcore import Layer, TransferMatrixSystem
 from PDielec.LayeredRamanCalculator import RamanLayer, LayeredRamanCalculator
-from conftest import build_system, run_calc, make_raman_layer, iso_eps, make_layer
+from .conftest import build_system, run_calc, make_raman_layer, iso_eps, make_layer
 
 # ---------------------------------------------------------------------------
 # Shared parameters

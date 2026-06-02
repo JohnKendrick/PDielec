@@ -27,8 +27,7 @@ It also demonstrates how to use the euler angles for the layers
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import GTMcore as GTM
-import Permittivities as mat
+import PDielec.GTMcore as GTM
 from matplotlib import rcParams, rcParamsDefault
 import logging
 logger = logging.getLogger(__name__)
@@ -98,4 +97,3 @@ for ii, fi in enumerate(f_sp):
 # Make pretty plot
 for v, rp,rs,tp,ts in zip(f_cm,R_p,R_s,T_p,T_s):
     print(v,rs,rp,ts,tp)
-

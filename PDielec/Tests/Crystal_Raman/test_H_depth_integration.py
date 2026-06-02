@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
-from conftest import build_system, make_raman_layer, run_calc
+from .conftest import build_system, make_raman_layer, run_calc
 
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_COHERENT,

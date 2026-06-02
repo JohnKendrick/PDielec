@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
 import pytest
-from conftest import build_system, iso_eps, make_layer, make_raman_layer, run_calc
+from .conftest import build_system, iso_eps, make_layer, make_raman_layer, run_calc
 
 from PDielec.GTMcore import Layer, ScatteringMatrixSystem, TransferMatrixSystem
 from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer, bose_factor

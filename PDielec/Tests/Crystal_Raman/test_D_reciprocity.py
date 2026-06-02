@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
 import pytest
-from conftest import build_system, run_calc, make_raman_layer
+from .conftest import build_system, run_calc, make_raman_layer
 
 # ---------------------------------------------------------------------------
 # Shared parameters

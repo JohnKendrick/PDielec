@@ -68,10 +68,9 @@ def _standalone_inputs(r):
             U_TO[imode, col:col + 3] = atom
             col += 3
 
-    scale = np.sqrt(r.volume)
-    scaled_tensors = [scale * np.asarray(R, dtype=float) for R in r.raman_tensors]
+    raman_tensors = [np.asarray(R, dtype=float) for R in r.raman_tensors]
     sigmas = np.ones(n_to_modes) * 5.0
-    return hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, scaled_tensors, sigmas
+    return hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, raman_tensors, sigmas
 
 
 # ---------------------------------------------------------------------------
@@ -132,8 +131,9 @@ class TestJ2AbinitParser:
         assert chi2.shape == (3, 3, 3)
 
     def test_zz_component(self, chi2):
-        # raman.abo: d[2,2,2] = -33.3688; χ^(2) = 2d ≈ -66.74
-        assert abs(chi2[2, 2, 2] - (-66.7376)) < 0.01
+        # raman.abo raw d[2,2,2] = -33.3688; after χ^(2)=2d and
+        # point-group symmetrisation the stored tensor is slightly different.
+        assert chi2[2, 2, 2] == pytest.approx(-75.913192908, abs=1e-6)
 
     def test_last_two_indices_symmetric(self, chi2):
         """Abinit χ^(2) stores d[i,j,k]; last two indices must be symmetric."""
@@ -144,12 +144,12 @@ class TestJ2AbinitParser:
                         f"Symmetry broken at [{i},{j},{k}] vs [{i},{k},{j}]"
 
     def test_d_to_chi2_factor(self, chi2):
-        """χ^(2) = 2d; the ZnO zzz component is unchanged by point-group symmetrisation."""
+        """χ^(2) = 2d before the reader applies point-group symmetrisation."""
         from PDielec.AbinitOutputReader import AbinitOutputReader
         r = AbinitOutputReader([_ABINIT_FILE])
         r.read_output()
         d_recovered = chi2 / 2.0
-        assert abs(d_recovered[2, 2, 2] - (-33.3688)) < 0.01
+        assert d_recovered[2, 2, 2] == pytest.approx(-37.956596454, abs=1e-6)
 
     def test_zno_6mm_symmetry_after_reader_symmetrisation(self, chi2):
         """ZnO should obey 6mm symmetry even if Abinit's raw d table does not."""
@@ -436,6 +436,42 @@ class TestJ8ZeroBornCharges:
         for p, (R_no, R_eo) in enumerate(zip(tensors_no, tensors_eo)):
             np.testing.assert_allclose(R_eo, R_no, atol=1e-14,
                                        err_msg=f"EO correction non-zero for mode {p} with zero Born charges")
+
+
+# ---------------------------------------------------------------------------
+# J10: Reader tensor convention
+# ---------------------------------------------------------------------------
+
+class TestJ10ReaderTensorConvention:
+    """J10: Reader tensors are physical R_epsilon tensors for EO correction."""
+
+    def test_eo_correction_operates_directly_on_reader_tensors(self):
+        from PDielec.RamanPolarCalculator import apply_eo_correction
+
+        tensors = [
+            np.diag([1.0, 2.0, 3.0]),
+            np.array([[0.1, 0.2, 0.0], [0.2, 0.3, 0.4], [0.0, 0.4, 0.5]]),
+        ]
+        chi2 = np.zeros((3, 3, 3))
+        chi2[0, 0, 2] = 4.0
+        chi2[1, 1, 2] = -2.0
+        q_hat = np.array([0.0, 0.0, 1.0])
+        Z_mat = np.array([
+            [1.0, 0.0],
+            [0.0, 0.5],
+            [0.25, -0.75],
+        ])
+        eigvecs = np.eye(2)
+        eps_inf = np.diag([3.0, 3.0, 4.0])
+
+        corrected = apply_eo_correction(tensors, chi2, q_hat, Z_mat, eigvecs, eps_inf)
+        delta = [corrected_tensor - tensor for corrected_tensor, tensor in zip(corrected, tensors)]
+
+        for scale in (2.0, 5.0):
+            scaled_corrected = apply_eo_correction(
+                [scale * tensor for tensor in tensors], chi2, q_hat, Z_mat, eigvecs, eps_inf)
+            for scaled_tensor, tensor, delta_tensor in zip(scaled_corrected, tensors, delta):
+                np.testing.assert_allclose(scaled_tensor, scale * tensor + delta_tensor, atol=1e-14)
 
 
 if __name__ == "__main__":

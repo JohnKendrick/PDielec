@@ -166,6 +166,13 @@ class TestF4RamanIntensities:
         result = raman_intensities([R], volume=1.0)
         assert result[0, 1] > result[0, 2]  # parallel > perp for isotropic
 
+    def test_reader_tensors_already_include_volume_scaling(self):
+        """Changing the API volume argument does not rescale R_epsilon activities."""
+        R = np.diag([1.0, 2.0, 3.0])
+        result_1 = raman_intensities([R], volume=1.0)
+        result_2 = raman_intensities([R], volume=125.0)
+        np.testing.assert_allclose(result_2, result_1, atol=1e-12)
+
 
 # ---------------------------------------------------------------------------
 # F5: calculate_normal_modes_and_frequencies
