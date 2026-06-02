@@ -65,7 +65,7 @@ class RamanPolarWindow(QWidget):
         })
 
         # EO correction data (None when χ^(2) is not available).
-        self._chi2 = polar_data.get("chi2_pm_per_v")
+        self._chi2 = polar_data.get("chi2_repsilon", polar_data.get("chi2_pm_per_v"))
         self._Z_mat = polar_data.get("Z_mat")
         self._eigvecs = polar_data.get("eigvecs")
         self._eps_inf = polar_data.get("eps_inf")

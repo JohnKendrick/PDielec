@@ -453,7 +453,9 @@ The EO correction vanishes identically when:
 PDielec reads :math:`\tensorbs{\chi}^{(2)}` automatically from the DFT output file when
 it is present.  Both supported codes report the *d*-tensor
 (:math:`\tensorbf{d} = \tfrac{1}{2}\tensorbs{\chi}^{(2)}`); PDielec stores
-:math:`\tensorbs{\chi}^{(2)} = 2\tensorbf{d}` internally.
+:math:`\tensorbs{\chi}^{(2)} = 2\tensorbf{d}` internally after converting the
+reported pm/V values to the same Angstrom-based convention used by the reader
+:math:`R_\epsilon` Raman tensors.
 
 *CASTEP* writes a 3×6 Voigt-format block labelled
 ``Nonlinear Optical Susceptibility (pm/V)`` in the ``.castep`` output file.  The

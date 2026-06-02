@@ -153,7 +153,7 @@ def solve_single_crystal_equations(
 
 def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf,
                                               volume_au, masses_au, U_TO, raman_tensors,
-                                              to_sigmas, chi2_pm_per_v=None):
+                                              to_sigmas, chi2_repsilon=None):
     """Module-level NAC computation for a given phonon wavevector direction.
 
     Applies the standard non-analytic correction (NAC) to the bulk TO dynamical
@@ -189,10 +189,11 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
         Physical bulk TO Raman tensors ``R_epsilon``.
     to_sigmas : ndarray, shape (n_to_modes,)
         Bulk TO linewidths in cm⁻¹.
-    chi2_pm_per_v : ndarray, shape (3, 3, 3) or None
-        Second-order NLO susceptibility χ^(2) in pm/V (= 2d from DFT output).
-        When provided, the electro-optic correction is applied to each NAC Raman
-        tensor.  Pass None to skip the correction.
+    chi2_repsilon : ndarray, shape (3, 3, 3) or None
+        Second-order NLO susceptibility χ^(2), already converted by the readers
+        to the same Angstrom-based internal convention as ``R_epsilon`` Raman
+        tensors.  When provided, the electro-optic correction is applied to
+        each NAC Raman tensor.  Pass None to skip the correction.
 
     Returns
     -------
@@ -246,11 +247,10 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
 
     # Electro-optic (EO) correction to Raman tensors from eq-nonanalytic and
     # eq-nac_ramantensor. Applied only when χ^(2) is available.
-    if chi2_pm_per_v is not None:
+    if chi2_repsilon is not None:
         from PDielec.RamanPolarCalculator import apply_eo_correction
-        # TODO: Verify unit conversion and prefactor against ZnO CASTEP/Abinit example.
         # EO correction should be a small fraction (~1–20%) of the uncorrected tensor.
-        nac_tensors = apply_eo_correction(nac_tensors, chi2_pm_per_v, q_hat_crystal,
+        nac_tensors = apply_eo_correction(nac_tensors, chi2_repsilon, q_hat_crystal,
                                           Z_mat, eig_vec, eps_inf)
 
     return nac_freqs, nac_tensors, nac_sigmas
@@ -2708,7 +2708,7 @@ class CrystalScenarioTab(ScenarioTab):
             U_TO,
             raman_tensors_physical,
             np.asarray(sigmas_cm1, dtype=float),
-            chi2_pm_per_v=chi2,
+            chi2_repsilon=chi2,
         )
 
     def _compute_nac_modes_geometry(self, G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1,
@@ -2948,7 +2948,7 @@ class CrystalScenarioTab(ScenarioTab):
                 U_TO,
                 tensors,
                 sigmas,
-                chi2_pm_per_v=chi2,
+                chi2_repsilon=chi2,
             )
 
         return nac_function

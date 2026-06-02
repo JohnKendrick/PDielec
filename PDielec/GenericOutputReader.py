@@ -27,6 +27,8 @@ from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
 
 logger = logging.getLogger(__name__)
 
+CHI2_PM_PER_V_TO_REPSILON = 1.0e-2
+
 
 
 class GenericOutputReader:
@@ -117,7 +119,8 @@ class GenericOutputReader:
 
     nonlinear_optical_susceptibility : ndarray or None
         Second-order nonlinear optical susceptibility tensor χ^(2), shape (3, 3, 3),
-        units pm/V; ``None`` if not available.
+        stored in Angstrom-based units consistent with reader ``R_epsilon``
+        Raman tensors; ``None`` if not available.
 
     original_born_charges_are_being_used : bool
         Signifies whether original Born charges are in use, defaults to True.
@@ -199,7 +202,14 @@ class GenericOutputReader:
         self.edited_masses              = None
         self.primitive_transformation   = None
         self.raman_tensors              = None
-        self.nonlinear_optical_susceptibility = None   # 3×3×3 ndarray (χ^(2)) in pm/V, or None
+        self.nonlinear_optical_susceptibility = None   # 3×3×3 ndarray (χ^(2)) in R_epsilon units, or None
+        return
+
+    def _store_nonlinear_optical_susceptibility_pm_per_v(self, chi2_pm_per_v):
+        """Store χ^(2) after converting from pm/V to the internal R_epsilon convention."""
+        self.nonlinear_optical_susceptibility = (
+            np.asarray(chi2_pm_per_v, dtype=float) * CHI2_PM_PER_V_TO_REPSILON
+        )
         return
 
     def read_output(self):
@@ -294,15 +304,16 @@ class GenericOutputReader:
         n_operations = metrics["n_operations"]
         logger.info(
             f"  {self.type} χ^(2) point-group discrepancy before symmetrisation: "
-            f"max={max_abs:.6g} pm/V, rms={rms_abs:.6g} pm/V, relative={relative_max:.6g}, "
+            f"max={max_abs:.6g} R_epsilon units, rms={rms_abs:.6g} R_epsilon units, "
+            f"relative={relative_max:.6g}, "
             f"operations={n_operations}",
         )
         if max_abs > 1.0e-6 and relative_max > 1.0e-3:
             print(
                 f"Warning: {self.type} χ^(2) tensor does not transform according to the "
                 "unit-cell point group. "
-                f"max |χ^(2) - sym(χ^(2))| = {max_abs:.6g} pm/V, "
-                f"rms = {rms_abs:.6g} pm/V, relative max = {relative_max:.6g}; "
+                f"max |χ^(2) - sym(χ^(2))| = {max_abs:.6g} R_epsilon units, "
+                f"rms = {rms_abs:.6g} R_epsilon units, relative max = {relative_max:.6g}; "
                 f"using the point-group symmetrised tensor ({n_operations} operations).",
             )
         return
@@ -605,7 +616,8 @@ class GenericOutputReader:
         Returns
         -------
         ndarray or None
-            χ^(2) tensor, shape (3, 3, 3), units pm/V; None if not available.
+            χ^(2) tensor, shape (3, 3, 3), in Angstrom-based units consistent
+            with reader ``R_epsilon`` Raman tensors; None if not available.
 
         """
         return self.nonlinear_optical_susceptibility

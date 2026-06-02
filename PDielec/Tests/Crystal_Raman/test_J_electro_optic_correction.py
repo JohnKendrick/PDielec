@@ -4,7 +4,7 @@ Covers:
   J1  GenericOutputReader attribute and accessor.
   J2  Abinit reader parses χ^(2) = 2d from raman.abo correctly.
   J3  CASTEP reader parses χ^(2) = 2d from raman.castep correctly.
-  J4  Backward compatibility — chi2_pm_per_v=None leaves tensors unchanged.
+  J4  Backward compatibility — chi2_repsilon=None leaves tensors unchanged.
   J5  Zero χ^(2) tensor → EO correction is exactly zero.
   J6  Non-zero χ^(2) → at least one polar mode Raman tensor changes.
   J7  EO correction scales linearly with χ^(2) magnitude.
@@ -21,6 +21,7 @@ import numpy as np
 import pytest
 
 from PDielec.Constants import amu, angs2bohr
+from PDielec.GenericOutputReader import CHI2_PM_PER_V_TO_REPSILON
 from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standalone
 
 # ---------------------------------------------------------------------------
@@ -30,10 +31,12 @@ from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standal
 _REPO = os.path.join(os.path.dirname(__file__), "..", "..", "..")
 _ABINIT_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "AbInit", "raman.abo")
 _CASTEP_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Castep", "raman.castep")
+_CRYSTAL23_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Crystal23", "opt_raman.out")
 _QE_TENSORS_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "QE", "tensors.xml")
 
 _have_abinit = os.path.exists(_ABINIT_FILE)
 _have_castep = os.path.exists(_CASTEP_FILE)
+_have_crystal23 = os.path.exists(_CRYSTAL23_FILE)
 _have_qe_tensors = os.path.exists(_QE_TENSORS_FILE)
 
 # ---------------------------------------------------------------------------
@@ -133,14 +136,14 @@ class TestJ2AbinitParser:
     def test_zz_component(self, chi2):
         # raman.abo raw d[2,2,2] = -33.3688; after χ^(2)=2d and
         # point-group symmetrisation the stored tensor is slightly different.
-        assert chi2[2, 2, 2] == pytest.approx(-75.913192908, abs=1e-6)
+        assert chi2[2, 2, 2] == pytest.approx(-75.913192908 * CHI2_PM_PER_V_TO_REPSILON, abs=1e-8)
 
     def test_last_two_indices_symmetric(self, chi2):
         """Abinit χ^(2) stores d[i,j,k]; last two indices must be symmetric."""
         for i in range(3):
             for j in range(3):
                 for k in range(3):
-                    assert abs(chi2[i, j, k] - chi2[i, k, j]) < 1e-6, \
+                    assert abs(chi2[i, j, k] - chi2[i, k, j]) < 1e-8, \
                         f"Symmetry broken at [{i},{j},{k}] vs [{i},{k},{j}]"
 
     def test_d_to_chi2_factor(self, chi2):
@@ -148,14 +151,14 @@ class TestJ2AbinitParser:
         from PDielec.AbinitOutputReader import AbinitOutputReader
         r = AbinitOutputReader([_ABINIT_FILE])
         r.read_output()
-        d_recovered = chi2 / 2.0
+        d_recovered = chi2 / (2.0 * CHI2_PM_PER_V_TO_REPSILON)
         assert d_recovered[2, 2, 2] == pytest.approx(-37.956596454, abs=1e-6)
 
     def test_zno_6mm_symmetry_after_reader_symmetrisation(self, chi2):
         """ZnO should obey 6mm symmetry even if Abinit's raw d table does not."""
-        assert chi2[0, 0, 2] == pytest.approx(chi2[1, 1, 2], abs=1e-6)
-        assert chi2[0, 1, 2] == pytest.approx(0.0, abs=1e-6)
-        assert chi2[1, 0, 2] == pytest.approx(0.0, abs=1e-6)
+        assert chi2[0, 0, 2] == pytest.approx(chi2[1, 1, 2], abs=1e-8)
+        assert chi2[0, 1, 2] == pytest.approx(0.0, abs=1e-8)
+        assert chi2[1, 0, 2] == pytest.approx(0.0, abs=1e-8)
 
 
 # ---------------------------------------------------------------------------
@@ -166,7 +169,7 @@ class TestJ9QEParser:
     """J9: QE _read_nlo_susceptibility reads chi^2 from electro-optic tensors."""
 
     def test_qe_electro_optic_block(self, tmp_path):
-        """Parse QE electro-optic matrices and convert them to chi^2 in pm/V."""
+        """Parse QE electro-optic matrices and convert them to internal chi^2 units."""
         from PDielec.QEOutputReader import QEOutputReader
 
         output = tmp_path / "qe.raman.log"
@@ -194,14 +197,14 @@ class TestJ9QEParser:
 
         assert chi2 is not None
         assert chi2.shape == (3, 3, 3)
-        factor = 0.5 * 2.7502
+        factor = 0.5 * 2.7502 * CHI2_PM_PER_V_TO_REPSILON
         assert chi2[0, 0, 0] == pytest.approx(1.0 * factor)
         assert chi2[2, 2, 2] == pytest.approx(27.0 * factor)
         assert chi2[1, 2, 1] == pytest.approx(15.0 * factor)
 
     @pytest.mark.skipif(not _have_qe_tensors, reason="QE tensors.xml not present")
     def test_qe_elop_tns_xml_block(self):
-        """Parse QE ELOP_TNS from tensors.xml and convert it to chi^2 in pm/V."""
+        """Parse QE ELOP_TNS from tensors.xml and convert it to internal chi^2 units."""
         from PDielec.QEOutputReader import QEOutputReader
 
         r = QEOutputReader([_QE_TENSORS_FILE])
@@ -210,7 +213,7 @@ class TestJ9QEParser:
 
         assert chi2 is not None
         assert chi2.shape == (3, 3, 3)
-        factor = 0.5 * 2.7502
+        factor = 0.5 * 2.7502 * CHI2_PM_PER_V_TO_REPSILON
         assert chi2[0, 0, 2] == pytest.approx(133.8996252820044 * factor)
         assert chi2[2, 2, 2] == pytest.approx(-125.0252942735832 * factor)
 
@@ -241,7 +244,7 @@ class TestJ9QEParser:
         r = QEOutputReader([_QE_TENSORS_FILE, str(output)])
         r.read_output()
 
-        factor = 0.5 * 2.7502
+        factor = 0.5 * 2.7502 * CHI2_PM_PER_V_TO_REPSILON
         assert r.nonlinear_optical_susceptibility[0, 0, 2] == pytest.approx(133.8996252820044 * factor)
 
 
@@ -267,21 +270,40 @@ class TestJ3CastepParser:
         assert chi2.shape == (3, 3, 3)
 
     def test_zz_component(self, chi2):
-        # raman.castep: d[2,2,2] = -38.3539; χ^(2) = 2d ≈ -76.71
-        assert abs(chi2[2, 2, 2] - (-76.7078)) < 0.01
+        # raman.castep: d[2,2,2] = -38.3539; χ^(2) = 2d ≈ -76.71 pm/V before internal conversion.
+        assert abs(chi2[2, 2, 2] - (-76.7078 * CHI2_PM_PER_V_TO_REPSILON)) < 1e-4
 
     def test_last_two_indices_symmetric(self, chi2):
         """Voigt reconstruction must produce a tensor symmetric in last two indices."""
         for i in range(3):
             for j in range(3):
                 for k in range(3):
-                    assert abs(chi2[i, j, k] - chi2[i, k, j]) < 1e-6, \
+                    assert abs(chi2[i, j, k] - chi2[i, k, j]) < 1e-8, \
                         f"Symmetry broken at [{i},{j},{k}] vs [{i},{k},{j}]"
 
     def test_d_to_chi2_factor(self, chi2):
         """χ^(2) = 2d; row i=0 col 4 is Voigt pair (0,2): d[0,0,2] = 21.655 → chi2 = 43.31."""
         # raman.castep row 0: ... 21.65509 at col 4 → d[0,0,2] = d[0,2,0] = 21.655
-        assert abs(chi2[0, 0, 2] - 43.31) < 0.1
+        assert abs(chi2[0, 0, 2] - 43.31 * CHI2_PM_PER_V_TO_REPSILON) < 1e-3
+
+
+@pytest.mark.skipif(not _have_crystal23, reason="CRYSTAL23 Raman example not present")
+class TestJ3BCrystalParser:
+    """J3B: CRYSTAL CHI2.DAT reads χ^(2) = 2d correctly."""
+
+    def test_crystal_chi2_dat_internal_units(self):
+        """CRYSTAL d(MKS) values are converted from pm/V to internal units."""
+        from PDielec.CrystalOutputReader import CrystalOutputReader
+
+        r = CrystalOutputReader([_CRYSTAL23_FILE])
+        r.read_output()
+        chi2 = r.nonlinear_optical_susceptibility
+
+        assert chi2 is not None
+        assert chi2.shape == (3, 3, 3)
+        assert chi2[0, 0, 2] == pytest.approx(2.0 * 11.691 * CHI2_PM_PER_V_TO_REPSILON)
+        assert chi2[1, 1, 2] == pytest.approx(2.0 * 11.691 * CHI2_PM_PER_V_TO_REPSILON)
+        assert chi2[2, 2, 2] == pytest.approx(2.0 * -33.166 * CHI2_PM_PER_V_TO_REPSILON)
 
 
 # ---------------------------------------------------------------------------
@@ -290,7 +312,7 @@ class TestJ3CastepParser:
 
 @pytest.mark.skipif(not _have_abinit, reason="raman.abo not present")
 class TestJ4BackwardCompat:
-    """J4: chi2_pm_per_v=None must give identical results to the old call."""
+    """J4: chi2_repsilon=None must give identical results to the old call."""
 
     def test_frequencies_unchanged(self):
         r = _load_abinit()
@@ -301,7 +323,7 @@ class TestJ4BackwardCompat:
         freqs_base, tensors_base, sigmas_base = _compute_nac_dynamical_matrix_standalone(
             q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas)
         freqs_none, tensors_none, sigmas_none = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=None)
 
         np.testing.assert_array_equal(freqs_base, freqs_none)
         for R1, R2 in zip(tensors_base, tensors_none):
@@ -316,7 +338,7 @@ class TestJ4BackwardCompat:
         _, _, sigmas_base = _compute_nac_dynamical_matrix_standalone(
             q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas)
         _, _, sigmas_none = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=None)
 
         np.testing.assert_array_equal(sigmas_base, sigmas_none)
 
@@ -341,9 +363,9 @@ class TestJ5ZeroChi2:
         chi2_zero = np.zeros((3, 3, 3))
 
         _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=None)
         _, tensors_z, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2_zero)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=chi2_zero)
 
         for R_no, R_z in zip(tensors_no, tensors_z):
             np.testing.assert_allclose(R_z, R_no, atol=1e-14)
@@ -368,9 +390,9 @@ class TestJ6NonZeroChi2:
         chi2 = r.nonlinear_optical_susceptibility
 
         _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=None)
         _, tensors_eo, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=chi2)
 
         diffs = [np.max(np.abs(R_eo - R_no))
                  for R_eo, R_no in zip(tensors_eo, tensors_no)]
@@ -397,11 +419,11 @@ class TestJ7LinearScaling:
         chi2 = r.nonlinear_optical_susceptibility
 
         _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=None)
         _, tensors_1x, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=chi2)
         _, tensors_2x, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=2.0 * chi2)
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=2.0 * chi2)
 
         for p, (R_no, R_1x, R_2x) in enumerate(zip(tensors_no, tensors_1x, tensors_2x)):
             delta_1x = R_1x - R_no
@@ -429,9 +451,9 @@ class TestJ8ZeroBornCharges:
         q = np.array([0.0, 0.0, 1.0])
 
         _, tensors_no, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc_zero, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=None)
+            q, hessian, bc_zero, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=None)
         _, tensors_eo, _ = _compute_nac_dynamical_matrix_standalone(
-            q, hessian, bc_zero, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_pm_per_v=chi2)
+            q, hessian, bc_zero, eps_inf, vol, masses, U_TO, tensors, sigmas, chi2_repsilon=chi2)
 
         for p, (R_no, R_eo) in enumerate(zip(tensors_no, tensors_eo)):
             np.testing.assert_allclose(R_eo, R_no, atol=1e-14,
@@ -444,6 +466,23 @@ class TestJ8ZeroBornCharges:
 
 class TestJ10ReaderTensorConvention:
     """J10: Reader tensors are physical R_epsilon tensors for EO correction."""
+
+    def test_eo_correction_uses_angstrom_r_epsilon_units(self):
+        """The EO tensor increment must be in the same units as reader R_epsilon tensors."""
+        from PDielec.RamanPolarCalculator import apply_eo_correction
+
+        tensors = [np.zeros((3, 3))]
+        chi2 = np.zeros((3, 3, 3))
+        chi2[0, 0, 2] = 4.0
+        q_hat = np.array([0.0, 0.0, 1.0])
+        Z_mat = np.array([[0.0], [0.0], [2.0]])
+        eigvecs = np.array([[1.0]])
+        eps_inf = np.diag([3.0, 3.0, 5.0])
+
+        corrected = apply_eo_correction(tensors, chi2, q_hat, Z_mat, eigvecs, eps_inf)
+
+        expected = -2.0 * chi2[0, 0, 2] * 2.0 / eps_inf[2, 2]
+        assert corrected[0][0, 0] == pytest.approx(expected)
 
     def test_eo_correction_operates_directly_on_reader_tensors(self):
         from PDielec.RamanPolarCalculator import apply_eo_correction

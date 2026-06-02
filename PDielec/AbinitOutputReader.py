@@ -227,7 +227,8 @@ class AbinitOutputReader(GenericOutputReader):
                 ...
                 3      3      3        -33.368821342
 
-        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+        converted from pm/V to the reader ``R_epsilon`` convention.
 
         Parameters
         ----------
@@ -248,9 +249,9 @@ class AbinitOutputReader(GenericOutputReader):
             parts = self.file_descriptor.readline().split()
             i, j, k = int(parts[0]) - 1, int(parts[1]) - 1, int(parts[2]) - 1
             d[i, j, k] = float(parts[3])
-        # Abinit outputs d = χ^(2)/2; convert to χ^(2)
-        self.nonlinear_optical_susceptibility = 2.0 * d
-        logger.info("  Nonlinear optical susceptibility tensor read from Abinit output (χ^(2) = 2d, pm/V)")
+        # Abinit outputs d = χ^(2)/2 in pm/V; convert to χ^(2), then to R_epsilon units.
+        self._store_nonlinear_optical_susceptibility_pm_per_v(2.0 * d)
+        logger.info("  Nonlinear optical susceptibility tensor read from Abinit output (χ^(2) = 2d, R_epsilon units)")
         return True
 
     def _read_total_energy(self, line):

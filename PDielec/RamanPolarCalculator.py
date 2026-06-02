@@ -321,7 +321,7 @@ def build_eigvecs_from_normal_modes(mass_weighted_normal_modes):
     return U_TO.T   # (3N, n_to_modes) — columns are TO eigenvectors
 
 
-def apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, eps_inf):
+def apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, eps_inf):
     """Apply the electro-optic (EO) q-dependent correction to Raman tensors.
 
     Implements the electro-optic term in ``eq-nonanalytic`` and ``eq-nac_ramantensor``.
@@ -337,8 +337,10 @@ def apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, e
     tensors : list of ndarray, each (3, 3)
         Input physical bulk Raman tensors ``R_epsilon`` (not modified; corrected
         copies are returned).
-    chi2_pm_per_v : ndarray, shape (3, 3, 3)
-        Second-order NLO susceptibility χ^(2) in pm/V.
+    chi2_repsilon : ndarray, shape (3, 3, 3)
+        Second-order NLO susceptibility χ^(2), already converted by the
+        readers to the same Angstrom-based internal convention as
+        ``R_epsilon`` Raman tensors.
     q_hat_crystal : ndarray, shape (3,)
         Unit phonon wavevector in the crystal frame.
     Z_mat : ndarray, shape (3, 3N)
@@ -358,17 +360,16 @@ def apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, e
 
     Notes
     -----
-    The unit conversion is χ^(2) [pm/V] → [Bohr/V_atomic]:
-    ``1 pm = 1e-12 m``, ``1 Bohr ≈ 5.292e-11 m``, so
-    ``pm_to_bohr ≈ 0.01890``.
+    Reader Raman tensors and reader χ^(2) tensors use the same Angstrom-based
+    ``R_epsilon`` convention used by
+    :func:`PDielec.Calculator.raman_intensities`, so no additional unit
+    conversion is applied here.
 
     """
-    from PDielec.Constants import bohr_si
-    pm_to_bohr = 1.0e-12 / bohr_si
-    chi2_au = np.asarray(chi2_pm_per_v, dtype=float) * pm_to_bohr
+    chi2_repsilon = np.asarray(chi2_repsilon, dtype=float)
 
     # f_ij[i,j] = Σ_l χ^(2)_ijl * q̂_l   (3×3 EO tensor contracted with q̂)
-    f_ij = np.einsum("ijl,l->ij", chi2_au, q_hat_crystal)
+    f_ij = np.einsum("ijl,l->ij", chi2_repsilon, q_hat_crystal)
 
     # Dielectric screening factor
     eps_b_q = float(q_hat_crystal @ eps_inf @ q_hat_crystal)

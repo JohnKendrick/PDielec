@@ -1615,7 +1615,7 @@ class SettingsTab(QWidget):
         # EO correction — additionally requires χ^(2).
         chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
         if chi2 is not None and has_nac:
-            data["chi2_pm_per_v"] = chi2
+            data["chi2_repsilon"] = chi2
 
         return data, None
 

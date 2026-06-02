@@ -1432,13 +1432,6 @@ class LayeredRamanCalculator:
             process and broadcast to all workers via ``functools.partial``.
             When ``None`` (default), the calculation runs sequentially.
 
-        Parameters
-        ----------
-        progress_callback : callable, optional
-            Called once per phonon-mode iteration.
-        pool : multiprocessing.Pool or compatible, optional
-            Worker pool for parallel execution.  Incompatible with
-            ``return_contributions=True``.
         return_contributions : bool, optional
             When True, return a fourth element — a list of
             :class:`RamanContribution` objects exposing the per-group complex
@@ -1447,7 +1440,7 @@ class LayeredRamanCalculator:
 
         Returns
         -------
-            active_frequencies : ndarray, shape (M,)
+        active_frequencies : ndarray, shape (M,)
             Frequencies of the active (non-acoustic) spectral contributions in
             cm⁻¹.  In ``modal_pairs`` mode, one original phonon index may
             produce multiple q-resolved entries.

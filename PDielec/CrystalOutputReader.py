@@ -210,8 +210,9 @@ class CrystalOutputReader(GenericOutputReader):
         permutations equivalent).  ``d(MKS)`` is already in pm/V and satisfies
         d = χ^(2)/2.
 
-        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V),
-        consistent with the Abinit and CASTEP readers.
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+        converted from pm/V to the reader ``R_epsilon`` convention, consistent
+        with the Abinit and CASTEP readers.
 
         Parameters
         ----------
@@ -281,9 +282,9 @@ class CrystalOutputReader(GenericOutputReader):
         fd.close()
 
         if found_any:
-            # Store χ^(2) = 2d (pm/V), matching Abinit/CASTEP convention
-            self.nonlinear_optical_susceptibility = 2.0 * d
-            logger.info("  Nonlinear optical susceptibility tensor read from CHI2.DAT (χ^(2) = 2d, pm/V)")
+            # Store χ^(2) = 2d from pm/V, matching the internal reader convention.
+            self._store_nonlinear_optical_susceptibility_pm_per_v(2.0 * d)
+            logger.info("  Nonlinear optical susceptibility tensor read from CHI2.DAT (χ^(2) = 2d, R_epsilon units)")
         else:
             logger.warning(f"  No χ^(2) data found in {filename}")
         return

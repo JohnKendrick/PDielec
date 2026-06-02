@@ -196,8 +196,9 @@ class QEOutputReader(GenericOutputReader):
         that this Rydberg-a.u. electro-optic tensor should be multiplied by
         1/2 to obtain static chi^2, and by 2.7502 to convert to pm/V.
 
-        The stored attribute ``nonlinear_optical_susceptibility`` is chi^2 in
-        pm/V, with layout ``chi2[i, j, k]``.
+        The stored attribute ``nonlinear_optical_susceptibility`` is chi^2
+        converted to the reader ``R_epsilon`` convention, with layout
+        ``chi2[i, j, k]``.
 
         Parameters
         ----------
@@ -233,8 +234,8 @@ class QEOutputReader(GenericOutputReader):
 
         # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
         # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
-        self.nonlinear_optical_susceptibility = 0.5 * 2.7502 * electro_optic
-        logger.info("  Nonlinear optical susceptibility tensor read from QE output (χ^(2) in pm/V)")
+        self._store_nonlinear_optical_susceptibility_pm_per_v(0.5 * 2.7502 * electro_optic)
+        logger.info("  Nonlinear optical susceptibility tensor read from QE output (χ^(2) in R_epsilon units)")
         return True
 
     def _read_celldm1(self, line):
@@ -992,8 +993,8 @@ class QEOutputReader(GenericOutputReader):
         The ``ELOP_TNS`` element stores the same electro-optic tensor printed
         in the ph.x output log, but with the full XML precision.  Values are
         arranged as three consecutive 3x3 matrices for electric fields along
-        x, y, and z.  The stored attribute is chi^2 in pm/V, with layout
-        ``chi2[i, j, k]``.
+        x, y, and z.  The stored attribute is chi^2 converted to the reader
+        ``R_epsilon`` convention, with layout ``chi2[i, j, k]``.
 
         Parameters
         ----------
@@ -1021,9 +1022,9 @@ class QEOutputReader(GenericOutputReader):
 
         # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
         # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
-        self.nonlinear_optical_susceptibility = 0.5 * 2.7502 * electro_optic
+        self._store_nonlinear_optical_susceptibility_pm_per_v(0.5 * 2.7502 * electro_optic)
         self._nlo_susceptibility_from_xml = True
-        logger.info("  Nonlinear optical susceptibility tensor read from QE tensors.xml (χ^(2) in pm/V)")
+        logger.info("  Nonlinear optical susceptibility tensor read from QE tensors.xml (χ^(2) in R_epsilon units)")
         return True
 
     def _effective_charges(self,effective_charges_xml):

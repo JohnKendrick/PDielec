@@ -165,7 +165,7 @@ class TestDegenerateSubspaceInvariance:
     def test_invariant_under_basis_rotation(self, degenerate_pair):
         """Summed intensity must be invariant to in-subspace amplitude rotation.
 
-        Intensities are |amplitude|².  When the pair of eigenvector amplitudes
+        Intensities are ``abs(amplitude)**2``.  When the pair of eigenvector amplitudes
         is rotated within the degenerate subspace, the individual per-mode
         intensities change but their sum is preserved by Parseval's theorem.
         """

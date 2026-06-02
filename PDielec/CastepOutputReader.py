@@ -299,7 +299,8 @@ class CastepOutputReader(GenericOutputReader):
         Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),
         4→(0,2)=(2,0), 5→(0,1)=(1,0).
 
-        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+        converted from pm/V to the reader ``R_epsilon`` convention.
 
         Parameters
         ----------
@@ -320,9 +321,9 @@ class CastepOutputReader(GenericOutputReader):
             for col, (j, k) in enumerate(voigt_pairs):
                 d[i, j, k] = vals[col]
                 d[i, k, j] = vals[col]   # symmetrize last two indices
-        # CASTEP outputs d = χ^(2)/2; convert to χ^(2)
-        self.nonlinear_optical_susceptibility = 2.0 * d
-        logger.info("  Nonlinear optical susceptibility tensor read from CASTEP output (χ^(2) = 2d, pm/V)")
+        # CASTEP outputs d = χ^(2)/2 in pm/V; convert to χ^(2), then to R_epsilon units.
+        self._store_nonlinear_optical_susceptibility_pm_per_v(2.0 * d)
+        logger.info("  Nonlinear optical susceptibility tensor read from CASTEP output (χ^(2) = 2d, R_epsilon units)")
         return True
 
     def _read_kpoint_grid(self, line):
