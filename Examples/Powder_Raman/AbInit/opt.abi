@@ -25,10 +25,9 @@ xred
   0.6666666667  0.3333333333  0.8810934718
 
 # --------------------------------------------------
-# XC / PAW
+# XC 
 # --------------------------------------------------
 ixc      7
-pawxcdev 0
 
 # --------------------------------------------------
 # Basic electronic settings
@@ -37,17 +36,16 @@ nstep    100
 occopt   1
 nband    30
 
-# These are only starter values. Increase if your PAW datasets need it.
-ecut      30
-ecutsm     0
-pawecutdg 60
+# These are only starter values. 
+ecut      40
+ecutsm    0.1
 
 ngkpt    6 6 4
 nshiftk  1
-shiftk   0.0 0.0 0.5
+shiftk   0.0 0.0 0.0  # Need the gamma point
 
 pp_dirpath "."
-pseudos "Zn.LDA_PW-JTH.xml, O.LDA_PW-JTH.xml"
+pseudos "Zn.psp8, O.psp8"
 
 # ==================================================
 # DATASET 1 : relax atoms only
