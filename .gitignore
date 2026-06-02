@@ -74,16 +74,27 @@ jquery-3.5.1.js
 *.nma
 *.qti~
 ~$*
+.claude
 Sphinx/autoapi
-CLAUDE.md
-GEMINI.md
-AGENTS.md
 graphify-out
 Raman-Theory.pdf
 crystal_raman_changes.md
 crystal_raman_notes.md
 layered_raman_pygtm_implementation_plan_marktext.md
+abinit_raman_tensor_unit_audit.md
+AGENTS.md
+CLAUDE.md
+crystal_raman_coherence_gui_plan.md
+crystal_raman_notes.md
+GEMINI.md
+LICENSE.md
+package_installation.md
+raman_audit_traceability_report.md
+raman_implementation_conventions.md
 raman_notes.md
+Raman-Units.md
+README.md
+tensor_unit_summary.md
 
 # Andrew Burnett
 Data/
