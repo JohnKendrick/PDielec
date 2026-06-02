@@ -218,8 +218,8 @@ Module Contents
 
       Called from __init__ only when spectroscopy == 'Crystal Raman'.
       Creates widgets for laser frequency, temperature, GL quadrature points,
-      incident/detected polarisation, collection geometry, coherent summation,
-      approximate-E_S flag, and phonon boundary correction (Phase 3a).
+      incident/detected polarisation, collection geometry, depth coherence,
+      layer combination, approximate-E_S flag, and phonon boundary correction.
 
       Parameters
       ----------
@@ -280,7 +280,7 @@ Module Contents
 
 
 
-   .. py:method:: _compute_nac_dynamical_matrix(scaled_tensors, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf)
+   .. py:method:: _compute_nac_dynamical_matrix(raman_tensors_physical, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf)
 
       Build NAC dynamical matrix for a given phonon wavevector direction and diagonalize.
 
@@ -289,8 +289,8 @@ Module Contents
 
       Parameters
       ----------
-      scaled_tensors : list of ndarray, each (3, 3)
-          Bulk TO Raman tensors in the crystal frame, scaled by sqrt(V_cell).
+      raman_tensors_physical : list of ndarray, each (3, 3)
+          Physical bulk TO Raman tensors ``R_epsilon`` in the crystal frame.
       frequencies_cm1 : array_like, shape (n_to_modes,)
           Bulk TO phonon frequencies in cm⁻¹.
       sigmas_cm1 : array_like, shape (n_to_modes,)
@@ -308,7 +308,7 @@ Module Contents
 
 
 
-   .. py:method:: _compute_nac_modes_dominant(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1, system, layer_idx, incident_angle_rad, scatter_angle_rad, collection_side, laser_freq_cm1, incident_pol)
+   .. py:method:: _compute_nac_modes_dominant(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, system, layer_idx, incident_angle_rad, scatter_angle_rad, collection_side, laser_freq_cm1, incident_pol)
 
       Level 2: Compute NAC-corrected phonon modes using the dominant Berreman eigenmode.
 
@@ -324,8 +324,8 @@ Module Contents
       ----------
       G_total : ndarray, shape (3, 3)
           Crystal-to-lab rotation matrix.
-      scaled_tensors : list of ndarray, each (3, 3)
-          Bulk TO Raman tensors scaled by sqrt(V_cell).
+      raman_tensors_physical : list of ndarray, each (3, 3)
+          Physical bulk TO Raman tensors ``R_epsilon``.
       frequencies_cm1 : array_like
           Bulk TO phonon frequencies in cm⁻¹.
       sigmas_cm1 : array_like
@@ -354,7 +354,7 @@ Module Contents
 
 
 
-   .. py:method:: _compute_nac_modes_geometry(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1, incident_angle_rad, scatter_angle_rad, collection_side)
+   .. py:method:: _compute_nac_modes_geometry(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, incident_angle_rad, scatter_angle_rad, collection_side)
 
       Level 1: Compute NAC-corrected phonon modes using q from macroscopic scattering geometry.
 
@@ -367,8 +367,8 @@ Module Contents
       ----------
       G_total : ndarray, shape (3, 3)
           Crystal-to-lab rotation matrix (G_psi @ layer.euler).
-      scaled_tensors : list of ndarray, each (3, 3)
-          Bulk TO Raman tensors scaled by sqrt(V_cell).
+      raman_tensors_physical : list of ndarray, each (3, 3)
+          Physical bulk TO Raman tensors ``R_epsilon``.
       frequencies_cm1 : array_like
           Bulk TO phonon frequencies in cm⁻¹.
       sigmas_cm1 : array_like
@@ -393,7 +393,7 @@ Module Contents
 
 
 
-   .. py:method:: _make_nac_function(G_total, scaled_tensors, frequencies_cm1, sigmas_cm1)
+   .. py:method:: _make_nac_function(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1)
 
       Build a closure for on-demand NAC computation for any phonon wavevector direction.
 
@@ -406,8 +406,8 @@ Module Contents
       ----------
       G_total : ndarray, shape (3, 3)
           Crystal-to-lab rotation matrix (G_psi @ layer.euler).
-      scaled_tensors : list of ndarray, each (3, 3)
-          Bulk TO Raman tensors scaled by sqrt(V_cell), in crystal frame.
+      raman_tensors_physical : list of ndarray, each (3, 3)
+          Physical bulk TO Raman tensors ``R_epsilon`` in the crystal frame.
       frequencies_cm1 : ndarray
           Bulk TO phonon frequencies in cm⁻¹.
       sigmas_cm1 : ndarray
@@ -914,12 +914,6 @@ Module Contents
 
 
 
-   .. py:method:: on_coherent_cb_toggled(checked)
-
-      Handle a toggle of the coherent layer summation checkbox.
-
-
-
    .. py:method:: on_collection_angle_sb_changed(value)
 
       Handle a change in the collection angle spin box.
@@ -934,7 +928,7 @@ Module Contents
 
    .. py:method:: on_depth_integration_cb_activated(index)
 
-      Handle a change in the Raman depth integration mode.
+      Handle a change in the depth coherence combo box.
 
 
 
@@ -1067,6 +1061,18 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: on_layer_combination_cb_activated(index)
+
+      Handle a change in the layer combination combo box.
+
+
+
+   .. py:method:: on_modal_pair_combination_cb_activated(index)
+
+      Handle a change in the modal-pair combination combo box.
 
 
 
@@ -1610,7 +1616,7 @@ Module Contents
 
 
 
-.. py:function:: _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, scaled_tensors, to_sigmas, chi2_pm_per_v=None)
+.. py:function:: _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, raman_tensors, to_sigmas, chi2_pm_per_v=None)
 
    Module-level NAC computation for a given phonon wavevector direction.
 
@@ -1619,8 +1625,8 @@ Module Contents
 
        D_NAC(q̂) = D_TO + (4π/V) Z^mw,T (q̂ q̂^T / q̂^T ε_∞ q̂) Z^mw
 
-   Optionally applies the electro-optic (EO) correction to each Raman tensor
-   (Eq. 21 of Raman-Theory.pdf) when the second-order NLO susceptibility χ^(2)
+   Optionally applies the electro-optic (EO) correction from ``eq-nonanalytic``
+   and ``eq-nac_ramantensor`` when the second-order NLO susceptibility χ^(2)
    is supplied.
 
    This function is factored out of ``CrystalScenarioTab._compute_nac_dynamical_matrix``
@@ -1643,8 +1649,8 @@ Module Contents
    U_TO : ndarray, shape (n_to_modes, 3N)
        Mass-weighted TO eigenvectors (rows), pre-computed from
        ``reader.mass_weighted_normal_modes``.
-   scaled_tensors : list of ndarray, each (3, 3)
-       Bulk TO Raman tensors scaled by sqrt(V_cell).
+   raman_tensors : list of ndarray, each (3, 3)
+       Physical bulk TO Raman tensors ``R_epsilon``.
    to_sigmas : ndarray, shape (n_to_modes,)
        Bulk TO linewidths in cm⁻¹.
    chi2_pm_per_v : ndarray, shape (3, 3, 3) or None

@@ -17,6 +17,14 @@ Classes
    PDielec.GUI.AzimuthalSweepWindow.AzimuthalSweepWindow
 
 
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.GUI.AzimuthalSweepWindow.group_degenerate_modes
+
+
 Module Contents
 ---------------
 
@@ -50,9 +58,34 @@ Module Contents
 
 
 
+   .. py:method:: _get_effective_modes()
+
+      Return (frequencies, intensities_2d, labels) with optional grouping.
+
+      Returns
+      -------
+      freqs : ndarray, shape (G,)
+      ints : ndarray, shape (N, G)
+      labels : list of str, length G
+
+
+
+
    .. py:method:: _on_controls_changed()
 
-      React to either combo-box changing.
+      React to plot-type or mode combo-box changing.
+
+
+
+   .. py:method:: _on_degen_changed()
+
+      React to degenerate-mode display combo changing.
+
+
+
+   .. py:method:: _on_tol_changed()
+
+      React to tolerance spinbox changing.
 
 
 
@@ -72,7 +105,7 @@ Module Contents
 
 
 
-   .. py:method:: _plot_line(psi, mode_freqs, mode_ints, mode_idx)
+   .. py:method:: _plot_line(psi, mode_freqs, mode_ints, labels, mode_idx)
 
       Draw a line plot of Raman mode intensity vs azimuthal angle.
 
@@ -84,13 +117,15 @@ Module Contents
           Mode frequencies in cm⁻¹, shape (M,).
       mode_ints : ndarray
           Per-mode intensities, shape (N, M).
+      labels : list of str
+          Display label for each mode/group, length M.
       mode_idx : int
           Index of selected mode, or -1 to plot all modes.
 
 
 
 
-   .. py:method:: _plot_polar(psi, mode_freqs, mode_ints, mode_idx)
+   .. py:method:: _plot_polar(psi, mode_freqs, mode_ints, labels, mode_idx)
 
       Draw a polar plot of Raman intensity vs azimuthal angle.
 
@@ -102,6 +137,8 @@ Module Contents
           Mode frequencies in cm⁻¹, shape (M,).
       mode_ints : ndarray
           Per-mode intensities, shape (N, M).
+      labels : list of str
+          Display label for each mode/group, length M.
       mode_idx : int
           Index of selected mode, or -1 for the integrated sum over all modes.
 
@@ -124,10 +161,19 @@ Module Contents
 
 
 
+   .. py:method:: _rebuild_mode_combo()
+
+      Repopulate the mode combo to match the current grouping.
+
+
+
    .. py:method:: _update_plot()
 
       Clear the figure and redraw according to the current control state.
 
+
+
+   .. py:attribute:: _degen_cb
 
 
    .. py:attribute:: _mode_cb
@@ -148,6 +194,12 @@ Module Contents
    .. py:attribute:: _spectra
 
 
+   .. py:attribute:: _tol_label
+
+
+   .. py:attribute:: _tol_sb
+
+
    .. py:attribute:: _vs
 
 
@@ -158,5 +210,30 @@ Module Contents
 
 
    .. py:attribute:: toolbar
+
+
+.. py:function:: group_degenerate_modes(frequencies, intensities_2d, tol_cm1=2.0)
+
+   Group near-degenerate modes by summing their intensities.
+
+   Parameters
+   ----------
+   frequencies : ndarray, shape (M,)
+       Mode frequencies in cm⁻¹.
+   intensities_2d : ndarray, shape (N, M)
+       Per-mode intensities at each azimuthal angle.
+   tol_cm1 : float, optional
+       Frequency tolerance in cm⁻¹.  Modes whose frequencies span no more
+       than this range are merged into a single group.  Default is 2.0.
+
+   Returns
+   -------
+   grouped_freqs : ndarray, shape (G,)
+       Mean frequency for each group.
+   grouped_ints : ndarray, shape (N, G)
+       Summed intensities for each group.
+   group_labels : list of str
+       Human-readable label for each group.
+
 
 

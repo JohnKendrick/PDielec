@@ -119,6 +119,39 @@ Module Contents
 
 
 
+   .. py:method:: _read_chi2_dat(filename)
+
+      Read the second-order nonlinear optical susceptibility χ^(2) from CHI2.DAT.
+
+      Crystal23's CPHF chi(2) calculation writes the 10 independent components of
+      the d-tensor (d = χ^(2)/2) as three-character Cartesian labels (e.g. ``XXZ``)
+      together with BETA (a.u.), CHI(2) (a.u.), d(MKS) (pm/V) and d(CGS) columns::
+
+          COMPONENT      BETA                        CHI(2)       d(MKS)       d(cgs)
+          *****...
+              XXZ    6.1371E+02  (  6.1372E+02)   1.2024E+01   1.1691E+01   2.7892E-01
+              ...
+          *****...
+
+      The 10 independent components assume full Kleinman symmetry (all index
+      permutations equivalent).  ``d(MKS)`` is already in pm/V and satisfies
+      d = χ^(2)/2.
+
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V),
+      consistent with the Abinit and CASTEP readers.
+
+      Parameters
+      ----------
+      filename : str
+          Path to the CHI2.DAT file.
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: _read_eigenvectors(line)
 
       Read eigenvectors from appropriate file.
@@ -487,19 +520,22 @@ Module Contents
 
           ∂α_xx/∂u   ∂α_xy/∂u   ∂α_xz/∂u   ∂α_yy/∂u   ∂α_yz/∂u   ∂α_zz/∂u
 
-      The mode Raman tensors stored in ``self.raman_tensors`` are computed by
-      projecting onto the (unit-normalised) mass-weighted normal modes and
-      converting to the CASTEP convention of ``(Å/amu)^{0.5}``::
+      The raw projected tensors are polarizability-volume derivatives
+      ``R_alpha = dα_vol/dQ``.  PDielec stores the AbInit-style bulk Raman
+      convention ``R_epsilon = sqrt(V) dε/dQ``.  Since
+      ``α_vol = V(ε−I)/(4π)``, the final conversion is::
 
-          raman_tensors[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
-                                   / (angs2bohr² × √V)
+          R_epsilon = (4π / sqrt(Vcell)) R_alpha
+
+      The projection is::
+
+          R_alpha[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
+                             / angs2bohr²
 
       where ``mwm[n,k,β]`` is the mass-weighted eigenvector component for mode *n*,
-      atom *k*, Cartesian direction *β*, ``M_k`` is the atomic mass in amu, and
-      ``V`` is the unit-cell volume in Å³.  The conversion factor
-      ``1 / (angs2bohr² × √V)`` maps Crystal's Bohr² amu⁻¹/² to the CASTEP/Abinit
-      convention of ``(Å/amu)^{0.5}`` (i.e. ``∂χ/∂Q``, susceptibility per
-      mass-weighted normal-mode coordinate).
+      atom *k*, Cartesian direction *β*, and ``M_k`` is the atomic mass in amu.
+      The ``1 / angs2bohr²`` factor maps Crystal's Bohr² amu⁻¹/² to
+      Å² amu⁻¹/² before the polarizability-to-``R_epsilon`` conversion.
 
       Parameters
       ----------

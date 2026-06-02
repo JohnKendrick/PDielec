@@ -486,7 +486,7 @@ Module Contents
       line : str
           The trigger line, expected format: ``raman_tensors N [units]``
           where *N* is the total number of modes and the optional *units*
-          keyword is either ``castep`` (default) or ``skelton``.
+          keyword is ``castep`` (default), ``epsilon``, or ``skelton``.
 
       Returns
       -------
@@ -509,14 +509,16 @@ Module Contents
       header line:
 
       ``castep`` (default)
-          Elements are already in PDielec internal units
-          ``(Å / amu)^{0.5}``  — the CASTEP convention
-          ``T = ∂α_vol/∂Q / √V``.
+          Elements are CASTEP-style polarizability-volume tensors divided by
+          ``sqrt(Vcell)`` and are multiplied by ``4π`` on read, matching
+          :class:`PDielec.CastepOutputReader.CastepOutputReader`.
+      ``epsilon``
+          Elements are already in PDielec's ``R_epsilon = sqrt(V)dε/dQ``
+          convention, with units ``(Å/amu)^{0.5}``, and are stored directly.
       ``skelton``
-          Elements are in Skelton/Phonopy units
-          ``Å²·amu^{-0.5}`` — the convention ``R = ∂α_vol/∂Q``.
-          Each element is divided by ``√V_cell`` on read, so ``volume``
-          must already be set before this section is parsed.
+          Elements are Skelton-style polarizability-volume derivatives
+          ``R_alpha = dα_vol/dQ`` in ``Å²·amu^{-0.5}``.  They are converted
+          to ``R_epsilon`` by multiplying by ``4π/sqrt(Vcell)``.
 
       Frequencies are taken from a preceding ``frequencies`` block; this
       section contains only the tensor data.

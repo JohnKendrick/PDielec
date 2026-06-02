@@ -778,6 +778,26 @@ Module Contents
    .. py:attribute:: gamma
 
 
+   .. py:attribute:: inCoherentAveragePhase
+      :value: False
+
+
+
+   .. py:attribute:: inCoherentIntensity
+      :value: False
+
+
+
+   .. py:attribute:: inCoherentPhase
+      :value: False
+
+
+
+   .. py:attribute:: inCoherentThick
+      :value: False
+
+
+
    .. py:attribute:: jk_shift
 
 

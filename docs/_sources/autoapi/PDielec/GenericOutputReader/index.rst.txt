@@ -285,6 +285,12 @@ Module Contents
 
 
 
+   .. py:method:: _report_rank3_symmetry_discrepancy(metrics)
+
+      Report large point-group violations in a parsed Cartesian rank-3 tensor.
+
+
+
    .. py:method:: _symmetric_orthogonalisation(A)
 
       Private routine to perform symmetric orthogonalization.
@@ -298,6 +304,18 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: _symmetrise_cartesian_rank3_tensor(tensor)
+
+      Return a Cartesian rank-3 polar tensor averaged over the current cell point group.
+
+
+
+   .. py:method:: _symmetrise_nonlinear_optical_susceptibility()
+
+      Symmetrise the parsed Cartesian χ^(2) tensor using the final unit-cell point group.
 
 
 
@@ -385,9 +403,10 @@ Module Contents
 
 
 
+
    .. py:method:: get_raman_tensors()
 
-      Return the Raman susceptibility tensors.
+      Return the physical bulk Raman tensors ``R_epsilon``.
 
       Parameters
       ----------
@@ -396,8 +415,11 @@ Module Contents
       Returns
       -------
       list or None
-          A list of 3×3 Raman susceptibility tensors, one per normal mode, or
-          ``None`` if the reader does not provide Raman data.
+          A list of 3×3 Raman tensors, one per normal mode, in the
+          ``R_epsilon = sqrt(Vcell) dε/dQ`` convention of
+          ``Raman-Theory.tex``.  This is not the polarizability-volume
+          convention ``d[V(ε-I)/(4π)]/dQ``.  Returns ``None`` if the reader
+          does not provide Raman data.
 
 
 

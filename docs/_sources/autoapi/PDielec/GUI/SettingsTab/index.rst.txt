@@ -62,6 +62,24 @@ Module Contents
 
 
 
+   .. py:method:: copy_selection_to_clipboard()
+
+      Copy selected cells as tab-separated text.
+
+
+
+   .. py:method:: keyPressEvent(event)
+
+      Copy and paste rectangular table selections with the system clipboard.
+
+
+
+   .. py:method:: paste_clipboard_from_selection()
+
+      Paste tab-separated text into editable cells starting at the selection.
+
+
+
    .. py:method:: sizeHint()
 
       Calculate the suggested dimensions for the widget based on its content.
@@ -183,6 +201,35 @@ Module Contents
    .. py:method:: _collect_raman_polar_data()
 
       Collect Raman tensor and SettingsTab mode data for the polar plot window.
+
+
+
+   .. py:method:: _raman_activity_display_factor()
+
+      Return the factor converting R_epsilon activities to display units.
+
+
+
+   .. py:method:: _raman_activity_display_metadata()
+
+      Return display metadata for Raman activities.
+
+
+
+   .. py:method:: _refresh_lo_columns()
+
+      Recompute and display LO frequencies, LO IR intensities, and LO/EO Raman strengths.
+
+      Called whenever the NAC checkbox, q̂ spinboxes, or EO checkbox change, and
+      at the end of :meth:`create_intensity_table`.  Acts when the modes table has
+      6 columns (IR) or 9 columns (Raman).
+
+      Four cases are handled:
+
+      * NAC off, EO off  → TO frequencies (col 2 = "—"), TO IR intensities, TO Raman strengths.
+      * NAC off, EO on   → TO frequencies, TO IR intensities, EO-corrected Raman strengths.
+      * NAC on,  EO off  → LO frequencies, LO IR intensities, LO Raman strengths.
+      * NAC on,  EO on   → LO frequencies, LO IR intensities, EO-corrected LO Raman strengths.
 
 
 
@@ -474,6 +521,12 @@ Module Contents
 
 
 
+   .. py:method:: on_raman_activity_units_cb_activated(index)
+
+      Handle changes to the Raman activity display units combo box.
+
+
+
    .. py:method:: on_raman_polar_button_clicked()
 
       Open the tensor-level Raman polar plot simulator.
@@ -694,7 +747,7 @@ Module Contents
 
    .. py:method:: update_raman_polar_button()
 
-      Show the Raman polar plot button only for Raman spectroscopy.
+      Show the Raman polar plot button for Raman spectroscopy; NAC options are always shown.
 
 
 
@@ -721,6 +774,23 @@ Module Contents
    .. py:attribute:: CrystalPermittivityObject
       :value: None
 
+
+
+   .. py:attribute:: _lo_eo_cb
+
+
+   .. py:attribute:: _lo_q_label
+
+
+   .. py:attribute:: _lo_q_spins
+      :value: []
+
+
+
+   .. py:attribute:: _lo_q_widget
+
+
+   .. py:attribute:: _nac_apply_cb
 
 
    .. py:attribute:: born_cb
@@ -793,6 +863,17 @@ Module Contents
 
 
    .. py:attribute:: output_tw
+
+
+   .. py:attribute:: raman_activity_unit_options
+      :value: [('polarizability', 'Polarizability volume (Å⁴/amu)'), ('epsilon', 'R_epsilon (Å/amu)')]
+
+
+
+   .. py:attribute:: raman_activity_units_cb
+
+
+   .. py:attribute:: raman_activity_units_label
 
 
    .. py:attribute:: raman_intensities

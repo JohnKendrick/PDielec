@@ -156,18 +156,45 @@ phase interference from internal reflections, averages over phase, or treats a
 thick layer approximately.  It therefore changes the optical fields
 :math:`\mathbf{E}_L` and :math:`\mathbf{E}_S` used in the Raman overlap.
 
-The *Coherent layer summation* option controls only how Raman amplitudes from
-different Raman-active layers are combined after those optical fields have been
-calculated.  Leave it unchecked when separate active layers should contribute
-independent intensities, and enable it only when Raman emission from those layers
-is expected to retain a fixed phase relationship and interfere.
+The *Layer combination* option controls only how Raman amplitudes from different
+Raman-active layers are combined after those optical fields have been calculated.
+Use *Incoherent intensities* when separate active layers should contribute
+independent intensities, and use *Coherent amplitudes* only when Raman emission
+from those layers is expected to retain a fixed phase relationship and interfere.
 
-The *Raman depth integration* option is a third, more local coherence choice.  It
-controls how Raman sources are combined through the thickness of each individual
+The *Depth coherence* option is a third, more local coherence choice.  It controls
+how Raman sources are combined through the thickness of each individual
 Raman-active layer.  *Coherent amplitude* integrates the complex source amplitude
-before squaring, which is appropriate for thin coherent films.  *Incoherent
-intensity* integrates the local intensity, which is more appropriate for thick or
-bulk samples where long-range Raman phase coherence is not physical.
+before squaring, which is appropriate for thin coherent films:
+
+.. math::
+   :label: eq-crystal-raman-depth-coherent
+
+   I_{\ell m} \propto
+   \left|
+   \int_{\ell}
+   \mathbf{E}_S(z,\nu_S)^T
+   \tensorbf{R}^{(m)}_{\ell,lab}
+   \mathbf{E}_L(z,\nu_L)\,dz
+   \right|^2 .
+
+*Incoherent intensity* integrates the local intensity:
+
+.. math::
+   :label: eq-crystal-raman-depth-incoherent
+
+   I_{\ell m} \propto
+   \int_{\ell}
+   \left|
+   \mathbf{E}_S(z,\nu_S)^T
+   \tensorbf{R}^{(m)}_{\ell,lab}
+   \mathbf{E}_L(z,\nu_L)
+   \right|^2\,dz ,
+
+which is more appropriate for thick or bulk samples where long-range Raman phase
+coherence is not physical.  When *Incoherent intensity* is selected, PDielec also
+forces separate Raman-active layers to be combined as incoherent intensities,
+because there is then no well-defined layer amplitude to add coherently.
 
 The mode intensity is then multiplied by the Stokes thermal factor,
 
@@ -304,22 +331,59 @@ alternatives for solving the optical propagation problem.
    :math:`\hat{\mathbf{q}}_{ph}` is used in the same NAC dynamical-matrix correction
    as above.
 
-**All modes — per Berreman mode-pair NAC** (GUI label: *All modes* or *All modes (EO)*)
-   This level evaluates the NAC correction separately for every combination of incident
-   Berreman mode :math:`i_L` and scattered Berreman mode :math:`j_S`.  For each pair a
+**All modes — per Berreman q-channel-pair NAC** (GUI label: *All modes* or *All modes (EO)*)
+   This level decomposes the incident and reciprocal scattered fields into Berreman
+   propagation channels in each Raman-active layer.  Numerically distinct Berreman
+   eigenvectors that have the same propagation :math:`q_z` within tolerance are first
+   summed coherently into a single q-channel.  This is important at normal incidence
+   and in other degenerate or nearly-degenerate cases, where the individual Berreman
+   eigenvectors are not unique but their summed field in a propagation subspace is
+   unique.
+
+   The NAC correction is then evaluated separately for every combination of incident
+   q-channel :math:`i_L` and scattered q-channel :math:`j_S`.  For each pair a
    dedicated phonon wavevector :math:`\hat{\mathbf{q}}^{ij}_{ph}` is formed from the
-   corresponding :math:`k_z` eigenvalues, the NAC dynamical matrix is solved, and the
-   resulting Raman amplitude :math:`A^{ij}_m` is computed.  The total intensity for
-   mode :math:`m` is obtained by summing the squared amplitudes incoherently over all
-   mode pairs,
+   corresponding reduced in-plane wavevectors and :math:`q_z` values,
+
+   .. math::
+      :label: eq-crystal-raman-modal-pair-q
+
+      \mathbf{q}^{ij}_{ph} \propto
+      \begin{pmatrix}
+      \zeta_L-\zeta_S \\
+      0 \\
+      q^i_{z,L}-q^j_{z,S}
+      \end{pmatrix}.
+
+   If :math:`|\mathbf{q}^{ij}_{ph}|` is negligible, that pair uses the uncorrected
+   TO phonons.  Otherwise the NAC dynamical matrix is solved for
+   :math:`\hat{\mathbf{q}}^{ij}_{ph}`, giving a q-resolved phonon frequency and Raman
+   tensor for the pair.  Since different q-channel pairs can give different corrected
+   frequencies for the same original TO mode, one input mode can produce more than one
+   spectral line.
+
+   The default modal-pair combination policy is *Group q channels*.  Amplitudes whose
+   phonon momentum and detected polarisation are the same are added coherently before
+   squaring; different phonon-q final states are summed as intensities,
 
    .. math::
       :label: eq-crystal-raman-modal-pairs
 
-      I_m \propto \sum_{i_L,\, j_S} \left|A^{ij}_m\right|^2
+      I_m \propto
+      \sum_g
+      \left|
+      \sum_{(i_L,j_S)\in g} A^{ij}_m
+      \right|^2 ,
+
+   where :math:`g` labels a common phonon-q and detector-channel group.  This is the
+   physically recommended setting and is the one used for normal calculations.  Two
+   diagnostic alternatives are also available in the GUI: *Incoherent pairs*, which
+   squares each q-channel-pair amplitude independently, and *Coherent all pairs*, which
+   sums all modal-pair amplitudes before squaring and therefore mixes distinct
+   phonon-momentum final states.
 
    This is the most complete treatment available and reduces to the dominant-mode
-   result when only one forward-propagating mode is significant in each geometry.
+   result when only one q-channel is significant in each geometry.
 
 For an infrared-inactive mode :math:`\tensorbf{Z}^{mw}` gives no macroscopic restoring-force
 correction, so all four levels reduce to the same transverse-optic frequency.  For polar

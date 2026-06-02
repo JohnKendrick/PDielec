@@ -36,15 +36,43 @@ Module Contents
    Non-modal Raman polar plot simulator window.
 
 
-   .. py:method:: _add_vector_controls(layout, values)
+   .. py:method:: _add_vector_controls(grid, row, values, prefix_label=None, tooltip=None)
 
-      Add x/y/z spin boxes to a layout.
+      Add x/y/z spin boxes into one row of a shared QGridLayout.
+
+      Placing all three direction rows in the same grid ensures the x/y/z
+      spin-box columns are aligned across rows.
+
+      Parameters
+      ----------
+      grid : QGridLayout
+          Shared grid for all vector rows.
+      row : int
+          Grid row index.
+      values : sequence of float
+          Initial (x, y, z) values.
+      prefix_label : str, optional
+          Text for the label placed in column 0.
+      tooltip : str, optional
+          Tooltip applied to every widget in the row.
+
+      Returns
+      -------
+      tuple[list[QDoubleSpinBox], list[QWidget]]
+          The three spin boxes and all widgets in the row (prefix label first
+          if present, then alternating axis-label / spin-box for x, y, z).
 
 
 
    .. py:method:: _clear_modes()
 
       Clear every selected mode.
+
+
+
+   .. py:method:: _display_activity(activity)
+
+      Convert an R_epsilon activity to the selected display units.
 
 
 
@@ -72,9 +100,28 @@ Module Contents
 
 
 
-   .. py:method:: _show_acknowledgement()
+   .. py:method:: _show_description()
 
-      Show a compact citation acknowledgement.
+      Show a description of the coordinate system and plot geometries.
+
+
+
+   .. py:method:: _sync_q_to_rz()
+
+      Copy the current Rz vector into the q̂ spinboxes.
+
+
+
+   .. py:method:: _update_lo_table(q_hat=None)
+
+      Refresh the LO freq column in the mode table for the given q̂.
+
+      Parameters
+      ----------
+      q_hat : ndarray, shape (3,) or None
+          Normalised phonon wavevector.  When *None* the column is filled
+          with ``"—"``.
+
 
 
 
@@ -90,13 +137,49 @@ Module Contents
 
 
 
-   .. py:attribute:: _ack_btn
+   .. py:method:: set_activity_display(activity_display)
+
+      Update Raman activity display units and refresh table/title text.
+
+
+
+   .. py:attribute:: _U_TO
+
+
+   .. py:attribute:: _Z_mat
+
+
+   .. py:attribute:: _activity_display
 
 
    .. py:attribute:: _angles_rad
 
 
+   .. py:attribute:: _chi2
+
+
    .. py:attribute:: _clear_btn
+
+
+   .. py:attribute:: _desc_btn
+
+
+   .. py:attribute:: _eigvecs
+
+
+   .. py:attribute:: _eo_checkbox
+
+
+   .. py:attribute:: _eps_inf
+
+
+   .. py:attribute:: _has_eo
+
+
+   .. py:attribute:: _has_lo
+
+
+   .. py:attribute:: _hessian
 
 
    .. py:attribute:: _mode_table
@@ -108,23 +191,19 @@ Module Contents
    .. py:attribute:: _orthogonality_label
 
 
-   .. py:attribute:: _pza_spins
-      :value: []
-
-
-
    .. py:attribute:: _raman_tensors
 
 
-   .. py:attribute:: _raw_max_label
-
-
-   .. py:attribute:: _rz_spins
-      :value: []
-
-
-
    .. py:attribute:: _select_all_btn
+
+
+   .. py:attribute:: _sync_q_btn
+
+
+   .. py:attribute:: _volume_angstrom
+
+
+   .. py:attribute:: _volume_au
 
 
    .. py:attribute:: canvas

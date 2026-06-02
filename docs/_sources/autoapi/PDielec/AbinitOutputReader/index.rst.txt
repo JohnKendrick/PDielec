@@ -384,6 +384,7 @@ Module Contents
 
 
 
+
    .. py:method:: _read_ntypat(line)
 
       Read and set the number of species from a given line.
@@ -484,8 +485,8 @@ Module Contents
           ∂χ_αβ / ∂u_κγ  (units: Bohr⁻¹)
 
       This is provided for every atom κ (1…N) and every Cartesian direction γ
-      (x, y, z).  To obtain the per-mode Raman susceptibility tensor that can
-      be compared with CASTEP output, the derivatives are projected onto the
+      (x, y, z).  To obtain the per-mode Raman susceptibility tensor in the
+      shared PDielec convention, the derivatives are projected onto the
       phonon eigenvectors that have already been computed by
       :meth:`_read_dynamical`:
 
@@ -501,8 +502,10 @@ Module Contents
       the atomic mass in amu.  The resulting tensors have units of
       Bohr⁻¹ amu⁻¹/².
 
-      The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
-      NumPy arrays, one per mode in frequency order.  If the phonon
+      The projection is then converted to
+      ``R_epsilon = sqrt(Vcell) dε/dQ`` with ``Vcell`` in Å³ and ``Q`` in
+      Å·amu^0.5.  The tensors are stored in ``self.raman_tensors`` as a list
+      of (3, 3) NumPy arrays, one per mode in frequency order.  If the phonon
       eigenvectors are not yet available the raw derivatives are stored in
       ``self._susceptibility_derivatives`` for later use.
 

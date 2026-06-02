@@ -136,30 +136,28 @@ Module Contents
       Calculate the Raman tensors from the susceptibility tensors.
 
       QE ph.x prints per-atom per-direction 3×3 derivatives of the
-      macroscopic polarisability tensor under the heading
+      macroscopic polarisability-volume tensor under the heading
       ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
       one per atom per Cartesian displacement direction, each labeled
       ``atom # K    pol.  J``.
 
       The "A^2" tensors represent::
 
-          A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+          A2_{κ,γ}[α,β] = ∂α_vol,αβ/∂u_{κγ}
 
-      where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
-      polarisability in Å³ and u_{κγ} is the displacement of atom κ in
-      Cartesian direction γ in Å, giving units of Å².
+      where ``α_vol = V(ε−I)/(4π)``.  The log reader stores this native
+      ``A^2`` derivative and the XML reader stores native ``dε/du_bohr``.
+      This routine converts either source to the PDielec convention
+      ``sqrt(V) dε/du_Å`` before projection.
 
-      To obtain the per-mode Raman tensor in the CASTEP convention
-      [(Å/amu)^{1/2}], the raw derivatives are projected onto the
-      mass-weighted phonon eigenvectors and divided by √V::
+      To obtain the physical per-mode bulk Raman tensor ``R_epsilon``, the
+      raw derivatives are projected onto the mass-weighted phonon eigenvectors::
 
-          R_n[α,β] = Σ_{κ,γ}  A2_{κ,γ}[α,β] × mwm[n,κ,γ] / √m_κ
-          T_n[α,β] = R_n[α,β] / √V
+          R_n[α,β] = Σ_{κ,γ}  sqrt(V) dε_{αβ}/du_{κγ}
+                       × mwm[n,κ,γ] / √m_κ
 
       where mwm = ``mass_weighted_normal_modes``, m_κ is in amu, and
-      V is the unit-cell volume in Å³.  The 1/√V factor (not 4π/√V)
-      is correct because the A^2 tensors already incorporate the
-      V/(4π) prefactor of the macroscopic polarisability α.
+      ``u`` is in Å.  The stored tensor is ``R_epsilon = sqrt(V) dε/dQ``.
 
       The normal modes must be available before this method is called;
       they are read from the ``.dynG`` file by :meth:`_read_dyng_file`.
@@ -795,6 +793,65 @@ Module Contents
 
 
 
+   .. py:method:: _read_nlo_susceptibility(line)
+
+      Read the nonlinear optical susceptibility tensor from QE ph.x output.
+
+      QE prints the electro-optic tensor as three 3x3 Cartesian matrices::
+
+          Electro-optic tensor in cartesian axis:
+
+          ( ... )
+          ( ... )
+          ( ... )
+
+          ( ... )
+          ...
+
+      The three matrices are the derivatives of the dielectric tensor with
+      respect to electric fields along x, y, and z, respectively.  QE states
+      that this Rydberg-a.u. electro-optic tensor should be multiplied by
+      1/2 to obtain static chi^2, and by 2.7502 to convert to pm/V.
+
+      The stored attribute ``nonlinear_optical_susceptibility`` is chi^2 in
+      pm/V, with layout ``chi2[i, j, k]``.
+
+      Parameters
+      ----------
+      line : str
+          The trigger line (already consumed by the manage loop).
+
+      Returns
+      -------
+      bool
+          True on success.
+
+
+
+
+   .. py:method:: _read_nlo_susceptibility_xml(elop_tns_xml)
+
+      Read the nonlinear optical susceptibility tensor from QE ``tensors.xml``.
+
+      The ``ELOP_TNS`` element stores the same electro-optic tensor printed
+      in the ph.x output log, but with the full XML precision.  Values are
+      arranged as three consecutive 3x3 matrices for electric fields along
+      x, y, and z.  The stored attribute is chi^2 in pm/V, with layout
+      ``chi2[i, j, k]``.
+
+      Parameters
+      ----------
+      elop_tns_xml : xml.etree.ElementTree.Element or None
+          The ``ELOP_TNS`` element from the ``EF_TENSORS`` block.
+
+      Returns
+      -------
+      bool
+          True if the tensor was read, False otherwise.
+
+
+
+
    .. py:method:: _read_output_files()
 
       Process the QE files.
@@ -834,18 +891,20 @@ Module Contents
       Read the Raman susceptibility tensors from the QE phonon log file.
 
       QE ph.x prints per-atom per-direction 3×3 derivatives of the
-      macroscopic polarisability tensor under the heading
+      macroscopic polarisability-volume tensor under the heading
       ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
       one per atom per Cartesian displacement direction, each labeled
       ``atom # K    pol.  J``.
 
       The "A^2" tensors represent::
 
-          A2_{κ,γ}[α,β] = ∂α_{αβ}/∂u_{κγ}
+          A2_{κ,γ}[α,β] = ∂α_vol,αβ/∂u_{κγ}
 
-      where α_{αβ} = V × (ε_{αβ} − δ_{αβ}) / (4π) is the per-cell
-      polarisability in Å³ and u_{κγ} is the displacement of atom κ in
-      Cartesian direction γ in Å, giving units of Å².
+      where ``α_vol = V(ε−I)/(4π)`` is the per-cell polarisability volume in
+      Å³ and ``u`` is an atomic displacement in Å.  The volume-dependent
+      conversion to PDielec's ``R_epsilon = sqrt(V) dε/dQ`` convention is
+      deferred until all companion files have been read, so the final cell
+      volume and normal modes are used consistently.
 
       Parameters
       ----------
@@ -868,14 +927,14 @@ Module Contents
       arranged as three consecutive 3×3 blocks corresponding to the x, y,
       and z Cartesian displacement directions respectively::
 
-          rows 0-2  → dα_{αβ}/du_{κ,x}
-          rows 3-5  → dα_{αβ}/du_{κ,y}
-          rows 6-8  → dα_{αβ}/du_{κ,z}
+          rows 0-2  → dε_{αβ}/du_{κ,x}
+          rows 3-5  → dε_{αβ}/du_{κ,y}
+          rows 6-8  → dε_{αβ}/du_{κ,z}
 
-      The result is stored in ``self._qe_raman_suscept`` in the same
-      ``dchi[iatom, idir, irow, icol]`` layout used by
-      :meth:`_read_raman_tensors_log`, so :meth:`_calculate_raman_tensors`
-      can process it without modification.
+      The XML values are ``dε/du`` in ``bohr^-1``.  The result is stored in
+      ``self._qe_raman_suscept`` in the same ``dchi[iatom, idir, irow, icol]``
+      layout used by :meth:`_read_raman_tensors_log`; unit conversion is
+      handled by :meth:`_calculate_raman_tensors`.
 
       Parameters
       ----------
@@ -906,6 +965,12 @@ Module Contents
       The routine should also be able to parse an optimisation run.
       In this case there is a 'steps' entry in the xml
 
+
+
+
+   .. py:method:: _store_qe_raman_susceptibility(dchi, units, priority)
+
+      Store QE Raman derivatives, keeping the highest-precision source.
 
 
 
@@ -942,7 +1007,22 @@ Module Contents
 
 
 
+   .. py:attribute:: _nlo_susceptibility_from_xml
+      :value: False
+
+
+
    .. py:attribute:: _qe_raman_suscept
+      :value: None
+
+
+
+   .. py:attribute:: _qe_raman_suscept_priority
+      :value: -1
+
+
+
+   .. py:attribute:: _qe_raman_suscept_units
       :value: None
 
 

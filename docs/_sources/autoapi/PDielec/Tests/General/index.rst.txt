@@ -1,0 +1,11 @@
+PDielec.Tests.General
+=====================
+
+.. py:module:: PDielec.Tests.General
+
+.. autoapi-nested-parse::
+
+   General integration tests.
+
+
+

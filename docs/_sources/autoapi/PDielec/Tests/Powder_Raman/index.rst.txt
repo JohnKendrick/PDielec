@@ -1,0 +1,26 @@
+PDielec.Tests.Powder_Raman
+==========================
+
+.. py:module:: PDielec.Tests.Powder_Raman
+
+.. autoapi-nested-parse::
+
+   Powder Raman tests.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/PDielec/Tests/Powder_Raman/test_A_raman_tensor_algebra/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_B_local_field_sphere/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_C_anisotropic_sphere/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_E_orientation_averaging/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_I_numerical_stability/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_J_reader_conventions/index
+
+

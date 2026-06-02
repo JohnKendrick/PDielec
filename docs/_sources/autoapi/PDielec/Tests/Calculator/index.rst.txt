@@ -1,0 +1,27 @@
+PDielec.Tests.Calculator
+========================
+
+.. py:module:: PDielec.Tests.Calculator
+
+.. autoapi-nested-parse::
+
+   Calculator tests.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index
+   /autoapi/PDielec/Tests/Calculator/test_B_geometry/index
+   /autoapi/PDielec/Tests/Calculator/test_C_depolarisation/index
+   /autoapi/PDielec/Tests/Calculator/test_D_permittivity_conversions/index
+   /autoapi/PDielec/Tests/Calculator/test_E_euler_angles/index
+   /autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index
+   /autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index
+   /autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index
+
+

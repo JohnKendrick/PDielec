@@ -25,8 +25,8 @@ PDielec.LayeredRamanCalculator
      the substrate side using a reversed stack (GTMcore.System.reversed_system).
    - Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
      the incident angle for backscattering).
-   - Coherent layer summation: set ``coherent_layers=True`` to sum amplitudes
-     across Raman-active layers before squaring.
+   - Layer combination: set ``coherent_layers=True`` to sum amplitudes
+     across Raman-active layers before squaring (GUI setting: "Coherent amplitudes").
 
    Phase 3c Jones-vector polarisation:
 
@@ -50,9 +50,14 @@ Attributes
    PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT
    PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT
    PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS
+   PDielec.LayeredRamanCalculator.MODAL_PAIR_COHERENT_ALL
+   PDielec.LayeredRamanCalculator.MODAL_PAIR_GROUP_Q
+   PDielec.LayeredRamanCalculator.MODAL_PAIR_INCOHERENT
+   PDielec.LayeredRamanCalculator.MODAL_PAIR_OPTIONS
    PDielec.LayeredRamanCalculator._ACOUSTIC_THRESHOLD_CM1
    PDielec.LayeredRamanCalculator._EFIELD_CHUNK_SIZE
    PDielec.LayeredRamanCalculator._MAX_GAUSS_LEGENDRE_PANEL_ORDER
+   PDielec.LayeredRamanCalculator._MODAL_Q_GROUP_TOL
    PDielec.LayeredRamanCalculator.logger
 
 
@@ -62,6 +67,7 @@ Classes
 .. autoapisummary::
 
    PDielec.LayeredRamanCalculator.LayeredRamanCalculator
+   PDielec.LayeredRamanCalculator.RamanContribution
    PDielec.LayeredRamanCalculator.RamanLayer
 
 
@@ -71,8 +77,13 @@ Functions
 .. autoapisummary::
 
    PDielec.LayeredRamanCalculator._compute_efield_chunk_worker
+   PDielec.LayeredRamanCalculator._compute_modal_fields_and_channels
+   PDielec.LayeredRamanCalculator._compute_modal_pair_mode_worker
    PDielec.LayeredRamanCalculator._compute_raman_mode_worker
    PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights
+   PDielec.LayeredRamanCalculator._line_key
+   PDielec.LayeredRamanCalculator._modal_pair_frequency_and_tensors
+   PDielec.LayeredRamanCalculator._modal_q_channels_from_fields
    PDielec.LayeredRamanCalculator.bose_factor
    PDielec.LayeredRamanCalculator.lorentzian_broaden
 
@@ -80,7 +91,7 @@ Functions
 Module Contents
 ---------------
 
-.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=21, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False, depth_integration=DEPTH_INTEGRATION_COHERENT, modal_pairs=False)
+.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=21, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False, depth_integration=DEPTH_INTEGRATION_COHERENT, modal_pairs=False, modal_pair_combination=MODAL_PAIR_GROUP_Q)
 
    Calculate the Raman spectrum of a multilayer system via depth integration.
 
@@ -196,18 +207,28 @@ Module Contents
 
 
 
-   .. py:method:: _calculate_mode_intensities_modal_pairs(progress_callback=None)
+   .. py:method:: _calculate_mode_intensities_modal_pairs(progress_callback=None, pool=None, return_contributions=False)
 
       Level 3 modal-pairs Raman intensity calculation.
 
-      For each phonon mode, sums ``|A^{ij}|²`` over all active (i_L, j_S) Berreman
-      mode pairs incoherently.  The phonon wavevector for each pair is
-      q_ph = k_L^i − k_S^j, giving a distinct NAC-corrected phonon frequency
-      and Raman tensor per pair.  NAC results are cached per
-      (layer_index, i_mode, j_mode) and reused across all phonon modes.
+      For each phonon mode, sums over incident and detected propagation-q
+      channels.  Each channel is the coherent field contribution from all
+      Berreman eigenmodes in the same qz subspace for the selected
+      polarisation.  This avoids basis dependence when the optical eigenmodes
+      are degenerate or nearly degenerate, as at normal incidence in a
+      uniaxial layer.
 
-      Pool parallelism is disabled for this path (closures in RamanLayer.nac_function
-      are not picklable in Phase 1).
+      The phonon wavevector for each channel pair is q_ph = k_L − k_S,
+      giving a distinct NAC-corrected phonon frequency and Raman tensor per
+      pair.  NAC results are cached per layer/channel pair and reused across
+      all phonon modes.  The returned arrays are q-resolved: one input
+      ``mode_idx`` can produce multiple spectral rows when different q-groups
+      have different NAC frequencies.  Groups with numerically identical
+      frequencies and linewidths are merged as incoherent intensities.
+
+      NAC closures are evaluated only while building the serial cache.  When a
+      worker pool is supplied, the per-mode field and intensity calculations
+      are dispatched with picklable arrays and GTM systems.
 
       Returns
       -------
@@ -379,6 +400,19 @@ Module Contents
 
 
 
+   .. py:method:: _get_modal_q_channels(modal_fields, qs_by_layer, pol_idx)
+
+      Group modal fields into propagation-q subspaces for one polarisation.
+
+      Berreman eigenvectors inside an exactly or nearly degenerate qz
+      subspace are not unique.  At normal incidence in a uniaxial layer, for
+      example, the two forward in-plane optical modes have the same qz and
+      may rotate within that subspace as the crystal azimuth changes.  The
+      physical p/s field contribution is the coherent sum over the whole qz
+      subspace, not an individual eigenvector selected by its modal index.
+
+
+
    .. py:method:: _layer_amplitude(E_L_out, E_S_out, R_lab, sl)
 
       Compute the Raman amplitude for one mode in one layer.
@@ -438,7 +472,7 @@ Module Contents
 
 
 
-   .. py:method:: calculate_mode_intensities(progress_callback=None, pool=None)
+   .. py:method:: calculate_mode_intensities(progress_callback=None, pool=None, return_contributions=False)
 
       Compute the per-mode Raman intensities (before broadening).
 
@@ -459,14 +493,32 @@ Module Contents
           process and broadcast to all workers via ``functools.partial``.
           When ``None`` (default), the calculation runs sequentially.
 
+      Parameters
+      ----------
+      progress_callback : callable, optional
+          Called once per phonon-mode iteration.
+      pool : multiprocessing.Pool or compatible, optional
+          Worker pool for parallel execution.  Incompatible with
+          ``return_contributions=True``.
+      return_contributions : bool, optional
+          When True, return a fourth element — a list of
+          :class:`RamanContribution` objects exposing the per-group complex
+          amplitudes before squaring.  Only available in the sequential path
+          (``pool`` must be ``None``).
+
       Returns
       -------
-      active_frequencies : ndarray, shape (M,)
-          Frequencies of the active (non-acoustic) modes in cm⁻¹.
+          active_frequencies : ndarray, shape (M,)
+          Frequencies of the active (non-acoustic) spectral contributions in
+          cm⁻¹.  In ``modal_pairs`` mode, one original phonon index may
+          produce multiple q-resolved entries.
       active_intensities : ndarray, shape (M,)
           Corresponding Raman intensities I_m (real, non-negative).
       active_linewidths : ndarray, shape (M,)
           Linewidths of the active modes in cm⁻¹.
+      contributions : list of RamanContribution
+          Only present when ``return_contributions=True``.  One entry per
+          (mode, coherent-group) pair, ordered by mode then group.
 
       Notes
       -----
@@ -525,6 +577,9 @@ Module Contents
    .. py:attribute:: _incident_jones
 
 
+   .. py:attribute:: _modal_pair_q_keys
+
+
    .. py:attribute:: _nac_cache
 
 
@@ -566,6 +621,11 @@ Module Contents
    .. py:attribute:: linewidths_cm1
 
 
+   .. py:attribute:: modal_pair_combination
+      :value: 'Group q channels'
+
+
+
    .. py:attribute:: modal_pairs
       :value: False
 
@@ -583,6 +643,75 @@ Module Contents
    .. py:attribute:: temperature_K
 
 
+.. py:class:: RamanContribution
+
+   A single coherent-group amplitude contribution to one phonon mode.
+
+   Returned by ``LayeredRamanCalculator.calculate_mode_intensities`` when
+   ``return_contributions=True``.  Each instance represents one coherent
+   group — the amplitudes inside the group are combined before squaring;
+   groups are summed incoherently (as intensities).
+
+   Attributes
+   ----------
+   mode_idx : int
+       Index into ``raman_layers[0].phonon_frequencies_cm1``.
+   frequency : float
+       Phonon frequency in cm⁻¹.
+   sigma : float
+       Phonon linewidth in cm⁻¹.
+   group_key : object
+       Hashable identifier for the coherent group.  Meaning depends on
+       the calculation path:
+
+       * Modal-pairs ``GROUP_Q``       — ``(q_key_tuple, det_pol_int)``
+       * Modal-pairs ``INCOHERENT``    — ``(layer_idx, i_ch, det_pol, j_ch)``
+       * Modal-pairs ``COHERENT_ALL``  — the string ``"all"``
+       * Standard coherent layers     — ``("all", det_pol_int)``
+       * Standard incoherent layers   — ``(layer_idx, det_pol_int)``
+       * Standard incoherent depth    — ``(layer_idx, "depth")``
+   amplitude : complex
+       Depth-integrated complex Raman amplitude for this group.
+       Zero for the incoherent-depth path (use ``local_intensity`` instead).
+   intensity : float
+       This group's contribution to the final mode intensity ``I_m``
+       (Bose-Einstein factor already applied).
+   local_intensity : float
+       Non-zero only for the incoherent-depth integration path, where
+       ``amplitude`` is not meaningful.  Equal to the raw depth-integrated
+       local intensity before the Bose factor.
+
+
+   .. py:attribute:: amplitude
+      :type:  complex
+
+
+   .. py:attribute:: frequency
+      :type:  float
+
+
+   .. py:attribute:: group_key
+      :type:  object
+
+
+   .. py:attribute:: intensity
+      :type:  float
+
+
+   .. py:attribute:: local_intensity
+      :type:  float
+      :value: 0.0
+
+
+
+   .. py:attribute:: mode_idx
+      :type:  int
+
+
+   .. py:attribute:: sigma
+      :type:  float
+
+
 .. py:class:: RamanLayer(layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix, nac_function=None)
 
    A Raman-active layer descriptor for LayeredRamanCalculator.
@@ -596,9 +725,8 @@ Module Contents
        All phonon frequencies in cm⁻¹, including acoustic branches.
    raman_tensors : list of ndarray, shape (n_modes, 3, 3)
        3×3 Raman susceptibility tensors in the DFT crystal frame, one per
-       mode.  The stored reader tensors have units (Å/amu)^0.5 (i.e. they
-       are divided by √V_cell); multiply by ``np.sqrt(volume_ang3)`` before
-       passing here so that intensities are proportional to Å² × V / amu.
+       mode, using the physical bulk ``R_epsilon`` convention from
+       ``Raman-Theory.tex``.
    rotation_matrix : ndarray, shape (3, 3)
        Combined rotation G that maps crystal-frame vectors to the lab frame:
        ``v_lab = G @ v_crystal``.  Typically this is the product of the
@@ -652,6 +780,16 @@ Module Contents
    E_chunk : ndarray, shape (6, M)
        Electric field at the requested z-positions.
 
+
+
+.. py:function:: _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer_indices, layer_slices, pol_indices)
+
+   Compute modal fields and qz channels for a set of polarisations.
+
+
+.. py:function:: _compute_modal_pair_mode_worker(shared, mode_args)
+
+   Compute one modal-pair Raman mode using picklable cached NAC data.
 
 
 .. py:function:: _compute_raman_mode_worker(shared, mode_args)
@@ -713,6 +851,21 @@ Module Contents
 
 
 
+.. py:function:: _line_key(frequency_cm1, sigma_cm1)
+
+   Hashable key for merging numerically identical spectral lines.
+
+
+.. py:function:: _modal_pair_frequency_and_tensors(mode_idx, fallback_frequency, fallback_tensors, cache_val)
+
+   Return the q-resolved phonon frequency and Raman tensors for one pair.
+
+
+.. py:function:: _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx)
+
+   Group modal field contributions into qz subspace channels.
+
+
 .. py:function:: bose_factor(nu_cm1, temperature_K)
 
    Return the Stokes Bose-Einstein thermal prefactor (n+1)/ν.
@@ -764,6 +917,20 @@ Module Contents
 
 .. py:data:: DEPTH_INTEGRATION_OPTIONS
 
+.. py:data:: MODAL_PAIR_COHERENT_ALL
+   :value: 'Coherent all pairs'
+
+
+.. py:data:: MODAL_PAIR_GROUP_Q
+   :value: 'Group q channels'
+
+
+.. py:data:: MODAL_PAIR_INCOHERENT
+   :value: 'Incoherent pairs'
+
+
+.. py:data:: MODAL_PAIR_OPTIONS
+
 .. py:data:: _ACOUSTIC_THRESHOLD_CM1
    :value: 10.0
 
@@ -774,6 +941,10 @@ Module Contents
 
 .. py:data:: _MAX_GAUSS_LEGENDRE_PANEL_ORDER
    :value: 64
+
+
+.. py:data:: _MODAL_Q_GROUP_TOL
+   :value: 1e-08
 
 
 .. py:data:: logger

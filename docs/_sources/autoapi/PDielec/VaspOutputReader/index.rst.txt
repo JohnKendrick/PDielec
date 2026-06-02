@@ -739,28 +739,24 @@ Module Contents
 
       Notes
       -----
-      Both CASTEP and Skelton's group  compute the derivative of the **polarizability volume**
+      Skelton's scripts report the derivative of the polarizability volume
       ``α_vol = V(ε−1)/(4π)`` [Å³] with respect to the mass-weighted normal
-      coordinate ``Q`` [Å·√amu].  The 4π is the standard factor relating the
-      macroscopic dielectric tensor to the cell polarizability volume and is
-      present in both conventions.
+      coordinate ``Q`` [Å·√amu]::
 
-      - Skelton: ``R = ∂α_vol/∂Q = (V/4π) × ∂ε/∂Q``  [Å²·amu⁻¹/²]
-      - CASTEP:  ``T = ∂α_vol/∂Q / √V = R / √V``  [(Å/amu)^{0.5}]
+          R_alpha = ∂α_vol/∂Q = (V/4π) ∂ε/∂Q
 
-      So each tensor element is divided by ``√V_cell`` on read::
-
-          T_PDielec = R_Skelton / √V_cell
+      PDielec stores the AbInit-style bulk Raman tensor convention
+      ``R_epsilon = sqrt(V) ∂ε/∂Q``.  Therefore each Skelton tensor is
+      multiplied by ``4π/sqrt(V)`` on read.
 
       ``self.volume`` must have been set (from OUTCAR or vasprun.xml) before
       this method is called; it always is because Raman-Tensors.yaml is read
       after the main file loop in ``_read_output_files``.
 
       The tensors are stored in ``self.raman_tensors`` as a list of (3, 3)
-      NumPy arrays ordered to match PDielec's internal ascending-frequency
-      ordering: zero tensors for acoustic/imaginary modes first (indices 0–2),
-      followed by the optical mode tensors in ascending frequency order
-      (lowest optical frequency first, highest last).
+      NumPy arrays ordered to match PDielec's mode ordering: acoustic/
+      imaginary modes first, followed by optical modes in increasing
+      frequency order.
 
 
 

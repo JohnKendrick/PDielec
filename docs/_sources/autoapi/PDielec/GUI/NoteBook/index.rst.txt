@@ -228,9 +228,7 @@ Module Contents
 
       Notes
       -----
-      This function checks for specific key combinations (Control + S, and Control + C) and performs actions
-      accordingly: - Control + S: Calls the `print_settings` method. - Control + C: Prints a message and exits the
-      program.
+      This function checks for Control + S and calls the `print_settings` method.
 
 
 
