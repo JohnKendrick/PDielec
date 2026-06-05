@@ -21,6 +21,7 @@ import numpy as np
 import pytest
 
 from PDielec.Constants import amu, angs2bohr
+from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.GenericOutputReader import CHI2_PM_PER_V_TO_REPSILON
 from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standalone
 
@@ -30,11 +31,13 @@ from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standal
 
 _REPO = os.path.join(os.path.dirname(__file__), "..", "..", "..")
 _ABINIT_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "AbInit", "raman.abo")
+_POWDER_ABINIT_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "AbInit", "raman.abo")
 _CASTEP_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Castep", "raman.castep")
 _CRYSTAL23_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Crystal23", "opt_raman.out")
 _QE_TENSORS_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "QE", "tensors.xml")
 
 _have_abinit = os.path.exists(_ABINIT_FILE)
+_have_powder_abinit = os.path.exists(_POWDER_ABINIT_FILE)
 _have_castep = os.path.exists(_CASTEP_FILE)
 _have_crystal23 = os.path.exists(_CRYSTAL23_FILE)
 _have_qe_tensors = os.path.exists(_QE_TENSORS_FILE)
@@ -511,6 +514,93 @@ class TestJ10ReaderTensorConvention:
                 [scale * tensor for tensor in tensors], chi2, q_hat, Z_mat, eigvecs, eps_inf)
             for scaled_tensor, tensor, delta_tensor in zip(scaled_corrected, tensors, delta):
                 np.testing.assert_allclose(scaled_tensor, scale * tensor + delta_tensor, atol=1e-14)
+
+
+# ---------------------------------------------------------------------------
+# J11: AbInit Raman tensors stay consistent after GUI mass/mode recalculation
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(not _have_powder_abinit, reason="Powder Raman AbInit raman.abo not present")
+class TestJ11AbinitRamanTensorRecalculation:
+    """J11: Recalculated AbInit normal modes must keep Raman tensors phase-consistent."""
+
+    def test_zno_a1_lo_eo_reduces_in_plane_tensor_after_mass_recalculation(self):
+        """The AbInit ZnO q||c A1 LO branch should not flip EO sign after Settings setup."""
+        from PDielec.AbinitOutputReader import AbinitOutputReader
+        from PDielec.HelperRoutines import calculate_dft_permittivity_object
+
+        r = AbinitOutputReader([_POWDER_ABINIT_FILE])
+        r.read_output()
+
+        # Mirrors the Settings/DFT-permittivity setup used by PDGui.  This
+        # recalculates mass-weighted normal modes for the chosen mass convention.
+        calculate_dft_permittivity_object(r, sigma=5.0, eckart=True, mass_definition="average")
+
+        hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas = _standalone_inputs(r)
+        q = np.array([0.0, 0.0, 1.0])
+        freqs_no, tensors_no, _, dominant_to = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas,
+            chi2_repsilon=None,
+            return_mode_map=True,
+        )
+        _freqs_eo, tensors_eo, _ = _compute_nac_dynamical_matrix_standalone(
+            q, hessian, bc, eps_inf, vol, masses, U_TO, tensors, sigmas,
+            chi2_repsilon=r.nonlinear_optical_susceptibility,
+        )
+
+        a1_lo = [
+            idx for idx, (freq, to_idx) in enumerate(zip(freqs_no, dominant_to))
+            if 550.0 < freq < 570.0 and to_idx == 6
+        ]
+        assert len(a1_lo) == 1
+        mode_idx = a1_lo[0]
+
+        assert abs(tensors_eo[mode_idx][0, 0]) < abs(tensors_no[mode_idx][0, 0])
+        assert abs(tensors_eo[mode_idx][1, 1]) < abs(tensors_no[mode_idx][1, 1])
+
+
+# ---------------------------------------------------------------------------
+# J12: Generic per-mode Raman tensor basis transform
+# ---------------------------------------------------------------------------
+
+class TestJ12GenericRamanTensorBasisTransform:
+    """J12: Generic readers keep per-mode Raman tensors aligned after mode recalculation."""
+
+    def test_generic_transform_corrects_single_mode_phase_flip(self):
+        old_modes = np.array([
+            [[1.0, 0.0, 0.0]],
+            [[0.0, 1.0, 0.0]],
+        ])
+        new_modes = np.array([
+            [[-1.0, 0.0, 0.0]],
+            [[0.0, 1.0, 0.0]],
+        ])
+        old_tensors = [np.eye(3), 2.0 * np.eye(3)]
+
+        transformed = GenericOutputReader._transform_raman_tensors_between_mode_bases(
+            old_modes, new_modes, old_tensors)
+
+        np.testing.assert_allclose(transformed[0], -np.eye(3))
+        np.testing.assert_allclose(transformed[1], 2.0 * np.eye(3))
+
+    def test_generic_transform_rotates_degenerate_subspace(self):
+        angle = np.pi / 4.0
+        old_modes = np.array([
+            [[1.0, 0.0, 0.0]],
+            [[0.0, 1.0, 0.0]],
+        ])
+        new_modes = np.array([
+            [[np.cos(angle), np.sin(angle), 0.0]],
+            [[-np.sin(angle), np.cos(angle), 0.0]],
+        ])
+        R_x = np.diag([1.0, 0.0, 0.0])
+        R_y = np.diag([0.0, 2.0, 0.0])
+
+        transformed = GenericOutputReader._transform_raman_tensors_between_mode_bases(
+            old_modes, new_modes, [R_x, R_y])
+
+        np.testing.assert_allclose(transformed[0], np.cos(angle) * R_x + np.sin(angle) * R_y)
+        np.testing.assert_allclose(transformed[1], -np.sin(angle) * R_x + np.cos(angle) * R_y)
 
 
 if __name__ == "__main__":

@@ -1461,6 +1461,14 @@ class QEOutputReader(GenericOutputReader):
                            "raw derivatives stored in self._qe_raman_suscept")
         return
 
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Rebuild QE Raman tensors exactly from stored displacement derivatives."""
+        if self._qe_raman_suscept is not None:
+            self._calculate_raman_tensors()
+        else:
+            super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+        return
+
     def _read_dyng_file(self,line):
         """Read a dynG file.
 

@@ -622,6 +622,67 @@ class GenericOutputReader:
         """
         return self.nonlinear_optical_susceptibility
 
+    @staticmethod
+    def _normal_modes_to_matrix(modes):
+        """Return normal modes as a row-normalised ``(n_modes, 3*nions)`` matrix."""
+        matrix = np.asarray(modes, dtype=float)
+        if matrix.ndim != 3:
+            return None
+        matrix = matrix.reshape(matrix.shape[0], matrix.shape[1] * matrix.shape[2])
+        norms = np.linalg.norm(matrix, axis=1)
+        if np.any(norms <= 1.0e-14):
+            return None
+        return matrix / norms[:, np.newaxis]
+
+    @classmethod
+    def _transform_raman_tensors_between_mode_bases(cls, old_modes, new_modes, old_tensors):
+        """Transform per-mode Raman tensors from an old normal-mode basis to a new one.
+
+        This is a fallback for readers that only provide already-projected
+        per-mode Raman tensors.  If a reader has raw Cartesian displacement
+        derivatives it should override
+        :meth:`_update_raman_tensors_after_mode_recalculation` and reproject
+        exactly instead.
+        """
+        if old_tensors is None:
+            return None
+        old_matrix = cls._normal_modes_to_matrix(old_modes)
+        new_matrix = cls._normal_modes_to_matrix(new_modes)
+        if old_matrix is None or new_matrix is None:
+            return old_tensors
+        if old_matrix.shape != new_matrix.shape:
+            return old_tensors
+        if old_matrix.shape[0] != len(old_tensors):
+            return old_tensors
+
+        overlap = old_matrix @ new_matrix.T
+        transformed = []
+        old_tensors = [np.asarray(tensor, dtype=complex) for tensor in old_tensors]
+        for new_idx in range(overlap.shape[1]):
+            tensor = np.zeros_like(old_tensors[0], dtype=complex)
+            for old_idx, weight in enumerate(overlap[:, new_idx]):
+                tensor += weight * old_tensors[old_idx]
+            transformed.append(np.real_if_close(tensor))
+        return transformed
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Keep Raman tensors consistent with recalculated normal modes.
+
+        The generic fallback applies the old→new normal-mode overlap matrix to
+        already-projected Raman tensors.  This fixes arbitrary sign flips and
+        rotations inside degenerate subspaces caused by Hessian
+        re-diagonalisation.  Readers with raw displacement derivatives should
+        override this method and rebuild tensors from those derivatives.
+        """
+        if old_raman_tensors is None:
+            return
+        self.raman_tensors = self._transform_raman_tensors_between_mode_bases(
+            old_modes,
+            self.mass_weighted_normal_modes,
+            old_raman_tensors,
+        )
+        return
+
     def get_crystal_density(self):
         """Return the crystal density in g/cc.
 
@@ -766,6 +827,10 @@ class GenericOutputReader:
             logger.debug("calculate mass weighted normal modes")
         if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
             return self.mass_weighted_normal_modes
+        old_modes = np.array(self.mass_weighted_normal_modes, dtype=float, copy=True)
+        old_raman_tensors = None
+        if self.raman_tensors is not None:
+            old_raman_tensors = [np.array(tensor, dtype=complex, copy=True) for tensor in self.raman_tensors]
         n = np.size(self.mass_weighted_normal_modes, 0)
         m = np.size(self.mass_weighted_normal_modes, 1)*3
         UT = np.zeros((n, m))
@@ -837,6 +902,7 @@ class GenericOutputReader:
         if self.debug:
             logger.debug(f"calculated frequencies {self.frequencies}")
             logger.debug(f"mass-weighted normal modes {self.mass_weighted_normal_modes}")
+        self._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
         # end for i
         return self.mass_weighted_normal_modes
 

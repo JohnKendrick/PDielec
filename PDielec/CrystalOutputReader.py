@@ -67,6 +67,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.type                    = "Crystal output"
         self.hessian_symmetrisation  = "crystal"
         self._fractional_coordinates = []
+        self._crystal_raman_dalpha   = None
         return
 
     def _read_output_files(self):
@@ -160,6 +161,24 @@ class CrystalOutputReader(GenericOutputReader):
                 return
             dalpha[i] = [float(x) for x in line.split()]
         fd.close()
+        self._crystal_raman_dalpha = dalpha
+
+        self._calculate_raman_tensors_from_tens_raman_dat()
+        if self.debug:
+            logger.debug(f"_read_tens_raman_dat: computed Raman tensors for {nmodes} modes from {filename}")
+        return
+
+    def _calculate_raman_tensors_from_tens_raman_dat(self):
+        """Project stored CRYSTAL polarizability derivatives onto current modes."""
+        if self._crystal_raman_dalpha is None:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
+            return
+        if len(self.masses) == 0:
+            return
+
+        nmodes = 3 * self.nions
+        dalpha = self._crystal_raman_dalpha
 
         # mwm shape: (nmodes, nions, 3)  — unit-normalised mass-weighted eigenvectors
         mwm = np.array(self.mass_weighted_normal_modes)
@@ -188,9 +207,14 @@ class CrystalOutputReader(GenericOutputReader):
                 [da[2], da[4], da[5]],
             ]) * unit_factor
             self.raman_tensors.append(tensor)
+        return
 
-        if self.debug:
-            logger.debug(f"_read_tens_raman_dat: computed Raman tensors for {nmodes} modes from {filename}")
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Rebuild CRYSTAL Raman tensors exactly from TENS_RAMAN.DAT derivatives."""
+        if self._crystal_raman_dalpha is not None:
+            self._calculate_raman_tensors_from_tens_raman_dat()
+        else:
+            super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
         return
 
     def _read_chi2_dat(self, filename):

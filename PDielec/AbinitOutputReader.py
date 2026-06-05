@@ -191,27 +191,46 @@ class AbinitOutputReader(GenericOutputReader):
 
         # Project onto phonon eigenvectors to get physical per-mode R_epsilon tensors.
         if self.mass_weighted_normal_modes:
-            # Unit conversion factor for eq-ramantensor:
-            #   R_epsilon = sqrt(V [Å³]) × angs2bohr × R_Abinit
-            # where Abinit derivatives are per Bohr displacement and Q is in
-            # Bohr·sqrt(amu) before conversion to Å·sqrt(amu).
-            unit_factor = math.sqrt(self.volume) * angs2bohr
-            nmodes = nions * 3
-            self.raman_tensors = []
-            for n in range(nmodes):
-                tensor = np.zeros((3, 3))
-                for iatom in range(nions):
-                    sqrt_mass = math.sqrt(self.masses[iatom])  # √(m_κ) in amu^½
-                    for idir in range(3):
-                        eigvec = self.mass_weighted_normal_modes[n][iatom][idir]
-                        tensor += dchi[iatom, idir] * (eigvec / sqrt_mass)
-                self.raman_tensors.append(tensor * unit_factor)
-            if self.debug:
-                logger.debug(f"_read_susceptibility_derivatives: computed {len(self.raman_tensors)} Raman tensors "
-                             f"(unit_factor={unit_factor:.4f}, volume={self.volume:.4f} A^3)")
+            self._recalculate_raman_tensors_from_susceptibility_derivatives()
         else:
             logger.warning("_read_susceptibility_derivatives: phonon eigenvectors not yet available; "
                            "raw derivatives stored in self._susceptibility_derivatives")
+        return
+
+    def _recalculate_raman_tensors_from_susceptibility_derivatives(self):
+        """Rebuild AbInit Raman tensors from stored dχ/du and current normal modes."""
+        dchi = self._susceptibility_derivatives
+        if dchi is None:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
+            return
+
+        # Unit conversion factor for eq-ramantensor:
+        #   R_epsilon = sqrt(V [Å³]) × angs2bohr × R_Abinit
+        # where Abinit derivatives are per Bohr displacement and Q is in
+        # Bohr·sqrt(amu) before conversion to Å·sqrt(amu).
+        unit_factor = math.sqrt(self.volume) * angs2bohr
+        nmodes = self.nions * 3
+        self.raman_tensors = []
+        for n in range(nmodes):
+            tensor = np.zeros((3, 3))
+            for iatom in range(self.nions):
+                sqrt_mass = math.sqrt(self.masses[iatom])  # √(m_κ) in amu^½
+                for idir in range(3):
+                    eigvec = self.mass_weighted_normal_modes[n][iatom][idir]
+                    tensor += dchi[iatom, idir] * (eigvec / sqrt_mass)
+            self.raman_tensors.append(tensor * unit_factor)
+        if self.debug:
+            logger.debug(
+                "_recalculate_raman_tensors_from_susceptibility_derivatives: "
+                f"computed {len(self.raman_tensors)} Raman tensors "
+                f"(unit_factor={unit_factor:.4f}, volume={self.volume:.4f} A^3)"
+            )
+        return
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Rebuild AbInit Raman tensors exactly from stored dχ/du derivatives."""
+        self._recalculate_raman_tensors_from_susceptibility_derivatives()
         return
 
     def _read_nlo_susceptibility(self, line):

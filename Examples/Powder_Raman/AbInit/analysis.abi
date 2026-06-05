@@ -1,9 +1,9 @@
 # General information
 #**********************
    rfmeth  1
-   enunit  0
-   eivec   1
-   chneut  2
+   enunit  0   # Provide units in Hartree and cm-1
+   eivec   0   # 0 Dont write eigenvectors
+   chneut  0   # Impose charge neutrality 0, 1, 2
    selectz 0
 
 # Flags
@@ -11,16 +11,16 @@
    dieflag  1
    ifcflag  0 ! This is the default value
    thmflag  0 ! This is the default value
-    nlflag  1
-   elaflag  3
+    nlflag  1 ! Calculate the non linear properties if 1
+   elaflag  3 ! Calculate elastic and compliance tensors
  piezoflag  3
  instrflag  1
 
 # Nonlinear response calculation
 #*******************************
-   ramansr  1
-    alphon  1
-    prtmbm  1
+   ramansr  0  # Apply a sum rule to the Raman tensors
+    alphon  0  # Aligns degenerate modes with the cartesian axes if 1
+    prtmbm  1  # Print a mode by mode decomposition of the electro-optic tensor
 
 # Wavevector list number 1
 **************************                                                      

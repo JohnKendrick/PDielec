@@ -448,6 +448,8 @@ class NoteBook(QWidget):
             # Print settings of settingsTab
             self.print_tab_settings(self.settingsTab, "settingsTab",fd)
             print("tab.sigmas_cm1 =",self.settingsTab.sigmas_cm1,file=fd)
+            modes_selected = [bool(mode) for mode in self.settingsTab.modes_selected]
+            print("tab.modes_selected =",modes_selected,file=fd)
             # Print settings of all scenarios
             for i,tab in enumerate(self.scenarios):
                 if i == 0:
@@ -992,4 +994,3 @@ class NoteBook(QWidget):
         self.progressbars.append(bar)
         self.progressbars_set_maximum(self.progressbar_maximum)
         return
-

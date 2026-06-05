@@ -608,25 +608,19 @@ class Layer:
                 
         Berreman_unsorted = np.zeros((4,3), dtype=np.cdouble)
         
-        kt = 0 
-        kr = 0
         ## sort berremann qi's according to (12)
-        if any(np.abs(np.imag(qsunsorted))>1.0E-16):
-            for km in range(0,4):
-                if np.imag(qsunsorted[km])>=0 :
-                    transmode[kt] = km
-                    kt = kt + 1
-                else:
-                    reflmode[kr] = km
-                    kr = kr +1
-        else:
-            for km in range(0,4):
-                if np.real(qsunsorted[km])>=0 and kt < 2  :
-                    transmode[kt] = km
-                    kt = kt + 1
-                else:
-                    reflmode[kr] = km
-                    kr = kr +1
+        imag_q = np.imag(qsunsorted)
+        imag_thr = 1.0E-16
+        trans_candidates = [km for km in range(4) if imag_q[km] > imag_thr]
+        refl_candidates = [km for km in range(4) if imag_q[km] < -imag_thr]
+        if len(trans_candidates) != 2 or len(refl_candidates) != 2:
+            trans_candidates = [km for km in range(4) if np.real(qsunsorted[km]) >= 0]
+            trans_candidates = trans_candidates[:2]
+            refl_candidates = [km for km in range(4) if km not in trans_candidates]
+            while len(trans_candidates) < 2:
+                trans_candidates.append(refl_candidates.pop(0))
+        transmode[:] = trans_candidates[:2]
+        reflmode[:] = refl_candidates[:2]
         ## Calculate the Poynting vector for each Psi using (16-18)
         for km in range(0,4):
             Ex = psiunsorted[0,km]

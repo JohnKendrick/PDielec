@@ -239,7 +239,7 @@ def _compute_raman_mode_worker(shared, mode_args):
         or pre-computed forward-scatter field).  ``E_S_fixed`` is ``None`` when
         ``es_system`` should be used to compute E_S fresh at ``nu_S``.
     mode_args : tuple
-        ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors)``
+        ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors, mode_selected)``
 
         ``nu_S`` is the scattered frequency in cm⁻¹ (ignored when ``E_S_fixed``
         is not ``None``).  ``mode_raman_tensors`` is a list of (3, 3) complex
@@ -260,8 +260,10 @@ def _compute_raman_mode_worker(shared, mode_args):
      incident_jones, detected_jones,
      coherent_layers, depth_integration, temperature_K) = shared
 
-    (mode_idx, nu_m, sigma, nu_S, mode_raman_tensors) = mode_args
+    (mode_idx, nu_m, sigma, nu_S, mode_raman_tensors, mode_selected) = mode_args
 
+    if not mode_selected:
+        return None
     if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
         return None
 
@@ -400,14 +402,23 @@ def _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer
     return modal_fields, qs_by_layer, zeta, channels
 
 
-def _modal_pair_frequency_and_tensors(mode_idx, fallback_frequency, fallback_tensors, cache_val):
-    """Return the q-resolved phonon frequency and Raman tensors for one pair."""
+def _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors,
+                            fallback_sigma, fallback_selected, cache_val):
+    """Return q-resolved phonon data and the selection flag for one pair."""
     if cache_val is not None and cache_val[0] is not None:
         nac_freqs = cache_val[0]
         nac_tensors = cache_val[1]
+        nac_sigmas = cache_val[2] if len(cache_val) > 2 else None
+        nac_selected = cache_val[3] if len(cache_val) > 3 else None
         if mode_idx < len(nac_freqs) and mode_idx < len(nac_tensors):
-            return float(nac_freqs[mode_idx]), nac_tensors
-    return float(fallback_frequency), fallback_tensors
+            selected = fallback_selected
+            if nac_selected is not None and mode_idx < len(nac_selected):
+                selected = bool(nac_selected[mode_idx])
+            sigma = fallback_sigma
+            if nac_sigmas is not None and mode_idx < len(nac_sigmas):
+                sigma = float(nac_sigmas[mode_idx])
+            return float(nac_freqs[mode_idx]), nac_tensors, sigma, selected
+    return float(fallback_frequency), fallback_tensors, fallback_sigma, fallback_selected
 
 
 def _line_key(frequency_cm1, sigma_cm1):
@@ -429,6 +440,7 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         gl_phys_weights,
         rotation_matrices,
         raman_tensors_by_layer,
+        modes_selected_by_layer,
         nac_cache,
         modal_pair_q_keys,
         modal_pair_combination,
@@ -436,7 +448,7 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         temperature_K,
     ) = shared
 
-    mode_idx, fallback_nu_m, sigma, laser_frequency_cm1 = mode_args
+    mode_idx, fallback_nu_m, sigma, laser_frequency_cm1, fallback_mode_selected = mode_args
 
     # Accumulate amplitudes into groups according to the summation policy.
     # The group key determines which amplitudes are coherently combined
@@ -453,12 +465,21 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                     cache_key = (layer_index, i_channel, det_pol_idx, j_channel)
                     cache_val = nac_cache.get(cache_key)
 
-                    nu_m, nac_tensors = _modal_pair_frequency_and_tensors(
+                    fallback_selected = fallback_mode_selected
+                    layer_selected = modes_selected_by_layer[layer_pos]
+                    if layer_selected is not None and mode_idx < len(layer_selected):
+                        fallback_selected = bool(layer_selected[mode_idx])
+
+                    nu_m, nac_tensors, line_sigma, mode_selected = _modal_pair_phonon_data(
                         mode_idx,
                         fallback_nu_m,
                         raman_tensors_by_layer[layer_pos],
+                        sigma,
+                        fallback_selected,
                         cache_val,
                     )
+                    if not mode_selected:
+                        continue
                     if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
                         continue
 
@@ -517,18 +538,18 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                         pair_groups[group_key] = {
                             "amp": amp_ij,
                             "frequency": nu_m,
-                            "sigma": sigma,
+                            "sigma": line_sigma,
                         }
                     elif abs(existing["frequency"] - nu_m) <= 1.0e-10:
                         existing["amp"] += amp_ij
                     else:
-                        split_key = (group_key, _line_key(nu_m, sigma))
+                        split_key = (group_key, _line_key(nu_m, line_sigma))
                         split_existing = pair_groups.get(split_key)
                         if split_existing is None:
                             pair_groups[split_key] = {
                                 "amp": amp_ij,
                                 "frequency": nu_m,
-                                "sigma": sigma,
+                                "sigma": line_sigma,
                             }
                         else:
                             split_existing["amp"] += amp_ij
@@ -580,16 +601,17 @@ class RamanLayer:
     """
 
     def __init__(self, layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix,
-                 nac_function=None):
+                 nac_function=None, modes_selected=None):
         """Initialise a RamanLayer descriptor."""
         self.layer_index = layer_index
         self.phonon_frequencies_cm1 = np.asarray(phonon_frequencies_cm1, dtype=float)
         self.raman_tensors = [np.asarray(R, dtype=complex) for R in raman_tensors]
         self.rotation_matrix = np.asarray(rotation_matrix, dtype=float)
         # Optional closure for on-demand NAC computation (Level 3 modal_pairs).
-        # Contract: f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas)
-        #           or (None, None, None) when |q_ph| is negligible.
+        # Contract: f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas[, nac_selected])
+        #           or (None, None, None[, None]) when |q_ph| is negligible.
         self.nac_function = nac_function
+        self.modes_selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
 
 
 # ---------------------------------------------------------------------------
@@ -767,6 +789,7 @@ class LayeredRamanCalculator:
         depth_integration=DEPTH_INTEGRATION_COHERENT,
         modal_pairs=False,
         modal_pair_combination=MODAL_PAIR_GROUP_Q,
+        modes_selected=None,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
         if incident_pol not in ("p", "s"):
@@ -800,6 +823,7 @@ class LayeredRamanCalculator:
         self.depth_integration = depth_integration
         self.modal_pairs = bool(modal_pairs)
         self.modal_pair_combination = modal_pair_combination
+        self.modes_selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
         # NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)
         self._nac_cache = {}
         self._modal_pair_q_keys = {}
@@ -824,6 +848,23 @@ class LayeredRamanCalculator:
         self._gl_layer_slices = None    # list of slice: one per RamanLayer
 
         self._build_gl_grid()
+
+    def _mode_is_selected(self, mode_idx):
+        """Return True when a phonon mode is enabled in the caller's mode mask."""
+        if self.modes_selected is None or mode_idx >= len(self.modes_selected):
+            return True
+        return bool(self.modes_selected[mode_idx])
+
+    def _layer_mode_is_selected(self, raman_layer, mode_idx):
+        """Return True when a mode is enabled for a specific Raman layer."""
+        layer_selected = getattr(raman_layer, "modes_selected", None)
+        if layer_selected is not None and mode_idx < len(layer_selected):
+            return bool(layer_selected[mode_idx])
+        return self._mode_is_selected(mode_idx)
+
+    def _any_layer_mode_is_selected(self, mode_idx):
+        """Return True when at least one Raman-active layer enables this mode."""
+        return any(self._layer_mode_is_selected(rl, mode_idx) for rl in self.raman_layers)
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -1236,6 +1277,7 @@ class LayeredRamanCalculator:
         layer_indices = [rl.layer_index for rl in self.raman_layers]
         rotation_matrices = [rl.rotation_matrix for rl in self.raman_layers]
         raman_tensors_by_layer = [rl.raman_tensors for rl in self.raman_layers]
+        modes_selected_by_layer = [rl.modes_selected for rl in self.raman_layers]
 
         if pool is not None:
             shared = (
@@ -1250,6 +1292,7 @@ class LayeredRamanCalculator:
                 self._gl_phys_weights,
                 rotation_matrices,
                 raman_tensors_by_layer,
+                modes_selected_by_layer,
                 self._nac_cache,
                 self._modal_pair_q_keys,
                 self.modal_pair_combination,
@@ -1260,7 +1303,10 @@ class LayeredRamanCalculator:
             for mode_idx in range(n_modes):
                 fallback_nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
                 sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
-                mode_args_list.append((mode_idx, fallback_nu_m, sigma, self.laser_frequency_cm1))
+                mode_args_list.append((
+                    mode_idx, fallback_nu_m, sigma, self.laser_frequency_cm1,
+                    self._mode_is_selected(mode_idx),
+                ))
 
             active_freqs = []
             active_intensities = []
@@ -1305,9 +1351,12 @@ class LayeredRamanCalculator:
                             cache_key = (rl.layer_index, i_channel, det_pol_idx, j_channel)
                             cache_val = self._nac_cache.get(cache_key)
 
-                            nu_m, nac_tensors = _modal_pair_frequency_and_tensors(
-                                mode_idx, fallback_nu_m, rl.raman_tensors, cache_val
+                            fallback_selected = self._layer_mode_is_selected(rl, mode_idx)
+                            nu_m, nac_tensors, line_sigma, mode_selected = _modal_pair_phonon_data(
+                                mode_idx, fallback_nu_m, rl.raman_tensors, sigma, fallback_selected, cache_val
                             )
+                            if not mode_selected:
+                                continue
 
                             if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
                                 continue
@@ -1367,14 +1416,14 @@ class LayeredRamanCalculator:
 
                             existing = pair_groups.get(group_key)
                             if existing is None:
-                                pair_groups[group_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": sigma}
+                                pair_groups[group_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": line_sigma}
                             elif abs(existing["frequency"] - nu_m) <= 1.0e-10:
                                 existing["amp"] += amp_ij
                             else:
-                                split_key = (group_key, _line_key(nu_m, sigma))
+                                split_key = (group_key, _line_key(nu_m, line_sigma))
                                 split_existing = pair_groups.get(split_key)
                                 if split_existing is None:
-                                    pair_groups[split_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": sigma}
+                                    pair_groups[split_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": line_sigma}
                                 else:
                                     split_existing["amp"] += amp_ij
 
@@ -1536,6 +1585,9 @@ class LayeredRamanCalculator:
             if progress_callback is not None:
                 progress_callback()
 
+            if not self._any_layer_mode_is_selected(mode_idx):
+                continue
+
             nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
 
             # Skip acoustic modes
@@ -1567,6 +1619,8 @@ class LayeredRamanCalculator:
 
             if self.depth_integration == DEPTH_INTEGRATION_INCOHERENT:
                 for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
+                    if not self._layer_mode_is_selected(rl, mode_idx):
+                        continue
                     R_crystal = rl.raman_tensors[mode_idx]
                     R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
                     local_intens[(rl.layer_index, "depth")] = (
@@ -1576,6 +1630,8 @@ class LayeredRamanCalculator:
             else:
                 # layer_key "all" → coherent across layers; int → incoherent per layer
                 for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
+                    if not self._layer_mode_is_selected(rl, mode_idx):
+                        continue
                     R_crystal = rl.raman_tensors[mode_idx]
                     R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
                     amp_p, amp_s = self._layer_amplitude(E_L_out, E_S_out, R_lab, sl)
@@ -1734,8 +1790,16 @@ class LayeredRamanCalculator:
             sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
             nu_S = self.laser_frequency_cm1 - nu_m if E_S_out_fixed is None else 0.0
             # Raman tensors for this mode across all layers
-            mode_raman_tensors = [rl.raman_tensors[mode_idx] for rl in self.raman_layers]
-            mode_args_list.append((mode_idx, nu_m, sigma, nu_S, mode_raman_tensors))
+            mode_raman_tensors = [
+                rl.raman_tensors[mode_idx]
+                if self._layer_mode_is_selected(rl, mode_idx)
+                else np.zeros_like(rl.raman_tensors[mode_idx])
+                for rl in self.raman_layers
+            ]
+            mode_args_list.append((
+                mode_idx, nu_m, sigma, nu_S, mode_raman_tensors,
+                self._any_layer_mode_is_selected(mode_idx),
+            ))
 
         active_freqs = []
         active_intensities = []

@@ -64,6 +64,30 @@ def _make_sm_system(n_layer=N_LAYER, thickness_m=THICKNESS_M):
     return ScatteringMatrixSystem(substrate=sub, superstrate=sup, layers=[layer])
 
 
+def _make_anisotropic_sm_system(thickness_m=THICKNESS_M):
+    """Build an oblique-incidence anisotropic stack as a ScatteringMatrixSystem."""
+    from PDielec.GTMcore import CoherentLayer
+
+    class _Adapter:
+        def __init__(self, thick, eps_func):
+            self._thick = thick
+            self._eps_func = eps_func
+
+        def get_thickness_in_metres(self):
+            return self._thick
+
+        def get_permittivity_function(self):
+            return self._eps_func
+
+    def _eps_anisotropic(_freq_cm1):
+        return np.diag([4.0, 5.0, 6.0]).astype(complex)
+
+    sup = _make_sm_layer(1e-3, 1.0)
+    sub = _make_sm_layer(1e-3, 1.0)
+    layer = CoherentLayer(_Adapter(thickness_m, _eps_anisotropic))
+    return ScatteringMatrixSystem(substrate=sub, superstrate=sup, layers=[layer])
+
+
 def _run_modal_pairs(system, raman_layers, phonon_freqs, incident_pol="p", detected_pol="p",
                      nac_function=None, n_gauss=21, approximate_es=True,
                      incident_angle_rad=0.0):
@@ -724,6 +748,33 @@ class TestI5ScatteringMatrixConsistency:
         assert 0 in modal_amps, "Layer 0 should be in modal_amps"
         amps = modal_amps[0]
         assert np.any(np.abs(amps) > 0), "Modal amplitudes should not all be zero"
+
+    def test_oblique_anisotropic_sm_modal_pairs_uses_selected_modes(self):
+        """Oblique anisotropic SMS modal-pairs should not fail in Berreman mode sorting."""
+        frequencies_cm1 = np.array([100.0, 200.0])
+        raman_tensors = [np.eye(3), 2.0 * np.eye(3)]
+        system_sm = _make_anisotropic_sm_system()
+        raman_layer = RamanLayer(0, frequencies_cm1, raman_tensors, np.eye(3))
+        calc = LayeredRamanCalculator(
+            system=system_sm,
+            raman_layers=[raman_layer],
+            laser_frequency_cm1=LASER_CM1,
+            incident_angle_rad=np.radians(15.0),
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=5.0 * np.ones(len(frequencies_cm1)),
+            n_gauss=10,
+            approximate_es=False,
+            modal_pairs=True,
+            modes_selected=[False, True],
+        )
+
+        active_freqs, active_intensities, active_sigmas = calc.calculate_mode_intensities()
+
+        np.testing.assert_allclose(active_freqs, [200.0])
+        assert len(active_intensities) == 1
+        np.testing.assert_allclose(active_sigmas, [5.0])
 
 
 # ---------------------------------------------------------------------------

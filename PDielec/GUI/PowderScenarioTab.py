@@ -41,6 +41,7 @@ from PDielec import Calculator, DielectricFunction, Materials
 from PDielec.Constants import amu, angs2bohr, boltzmann_si, planck_si, speed_light_si, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
+from PDielec.RamanPolarCalculator import apply_eo_correction
 
 logger = logging.getLogger(__name__)
 class PowderScenarioTab(ScenarioTab):
@@ -1457,6 +1458,7 @@ class PowderScenarioTab(ScenarioTab):
             # N = I (no internal field), sphere path, no particle frequency correction.
             N = I3.copy()
             L = I3 / 3.0
+            epsilon_e = None
             has_correction_data = False
             is_sphere = True
         else:
@@ -1484,12 +1486,21 @@ class PowderScenarioTab(ScenarioTab):
         polarisation = self.settings["Raman laser polarisation"]
         temperature = self.settings["Raman temperature"]
         n_samples = self.settings["Raman orientation samples"]
+        chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
+        include_eo = (
+            self.settings.get("Raman electro-optic term", True)
+            and chi2 is not None
+            and len(self.reader.born_charges) > 0
+            and np.any(self.reader.mass_weighted_normal_modes)
+        )
 
         vs_cm1 = np.array(vs_cm1, dtype=float)
 
         # Non-sphere: numerical SO(3) averaging with per-orientation N_bg.
-        if not is_sphere and has_correction_data:
-            logger.debug(f"{self.settings['Legend']} _calculate_raman: non-sphere numerical average ({n_samples} samples)")
+        # EO is q-dependent, so even spherical particles use this path when
+        # the separable χ² correction is enabled.
+        if ((not is_sphere and has_correction_data) or include_eo):
+            logger.debug(f"{self.settings['Legend']} _calculate_raman: orientation numerical average ({n_samples} samples)")
             n_freqs = len(vs_cm1)
             _accumulated = [0.0]
             _updated = [0]
@@ -1505,8 +1516,11 @@ class PowderScenarioTab(ScenarioTab):
 
             spectrum = self._compute_orientation_sampled_spectrum(
                 L, epsilon_e, epsilon_inf_i, I3,
-                raman_tensors, sigmas_cm1, modes_selected,
+                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected,
                 polarisation, nu_L, temperature, n_samples, vs_cm1,
+                no_matrix=is_none_matrix,
+                include_eo=include_eo,
+                chi2_repsilon=chi2,
                 progress_callback=_progress_callback)
             # Flush any remaining fractional increments
             remaining = n_freqs - _updated[0]
@@ -1762,8 +1776,9 @@ class PowderScenarioTab(ScenarioTab):
 
     def _compute_orientation_sampled_spectrum(
             self, L, epsilon_e, epsilon_inf_i, I3,
-            raman_tensors, sigmas_cm1, modes_selected,
+            raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected,
             polarisation, nu_L, temperature, n_samples, vs_cm1,
+            no_matrix=False, include_eo=False, chi2_repsilon=None,
             progress_callback=None):
         """Compute the powder Raman spectrum for non-spherical particles by numerical SO(3) averaging.
 
@@ -1788,6 +1803,8 @@ class PowderScenarioTab(ScenarioTab):
             3×3 identity matrix.
         raman_tensors : list of ndarray
             Bulk TO Raman tensors (crystal frame), one 3×3 array per mode.
+        frequencies_cm1 : list of float
+            Bulk TO frequencies in cm⁻¹.
         sigmas_cm1 : list of float
             Lorentzian half-widths in cm⁻¹ (one per TO mode).
         modes_selected : list of bool
@@ -1802,6 +1819,12 @@ class PowderScenarioTab(ScenarioTab):
             Number of SO(3) orientations to sample.
         vs_cm1 : ndarray, shape (n_freqs,)
             Frequency axis for the spectrum in cm⁻¹.
+        no_matrix : bool, optional
+            If True, skip particle frequency and local-field corrections.
+        include_eo : bool, optional
+            If True, include the q-dependent electro-optic χ² tensor correction.
+        chi2_repsilon : ndarray or None, optional
+            Reader χ² tensor in the internal R_epsilon convention.
         progress_callback : callable or None, optional
             If provided, called once after each orientation sample to allow the
             caller to update a progress bar.  The callable takes no arguments.
@@ -1866,28 +1889,36 @@ class PowderScenarioTab(ScenarioTab):
         # ── Pre-loop: orientation-invariant quantities ────────────────────────────────
         # ΔD is invariant under rotation: Z_lab^T NbgL_lab Z_lab = Z_mat^T N L Z_mat
         # for any R (proof in raman_notes.md).  Diagonalise D^particle once here.
-        N_bg_crystal = Calculator.compute_internal_field_tensor(
-            np.real(L), np.real(epsilon_inf_i), epsilon_e)
-        NbgL = np.real(N_bg_crystal) @ np.real(L)
-        delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
+        if no_matrix:
+            eig_vec = U_TO.T
+            part_freqs = np.asarray(frequencies_cm1, dtype=float)
+            R_eps_cryst_list = raman_tensors_c
+            dominant_to_by_mode = list(range(len(part_freqs)))
+        else:
+            N_bg_crystal = Calculator.compute_internal_field_tensor(
+                np.real(L), np.real(epsilon_inf_i), epsilon_e)
+            NbgL = np.real(N_bg_crystal) @ np.real(L)
+            delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
 
-        eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
+            eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
 
-        part_freqs = np.array([
-            (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
-            for ev in eig_val
-        ])
+            part_freqs = np.array([
+                (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
+                for ev in eig_val
+            ])
 
-        # Overlap matrix C[n_to, p]: <u_n^TO | u_p^particle>
-        C = U_TO @ eig_vec  # (n_to_modes, 3N)
+            # Overlap matrix C[n_to, p]: <u_n^TO | u_p^particle>
+            C = U_TO @ eig_vec  # (n_to_modes, 3N)
 
-        # Crystal-frame Raman tensor in particle-mode basis, per mode
-        R_eps_cryst_list = []
-        for p_idx in range(n_modes):
-            R_eps = np.zeros((3, 3), dtype=complex)
-            for n_to in range(n_to_modes):
-                R_eps += C[n_to, p_idx] * raman_tensors_c[n_to]
-            R_eps_cryst_list.append(R_eps)
+            # Crystal-frame Raman tensor in particle-mode basis, per mode
+            R_eps_cryst_list = []
+            dominant_to_by_mode = []
+            for p_idx in range(n_modes):
+                R_eps = np.zeros((3, 3), dtype=complex)
+                for n_to in range(n_to_modes):
+                    R_eps += C[n_to, p_idx] * raman_tensors_c[n_to]
+                R_eps_cryst_list.append(R_eps)
+                dominant_to_by_mode.append(int(np.argmax(np.abs(C[:, p_idx]))))
 
         # Per-mode orientation-independent scalars: (freq, sigma, n_bose, nu_s)
         # None marks modes that should be skipped entirely.
@@ -1897,7 +1928,7 @@ class PowderScenarioTab(ScenarioTab):
             if abs(freq) < 1.0:
                 mode_data.append(None)
                 continue
-            dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
+            dominant_to = dominant_to_by_mode[p_idx]
             if not modes_selected[dominant_to]:
                 mode_data.append(None)
                 continue
@@ -1915,6 +1946,8 @@ class PowderScenarioTab(ScenarioTab):
         e_L  = np.array([0.0, 1.0, 0.0])
         e_VV = np.array([0.0, 1.0, 0.0])
         e_VH = np.array([1.0, 0.0, 0.0])
+        q_lab = np.array([0.0, 0.0, 1.0])
+        eps_inf_real = np.real(epsilon_inf_i)
 
         spectrum = np.zeros(len(vs_cm1))
         
@@ -1926,7 +1959,14 @@ class PowderScenarioTab(ScenarioTab):
             eps_lab = R @ np.real(epsilon_inf_i) @ R.T
 
             # Orientation-dependent internal field tensor N_bg_lab.
-            N_bg_lab = Calculator.compute_internal_field_tensor(L_lab, eps_lab, epsilon_e)
+            N_bg_lab = I3 if no_matrix else Calculator.compute_internal_field_tensor(L_lab, eps_lab, epsilon_e)
+
+            if include_eo:
+                q_crystal = R.T @ q_lab
+                R_eps_for_orientation = apply_eo_correction(
+                    R_eps_cryst_list, chi2_repsilon, q_crystal, Z_mat, eig_vec, eps_inf_real)
+            else:
+                R_eps_for_orientation = R_eps_cryst_list
 
             # Loop over particle modes (skip inactive ones)
             for p_idx in range(n_modes):
@@ -1935,11 +1975,14 @@ class PowderScenarioTab(ScenarioTab):
                 freq, sigma, n_bose, nu_s = mode_data[p_idx]
 
                 # Rotate crystal-frame Raman tensor to the lab frame
-                R_eps_lab = R @ R_eps_cryst_list[p_idx] @ R.T
+                R_eps_lab = R @ R_eps_for_orientation[p_idx] @ R.T
 
                 # Effective particle Raman tensor in the lab frame.
-                R_part_lab = Calculator.compute_particle_raman_tensor(
-                    R_eps_lab, N_bg_lab, L_lab, eps_lab, epsilon_e)
+                if no_matrix:
+                    R_part_lab = R_eps_lab
+                else:
+                    R_part_lab = Calculator.compute_particle_raman_tensor(
+                        R_eps_lab, N_bg_lab, L_lab, eps_lab, epsilon_e)
 
                 # Polarisation-specific intensity
                 if polarisation == "VV":
@@ -2264,6 +2307,13 @@ class PowderScenarioTab(ScenarioTab):
         self.refresh_required = True
         self.settings["Raman temperature"] = value
 
+    def on_eo_term_cb_toggled(self, checked):
+        """Handle a toggle of the Raman electro-optic tensor contribution."""
+        logger.debug(f"{self.settings['Legend']} on_eo_term_cb_toggled {checked}")
+        self.refresh_required = True
+        self.calculation_required = True
+        self.settings["Raman electro-optic term"] = checked
+
     def on_orientation_samples_cb_activated(self, index):
         """Handle a change to the number of orientation samples.
 
@@ -2297,6 +2347,7 @@ class PowderScenarioTab(ScenarioTab):
         if pol in polarisations:
             self.polarisation_cb.setCurrentIndex(polarisations.index(pol))
         self.temperature_sb.setValue(self.settings["Raman temperature"])
+        self.eo_term_cb.setChecked(self.settings.get("Raman electro-optic term", True))
         counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
         current = self.settings["Raman orientation samples"]
         idx = counts.index(current) if current in counts else counts.index(256)
@@ -2455,6 +2506,18 @@ class PowderScenarioTab(ScenarioTab):
         label.setToolTip("Sample temperature in K (used for the Bose-Einstein occupation factor)")
         form.addRow(label, self.temperature_sb)
         #
+        # Electro-optic Raman tensor correction
+        #
+        self.eo_term_cb = QCheckBox(self)
+        self.eo_term_cb.setChecked(self.settings["Raman electro-optic term"])
+        self.eo_term_cb.toggled.connect(self.on_eo_term_cb_toggled)
+        self.eo_term_cb.setToolTip(
+            "Include the electro-optic χ⁽²⁾ contribution in Raman tensors when χ⁽²⁾ is available."
+        )
+        label = QLabel("Include electro-optic term", self)
+        label.setToolTip(self.eo_term_cb.toolTip())
+        form.addRow(label, self.eo_term_cb)
+        #
         # Orientation samples for numerical powder averaging (non-spherical particles)
         #
         counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
@@ -2493,6 +2556,7 @@ class PowderScenarioTab(ScenarioTab):
         self.settings["Raman laser polarisation"] = "HV"
         self.settings["Raman temperature"] = 298.0
         self.settings["Raman orientation samples"] = 256
+        self.settings["Raman electro-optic term"] = True
         self.raman_spectrum = []
         return
 
