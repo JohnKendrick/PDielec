@@ -263,7 +263,7 @@ class PowderScenarioTab(ScenarioTab):
             self.initialise_infrared_gui(vbox,form)
             self.initialise_atr_gui(vbox,form)
         elif "Powder Raman" in self.spectroscopy:
-            self.initialise_infrared_gui(vbox,form)
+            self.initialise_infrared_gui(vbox,form, include_infrared_only=False)
             self.initialise_raman_gui(vbox,form)
         #
         # Add a legend option
@@ -344,7 +344,7 @@ class PowderScenarioTab(ScenarioTab):
         form.addRow(label, self.atr_spolfrac_sb)
         return vbox, form
 
-    def initialise_infrared_gui(self, vbox, form):
+    def initialise_infrared_gui(self, vbox, form, include_infrared_only=True):
         """Initialise the GUI for atr calculations.
 
         Parameters
@@ -353,6 +353,8 @@ class PowderScenarioTab(ScenarioTab):
             vbox is defined by the PowderScenarioTab initialised
         form : QFormLayout
             form is defined by the PowderScenarioTab initialised
+        include_infrared_only : bool
+            If True, include controls used only by the infrared/ATR effective-medium calculation.
 
         Returns
         -------
@@ -444,29 +446,30 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Bubble volume fraction
         #
-        self.bubble_vf_sb = QDoubleSpinBox(self)
-        self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Volume fraction"]))
-        self.bubble_vf_sb.setSingleStep(1.0)
-        self.bubble_vf_sb.setDecimals(1)
-        self.bubble_vf_sb.setToolTip("Define the % volume fraction of air bubble inclusions in the matrix")
-        self.bubble_vf_sb.setValue(100*self.settings["Bubble volume fraction"])
-        self.bubble_vf_sb.valueChanged.connect(self.on_bubble_vf_sb_changed)
-        label = QLabel("% Air void volume fraction", self)
-        label.setToolTip("Define the % volume fraction of air bubble inclusions in the matrix")
-        form.addRow(label, self.bubble_vf_sb)
-        #
-        # Bubble radius in microns
-        #
-        self.bubble_radius_sb = QDoubleSpinBox(self)
-        self.bubble_radius_sb.setRange(0.001, 1000.0)
-        self.bubble_radius_sb.setSingleStep(1.0)
-        self.bubble_radius_sb.setDecimals(3)
-        self.bubble_radius_sb.setToolTip("Define the air bubble radius")
-        self.bubble_radius_sb.setValue(self.settings["Bubble radius"])
-        self.bubble_radius_sb.valueChanged.connect(self.on_bubble_radius_sb_changed)
-        label = QLabel("Air void radius (μm)", self)
-        label.setToolTip("Define the air void radius")
-        form.addRow(label, self.bubble_radius_sb)
+        if include_infrared_only:
+            self.bubble_vf_sb = QDoubleSpinBox(self)
+            self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Volume fraction"]))
+            self.bubble_vf_sb.setSingleStep(1.0)
+            self.bubble_vf_sb.setDecimals(1)
+            self.bubble_vf_sb.setToolTip("Define the % volume fraction of air bubble inclusions in the matrix")
+            self.bubble_vf_sb.setValue(100*self.settings["Bubble volume fraction"])
+            self.bubble_vf_sb.valueChanged.connect(self.on_bubble_vf_sb_changed)
+            label = QLabel("% Air void volume fraction", self)
+            label.setToolTip("Define the % volume fraction of air bubble inclusions in the matrix")
+            form.addRow(label, self.bubble_vf_sb)
+            #
+            # Bubble radius in microns
+            #
+            self.bubble_radius_sb = QDoubleSpinBox(self)
+            self.bubble_radius_sb.setRange(0.001, 1000.0)
+            self.bubble_radius_sb.setSingleStep(1.0)
+            self.bubble_radius_sb.setDecimals(3)
+            self.bubble_radius_sb.setToolTip("Define the air bubble radius")
+            self.bubble_radius_sb.setValue(self.settings["Bubble radius"])
+            self.bubble_radius_sb.valueChanged.connect(self.on_bubble_radius_sb_changed)
+            label = QLabel("Air void radius (μm)", self)
+            label.setToolTip("Define the air void radius")
+            form.addRow(label, self.bubble_radius_sb)
         #
         # Mass fraction of dielectric medium
         #
@@ -496,44 +499,45 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Calculation method
         #
-        self.methods_cb = QComboBox(self)
-        self.methods_cb.setToolTip("Choose the calculation method for the effective medium theory")
-        self.methods_cb.addItems(self.methods)
-        index = self.methods_cb.findText(self.settings["Effective medium method"], Qt.MatchFixedString)
-        if index >=0:
-            self.methods_cb.setCurrentIndex(index)
-        else:
-            logger.error(f"Method index was not 0 {self.settings['Effective medium method']}")
-        self.methods_cb.activated.connect(self.on_methods_cb_activated)
-        label = QLabel("Method",self)
-        label.setToolTip("Choose the calculation method for the effective medium theory")
-        form.addRow(label, self.methods_cb)
-        #
-        # Particle size option
-        #
-        self.size_sb = QDoubleSpinBox(self)
-        self.size_sb.setRange(0.000001, 1000.0)
-        self.size_sb.setSingleStep(0.1)
-        self.size_sb.setDecimals(6)
-        self.size_sb.setToolTip("Define the particle radius of the sphere in μm.")
-        self.size_sb.setValue(self.settings["Particle size(mu)"])
-        self.size_sb.valueChanged.connect(self.on_size_sb_changed)
-        label = QLabel("Particle radius (μm)",self)
-        label.setToolTip("Define the particle radius of the sphere in μm.")
-        form.addRow(label, self.size_sb)
-        #
-        # Particle sigma option
-        #
-        self.sigma_sb = QDoubleSpinBox(self)
-        self.sigma_sb.setRange(0.0, 1000.0)
-        self.sigma_sb.setSingleStep(0.1)
-        self.sigma_sb.setDecimals(6)
-        self.sigma_sb.setToolTip("Define the particle size distribution as a lognormal distribution with the given sigma. \nOnly applicable for the Mie method")
-        self.sigma_sb.setValue(self.settings["Particle size distribution sigma(mu)"])
-        self.sigma_sb.valueChanged.connect(self.on_sigma_sb_changed)
-        label = QLabel("Particle sigma (μm)",self)
-        label.setToolTip("Define the particle size distribition as a lognormal with the given sigma. \nOnly applicable for the Mie method")
-        form.addRow(label, self.sigma_sb)
+        if include_infrared_only:
+            self.methods_cb = QComboBox(self)
+            self.methods_cb.setToolTip("Choose the calculation method for the effective medium theory")
+            self.methods_cb.addItems(self.methods)
+            index = self.methods_cb.findText(self.settings["Effective medium method"], Qt.MatchFixedString)
+            if index >=0:
+                self.methods_cb.setCurrentIndex(index)
+            else:
+                logger.error(f"Method index was not 0 {self.settings['Effective medium method']}")
+            self.methods_cb.activated.connect(self.on_methods_cb_activated)
+            label = QLabel("Method",self)
+            label.setToolTip("Choose the calculation method for the effective medium theory")
+            form.addRow(label, self.methods_cb)
+            #
+            # Particle size option
+            #
+            self.size_sb = QDoubleSpinBox(self)
+            self.size_sb.setRange(0.000001, 1000.0)
+            self.size_sb.setSingleStep(0.1)
+            self.size_sb.setDecimals(6)
+            self.size_sb.setToolTip("Define the particle radius of the sphere in μm.")
+            self.size_sb.setValue(self.settings["Particle size(mu)"])
+            self.size_sb.valueChanged.connect(self.on_size_sb_changed)
+            label = QLabel("Particle radius (μm)",self)
+            label.setToolTip("Define the particle radius of the sphere in μm.")
+            form.addRow(label, self.size_sb)
+            #
+            # Particle sigma option
+            #
+            self.sigma_sb = QDoubleSpinBox(self)
+            self.sigma_sb.setRange(0.0, 1000.0)
+            self.sigma_sb.setSingleStep(0.1)
+            self.sigma_sb.setDecimals(6)
+            self.sigma_sb.setToolTip("Define the particle size distribution as a lognormal distribution with the given sigma. \nOnly applicable for the Mie method")
+            self.sigma_sb.setValue(self.settings["Particle size distribution sigma(mu)"])
+            self.sigma_sb.valueChanged.connect(self.on_sigma_sb_changed)
+            label = QLabel("Particle sigma (μm)",self)
+            label.setToolTip("Define the particle size distribition as a lognormal with the given sigma. \nOnly applicable for the Mie method")
+            form.addRow(label, self.sigma_sb)
         #
         # Crystallite shape
         #
@@ -822,7 +826,8 @@ class PowderScenarioTab(ScenarioTab):
         blocking_state = self.vf_sb.signalsBlocked()
         self.vf_sb.blockSignals(True)
         self.vf_sb.setValue(100.0*vf1)
-        self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Volume fraction"]))
+        if hasattr(self, "bubble_vf_sb"):
+            self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Volume fraction"]))
         self.vf_sb.setRange(0.0, 100.0*(1.0-self.settings["Bubble volume fraction"]))
         self.vf_sb.blockSignals(blocking_state)
         logger.debug(f"{self.settings['Legend']} Update_vf_sb")
@@ -1247,57 +1252,67 @@ class PowderScenarioTab(ScenarioTab):
         logger.debug(f"{self.settings['Legend']} Start:: change_greyed_out")
         if self.settings["Matrix"] == "none":
             # No matrix selected: disable all EMT and matrix-related controls
-            self.size_sb.setEnabled(False)
-            self.sigma_sb.setEnabled(False)
+            if hasattr(self, "size_sb"):
+                self.size_sb.setEnabled(False)
+            if hasattr(self, "sigma_sb"):
+                self.sigma_sb.setEnabled(False)
             self.shape_cb.setEnabled(False)
-            self.methods_cb.setEnabled(False)
+            if hasattr(self, "methods_cb"):
+                self.methods_cb.setEnabled(False)
             self.density_sb.setEnabled(False)
             self.permittivity_r_sb.setEnabled(False)
             self.permittivity_i_sb.setEnabled(False)
             self.vf_sb.setEnabled(False)
             self.mf_sb.setEnabled(False)
-            self.bubble_vf_sb.setEnabled(False)
-            self.bubble_radius_sb.setEnabled(False)
+            if hasattr(self, "bubble_vf_sb"):
+                self.bubble_vf_sb.setEnabled(False)
+            if hasattr(self, "bubble_radius_sb"):
+                self.bubble_radius_sb.setEnabled(False)
             self.h_sb.setEnabled(False)
             self.k_sb.setEnabled(False)
             self.l_sb.setEnabled(False)
             self.aoverb_sb.setEnabled(False)
             logger.debug(f"{self.settings['Legend']} Finished:: change_greyed_out")
             return
-        method = self.settings["Effective medium method"]
-        if method in ( "Mie",  "Anisotropic-Mie" ):
-            self.size_sb.setEnabled(True)
-            self.sigma_sb.setEnabled(True)
-            for i in range(len(self.shapes)):
-                self.shape_cb.model().item(i).setEnabled(False)
-            self.settings["Particle shape"] = "Sphere"
-            self.shape_cb.setEnabled(True)
-            index = self.shape_cb.findText(self.settings["Particle shape"], Qt.MatchFixedString)
-            if index >=0:
-                self.shape_cb.model().item(index).setEnabled(True)
-                self.shape_cb.setCurrentIndex(index)
+        if hasattr(self, "methods_cb"):
+            method = self.settings["Effective medium method"]
+            if method in ( "Mie",  "Anisotropic-Mie" ):
+                self.size_sb.setEnabled(True)
+                self.sigma_sb.setEnabled(True)
+                for i in range(len(self.shapes)):
+                    self.shape_cb.model().item(i).setEnabled(False)
+                self.settings["Particle shape"] = "Sphere"
+                self.shape_cb.setEnabled(True)
+                index = self.shape_cb.findText(self.settings["Particle shape"], Qt.MatchFixedString)
+                if index >=0:
+                    self.shape_cb.model().item(index).setEnabled(True)
+                    self.shape_cb.setCurrentIndex(index)
+                else:
+                    logger.error(f"Method index was not 0 {self.settings['Particle shape']}")
+            elif method == "Averaged Permittivity":
+                self.size_sb.setEnabled(False)
+                self.sigma_sb.setEnabled(False)
+                self.settings["Particle shape"] = "Sphere"
+                index = self.shape_cb.findText(self.settings["Particle shape"], Qt.MatchFixedString)
+                if index >=0:
+                    self.shape_cb.model().item(index).setEnabled(True)
+                    self.shape_cb.setCurrentIndex(index)
+                self.shape_cb.setEnabled(False)
+                for i in range(len(self.shapes)):
+                    self.shape_cb.model().item(i).setEnabled(False)
+            elif method in ( "Maxwell-Garnett", "Bruggeman" ):
+                self.size_sb.setEnabled(True)
+                self.sigma_sb.setEnabled(False)
+                self.shape_cb.setEnabled(True)
+                for i in range(len(self.shapes)):
+                    self.shape_cb.model().item(i).setEnabled(True)
             else:
-                logger.error(f"Method index was not 0 {self.settings['Particle shape']}")
-        elif method == "Averaged Permittivity":
-            self.size_sb.setEnabled(False)
-            self.sigma_sb.setEnabled(False)
-            self.settings["Particle shape"] = "Sphere"
-            index = self.shape_cb.findText(self.settings["Particle shape"], Qt.MatchFixedString)
-            if index >=0:
-                self.shape_cb.model().item(index).setEnabled(True)
-                self.shape_cb.setCurrentIndex(index)
-            self.shape_cb.setEnabled(False)
-            for i in range(len(self.shapes)):
-                self.shape_cb.model().item(i).setEnabled(False)
-        elif method in ( "Maxwell-Garnett", "Bruggeman" ):
-            self.size_sb.setEnabled(True)
-            self.sigma_sb.setEnabled(False)
-            self.shape_cb.setEnabled(True)
-            for i in range(len(self.shapes)):
-                self.shape_cb.model().item(i).setEnabled(True)
+                self.size_sb.setEnabled(False)
+                self.sigma_sb.setEnabled(False)
+                self.shape_cb.setEnabled(True)
+                for i in range(len(self.shapes)):
+                    self.shape_cb.model().item(i).setEnabled(True)
         else:
-            self.size_sb.setEnabled(False)
-            self.sigma_sb.setEnabled(False)
             self.shape_cb.setEnabled(True)
             for i in range(len(self.shapes)):
                 self.shape_cb.model().item(i).setEnabled(True)
@@ -2414,8 +2429,10 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Set the bubble data
         #
-        self.bubble_vf_sb.setValue(100*self.settings["Bubble volume fraction"])
-        self.bubble_radius_sb.setValue(self.settings["Bubble radius"])
+        if hasattr(self, "bubble_vf_sb"):
+            self.bubble_vf_sb.setValue(100*self.settings["Bubble volume fraction"])
+        if hasattr(self, "bubble_radius_sb"):
+            self.bubble_radius_sb.setValue(self.settings["Bubble radius"])
         #
         # Set the volume/mass fraction
         #
@@ -2430,13 +2447,16 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Set the effective medium theory method
         #
-        index = self.methods_cb.findText(self.settings["Effective medium method"], Qt.MatchFixedString)
-        self.methods_cb.setCurrentIndex(index)
+        if hasattr(self, "methods_cb"):
+            index = self.methods_cb.findText(self.settings["Effective medium method"], Qt.MatchFixedString)
+            self.methods_cb.setCurrentIndex(index)
         #
         # Set the particle size and distribution
         #
-        self.size_sb.setValue(self.settings["Particle size(mu)"])
-        self.sigma_sb.setValue(self.settings["Particle size distribution sigma(mu)"])
+        if hasattr(self, "size_sb"):
+            self.size_sb.setValue(self.settings["Particle size(mu)"])
+        if hasattr(self, "sigma_sb"):
+            self.sigma_sb.setValue(self.settings["Particle size distribution sigma(mu)"])
         #
         # Set the particle shape
         #

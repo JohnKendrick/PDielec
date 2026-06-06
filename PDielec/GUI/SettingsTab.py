@@ -32,6 +32,7 @@ from qtpy.QtWidgets import (
     QMessageBox,
     QPushButton,
     QSizePolicy,
+    QSpinBox,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -475,14 +476,13 @@ class SettingsTab(QWidget):
             "y-component of the phonon wavevector q̂ in crystal coordinates",
             "z-component of the phonon wavevector q̂ in crystal coordinates",
         )
-        for axis_label, default_val, tip in zip(("x:", "y:", "z:"), (0.0, 0.0, 1.0), q_tooltips):
+        for axis_label, default_val, tip in zip(("x:", "y:", "z:"), (0, 0, 1), q_tooltips):
             lbl = QLabel(axis_label, self)
             lbl.setToolTip(tip)
             lo_q_hbox.addWidget(lbl)
-            spin = QDoubleSpinBox(self)
-            spin.setRange(-1.0, 1.0)
-            spin.setDecimals(4)
-            spin.setSingleStep(0.1)
+            spin = QSpinBox(self)
+            spin.setRange(-1, 1)
+            spin.setSingleStep(1)
             spin.setValue(default_val)
             spin.setToolTip(tip)
             spin.valueChanged.connect(self._refresh_lo_columns)
@@ -947,17 +947,17 @@ class SettingsTab(QWidget):
 
             # Raman columns displayed in the selected activity units.
             if show_raman_col:
-                items.append(QTableWidgetItem(f"{raman_act * raman_display_factor:.4f}"))
+                items.append(QTableWidgetItem(f"{raman_act * raman_display_factor:.6f}"))
                 itemFlags.append(otherFlags)
-                items.append(QTableWidgetItem(f"{raman_par * raman_display_factor:.4f}"))
+                items.append(QTableWidgetItem(f"{raman_par * raman_display_factor:.6f}"))
                 itemFlags.append(otherFlags)
-                items.append(QTableWidgetItem(f"{raman_perp * raman_display_factor:.4f}"))
+                items.append(QTableWidgetItem(f"{raman_perp * raman_display_factor:.6f}"))
                 itemFlags.append(otherFlags)
 
             # Set the text alignment
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
-                item.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
+                item.setTextAlignment(int(Qt.AlignRight | Qt.AlignVCenter))
                 self.output_tw.setItem(i, j, item )
 
         # Resize the column widths to content
@@ -1070,7 +1070,7 @@ class SettingsTab(QWidget):
                         lo_raman_acts = Calculator.raman_intensities(lo_raman_tensors, self.reader.volume)
 
             elif eo_on:
-                # NAC off but EO on — apply EO correction to TO Raman tensors
+                # NAC off but EO on: apply EO correction to TO Raman tensors.
                 raman_tensors = self.reader.get_raman_tensors()
                 if raman_tensors and len(raman_tensors) == n_rows:
                     chi2      = self.reader.nonlinear_optical_susceptibility
@@ -1107,7 +1107,7 @@ class SettingsTab(QWidget):
                     for col_offset in range(3):
                         item = self.output_tw.item(i, 6 + col_offset)
                         if item is not None:
-                            item.setText(f"{lo_raman_acts[i, col_offset] * raman_display_factor:.4f}")
+                            item.setText(f"{lo_raman_acts[i, col_offset] * raman_display_factor:.6f}")
                 else:
                     to_vals = (
                         self.raman_intensities[i]      if i < len(self.raman_intensities)      else 0.0,
@@ -1117,7 +1117,7 @@ class SettingsTab(QWidget):
                     for col_offset, val in enumerate(to_vals):
                         item = self.output_tw.item(i, 6 + col_offset)
                         if item is not None:
-                            item.setText(f"{val * raman_display_factor:.4f}")
+                            item.setText(f"{val * raman_display_factor:.6f}")
         self.output_tw.blockSignals(False)
 
     def on_sigma_changed(self):
