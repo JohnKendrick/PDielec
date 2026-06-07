@@ -481,7 +481,7 @@ class SettingsTab(QWidget):
             lbl.setToolTip(tip)
             lo_q_hbox.addWidget(lbl)
             spin = QSpinBox(self)
-            spin.setRange(-1, 1)
+            spin.setRange(-100, 100)
             spin.setSingleStep(1)
             spin.setValue(default_val)
             spin.setToolTip(tip)

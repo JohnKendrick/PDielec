@@ -31,6 +31,7 @@ from qtpy.QtWidgets import (
     QMessageBox,
     QPushButton,
     QSizePolicy,
+    QSpinBox,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -154,7 +155,7 @@ class RamanPolarWindow(QWidget):
         q_tip = ("The phonon wavevector direction in the crystal frame.\n"
                  "Used for LO frequency and electro-optic correction calculations.")
         self._q_spins, self._q_row_widgets = self._add_vector_controls(
-            vec_grid, 2, q_init, prefix_label="Phonon q̂ direction:", tooltip=q_tip
+            vec_grid, 2, q_init, prefix_label="Phonon q̂ direction:", tooltip=q_tip, spin_type="int"
         )
 
         # Hide the LO freq column when no NAC data is available.
@@ -248,7 +249,7 @@ class RamanPolarWindow(QWidget):
             self._mode_table.setItem(row, 4, activity_item)
         self._mode_table.blockSignals(False)
 
-    def _add_vector_controls(self, grid, row, values, prefix_label=None, tooltip=None):
+    def _add_vector_controls(self, grid, row, values, prefix_label=None, tooltip=None, spin_type="double"):
         """Add x/y/z spin boxes into one row of a shared QGridLayout.
 
         Placing all three direction rows in the same grid ensures the x/y/z
@@ -266,10 +267,12 @@ class RamanPolarWindow(QWidget):
             Text for the label placed in column 0.
         tooltip : str, optional
             Tooltip applied to every widget in the row.
+        spin_type : {"double", "int"}, optional
+            Numeric spin-box type to use for the row.
 
         Returns
         -------
-        tuple[list[QDoubleSpinBox], list[QWidget]]
+        tuple[list[QDoubleSpinBox | QSpinBox], list[QWidget]]
             The three spin boxes and all widgets in the row (prefix label first
             if present, then alternating axis-label / spin-box for x, y, z).
         """
@@ -290,11 +293,17 @@ class RamanPolarWindow(QWidget):
             grid.addWidget(axis_lbl, row, col)
             row_widgets.append(axis_lbl)
             col += 1
-            spin = QDoubleSpinBox(self)
-            spin.setRange(-1.0, 1.0)
-            spin.setDecimals(6)
-            spin.setSingleStep(1.0)
-            spin.setValue(value)
+            if spin_type == "int":
+                spin = QSpinBox(self)
+                spin.setRange(-100, 100)
+                spin.setSingleStep(1)
+                spin.setValue(int(round(value)))
+            else:
+                spin = QDoubleSpinBox(self)
+                spin.setRange(-1.0, 1.0)
+                spin.setDecimals(6)
+                spin.setSingleStep(1.0)
+                spin.setValue(value)
             spin.valueChanged.connect(self._update_plot)
             if tooltip:
                 spin.setToolTip(tooltip)

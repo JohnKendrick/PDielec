@@ -16,6 +16,7 @@
 import copy
 import logging
 import math
+import re
 from functools import partial
 from itertools import product
 
@@ -73,6 +74,70 @@ gtm_methods ={"Coherent":GTM.CoherentLayer,
              "Incoherent (phase cancelling)":GTM.IncoherentPhaseLayer,
              "Incoherent (phase averaging)":GTM.IncoherentAveragePhaseLayer,
              "Incoherent (non-reflective)":GTM.IncoherentThickLayer} 
+
+_PORTO_HKL_BY_AXIS = {
+    "x": [1, 0, 0],
+    "y": [0, 1, 0],
+    "z": [0, 0, 1],
+}
+
+_PORTO_POL_BY_AXIS = {
+    "x": {"y": "p", "z": "s"},
+    "y": {"x": "p", "z": "s"},
+    "z": {"x": "p", "y": "s"},
+}
+
+
+def _parse_porto_notation(porto):
+    """Parse a simple normal-incidence Porto notation string.
+
+    Supported examples are ``x(yy)x``, ``x(yz)-x``, ``x(yz)barx`` and
+    ``x(yz)\\bar{x}``.  A bare final direction is treated as backscattering,
+    matching the shorthand commonly used in PDielec scripts and discussions.
+    """
+    text = porto.strip().lower()
+    if not text:
+        raise ValueError("Porto notation is empty")
+    text = text.replace(" ", "")
+    text = text.replace("\\bar{", "bar").replace("}", "")
+    text = text.replace("\\bar", "bar")
+    text = text.replace("overline", "bar")
+    text = text.replace("−", "-")
+    text = text.replace("*", "")
+    match = re.fullmatch(r"([+-]?[xyz])\(([xyz])([xyz])\)([+-]?(?:bar)?[xyz]|[xyz]bar)", text)
+    if match is None:
+        raise ValueError("Use a form such as x(yy)x, x(yz)-x, or z(xy)barz")
+    incident_axis, incident_pol_axis, detected_pol_axis, scattered_axis = match.groups()
+    incident_sign, incident_axis = _split_porto_axis(incident_axis, default_sign=1)
+    scattered_sign, scattered_axis = _split_porto_axis(scattered_axis, default_sign=-1)
+    if scattered_axis != incident_axis:
+        raise ValueError("PDielec Porto input currently requires collinear incident and scattered directions")
+    if incident_pol_axis == incident_axis or detected_pol_axis == incident_axis:
+        raise ValueError("Porto polarisations must be transverse to the propagation direction")
+    pol_map = _PORTO_POL_BY_AXIS[incident_axis]
+    if incident_pol_axis not in pol_map or detected_pol_axis not in pol_map:
+        raise ValueError(f"Unsupported polarisation for propagation along {incident_axis}")
+    collection_side = "substrate" if scattered_sign == incident_sign else "superstrate"
+    return {
+        "hkl": list(_PORTO_HKL_BY_AXIS[incident_axis]),
+        "incident_pol": pol_map[incident_pol_axis],
+        "detected_pol": pol_map[detected_pol_axis],
+        "collection_side": collection_side,
+        "collection_angle": -1.0,
+        "angle_of_incidence": 0.0,
+        "global_azimuthal_angle": 0.0,
+    }
+
+
+def _split_porto_axis(axis, default_sign):
+    """Return ``(sign, axis)`` for a Porto direction token."""
+    if axis.startswith("-"):
+        return -1, axis[-1]
+    if axis.startswith("+"):
+        return 1, axis[-1]
+    if axis.startswith("bar") or axis.endswith("bar"):
+        return -1, axis.replace("bar", "")
+    return default_sign, axis
 
 
 def _selection_for_nac_modes(modes_selected, dominant_to_by_nac):
@@ -540,6 +605,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
         self.settings["Azimuthal sweep points"] = 36
+        self.settings["Porto notation"] = ""
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -1635,7 +1701,8 @@ class CrystalScenarioTab(ScenarioTab):
         label.setToolTip(self.gl_density_sb.toolTip())
         self.form.addRow(label, self.gl_density_sb)
 
-        # Incident polarisation
+        # Polarisation and Porto notation.  Keep this as one form row because the
+        # Crystal Raman panel is already dense.
         self.incident_pol_cb = QComboBox(self)
         self.incident_pol_cb.addItems(["p", "s"])
         idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
@@ -1643,11 +1710,7 @@ class CrystalScenarioTab(ScenarioTab):
             self.incident_pol_cb.setCurrentIndex(idx)
         self.incident_pol_cb.activated.connect(self.on_incident_pol_cb_activated)
         self.incident_pol_cb.setToolTip("Incident laser polarisation (p = in the plane of incidence, s = perpendicular)")
-        label = QLabel("Incident polarisation")
-        label.setToolTip(self.incident_pol_cb.toolTip())
-        self.form.addRow(label, self.incident_pol_cb)
 
-        # Detected polarisation
         self.detected_pol_cb = QComboBox(self)
         self.detected_pol_cb.addItems(["p", "s", "unpolarised"])
         idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
@@ -1655,9 +1718,32 @@ class CrystalScenarioTab(ScenarioTab):
             self.detected_pol_cb.setCurrentIndex(idx)
         self.detected_pol_cb.activated.connect(self.on_detected_pol_cb_activated)
         self.detected_pol_cb.setToolTip("Detected polarisation (p, s, or 'unpolarised' for no analyser — sums |A_p|² + |A_s|²)")
-        label = QLabel("Detected polarisation")
-        label.setToolTip(self.detected_pol_cb.toolTip())
-        self.form.addRow(label, self.detected_pol_cb)
+
+        self.porto_le = QLineEdit(self)
+        self.porto_le.setText(self.settings.get("Porto notation", ""))
+        self.porto_le.setPlaceholderText("x(yy)x")
+        self.porto_le.setToolTip(
+            "Apply simple normal-incidence Porto notation, for example x(yy)x, x(yz)-x, or z(xy)barz.\n"
+            "The notation sets hkl, p/s polarisations, normal incidence and collection side."
+        )
+        self.porto_le.returnPressed.connect(self.on_porto_apply_button_clicked)
+        self.porto_apply_button = QPushButton("Apply", self)
+        self.porto_apply_button.setToolTip(self.porto_le.toolTip())
+        self.porto_apply_button.clicked.connect(self.on_porto_apply_button_clicked)
+
+        polarisation_hbox = QHBoxLayout()
+        polarisation_hbox.addWidget(QLabel("in", self))
+        polarisation_hbox.addWidget(self.incident_pol_cb)
+        polarisation_hbox.addWidget(QLabel("out", self))
+        polarisation_hbox.addWidget(self.detected_pol_cb)
+        polarisation_hbox.addWidget(QLabel("Porto", self))
+        polarisation_hbox.addWidget(self.porto_le)
+        polarisation_hbox.addWidget(self.porto_apply_button)
+        label = QLabel("Polarisation")
+        label.setToolTip(
+            "Set incident/detected p/s polarisations directly, or apply a simple normal-incidence Porto notation."
+        )
+        self.form.addRow(label, polarisation_hbox)
 
         # Collection side
         self.collection_side_cb = QComboBox(self)
@@ -2110,6 +2196,7 @@ class CrystalScenarioTab(ScenarioTab):
             idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
             if idx >= 0:
                 self.detected_pol_cb.setCurrentIndex(idx)
+            self.porto_le.setText(self.settings.get("Porto notation", ""))
             idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
             if idx >= 0:
                 self.collection_side_cb.setCurrentIndex(idx)
@@ -2271,6 +2358,62 @@ class CrystalScenarioTab(ScenarioTab):
     def on_detected_pol_cb_activated(self, index):
         """Handle a change in the detected polarisation combo box."""
         self.settings["Detected polarisation"] = self.detected_pol_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_porto_apply_button_clicked(self):
+        """Apply a simple Porto notation to the Crystal Raman geometry."""
+        porto = self.porto_le.text().strip()
+        try:
+            mapped = _parse_porto_notation(porto)
+        except ValueError as exc:
+            QMessageBox.warning(self, "Porto notation", str(exc))
+            return
+
+        dielectric_index = None
+        for index, layer in enumerate(self.layers):
+            if layer.is_dielectric():
+                dielectric_index = index
+                break
+        if dielectric_index is None:
+            QMessageBox.warning(self, "Porto notation", "No dielectric layer is available for Porto notation")
+            return
+
+        hkl = mapped["hkl"]
+        self.settings["Layer hkls"][dielectric_index] = list(hkl)
+        self.settings["Layer azimuthals"][dielectric_index] = 0.0
+        self.layers[dielectric_index].set_hkl(hkl)
+        self.layers[dielectric_index].set_azimuthal(0.0)
+        self.layers[dielectric_index].change_lab_frame_info()
+
+        self.settings["Porto notation"] = porto
+        self.settings["Incident polarisation"] = mapped["incident_pol"]
+        self.settings["Detected polarisation"] = mapped["detected_pol"]
+        self.settings["Collection side"] = mapped["collection_side"]
+        self.settings["Collection angle"] = mapped["collection_angle"]
+        self.settings["Angle of incidence"] = mapped["angle_of_incidence"]
+        self.settings["Global azimuthal angle"] = mapped["global_azimuthal_angle"]
+
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
+        try:
+            idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.incident_pol_cb.setCurrentIndex(idx)
+            idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.detected_pol_cb.setCurrentIndex(idx)
+            idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
+            if idx >= 0:
+                self.collection_side_cb.setCurrentIndex(idx)
+            self.collection_angle_sb.setValue(self.settings["Collection angle"])
+            self.angle_of_incidence_sb.setValue(self.settings["Angle of incidence"])
+            self.global_azimuthal_angle_sb.setValue(self.settings["Global azimuthal angle"])
+            self.redraw_layer_table()
+        finally:
+            for w in self.findChildren(QWidget):
+                w.blockSignals(False)
+
         self.calculation_required = True
         self.refresh_required = True
 
