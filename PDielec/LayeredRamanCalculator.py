@@ -426,6 +426,58 @@ def _line_key(frequency_cm1, sigma_cm1):
     return (round(float(frequency_cm1), 10), round(float(sigma_cm1), 10))
 
 
+def _resolve_modal_pair_group(pair_groups, group_key, frequency_cm1, sigma_cm1):
+    """Return the accumulator for a modal-pair coherent group.
+
+    The same q-channel key can yield different NAC frequencies for different
+    sorted phonon branches.  Keep those spectral lines separate while still
+    coherently accumulating amplitudes that share both q and frequency.
+    """
+    existing = pair_groups.get(group_key)
+    if existing is not None and abs(existing["frequency"] - frequency_cm1) > 1.0e-10:
+        group_key = (group_key, _line_key(frequency_cm1, sigma_cm1))
+        existing = pair_groups.get(group_key)
+
+    if existing is None:
+        existing = {
+            "amp": 0.0 + 0.0j,
+            "frequency": frequency_cm1,
+            "sigma": sigma_cm1,
+            "local_amps": {},
+            "local_weights": {},
+        }
+        pair_groups[group_key] = existing
+    return group_key, existing
+
+
+def _accumulate_modal_pair_group(pair_groups, group_key, frequency_cm1, sigma_cm1,
+                                 amplitude, integrand, weights, local_key, depth_integration):
+    """Accumulate one modal-pair contribution into a coherent q group."""
+    _resolved_key, group_data = _resolve_modal_pair_group(
+        pair_groups, group_key, frequency_cm1, sigma_cm1
+    )
+    group_data["amp"] += amplitude
+    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+        local_amps = group_data["local_amps"]
+        if local_key not in local_amps:
+            local_amps[local_key] = np.zeros_like(integrand, dtype=np.complex128)
+            group_data["local_weights"][local_key] = weights
+        local_amps[local_key] += integrand
+
+
+def _modal_pair_group_intensity(group_data, temperature_K, depth_integration):
+    """Return the Bose-scaled intensity for one modal-pair group."""
+    nu_m = group_data["frequency"]
+    bose = bose_factor(nu_m, temperature_K)
+    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+        local_intensity = 0.0
+        for local_key, local_amp in group_data["local_amps"].items():
+            weights = group_data["local_weights"][local_key]
+            local_intensity += np.dot(weights, np.abs(local_amp) ** 2)
+        return local_intensity * bose, local_intensity
+    return abs(group_data["amp"]) ** 2 * bose, 0.0
+
+
 def _compute_modal_pair_mode_worker(shared, mode_args):
     """Compute one modal-pair Raman mode using picklable cached NAC data."""
     (
@@ -445,6 +497,7 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         modal_pair_q_keys,
         modal_pair_combination,
         approximate_es,
+        depth_integration,
         temperature_K,
     ) = shared
 
@@ -533,32 +586,19 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                         # Debug only — mixes distinct phonon-q final states.
                         group_key = "all"
 
-                    existing = pair_groups.get(group_key)
-                    if existing is None:
-                        pair_groups[group_key] = {
-                            "amp": amp_ij,
-                            "frequency": nu_m,
-                            "sigma": line_sigma,
-                        }
-                    elif abs(existing["frequency"] - nu_m) <= 1.0e-10:
-                        existing["amp"] += amp_ij
-                    else:
-                        split_key = (group_key, _line_key(nu_m, line_sigma))
-                        split_existing = pair_groups.get(split_key)
-                        if split_existing is None:
-                            pair_groups[split_key] = {
-                                "amp": amp_ij,
-                                "frequency": nu_m,
-                                "sigma": line_sigma,
-                            }
-                        else:
-                            split_existing["amp"] += amp_ij
+                    local_key = (layer_index, sl.start, sl.stop)
+                    _accumulate_modal_pair_group(
+                        pair_groups, group_key, nu_m, line_sigma,
+                        amp_ij, integrand, w, local_key, depth_integration,
+                    )
 
     line_accumulator = {}
     for group_data in pair_groups.values():
         nu_m = group_data["frequency"]
         sigma = group_data["sigma"]
-        intensity = abs(group_data["amp"]) ** 2 * bose_factor(nu_m, temperature_K)
+        intensity, _local_intensity = _modal_pair_group_intensity(
+            group_data, temperature_K, depth_integration
+        )
         key = _line_key(nu_m, sigma)
         if key not in line_accumulator:
             line_accumulator[key] = [nu_m, intensity, sigma]
@@ -1297,6 +1337,7 @@ class LayeredRamanCalculator:
                 self._modal_pair_q_keys,
                 self.modal_pair_combination,
                 self.approximate_es,
+                self.depth_integration,
                 self.temperature_K,
             )
             mode_args_list = []
@@ -1414,26 +1455,20 @@ class LayeredRamanCalculator:
                             else:  # MODAL_PAIR_COHERENT_ALL
                                 group_key = "all"
 
-                            existing = pair_groups.get(group_key)
-                            if existing is None:
-                                pair_groups[group_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": line_sigma}
-                            elif abs(existing["frequency"] - nu_m) <= 1.0e-10:
-                                existing["amp"] += amp_ij
-                            else:
-                                split_key = (group_key, _line_key(nu_m, line_sigma))
-                                split_existing = pair_groups.get(split_key)
-                                if split_existing is None:
-                                    pair_groups[split_key] = {"amp": amp_ij, "frequency": nu_m, "sigma": line_sigma}
-                                else:
-                                    split_existing["amp"] += amp_ij
+                            local_key = (rl.layer_index, sl.start, sl.stop)
+                            _accumulate_modal_pair_group(
+                                pair_groups, group_key, nu_m, line_sigma,
+                                amp_ij, integrand, w, local_key, self.depth_integration,
+                            )
 
             line_accumulator = {}
             for gkey, group_data in pair_groups.items():
                 nu_m = group_data["frequency"]
                 sigma = group_data["sigma"]
                 amp = group_data["amp"]
-                bose = bose_factor(nu_m, self.temperature_K)
-                intensity = abs(amp) ** 2 * bose
+                intensity, local_intensity = _modal_pair_group_intensity(
+                    group_data, self.temperature_K, self.depth_integration
+                )
                 lkey = _line_key(nu_m, sigma)
                 if lkey not in line_accumulator:
                     line_accumulator[lkey] = [nu_m, intensity, sigma]
@@ -1443,6 +1478,7 @@ class LayeredRamanCalculator:
                     contributions.append(RamanContribution(
                         mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
                         group_key=gkey, amplitude=amp, intensity=intensity,
+                        local_intensity=local_intensity,
                     ))
 
             for nu_m, intensity, sigma in line_accumulator.values():
