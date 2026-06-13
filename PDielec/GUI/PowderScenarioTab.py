@@ -1490,7 +1490,7 @@ class PowderScenarioTab(ScenarioTab):
             has_born = len(self.reader.born_charges) > 0
             has_normal_modes = np.any(self.reader.mass_weighted_normal_modes)
             has_correction_data = has_hessian and has_born and has_normal_modes
-            is_sphere = np.allclose(np.real(L), (1.0 / 3.0) * np.eye(3), atol=1e-6)
+            is_sphere = np.allclose(np.real(L), (1.0 / 3.0) * np.eye(3), atol=1e-12)
 
         # Volume fraction of crystal in the sample (scales total scattering intensity).
         volume_fraction = self.settings["Volume fraction"]
@@ -2573,10 +2573,10 @@ class PowderScenarioTab(ScenarioTab):
 
         """
         self.settings["Raman laser frequency"] = 785
-        self.settings["Raman laser polarisation"] = "HV"
+        self.settings["Raman laser polarisation"] = "VH"
         self.settings["Raman temperature"] = 298.0
-        self.settings["Raman orientation samples"] = 256
-        self.settings["Raman electro-optic term"] = True
+        self.settings["Raman orientation samples"] = 512
+        self.settings["Raman electro-optic term"] = False
         self.raman_spectrum = []
         return
 
