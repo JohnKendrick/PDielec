@@ -402,11 +402,11 @@ class PowderScenarioTab(ScenarioTab):
         hbox.addWidget(self.matrix_info_le)
         form.addRow(label, hbox)
         #
-        # Set the Matrix density and optical permittivity
+        # Set the Matrix density and displayed permittivity
         #
         self.settings["Matrix density"] = self.matrixMaterial.get_density()
         self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
-        self.settings["Matrix permittivity"] = self.matrixMaterial.get_optical_permittivity()
+        self.settings["Matrix permittivity"] = self._matrix_display_permittivity()
         #
         # Support matrix permittivity
         #
@@ -672,6 +672,18 @@ class PowderScenarioTab(ScenarioTab):
             logger.debug("Finished:: crystal_density - no reader")
             return 1.0
         return self.reader.get_crystal_density()
+
+    def _matrix_display_permittivity(self):
+        """Return the support-matrix permittivity shown in the Powder GUI.
+
+        Powder Raman uses the matrix optical permittivity for particle local-field
+        corrections.  Powder IR/ATR uses the matrix dielectric function at each
+        IR frequency, so the editable support-matrix value should show the
+        zero-frequency dielectric value instead.
+        """
+        if self.spectroscopy == "Powder Raman":
+            return self.matrixMaterial.get_optical_permittivity()
+        return self.matrixPermittivityFunction(0.0)
 
     def open_db_button_clicked(self):
         """Open a new materials' database.
@@ -994,9 +1006,9 @@ class PowderScenarioTab(ScenarioTab):
                 self.settings["Matrix"] = matrix
             else:
                 logger.error("Error: matrix material must have a scalar permittivity")
-        # Use the optical permittivity of the matrix material
+        # Use the spectroscopy-appropriate displayed permittivity of the matrix material
         self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
-        self.settings["Matrix permittivity"] = self.matrixMaterial.get_optical_permittivity()
+        self.settings["Matrix permittivity"] = self._matrix_display_permittivity()
         self.settings["Matrix density"] = self.matrixMaterial.get_density()
         self.density_sb.setValue(self.settings["Matrix density"])
         # Update the matrix material information
@@ -2400,7 +2412,7 @@ class PowderScenarioTab(ScenarioTab):
         elif self.settings["Matrix"] in self.material_names:
             self.matrixMaterial = self.DataBase.get_material(self.settings["Matrix"])
             self.matrixPermittivityFunction = self.matrixMaterial.get_permittivity_function()
-            self.settings["Matrix permittivity"] = self.matrixMaterial.get_optical_permittivity()
+            self.settings["Matrix permittivity"] = self._matrix_display_permittivity()
             self.settings["Matrix density"] = self.matrixMaterial.get_density()
         else:
             logger.error(f"Error: matrix {self.settings['Matrix']} not available in database; available materials are: {self.material_names}")

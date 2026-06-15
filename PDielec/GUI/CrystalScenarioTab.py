@@ -601,6 +601,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Layer combination"] = "Incoherent intensities"
         self.settings["Depth coherence"] = DEPTH_INTEGRATION_COHERENT
         self.settings["Approximate ES"] = False
+        self.settings["Coalesce equivalent layers"] = True
         self.settings["Raman electro-optic term"] = True
         self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
@@ -1203,7 +1204,9 @@ class CrystalScenarioTab(ScenarioTab):
         hkl = [0,0,0]
         if newMaterial.is_tensor():
             hkl = [0,0,1]
-        new_layer = SingleCrystalLayer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thickness_unit="um")
+        dielectricFlag = new_material_name == "Dielectric layer"
+        new_layer = SingleCrystalLayer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thickness_unit="um",
+                                       dielectricFlag=dielectricFlag)
         self.layers.append(new_layer)
         self.generate_layer_settings()
         self.refresh(force=True)
@@ -1549,6 +1552,44 @@ class CrystalScenarioTab(ScenarioTab):
                 return index
         return None
 
+    @staticmethod
+    def _can_merge_equivalent_layers(layer_a, layer_b):
+        """Return True for adjacent coherent layers with identical optical/Raman properties."""
+        if layer_a.get_name() != layer_b.get_name():
+            return False
+        if layer_a.get_hkl() != layer_b.get_hkl():
+            return False
+        if not np.isclose(layer_a.get_azimuthal(), layer_b.get_azimuthal()):
+            return False
+        if layer_a.get_incoherent_option() != layer_b.get_incoherent_option():
+            return False
+        if layer_a.get_incoherent_option() != "Coherent":
+            return False
+        if layer_a.is_dielectric() != layer_b.is_dielectric():
+            return False
+        return True
+
+    @classmethod
+    def _coalesce_equivalent_layers(cls, layers):
+        """Merge adjacent equivalent coherent layers to avoid artificial optical interfaces."""
+        coalesced = []
+        for layer in layers:
+            if coalesced and cls._can_merge_equivalent_layers(coalesced[-1], layer):
+                total_m = coalesced[-1].get_thickness_in_metres() + layer.get_thickness_in_metres()
+                unit = coalesced[-1].get_thickness_unit()
+                coalesced[-1].set_thickness(total_m / thickness_conversion_factors[unit])
+            else:
+                coalesced.append(copy.copy(layer))
+        return coalesced
+
+    @classmethod
+    def _select_finite_raman_layers(cls, layers, coalesce_equivalent=True):
+        """Return finite layers for Crystal Raman optical-field construction."""
+        finite_layers = layers[1:-1]
+        if coalesce_equivalent:
+            return cls._coalesce_equivalent_layers(finite_layers)
+        return finite_layers
+
     def on_layer_button_clicked(self,x,layer,layerIndex):
         """Handle a click on the show layer widget.
 
@@ -1807,6 +1848,17 @@ class CrystalScenarioTab(ScenarioTab):
         _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
         self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
         self.layer_combination_label.setEnabled(not _depth_is_incoherent)
+
+        self.coalesce_layers_cb = QCheckBox(self)
+        self.coalesce_layers_cb.setChecked(self.settings.get("Coalesce equivalent layers", True))
+        self.coalesce_layers_cb.toggled.connect(self.on_coalesce_layers_cb_toggled)
+        self.coalesce_layers_cb.setToolTip(
+            "Merge adjacent equivalent coherent layers before Raman field integration.\n"
+            "Disable only to diagnose artificial-boundary effects in GTM field reconstruction."
+        )
+        label = QLabel("Coalesce equivalent layers")
+        label.setToolTip(self.coalesce_layers_cb.toolTip())
+        self.form.addRow(label, self.coalesce_layers_cb)
 
         # Approximate E_S = E_L
         self.approximate_cb = QCheckBox(self)
@@ -2219,6 +2271,7 @@ class CrystalScenarioTab(ScenarioTab):
             )
             self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
             self.layer_combination_label.setEnabled(not _depth_is_incoherent)
+            self.coalesce_layers_cb.setChecked(self.settings.get("Coalesce equivalent layers", True))
             self.approximate_cb.setChecked(self.settings["Approximate ES"])
             has_eo = getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None
             self.eo_term_cb.setChecked(self.settings.get("Raman electro-optic term", True))
@@ -2441,6 +2494,12 @@ class CrystalScenarioTab(ScenarioTab):
         _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
         self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
         self.layer_combination_label.setEnabled(not _depth_is_incoherent)
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_coalesce_layers_cb_toggled(self, checked):
+        """Handle a toggle of equivalent-layer coalescing."""
+        self.settings["Coalesce equivalent layers"] = checked
         self.calculation_required = True
         self.refresh_required = True
 
@@ -3225,7 +3284,10 @@ class CrystalScenarioTab(ScenarioTab):
         exponent_threshold = self.exponent_threshold
         superstrate = GTM.SemiInfiniteLayer(self.layers[0], exponent_threshold=exponent_threshold)
         substrate   = GTM.SemiInfiniteLayer(self.layers[-1], exponent_threshold=exponent_threshold)
-        selected_layers = self.layers[1:-1]
+        selected_layers = self._select_finite_raman_layers(
+            self.layers,
+            coalesce_equivalent=self.settings.get("Coalesce equivalent layers", True),
+        )
         gtm_layers = []
         for layer in selected_layers:
             incoherent_option = layer.get_incoherent_option()
