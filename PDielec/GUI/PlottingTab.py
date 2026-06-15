@@ -1441,7 +1441,15 @@ class PlottingTab(QWidget):
         self.notebook.progressbars_set_maximum(self.get_total_number_of_frequency_calculations())
         self.legends = []
         plots = 0
-        for scenario in self.get_scenarios_to_plot():
+        colour_cycle = matplotlib.rcParams["axes.prop_cycle"].by_key().get("color", [])
+        scenario_colours = [
+            colour_cycle[index % len(colour_cycle)]
+            for index in range(len(self.notebook.scenarios))
+        ] if colour_cycle else [None] * len(self.notebook.scenarios)
+        selected = self._normalise_scenario_selection()
+        for scenario_index, scenario in enumerate(self.notebook.scenarios):
+            if not selected[scenario_index]:
+                continue
             legend = scenario.settings["Legend"]
             self.legends.append(legend)
             y = scenario.get_result(self.vs_cm1,self.settings["Plot type"])
@@ -1463,7 +1471,7 @@ class PlottingTab(QWidget):
                 if self.settings["Plot type"] == "Powder Molar Absorption":
                     y = y * self.settings["cell concentration"]/self.settings["concentration"]
                 plots += 1
-                line, = self.subplot.plot(x,y,lw=2, label=legend )
+                line, = self.subplot.plot(x,y,lw=2, label=legend, color=scenario_colours[scenario_index] )
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
             if self.settings.get("Spectrum renormalisation", "none") != "none":
