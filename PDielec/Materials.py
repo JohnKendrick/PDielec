@@ -255,7 +255,7 @@ class MaterialsDataBase:
             elif sheet == "vacuum":
                 material = Constant("vacuum",permittivity=1.0,density=0.0)
             elif sheet == "ptfe":
-                material = Constant("ptfe",permittivity=1.0,density=2.2)
+                material = Constant("ptfe",permittivity=2.0,density=2.2)
             elif sheet == "ldpe":
                 material = Constant("ldpe",permittivity=2.25,density=0.925)
             elif sheet == "mdpe":
@@ -274,6 +274,7 @@ class MaterialsDataBase:
         # workbook = xl.load_workbook(self.filename,data_only=True)
         worksheet = self.workbook[sheet]
         unitCell = None
+        optical_permittivity = None
         avector = bvector = cvector = None
         a = b = c = alpha = beta = gamma = None
         for i in range(20):
@@ -286,6 +287,8 @@ class MaterialsDataBase:
                     entry = worksheet[cell2].value.lower()
                 elif "density" in token:
                     density = float(worksheet[cell2].value)
+                elif "optical_permittivity" in token:
+                    optical_permittivity = float(worksheet[cell2].value)
                 elif "a_vector" in token:
                     avector = [ float(cell.value) for cell in [ worksheet["I"+str(i+1)], worksheet["J"+str(i+1)], worksheet["K"+str(i+1)] ] ]
                 elif "b_vector" in token:
@@ -325,6 +328,9 @@ class MaterialsDataBase:
             material = self.read_fpsq(sheet,worksheet,density,unitCell)
         elif "sellmeier" in entry:
             material = self.read_sellmeier(sheet,worksheet,density,unitCell)
+        #
+        # Add the optical permittivity
+        material.optical_permittivity = optical_permittivity
         # Close the work book
         # workbook.close()
         # Add the material to the cache
@@ -642,6 +648,8 @@ class Material:
     ----------
     name : str
         The name of the material. 
+    optical_permittivity : float, optional 
+        The optical permittivity of the material
     density : float, optional 
         The density of the material. If not provided and a cell is given, it will be calculated based on the cell. 
     permittivity_object : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional 
@@ -651,8 +659,10 @@ class Material:
 
     Attributes
     ----------
-    density : float
+    density : float or None
         The density of the material, which may be calculated based on the cell if not provided initially.
+    optical_permittivity : float or None
+        The scalar optical permittivity of the material
     cell : Cell or None
         The unit cell of the material if provided.
     name : str
@@ -705,13 +715,17 @@ class Material:
 
     """
 
-    def __init__(self, name, density=None, permittivity_object=None, cell=None):
+    def __init__(self, name, density=None, permittivity_object=None, cell=None, optical_permittivity=None):
         """Initialise a material with the following parameters.
 
         Parameters
         ----------
         name : str
             The name of the material.
+        optical_permittivity : float, optional
+            The optical permittivity of the material
+            Note this is not the same as epsilon_infinity which is only used to define the dielectric function
+            If this is None, the dielectric function is asked for the optical permittivity
         density : float, optional
             The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
         permittivity_object : DielectricFunction, optional
@@ -723,16 +737,18 @@ class Material:
 
         Notes
         -----
-        The material object is created from the name, density, and unit cell. The permittivity object is specifically
+        The material object is created from the name, density, optical_permittivity and unit cell.
+        The permittivity object is specifically
         created by the children of Material, indicating it's a derived property or capability not initialized directly
         by the Material's constructor but through some other process or method within the child classes.
 
         """
-        self.density            = density
-        self.cell               = cell
-        self.name               = name
-        self.type               = "Base Class"
-        self.permittivity_object = permittivity_object
+        self.density              = density
+        self.optical_permittivity = optical_permittivity
+        self.cell                 = cell
+        self.name                 = name
+        self.type                 = "Base Class"
+        self.permittivity_object  = permittivity_object
         if self.density is None and self.cell is not None:
             self.density = self.cell.get_density("cm")
 
@@ -787,6 +803,7 @@ class Material:
         print("Material name:",self.name)
         print("Material density:",self.density)
         print("Material type:",self.type)
+        print("Material optical permittivity:",self.optical_permittivity)
         print("Material is scalar?:",self.is_scalar())
         print("Material is tensor?:",self.is_tensor())
         print("Material permittivity:",self.get_information())
@@ -874,7 +891,8 @@ class Material:
     def get_optical_permittivity(self):
         """Return the optical (high-frequency) permittivity of this material.
 
-        Delegates to the underlying permittivity object's
+        If the material has an optical permittivity specified it is returned.
+        Otherwise it delegates to the underlying permittivity object's
         :meth:`~PDielec.DielectricFunction.DielectricFunction.optical_permittivity`
         method.  For tensor materials this returns a 3×3 real tensor; for
         scalar materials it returns a float.
@@ -885,7 +903,16 @@ class Material:
             The optical permittivity.
 
         """
-        return self.permittivity_object.optical_permittivity()
+        if self.optical_permittivity is None:
+            return self.permittivity_object.optical_permittivity()
+
+        optical = np.asarray(self.optical_permittivity)
+        if optical.ndim == 0:
+            optical = float(np.real(optical))
+            if self.is_scalar():
+                return optical
+            return optical * np.eye(3)
+        return optical
 
     def set_frequencies(self,frequencies):
         """Set the frequencies for a Lorentzian permittivity.
