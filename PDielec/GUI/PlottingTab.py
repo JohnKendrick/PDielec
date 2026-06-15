@@ -26,6 +26,8 @@ from qtpy.QtCore import QCoreApplication, Qt
 from qtpy.QtWidgets import (
     QApplication,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QDoubleSpinBox,
     QFormLayout,
     QHBoxLayout,
@@ -34,6 +36,8 @@ from qtpy.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSpinBox,
+    QTableWidget,
+    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
@@ -246,6 +250,7 @@ class PlottingTab(QWidget):
         self.settings["Plot type"] = "Powder Molar Absorption"
         self.settings["Frequency unit"] = "wavenumber"
         self.settings["Spectrum renormalisation"] = "none"
+        self.settings["Scenarios to plot"] = []
         # self.settings['Plot title'] = 'Plot Title'
         self.legends = []
         self.vs_cm1 = []
@@ -439,6 +444,21 @@ class PlottingTab(QWidget):
         self.renorm_label = QLabel("Spectrum renormalisation", self)
         self.renorm_label.setToolTip(self.renorm_cb.toolTip())
         form.addRow(self.renorm_label, self.renorm_cb)
+        #
+        # Scenario selection
+        #
+        self.select_scenarios_button = QPushButton("Select scenarios...")
+        self.select_scenarios_button.setToolTip("Choose the scenarios included in the plot")
+        self.select_scenarios_button.clicked.connect(self.open_scenario_selection_dialog)
+        self.scenario_selection_label = QLabel("", self)
+        self.scenario_selection_label.setToolTip(self.select_scenarios_button.toolTip())
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.select_scenarios_button)
+        hbox.addWidget(self.scenario_selection_label)
+        label = QLabel("Scenarios to plot", self)
+        label.setToolTip(self.select_scenarios_button.toolTip())
+        form.addRow(label, hbox)
+        self.refresh_scenario_table()
         # Add a progress bar
         self.progressbar = QProgressBar(self)
         self.progressbar.setToolTip("Show the progress of any calculations")
@@ -536,6 +556,96 @@ class PlottingTab(QWidget):
         for scenario in self.notebook.scenarios:
             scenario.request_refresh()
         logger.debug("Finished:: request_scenario_refresh")
+        return
+
+    def _normalise_scenario_selection(self):
+        """Return a scenario selection list matching the current scenario count."""
+        nscenarios = len(self.notebook.scenarios)
+        selected = list(self.settings.get("Scenarios to plot", []))
+        if len(selected) < nscenarios:
+            selected.extend([True] * (nscenarios - len(selected)))
+        elif len(selected) > nscenarios:
+            selected = selected[:nscenarios]
+        selected = [bool(value) for value in selected]
+        self.settings["Scenarios to plot"] = selected
+        return selected
+
+    def get_scenarios_to_plot(self):
+        """Return the currently selected scenarios."""
+        selected = self._normalise_scenario_selection()
+        return [
+            scenario
+            for index, scenario in enumerate(self.notebook.scenarios)
+            if selected[index]
+        ]
+
+    def refresh_scenario_table(self):
+        """Refresh scenario selection controls."""
+        logger.debug("Start:: refresh_scenario_table")
+        self._normalise_scenario_selection()
+        self._update_scenario_selection_summary()
+        logger.debug("Finished:: refresh_scenario_table")
+        return
+
+    def _update_scenario_selection_summary(self):
+        """Update the compact scenario selection summary in the plotting tab."""
+        if not hasattr(self, "scenario_selection_label"):
+            return
+        selected = self._normalise_scenario_selection()
+        nselected = sum(selected)
+        nscenarios = len(selected)
+        if nscenarios == 0:
+            text = "No scenarios"
+        elif nselected == nscenarios:
+            text = "All scenarios selected"
+        elif nselected == 0:
+            text = "No scenarios selected"
+        else:
+            text = f"{nselected} of {nscenarios} scenarios selected"
+        self.scenario_selection_label.setText(text)
+        return
+
+    def open_scenario_selection_dialog(self):
+        """Open a dialog to choose which scenarios are included in the plot."""
+        logger.debug("Start:: open_scenario_selection_dialog")
+        selected = self._normalise_scenario_selection()
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Select scenarios to plot")
+        vbox = QVBoxLayout()
+        table = QTableWidget(dialog)
+        table.setToolTip("Choose the scenarios included in the plot")
+        table.setColumnCount(3)
+        table.setHorizontalHeaderLabels(["Plot", "Scenario", "Legend"])
+        table.verticalHeader().setVisible(False)
+        table.setRowCount(len(self.notebook.scenarios))
+        for row, scenario in enumerate(self.notebook.scenarios):
+            plot_item = QTableWidgetItem("")
+            plot_item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            plot_item.setCheckState(Qt.Checked if selected[row] else Qt.Unchecked)
+            scenario_item = QTableWidgetItem(str(row + 1))
+            legend_item = QTableWidgetItem(scenario.settings["Legend"])
+            scenario_item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            legend_item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            table.setItem(row,0,plot_item)
+            table.setItem(row,1,scenario_item)
+            table.setItem(row,2,legend_item)
+        table.resizeColumnsToContents()
+        vbox.addWidget(table)
+        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        vbox.addWidget(buttons)
+        dialog.setLayout(vbox)
+        exec_dialog = dialog.exec if hasattr(dialog, "exec") else dialog.exec_
+        if exec_dialog() == QDialog.Accepted:
+            self.settings["Scenarios to plot"] = [
+                table.item(row,0).checkState() == Qt.Checked
+                for row in range(table.rowCount())
+            ]
+            self._update_scenario_selection_summary()
+            self.notebook.progressbars_set_maximum(self.get_total_number_of_frequency_calculations())
+            self.plot()
+        logger.debug("Finished:: open_scenario_selection_dialog")
         return
 
     def on_vinc_changed(self,value):
@@ -762,6 +872,7 @@ class PlottingTab(QWidget):
         idx = self.renorm_cb.findText(self.settings.get("Spectrum renormalisation", "none"), Qt.MatchFixedString)
         if idx >= 0:
             self.renorm_cb.setCurrentIndex(idx)
+        self.refresh_scenario_table()
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
@@ -1330,7 +1441,7 @@ class PlottingTab(QWidget):
         self.notebook.progressbars_set_maximum(self.get_total_number_of_frequency_calculations())
         self.legends = []
         plots = 0
-        for scenario in self.notebook.scenarios:
+        for scenario in self.get_scenarios_to_plot():
             legend = scenario.settings["Legend"]
             self.legends.append(legend)
             y = scenario.get_result(self.vs_cm1,self.settings["Plot type"])
@@ -1384,7 +1495,7 @@ class PlottingTab(QWidget):
         """
         logger.debug("Start:: get_number_of_calculations_required")
         n = 0
-        for scenario in self.notebook.scenarios:
+        for scenario in self.get_scenarios_to_plot():
             n += scenario.get_no_calculations_required()
         logger.debug(f"get_number_of_calculations_required {n}")
         return n
@@ -1406,4 +1517,3 @@ class PlottingTab(QWidget):
         self.settings["Spectrum renormalisation"] = self.renorm_cb.currentText()
         self.plot()
         logger.debug(f"Finished:: on_renorm_cb_activated {index}")
-

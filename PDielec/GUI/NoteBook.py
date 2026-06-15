@@ -405,6 +405,12 @@ class NoteBook(QWidget):
         for i,scenario in enumerate(self.scenarios):
             scenario.set_scenario_index(i)
             self.tabs.setTabText(self.tabOffSet+i,"Scenario "+str(i+1))
+        if self.plottingTab is not None:
+            selected = list(self.plottingTab.settings.get("Scenarios to plot", []))
+            selected.append(True)
+            self.plottingTab.settings["Scenarios to plot"] = selected
+            self.plottingTab.refresh_scenario_table()
+            self.plottingTab.request_refresh()
         logger.debug(f"Finished:: add_scenario for scenarioType {scenarioType} {copyFromIndex}")
         return
 
@@ -567,9 +573,17 @@ class NoteBook(QWidget):
         if len(self.scenarios) > 1:
             self.tabs.removeTab(self.tabOffSet+index)
             del self.scenarios[index]
+            if self.plottingTab is not None:
+                selected = list(self.plottingTab.settings.get("Scenarios to plot", []))
+                if 0 <= index < len(selected):
+                    del selected[index]
+                self.plottingTab.settings["Scenarios to plot"] = selected
             for i,scenario in enumerate(self.scenarios):
                 scenario.set_scenario_index(i)
                 self.tabs.setTabText(self.tabOffSet+i,"Scenario "+str(i+1))
+            if self.plottingTab is not None:
+                self.plottingTab.refresh_scenario_table()
+                self.plottingTab.request_refresh()
             if index-1 < 0:
                 index += 1
             self.tabs.setCurrentIndex(self.tabOffSet+index-1)
@@ -628,6 +642,9 @@ class NoteBook(QWidget):
         for i,scenario in enumerate(self.scenarios):
             scenario.set_scenario_index(i)
             self.tabs.setTabText(self.tabOffSet+i,"Scenario "+str(i+1))
+        if self.plottingTab is not None:
+            self.plottingTab.refresh_scenario_table()
+            self.plottingTab.request_refresh()
         self.scenarios[index].request_refresh()
         if not self.scripting:
             self.scenarios[index].refresh()
@@ -670,7 +687,9 @@ class NoteBook(QWidget):
         if not self.scripting:
             self.tabs.setCurrentIndex(current_index)
         if self.plottingTab is not None:
+            self.plottingTab.settings["Scenarios to plot"] = [True]
             self.plottingTab.set_plot_type_for_spectroscopy(spectroscopy_type)
+            self.plottingTab.refresh_scenario_table()
             self.plottingTab.request_refresh()
             if not self.scripting:
                 self.plottingTab.refresh(force=True)
