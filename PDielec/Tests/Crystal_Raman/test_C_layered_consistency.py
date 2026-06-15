@@ -192,55 +192,26 @@ class TestC2SubdivisionInvariance:
     # provide sufficient coverage of the subdivision invariance property.
 
 
-@pytest.mark.xfail(
-    reason=(
-        "GTMcore.calculate_Efield is not currently invariant to artificial "
-        "boundaries between identical coherent layers when the film is not index-matched"
-    ),
-    strict=True,
-)
-@pytest.mark.parametrize(
-    ("n_sup", "n_sub"),
-    [
-        (1.0, 1.0),
-        (1.0, 1.45),
-    ],
-)
-def test_mismatched_outer_media_subdivision_invariance_expected_failure(n_sup, n_sub):
-    """Document the current GTM field-reconstruction limitation.
-
-    Physically these two systems are equivalent:
-
-        air / layer(100 nm) / substrate
-        air / layer(50 nm) / layer(50 nm) / substrate
-
-    The Raman intensity should therefore be invariant to the artificial internal
-    boundary.  This test is marked xfail until the field reconstruction is fixed
-    rather than worked around by GUI-layer coalescing.
-    """
+def _check_mismatched(n_sup, n_sub):
     system_1 = build_system([(D_BASE, N_LAYER)], n_sup=n_sup, n_sub=n_sub)
     system_2 = build_system([(D_BASE / 2.0, N_LAYER), (D_BASE / 2.0, N_LAYER)], n_sup=n_sup, n_sub=n_sub)
     raman_1 = [make_raman_layer(0, R_ACTIVE, NU_MODE)]
     raman_2 = [make_raman_layer(0, R_ACTIVE, NU_MODE), make_raman_layer(1, R_ACTIVE, NU_MODE)]
+    _, intensity_1 = run_calc(system_1, raman_1, [NU_MODE],
+                              approximate_es=False, coherent_layers=True, n_gauss=30)
+    _, intensity_2 = run_calc(system_2, raman_2, [NU_MODE],
+                              approximate_es=False, coherent_layers=True, n_gauss=30)
+    assert intensity_2[0] / intensity_1[0] == pytest.approx(1.0, rel=1e-5)
 
-    _, intensity_1 = run_calc(
-        system_1,
-        raman_1,
-        [NU_MODE],
-        approximate_es=False,
-        coherent_layers=True,
-        n_gauss=30,
-    )
-    _, intensity_2 = run_calc(
-        system_2,
-        raman_2,
-        [NU_MODE],
-        approximate_es=False,
-        coherent_layers=True,
-        n_gauss=30,
-    )
 
-    assert intensity_2[0] / intensity_1[0] == pytest.approx(1.0, rel=1.0e-5)
+def test_mismatched_air_superstrate_subdivision_invariance():
+    """air / layer / air: subdivision must be invariant after global-phase fix."""
+    _check_mismatched(n_sup=1.0, n_sub=1.0)
+
+
+def test_mismatched_air_silica_subdivision_invariance():
+    """air / layer / silica: subdivision must be invariant after global-phase fix."""
+    _check_mismatched(n_sup=1.0, n_sub=1.45)
 
 
 if __name__ == "__main__":

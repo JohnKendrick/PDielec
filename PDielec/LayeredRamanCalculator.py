@@ -377,7 +377,7 @@ def _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer
         if layer_index not in modal_amps or layer_index >= len(system.layers):
             continue
         layer = system.layers[layer_index]
-        z_reference = boundaries[layer_index + 2]
+        z_reference = boundaries[layer_index + 1]
         amps = modal_amps[layer_index]
         qs_by_layer[layer_index] = layer.qs.copy()
 
@@ -385,7 +385,7 @@ def _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer
         for pt_offset, z_j in enumerate(z_pts):
             global_idx = sl.start + pt_offset
             dKiz = np.array([
-                np.exp(layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
+                np.exp(-layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
                 for n in range(4)
             ], dtype=np.complex128)
 
@@ -1173,11 +1173,11 @@ class LayeredRamanCalculator:
             if sys_k not in modal_amps or sys_k >= len(system.layers):
                 continue
             layer = system.layers[sys_k]
-            # calculate_modal_amplitudes returns the F_bk vector indexed as
-            # k+1 in GTMcore.calculate_Efield.  That vector is propagated from
-            # the back interface of finite layer k, so the partial-depth
-            # exponent must use boundaries[sys_k + 2] as its reference.
-            z_reference = boundaries[sys_k + 2]
+            # calculate_modal_amplitudes returns F_bk[k+1], the amplitude vector
+            # at the front (superstrate-side) interface of finite layer k.
+            # The partial-depth propagation uses boundaries[sys_k + 1] (front)
+            # as the reference, matching calculate_Efield after the global-phase fix.
+            z_reference = boundaries[sys_k + 1]
 
             amps = modal_amps[sys_k]  # shape (8,): [0:4] p-pol, [4:8] s-pol
             qs_by_layer[rl.layer_index] = layer.qs.copy()
@@ -1185,9 +1185,10 @@ class LayeredRamanCalculator:
             z_pts = z_arr[sl]
             for pt_offset, z_j in enumerate(z_pts):
                 global_idx = sl.start + pt_offset
-                # Partial-depth propagation factors (same formula as calculate_Efield)
+                # Partial-depth propagation factors: negated exponent matches
+                # the sign convention in calculate_Efield after the global-phase fix.
                 dKiz = np.array([
-                    np.exp(layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
+                    np.exp(-layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
                     for n in range(4)
                 ], dtype=np.complex128)
 

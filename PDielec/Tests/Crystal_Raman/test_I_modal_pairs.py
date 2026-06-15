@@ -151,7 +151,7 @@ class TestI1ModalAmplitudesSumToTotal:
             amps = modal_amps[0]  # layer index 0
             for n in range(4):
                 phase = np.exp(
-                    layer.propagation_exponents[n] * (z_j - z_front) / layer.thick
+                    -layer.propagation_exponents[n] * (z_j - z_front) / layer.thick
                 )
                 E_modal_sum[:, z_idx] += phase * amps[n] * layer.gamma[n, :]
 
@@ -182,7 +182,7 @@ class TestI1ModalAmplitudesSumToTotal:
             amps = modal_amps[0]
             for n in range(4):
                 phase = np.exp(
-                    layer.propagation_exponents[n] * (z_j - z_front) / layer.thick
+                    -layer.propagation_exponents[n] * (z_j - z_front) / layer.thick
                 )
                 E_modal_sum[:, z_idx] += phase * amps[n + 4] * layer.gamma[n, :]
 
@@ -214,7 +214,7 @@ class TestI1ModalAmplitudesSumToTotal:
         E_sum = np.zeros(3, dtype=np.complex128)
         amps = modal_amps[1]
         for n in range(4):
-            phase = np.exp(layer.propagation_exponents[n] * (z_j - z_front) / layer.thick)
+            phase = np.exp(-layer.propagation_exponents[n] * (z_j - z_front) / layer.thick)
             E_sum += phase * amps[n] * layer.gamma[n, :]
 
         assert np.allclose(E_sum, E_total[0:3, 0], atol=1e-10)

@@ -1911,14 +1911,20 @@ class System:
                     L = self.layers[current_layer-1]
 
             for kk in range(4):
-                # Use stored propagation_exponents scaled to the partial depth rather than
-                # raw L.qs[kk].  This keeps the field propagation consistent with the
-                # transfer matrix for incoherent layer types (IncoherentAveragePhaseLayer,
-                # IncoherentPhaseLayer) whose calculate_propagation_exponents() stores
-                # modified effective wavevectors, not the raw qs.  For coherent layers the
-                # two formulations are identical.
-                partial_exponent = L.propagation_exponents[kk] * (zc - zn[current_layer]) / L.thick
-                dKiz[kk,kk] = np.exp(partial_exponent)
+                if getattr(L, 'coherent', False):
+                    # Coherent layers: negate the propagation exponent so that
+                    # exp(+i ω qs (zc - zn) / c) is used instead of exp(-i ...).
+                    # This gives continuous, physically correct fields at every
+                    # layer boundary (both real interfaces and artificial subdivision
+                    # boundaries), ensuring subdivision invariance for the coherent
+                    # Raman source integral.
+                    partial_exponent = -L.propagation_exponents[kk] * (zc - zn[current_layer]) / L.thick
+                else:
+                    # Incoherent layers keep the original formula so that the
+                    # intentional averaging / phase shifts in propagation_exponents
+                    # are preserved.
+                    partial_exponent = L.propagation_exponents[kk] * (zc - zn[current_layer]) / L.thick
+                dKiz[kk, kk] = np.exp(partial_exponent)
             # IncoherentThickLayer suppresses backward modes entirely in its Ki; apply the
             # same suppression to the partial-depth propagator for consistency.
             if getattr(L, 'inCoherentThick', False):
