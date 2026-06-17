@@ -7,7 +7,7 @@ self.notebook.switch_scenario(0,scenarioType="Powder Raman")
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'Castep'
-tab.settings['Output file name'] = 'ramand3.castep'
+tab.settings['Output file name'] = 'raman.castep'
 tab.settings['Excel file name'] = 'results.xlsx'
 tab.settings['Script file name'] = 'script.py'
 tab.settings['Compatibility mode'] = 'Linux'
