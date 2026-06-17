@@ -171,6 +171,7 @@ test_powder_raman = [
     ]
 
 test_crystal_raman = [
+	"Crystal_Raman/Castep",
     ]
 
 test_powder_infrared = [

@@ -1530,6 +1530,27 @@ class CrystalScenarioTab(ScenarioTab):
             material = self.DataBase.get_material(name)
         return material
 
+    def get_active_layer_depth(self):
+        """Return the total depth of dielectric (active) layers in metres.
+
+        Only applicable for Crystal Raman scenarios; returns None otherwise.
+
+        Returns
+        -------
+        float or None
+            Sum of thicknesses of all dielectric layers in metres, or None if not
+            Crystal Raman or if the total depth is zero.
+
+        """
+        if self.spectroscopy != "Crystal Raman":
+            return None
+        total = sum(
+            layer.get_thickness_in_metres()
+            for layer in self.layers
+            if layer.is_dielectric()
+        )
+        return total if total > 0 else None
+
     def get_dielectric_layer_index(self):
         """Return the index of the dielectric layer in the list of layers.
 

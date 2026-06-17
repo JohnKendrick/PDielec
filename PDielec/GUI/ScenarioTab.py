@@ -178,6 +178,19 @@ class ScenarioTab(QWidget):
         self.material_names = sheets
         return
 
+    def get_active_layer_depth(self):
+        """Return the total depth of active (dielectric) layers, or None if not applicable.
+
+        Overridden by CrystalScenarioTab for Crystal Raman scenarios.
+
+        Returns
+        -------
+        float or None
+            None for all scenario types except Crystal Raman.
+
+        """
+        return None
+
     def get_no_calculations_required(self):
         """Get the number of spectra that need recalculating from this scenario.
 

@@ -440,7 +440,7 @@ class PlottingTab(QWidget):
         if idx >= 0:
             self.renorm_cb.setCurrentIndex(idx)
         self.renorm_cb.activated.connect(self.on_renorm_cb_activated)
-        self.renorm_cb.setToolTip("Renormalise each plotted curve:\n'none' — raw units\n'max=1' — divide each curve by its peak\n'area=1' — divide each curve by its integrated area")
+        self.renorm_cb.setToolTip("Renormalise each plotted curve:\n'none' — raw units\n'max=1' — divide each curve by its peak\n'area=1' — divide each curve by its integrated area\n'layer depth' — divide by total depth of active layers (Crystal Raman only)")
         self.renorm_label = QLabel("Spectrum renormalisation", self)
         self.renorm_label.setToolTip(self.renorm_cb.toolTip())
         form.addRow(self.renorm_label, self.renorm_cb)
@@ -869,7 +869,18 @@ class PlottingTab(QWidget):
             self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
         self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
         self.natoms_sb.setValue(self.settings["Number of atoms"])
-        idx = self.renorm_cb.findText(self.settings.get("Spectrum renormalisation", "none"), Qt.MatchFixedString)
+        # Rebuild renorm combo items to match current spectroscopy, then restore value
+        is_crystal_raman = (self.settings.get("Plot type", "") == "Crystal Raman")
+        current_renorm = self.settings.get("Spectrum renormalisation", "none")
+        self.renorm_cb.clear()
+        if is_crystal_raman:
+            self.renorm_cb.addItems(["none", "max=1", "area=1", "layer depth"])
+        else:
+            self.renorm_cb.addItems(["none", "max=1", "area=1"])
+            if current_renorm == "layer depth":
+                current_renorm = "none"
+                self.settings["Spectrum renormalisation"] = "none"
+        idx = self.renorm_cb.findText(current_renorm, Qt.MatchFixedString)
         if idx >= 0:
             self.renorm_cb.setCurrentIndex(idx)
         self.refresh_scenario_table()
@@ -967,6 +978,22 @@ class PlottingTab(QWidget):
         if new_plot_types:
             self.plot_type_cb.setCurrentIndex(0)
             self.settings["Plot type"] = new_plot_types[0]
+        # Show "layer depth" renorm option only for Crystal Raman
+        is_crystal_raman = (spectroscopy_type == "Crystal Raman")
+        current_renorm = self.settings.get("Spectrum renormalisation", "none")
+        self.renorm_cb.blockSignals(True)
+        self.renorm_cb.clear()
+        if is_crystal_raman:
+            self.renorm_cb.addItems(["none", "max=1", "area=1", "layer depth"])
+        else:
+            self.renorm_cb.addItems(["none", "max=1", "area=1"])
+            if current_renorm == "layer depth":
+                current_renorm = "none"
+                self.settings["Spectrum renormalisation"] = "none"
+        idx = self.renorm_cb.findText(current_renorm, Qt.MatchFixedString)
+        if idx >= 0:
+            self.renorm_cb.setCurrentIndex(idx)
+        self.renorm_cb.blockSignals(False)
         logger.debug(f"Finished:: set_plot_type_for_spectroscopy {spectroscopy_type}")
 
     def on_funits_cb_activated(self, index):
@@ -1464,6 +1491,10 @@ class PlottingTab(QWidget):
                     area = np.trapezoid(y, self.vs_cm1) if len(y) else 0.0
                     if area > 0.0:
                         y = y / area
+                elif norm_mode == "layer depth":
+                    depth = scenario.get_active_layer_depth()
+                    if depth is not None and depth > 0:
+                        y = y / depth
                 if removeFirstElement:
                     y = y[1:]
                 if reverseElements:
@@ -1474,7 +1505,9 @@ class PlottingTab(QWidget):
                 line, = self.subplot.plot(x,y,lw=2, label=legend, color=scenario_colours[scenario_index] )
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
-            if self.settings.get("Spectrum renormalisation", "none") != "none":
+            if self.settings.get("Spectrum renormalisation", "none") == "layer depth":
+                self.subplot.set_ylabel(r"Raman Intensity per metre depth $\mathdefault{(m^{-1})}$")
+            elif self.settings.get("Spectrum renormalisation", "none") != "none":
                 self.subplot.set_ylabel("Arbitrary units")
             else:
                 self.subplot.set_ylabel(self.plot_ylabels[self.settings["Plot type"]])

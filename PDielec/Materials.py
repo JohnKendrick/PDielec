@@ -883,10 +883,36 @@ class Material:
         Returns
         -------
         permittivityObjectFunction
-            Return the permittivity object function
+            Return the permittivity object function.  If the material has an
+            ``optical_permittivity`` and the underlying permittivity object has
+            a finite tabulated frequency range, the returned function clamps to
+            the ``optical_permittivity`` value for frequencies above the highest
+            tabulated frequency.  This prevents unphysical extrapolation of IR
+            dielectric models to optical (laser) frequencies.
 
         """
-        return self.permittivity_object.function()
+        inner = self.permittivity_object.function()
+
+        # Only clamp when we have an explicit optical_permittivity and the
+        # underlying model has a finite tabulated range (vs_cm1 is an array).
+        if self.optical_permittivity is None:
+            return inner
+        vs = self.permittivity_object.vs_cm1
+        if not isinstance(vs, np.ndarray) or vs.size == 0:
+            return inner
+
+        freq_max_cm1 = float(np.max(vs))
+        optical = self.get_optical_permittivity()
+        is_scalar = self.is_scalar()
+
+        def _clamped(v):
+            if v > freq_max_cm1:
+                if is_scalar:
+                    return complex(optical)
+                return np.array(optical, dtype=np.cdouble)
+            return inner(v)
+
+        return _clamped
 
     def get_optical_permittivity(self):
         """Return the optical (high-frequency) permittivity of this material.
