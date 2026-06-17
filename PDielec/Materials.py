@@ -611,6 +611,27 @@ class MaterialsDataBase:
                 return None
         return Sellmeier(sheet,Bs,Cs,density=density,cell=unitCell)
         
+class _ClampedPermittivity:
+    """Picklable wrapper that clamps a permittivity function above a frequency threshold.
+
+    Used by :meth:`Material.get_permittivity_function` so the returned callable
+    can be sent to multiprocessing pool workers via pickle.
+    """
+
+    def __init__(self, inner, freq_max_cm1, optical, is_scalar):
+        self.inner = inner
+        self.freq_max_cm1 = freq_max_cm1
+        self.optical = optical
+        self.is_scalar = is_scalar
+
+    def __call__(self, v):
+        if v > self.freq_max_cm1:
+            if self.is_scalar:
+                return complex(self.optical)
+            return np.array(self.optical, dtype=np.cdouble)
+        return self.inner(v)
+
+
 class Material:
     """A class for representing materials with properties like name, density, permittivity, and unit cell.
 
@@ -905,14 +926,7 @@ class Material:
         optical = self.get_optical_permittivity()
         is_scalar = self.is_scalar()
 
-        def _clamped(v):
-            if v > freq_max_cm1:
-                if is_scalar:
-                    return complex(optical)
-                return np.array(optical, dtype=np.cdouble)
-            return inner(v)
-
-        return _clamped
+        return _ClampedPermittivity(inner, freq_max_cm1, optical, is_scalar)
 
     def get_optical_permittivity(self):
         """Return the optical (high-frequency) permittivity of this material.
