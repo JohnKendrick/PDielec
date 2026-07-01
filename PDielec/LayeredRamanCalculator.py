@@ -138,10 +138,14 @@ _EFIELD_CHUNK_SIZE = 1000
 _MAX_GAUSS_LEGENDRE_PANEL_ORDER = 64
 
 # Tolerance for grouping Berreman modes that are numerically split members of
-# the same propagation-q subspace.  Normal-incidence uniaxial modes can differ
-# by ~1e-10 in qz from eigensolver round-off, while physically distinct forward
-# and backward subspaces differ by O(1).
-_MODAL_Q_GROUP_TOL = 1.0e-8
+# the same propagation-q subspace.  At exact normal incidence on a high-symmetry
+# surface the two in-plane Berreman modes should be degenerate, but DFT numerical
+# noise in the permittivity tensor (ε_∞ and ionic oscillator strengths) typically
+# produces |Δn| ~ 1e-8 to 1e-6 even after point-group symmetrisation of ε_∞.
+# Physically distinct birefringence (e.g. ZnO ordinary vs extraordinary at 10°
+# incidence) gives |Δn| ~ 0.06, so a tolerance of 1e-4 safely groups the
+# numerically-split degenerate modes while leaving genuine birefringence intact.
+_MODAL_Q_GROUP_TOL = 1.0e-4
 
 
 def _gauss_legendre_nodes_weights(n):
@@ -499,6 +503,7 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         approximate_es,
         depth_integration,
         temperature_K,
+        coherent_layers,
     ) = shared
 
     mode_idx, fallback_nu_m, sigma, laser_frequency_cm1, fallback_mode_selected = mode_args
@@ -574,17 +579,19 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                     amp_ij = np.dot(w, integrand)
 
                     if modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                        # Coherently sum all pairs that share the same phonon
-                        # q-vector and detected-pol channel, across all layers.
-                        group_key = modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                        # Coherently sum all pairs sharing the same phonon q-vector
+                        # and detected-pol channel.  When coherent_layers=False each
+                        # layer is squared independently before summing across layers.
+                        q_group = modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                        group_key = q_group if coherent_layers else (layer_index,) + q_group
                     elif modal_pair_combination == MODAL_PAIR_INCOHERENT:
                         # Each (layer, i_L, j_S, det_pol) pair is squared
-                        # independently — diagnostic / compatibility mode.
+                        # independently — already per-layer via layer_index in cache_key.
                         group_key = cache_key
                     else:  # MODAL_PAIR_COHERENT_ALL
                         # Single group: sum all amplitudes then square.
-                        # Debug only — mixes distinct phonon-q final states.
-                        group_key = "all"
+                        # When coherent_layers=False, separate per layer first.
+                        group_key = "all" if coherent_layers else (layer_index, "all")
 
                     local_key = (layer_index, sl.start, sl.stop)
                     _accumulate_modal_pair_group(
@@ -1340,6 +1347,7 @@ class LayeredRamanCalculator:
                 self.approximate_es,
                 self.depth_integration,
                 self.temperature_K,
+                self.coherent_layers,
             )
             mode_args_list = []
             for mode_idx in range(n_modes):
@@ -1450,11 +1458,12 @@ class LayeredRamanCalculator:
                             amp_ij = np.dot(w, integrand)
 
                             if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                                group_key = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                                q_group = self._modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
+                                group_key = q_group if self.coherent_layers else (rl.layer_index,) + q_group
                             elif self.modal_pair_combination == MODAL_PAIR_INCOHERENT:
-                                group_key = cache_key
+                                group_key = cache_key  # already per-layer via layer_index in cache_key
                             else:  # MODAL_PAIR_COHERENT_ALL
-                                group_key = "all"
+                                group_key = "all" if self.coherent_layers else (rl.layer_index, "all")
 
                             local_key = (rl.layer_index, sl.start, sl.stop)
                             _accumulate_modal_pair_group(

@@ -444,6 +444,10 @@ class PlottingTab(QWidget):
         self.renorm_label = QLabel("Spectrum renormalisation", self)
         self.renorm_label.setToolTip(self.renorm_cb.toolTip())
         form.addRow(self.renorm_label, self.renorm_cb)
+        # If the GUI was started with a non-default spectroscopy type, the plot type
+        # and renorm options must be updated now that both combo boxes exist.
+        if initial_spectroscopy != "Powder Infrared":
+            self.set_plot_type_for_spectroscopy(initial_spectroscopy)
         #
         # Scenario selection
         #

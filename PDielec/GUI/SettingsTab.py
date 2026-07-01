@@ -313,6 +313,7 @@ class SettingsTab(QWidget):
         self.settings["Mass definition"] = "average"
         self.settings["Optical permittivity"] = None
         self.settings["Optical permittivity edited"] = False
+        self.settings["Symmetrise optical permittivity"] = True
         self.settings["Spectroscopy type"] = "Powder Infrared"
         self.settings["Raman activity units"] = "polarizability"
         self.spectroscopy_types = ["Powder Infrared", "Powder ATR", "Powder Raman", "Crystal Infrared", "Crystal Raman"]
@@ -438,6 +439,24 @@ class SettingsTab(QWidget):
         self.optical_tw.blockSignals(True)
         self.optical_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
+        self.symmetrise_optical_cb = QCheckBox(self)
+        self.symmetrise_optical_cb.setToolTip(
+            "When checked, the optical permittivity tensor loaded from the DFT output is\n"
+            "averaged over all point-group symmetry operations of the crystal:\n"
+            "  ε_sym[i,j] = (1/N) Σ_R  R[i,a] R[j,b] ε[a,b]\n"
+            "This projects the raw tensor onto the invariant subspace of the crystal\n"
+            "symmetry, removing numerical noise that violates the lattice symmetry\n"
+            "(e.g. spurious in-plane birefringence in a uniaxial crystal).\n"
+            "Disable only if you need to use the raw, unsymmetrised DFT tensor."
+        )
+        self.symmetrise_optical_cb.setText("")
+        self.symmetrise_optical_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.settings["Symmetrise optical permittivity"]:
+            self.symmetrise_optical_cb.setCheckState(Qt.Checked)
+        else:
+            self.symmetrise_optical_cb.setCheckState(Qt.Unchecked)
+        self.symmetrise_optical_cb.stateChanged.connect(self.on_symmetrise_optical_changed)
+        form.addRow(QLabel("Symmetrise optical permittivity?", self), self.symmetrise_optical_cb)
         vbox.addLayout(form)
         #
         # output window
@@ -647,6 +666,9 @@ class SettingsTab(QWidget):
             normal_modes = Calculator.normal_modes(masses, self.mass_weighted_normal_modes)
             # from the normal modes and the born charges calculate the oscillator strengths of each mode
             self.oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
+            # Apply point-group symmetrisation when enabled (same setting as ε_∞)
+            if self.settings.get("Symmetrise optical permittivity", True):
+                self.oscillator_strengths = self._symmetrise_oscillator_strengths(self.oscillator_strengths)
 
         # calculate the intensities from the trace of the oscillator strengths
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
@@ -1027,7 +1049,7 @@ class SettingsTab(QWidget):
             # Build shared NAC ingredients
             masses_au    = np.array(self.reader.masses) * amu
             born_charges = np.array(self.reader.born_charges)
-            eps_inf      = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+            eps_inf      = np.array(self.settings["Optical permittivity"], dtype=float)
             if eps_inf.ndim == 1:
                 eps_inf = np.diag(eps_inf)
             Z_mat   = build_Z_mat(born_charges, masses_au)
@@ -1600,7 +1622,7 @@ class SettingsTab(QWidget):
             from PDielec.RamanPolarCalculator import build_eigvecs_from_normal_modes, build_Z_mat
             masses_au    = np.array(self.reader.masses) * amu
             born_charges = np.array(self.reader.born_charges)
-            eps_inf      = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+            eps_inf      = np.array(self.settings["Optical permittivity"], dtype=float)
             if eps_inf.ndim == 1:
                 eps_inf = np.diag(eps_inf)
             eigvecs = build_eigvecs_from_normal_modes(self.mass_weighted_normal_modes)
@@ -1702,6 +1724,10 @@ class SettingsTab(QWidget):
             self.born_cb.setCheckState(Qt.Checked)
         else:
             self.born_cb.setCheckState(Qt.Unchecked)
+        if self.settings["Symmetrise optical permittivity"]:
+            self.symmetrise_optical_cb.setCheckState(Qt.Checked)
+        else:
+            self.symmetrise_optical_cb.setCheckState(Qt.Unchecked)
         #
         # Unlock signals after refresh
         #
@@ -1765,13 +1791,169 @@ class SettingsTab(QWidget):
         logger.debug("Finished:: refresh_optical_permittivity")
         return
 
-    def set_optical_permittivity_tw(self):
-        """Set the optical permittivity in the current settings.
+    def _get_cartesian_rotations(self):
+        """Return the list of Cartesian rotation matrices for the current unit cell.
 
-        This method sets the 'Optical permittivity' value in the settings to the value of `zerof_optical_dielectric`
-        from the reader, triggers a refresh for the optical permittivity widget, and marks the selected modes for
-        recalculation. It also signals that a refresh is required in the application and ensures the GUI events are
-        processed to keep the application responsive.
+        Fetches symmetry operations from spglib for the final unit cell in the reader,
+        converts the integer fractional-coordinate rotation matrices to Cartesian
+        rotation matrices, and returns them.  Returns an empty list if the reader has
+        no unit-cell data or if spglib is unavailable.
+
+        Returns
+        -------
+        list of ndarray, each shape (3, 3)
+            Cartesian rotation matrices, or ``[]`` on failure.
+
+        """
+        if self.reader is None or not getattr(self.reader, "unit_cells", []):
+            logger.debug("_get_cartesian_rotations: no unit cell")
+            return []
+        cell = self.reader.unit_cells[-1]
+        if len(cell.fractional_coordinates) == 0 or len(cell.element_names) == 0:
+            logger.debug("_get_cartesian_rotations: empty unit cell")
+            return []
+        try:
+            import spglib
+            numbers = cell.get_atomic_numbers()
+            dataset = spglib.get_symmetry(
+                (cell.lattice, cell.fractional_coordinates, numbers),
+                symprec=1.0e-5,
+            )
+        except Exception as exc:
+            logger.debug(f"_get_cartesian_rotations: spglib failed ({exc})")
+            return []
+        rotations = getattr(dataset, "rotations", None)
+        if rotations is None and hasattr(dataset, "get"):
+            rotations = dataset.get("rotations")
+        if rotations is None or len(rotations) == 0:
+            logger.debug("_get_cartesian_rotations: no rotations found")
+            return []
+        lattice_t = np.asarray(cell.lattice, dtype=float).T
+        lattice_t_inv = np.linalg.inv(lattice_t)
+        return [lattice_t @ np.asarray(R, dtype=float) @ lattice_t_inv for R in rotations]
+
+    def _project_rank2_tensor(self, tensor, cart_rotations):
+        """Project a real rank-2 tensor onto the invariant subspace of a point group.
+
+        Computes ``T_sym[i,j] = (1/N) Σ_R  R[i,a] R[j,b] T[a,b]`` over the
+        supplied Cartesian rotation matrices.  If the list is empty the raw tensor
+        is returned unchanged.
+
+        Parameters
+        ----------
+        tensor : array-like, shape (3, 3)
+            Input tensor to symmetrise.
+        cart_rotations : list of ndarray, each shape (3, 3)
+            Cartesian rotation matrices from :meth:`_get_cartesian_rotations`.
+
+        Returns
+        -------
+        ndarray, shape (3, 3)
+            Symmetrised tensor.
+
+        """
+        t = np.array(tensor, dtype=float)
+        if not cart_rotations:
+            return t
+        t_sym = np.zeros((3, 3), dtype=float)
+        for R in cart_rotations:
+            t_sym += np.einsum("ia,jb,ab->ij", R, R, t)
+        t_sym /= float(len(cart_rotations))
+        return t_sym
+
+    def _symmetrise_optical_permittivity(self, tensor):
+        """Return the optical permittivity averaged over the crystal point group.
+
+        Each symmetry operation R (a Cartesian rotation matrix derived from the
+        space-group rotations of the final unit cell) is applied as a rank-2 tensor
+        transformation and the results are averaged:
+
+            ε_sym[i,j] = (1/N) Σ_R  R[i,a] R[j,b] ε[a,b]
+
+        This projects the raw DFT tensor onto the invariant subspace of the crystal
+        point group, removing numerical noise that violates the lattice symmetry
+        (e.g. spurious in-plane birefringence in a uniaxial crystal).
+
+        Falls back to the raw tensor if the reader has no unit-cell information or
+        if spglib is unavailable.
+
+        Parameters
+        ----------
+        tensor : array-like, shape (3, 3)
+            Raw optical permittivity tensor from the DFT reader.
+
+        Returns
+        -------
+        list of list of float
+            Point-group-symmetrised 3×3 tensor as a nested list (same format as
+            stored in ``settings["Optical permittivity"]``).
+
+        """
+        cart_rotations = self._get_cartesian_rotations()
+        t_sym = self._project_rank2_tensor(tensor, cart_rotations)
+        t = np.array(tensor, dtype=float)
+        if cart_rotations:
+            diff = t - t_sym
+            max_abs = float(np.max(np.abs(diff)))
+            max_t = float(np.max(np.abs(t)))
+            logger.info(
+                f"Optical permittivity point-group symmetrisation: "
+                f"max |ε - sym(ε)| = {max_abs:.3g}, "
+                f"relative = {max_abs / max(max_t, 1e-30):.3g}, "
+                f"operations = {len(cart_rotations)}"
+            )
+        return t_sym.tolist()
+
+    def _symmetrise_oscillator_strengths(self, strengths):
+        """Apply point-group symmetrisation to all oscillator strength tensors.
+
+        Each oscillator strength ``S_mode`` is a real 3×3 tensor.  The same
+        rank-2 point-group projection used for ε_∞ is applied to every mode:
+
+            S_sym[mode, i, j] = (1/N) Σ_R  R[i,a] R[j,b] S[mode, a, b]
+
+        For degenerate mode pairs (e.g. E₁ partners), individual mode tensors
+        are modified but their sum is correctly symmetrised:
+        ``S₇_sym + S₈_sym = (S₇ + S₈)_sym``.  This ensures that the full
+        ionic contribution ``Σ S_mode/(ω_mode² − ω²)`` transforms correctly
+        under the crystal point group at every frequency, including the laser
+        wavelength where the Berreman propagation matrix is evaluated.
+
+        Falls back to the raw list if no unit-cell data or spglib is unavailable.
+
+        Parameters
+        ----------
+        strengths : list of array-like, each shape (3, 3)
+            Oscillator strength tensors, one per normal mode, in the same units
+            as returned by ``Calculator.oscillator_strengths``.
+
+        Returns
+        -------
+        list of ndarray, each shape (3, 3)
+            Point-group-symmetrised oscillator strength tensors.
+
+        """
+        cart_rotations = self._get_cartesian_rotations()
+        if not cart_rotations:
+            return strengths
+        sym_strengths = [self._project_rank2_tensor(s, cart_rotations) for s in strengths]
+        # Log the largest change
+        max_change = max(
+            float(np.max(np.abs(np.array(s_raw) - s_sym)))
+            for s_raw, s_sym in zip(strengths, sym_strengths)
+        )
+        logger.info(
+            f"Oscillator strength point-group symmetrisation: "
+            f"max |S - sym(S)| = {max_change:.3g}, operations = {len(cart_rotations)}"
+        )
+        return sym_strengths
+
+    def on_symmetrise_optical_changed(self):
+        """Handle a change in the 'Symmetrise optical permittivity' checkbox.
+
+        Updates the setting, re-applies (or removes) symmetrisation to the currently
+        loaded tensor, and triggers a full refresh so that all scenario tabs pick up
+        the change.
 
         Parameters
         ----------
@@ -1781,9 +1963,43 @@ class SettingsTab(QWidget):
         -------
         None
 
-        """        
+        """
+        logger.debug(f"Start:: on_symmetrise_optical_changed {self.symmetrise_optical_cb.isChecked()}")
+        self.settings["Symmetrise optical permittivity"] = self.symmetrise_optical_cb.isChecked()
+        # Re-load from the reader so the (de)symmetrisation takes effect immediately,
+        # but only if the user has not manually edited the tensor.
+        if not self.settings["Optical permittivity edited"] and self.reader is not None:
+            self.set_optical_permittivity_tw()
+        self.refresh_required = True
+        self.recalculate_selected_modes = True
+        self.refresh()
+        QCoreApplication.processEvents()
+        logger.debug(f"Finished:: on_symmetrise_optical_changed {self.symmetrise_optical_cb.isChecked()}")
+        return
+
+    def set_optical_permittivity_tw(self):
+        """Set the optical permittivity in the current settings.
+
+        This method sets the 'Optical permittivity' value in the settings to the value of `zerof_optical_dielectric`
+        from the reader (optionally Hermitian-symmetrised), triggers a refresh for the optical permittivity widget,
+        and marks the selected modes for recalculation. It also signals that a refresh is required in the application
+        and ensures the GUI events are processed to keep the application responsive.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
         logger.debug("Start:: set_optical_permittivity_tw")
-        self.settings["Optical permittivity"] = self.reader.zerof_optical_dielectric
+        raw = self.reader.zerof_optical_dielectric
+        if self.settings.get("Symmetrise optical permittivity", True):
+            self.settings["Optical permittivity"] = self._symmetrise_optical_permittivity(raw)
+        else:
+            self.settings["Optical permittivity"] = raw
         self.refresh_optical_permittivity_tw()
         self.recalculate_selected_modes = True
         self.refresh_required = True

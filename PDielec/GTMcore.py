@@ -1828,6 +1828,19 @@ class System:
         F_bk[-1,:4] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1,:4])
         F_bk[-1,4:] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1,4:])
 
+        def _efield_Ki(layer):
+            """Return the effective propagation matrix for the field recursion.
+
+            For IncoherentIntensityLayer, phase must not propagate backward through
+            the incoherent medium into the Raman source layer.  Only the attenuation
+            (real part of the exponent) is retained so the substrate etalon is
+            suppressed.  For a lossless material this returns the identity matrix.
+            For all other layer types the full Ki is returned unchanged.
+            """
+            if getattr(layer, 'inCoherentIntensity', False):
+                return np.diag([np.exp(np.real(e)) for e in layer.propagation_exponents]).astype(np.complex128)
+            return layer.Ki
+
         if laynum > 0:
             ## First layer is a special case to handle System.substrate
             zn[-2] = zn[-1]-self.substrate.thick
@@ -1836,8 +1849,9 @@ class System:
             Li = np.matmul(exact_inv_4x4(Aim1), Ai)
             F_bk[-2,:4] = np.matmul(Li, F_ft[-1,:4])
             F_bk[-2,4:] = np.matmul(Li, F_ft[-1,4:])
-            F_ft[-2,:4] = np.matmul(self.layers[-1].Ki, F_bk[-2,:4])
-            F_ft[-2,4:] = np.matmul(self.layers[-1].Ki, F_bk[-2,4:])
+            Ki_last = _efield_Ki(self.layers[-1])
+            F_ft[-2,:4] = np.matmul(Ki_last, F_bk[-2,:4])
+            F_ft[-2,4:] = np.matmul(Ki_last, F_bk[-2,4:])
 
             ## Recursively compute the fields from here
             for kl in range(1, laynum)[::-1]:
@@ -1848,8 +1862,9 @@ class System:
                 # F_ft == E0  //  F_bk == E1
                 F_bk[kl,:4] = np.matmul(Li, F_ft[kl+1,:4])
                 F_bk[kl,4:] = np.matmul(Li, F_ft[kl+1,4:])
-                F_ft[kl,:4] = np.matmul(self.layers[kl-1].Ki, F_bk[kl,:4])
-                F_ft[kl,4:] = np.matmul(self.layers[kl-1].Ki, F_bk[kl,4:])
+                Ki_kl = _efield_Ki(self.layers[kl-1])
+                F_ft[kl,:4] = np.matmul(Ki_kl, F_bk[kl,:4])
+                F_ft[kl,4:] = np.matmul(Ki_kl, F_bk[kl,4:])
 
             zn[0] = zn[1]-self.layers[0].thick
             Aim1 = self.superstrate.Ai
@@ -1930,6 +1945,15 @@ class System:
             if getattr(L, 'inCoherentThick', False):
                 dKiz[2,2] = 0.0
                 dKiz[3,3] = 0.0
+            # IncoherentIntensityLayer: use only attenuation (Re of exponent), discard phase.
+            # This makes the E-field propagation consistent with the intensity-based GammaStar
+            # treatment (element-wise |T|² in TransferMatrixSystem.calculate_GammaStar).
+            # For a transparent layer Re(exponent)=0 so dKiz → identity (no phase accumulated).
+            if getattr(L, 'inCoherentIntensity', False):
+                for kk in range(4):
+                    dKiz[kk, kk] = np.exp(
+                        np.real(L.propagation_exponents[kk]) * (zc - zn[current_layer]) / L.thick
+                    )
 
             #### Eprop propagated from front surface to back of next layer
             Eprop[:4] = np.matmul(dKiz, F_bk[current_layer,:4])
@@ -2183,6 +2207,17 @@ class System:
         F_bk[-1, :4] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1, :4])
         F_bk[-1, 4:] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1, 4:])
 
+        def _efield_Ki_amp(layer):
+            """Attenuation-only Ki for IncoherentIntensityLayer (mirrors _efield_Ki in calculate_Efield).
+
+            Phase must not propagate backward through an incoherent medium into the
+            Raman source layer — only the attenuation (real part of the exponent) is
+            retained.  For a lossless material this returns the identity matrix.
+            """
+            if getattr(layer, 'inCoherentIntensity', False):
+                return np.diag([np.exp(np.real(e)) for e in layer.propagation_exponents]).astype(np.complex128)
+            return layer.Ki
+
         if laynum > 0:
             zn[-2] = zn[-1] - self.substrate.thick
             Aim1 = self.layers[-1].Ai
@@ -2190,8 +2225,9 @@ class System:
             Li = np.matmul(exact_inv_4x4(Aim1), Ai)
             F_bk[-2, :4] = np.matmul(Li, F_ft[-1, :4])
             F_bk[-2, 4:] = np.matmul(Li, F_ft[-1, 4:])
-            F_ft[-2, :4] = np.matmul(self.layers[-1].Ki, F_bk[-2, :4])
-            F_ft[-2, 4:] = np.matmul(self.layers[-1].Ki, F_bk[-2, 4:])
+            Ki_last = _efield_Ki_amp(self.layers[-1])
+            F_ft[-2, :4] = np.matmul(Ki_last, F_bk[-2, :4])
+            F_ft[-2, 4:] = np.matmul(Ki_last, F_bk[-2, 4:])
 
             for kl in range(1, laynum)[::-1]:
                 zn[kl] = zn[kl + 1] - self.layers[kl].thick
@@ -2200,8 +2236,9 @@ class System:
                 Li = np.matmul(exact_inv_4x4(Aim1), Ai)
                 F_bk[kl, :4] = np.matmul(Li, F_ft[kl + 1, :4])
                 F_bk[kl, 4:] = np.matmul(Li, F_ft[kl + 1, 4:])
-                F_ft[kl, :4] = np.matmul(self.layers[kl - 1].Ki, F_bk[kl, :4])
-                F_ft[kl, 4:] = np.matmul(self.layers[kl - 1].Ki, F_bk[kl, 4:])
+                Ki_kl = _efield_Ki_amp(self.layers[kl - 1])
+                F_ft[kl, :4] = np.matmul(Ki_kl, F_bk[kl, :4])
+                F_ft[kl, 4:] = np.matmul(Ki_kl, F_bk[kl, 4:])
 
             zn[0] = zn[1] - self.layers[0].thick
             Aim1 = self.superstrate.Ai

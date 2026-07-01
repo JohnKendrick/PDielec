@@ -1476,7 +1476,7 @@ class PowderScenarioTab(ScenarioTab):
         modes_selected = settings_tab.modes_selected
 
         # Crystal optical permittivity ε_i^∞ (3×3)
-        epsilon_inf_i = np.array(self.reader.zerof_optical_dielectric, dtype=complex)
+        epsilon_inf_i = np.array(self.notebook.settingsTab.settings["Optical permittivity"], dtype=complex)
         I3 = np.eye(3, dtype=complex)
 
         is_none_matrix = (self.settings["Matrix"] == "none")

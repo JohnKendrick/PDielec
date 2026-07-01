@@ -3029,7 +3029,7 @@ class CrystalScenarioTab(ScenarioTab):
             sorted NAC branches, or None.
 
         """
-        eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+        eps_inf = np.array(self.notebook.settingsTab.settings["Optical permittivity"], dtype=float)
         if eps_inf.ndim == 1:
             eps_inf = np.diag(eps_inf)
 
@@ -3125,7 +3125,7 @@ class CrystalScenarioTab(ScenarioTab):
         nac_selected : ndarray or None
 
         """
-        eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+        eps_inf = np.array(self.notebook.settingsTab.settings["Optical permittivity"], dtype=float)
         if eps_inf.ndim == 1:
             eps_inf = np.diag(eps_inf)
 
@@ -3205,7 +3205,7 @@ class CrystalScenarioTab(ScenarioTab):
             ``f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas, nac_selected)``
             or ``(None, None, None, None)`` when ``|q_ph|`` is negligible.
         """
-        eps_inf = np.array(self.reader.zerof_optical_dielectric, dtype=float)
+        eps_inf = np.array(self.notebook.settingsTab.settings["Optical permittivity"], dtype=float)
         if eps_inf.ndim == 1:
             eps_inf = np.diag(eps_inf)
 
@@ -3315,6 +3315,16 @@ class CrystalScenarioTab(ScenarioTab):
             gtm_layers.append(gtm_methods[incoherent_option](layer, exponent_threshold=exponent_threshold))
         if mode == "Scattering matrix":
             system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
+            # IncoherentIntensityLayer is not supported by ScatteringMatrixSystem (its
+            # calculate_GammaStar does not apply the |T|² intensity treatment).  The E-field
+            # fix (attenuation-only propagation) is still applied, but boundary conditions
+            # remain amplitude-based, so results will be approximate.
+            if any(getattr(gl, 'inCoherentIntensity', False) for gl in gtm_layers):
+                logger.warning(
+                    f"{self.settings['Legend']} _build_raman_calculator: "
+                    "IncoherentIntensityLayer combined with Scattering matrix mode — "
+                    "GammaStar intensity treatment is not applied; results are approximate."
+                )
         else:
             system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtm_layers)
 
@@ -3377,8 +3387,7 @@ class CrystalScenarioTab(ScenarioTab):
         has_hessian = hasattr(self.reader, "hessian") and self.reader.hessian is not None
         has_born    = len(self.reader.born_charges) > 0
         has_modes   = np.any(self.reader.mass_weighted_normal_modes)
-        has_optical = (hasattr(self.reader, "zerof_optical_dielectric")
-                       and self.reader.zerof_optical_dielectric is not None)
+        has_optical = self.notebook.settingsTab.settings.get("Optical permittivity") is not None
         can_correct = (layer_nac_mode != "none"
                        and has_hessian and has_born and has_modes and has_optical)
         if layer_nac_mode != "none" and not can_correct:
@@ -3525,6 +3534,71 @@ class CrystalScenarioTab(ScenarioTab):
             modes_selected=modes_selected,
         )
 
+    def _raman_intensities(self, psi_rad, progress_callback=None, pool=None):
+        """Build a Raman calculator and return mode intensities, averaging over phase shifts if needed.
+
+        When no layers use ``"Incoherent (phase averaging)"``, builds the calculator once and
+        returns its mode intensities directly.  When one or more layers use phase averaging,
+        loops over ``n = settings["Number of average incoherence samples"]`` equally-spaced
+        phase shifts (same grid as ``average_incoherent_calculator``), sets each averaging
+        layer's phase shift for every sample, accumulates mode intensities, and returns the
+        average.  Phase shifts are reset to 0.0 after the loop.
+
+        Parameters
+        ----------
+        psi_rad : float
+            Global azimuthal rotation angle in radians.
+        progress_callback : callable or None
+            Optional progress callback forwarded to ``calculate_mode_intensities``.
+        pool : multiprocessing.Pool or None
+            Optional worker pool forwarded to ``calculate_mode_intensities``.
+
+        Returns
+        -------
+        tuple or None
+            ``(active_freqs, active_ints, active_sigmas)`` on success, or ``None`` if the
+            calculator could not be built.
+
+        """
+        avg_layers = [l for l in self.layers if l.get_incoherent_option() == "Incoherent (phase averaging)"]
+
+        if not avg_layers:
+            calculator = self._build_raman_calculator(psi_rad)
+            if calculator is None:
+                return None
+            return calculator.calculate_mode_intensities(progress_callback=progress_callback, pool=pool)
+
+        frac = self.settings["Percentage average incoherence"] / 100.0
+        n = self.settings["Number of average incoherence samples"]
+        beta_values = [frac * 2.0 * np.pi * k / n for k in range(n)]
+
+        freqs = None
+        avg_ints = None
+        sigmas = None
+
+        try:
+            for beta_k in beta_values:
+                for layer in avg_layers:
+                    layer.set_phase_shift(beta_k)
+                calculator = self._build_raman_calculator(psi_rad)
+                if calculator is None:
+                    return None
+                f, ints, s = calculator.calculate_mode_intensities(
+                    progress_callback=progress_callback, pool=pool
+                )
+                if freqs is None:
+                    freqs = f
+                    avg_ints = np.zeros(len(ints))
+                    sigmas = s
+                avg_ints += np.asarray(ints) / n
+        finally:
+            for layer in avg_layers:
+                layer.set_phase_shift(0.0)
+
+        if freqs is None:
+            return None
+        return freqs, avg_ints.tolist(), sigmas
+
     def _calculate_raman(self, vs_cm1):
         """Calculate the layered crystal Raman spectrum via GTM field integration.
 
@@ -3573,13 +3647,8 @@ class CrystalScenarioTab(ScenarioTab):
                     return
 
         psi = np.radians(self.settings["Global azimuthal angle"])
-        calculator = self._build_raman_calculator(psi)
-        if calculator is None:
-            self.calculation_required = False
-            return
 
-        ref_layer = calculator.raman_layers[0]
-        n_modes = len(ref_layer.phonon_frequencies_cm1)
+        n_modes = len(self.notebook.settingsTab.frequencies_cm1)
         n_freqs = len(vs_cm1)
         _count = [0]
         _updated = [0]
@@ -3595,14 +3664,16 @@ class CrystalScenarioTab(ScenarioTab):
             self.notebook.start_pool()
 
         try:
-            active_freqs, active_ints, active_sigmas = calculator.calculate_mode_intensities(
-                progress_callback=_progress_callback,
-                pool=self.notebook.pool,
-            )
+            result = self._raman_intensities(psi, progress_callback=_progress_callback, pool=self.notebook.pool)
         finally:
             remaining = n_freqs - _updated[0]
             if remaining > 0:
                 self.notebook.progressbars_update(increment=remaining)
+
+        if result is None:
+            self.calculation_required = False
+            return
+        active_freqs, active_ints, active_sigmas = result
 
         if len(active_freqs) > 0:
             spectrum = lorentzian_broaden(active_freqs, active_ints, active_sigmas, np.asarray(vs_cm1))
@@ -3655,13 +3726,11 @@ class CrystalScenarioTab(ScenarioTab):
         mode_freqs = None
 
         for psi_deg in psi_values:
-            calculator = self._build_raman_calculator(np.radians(psi_deg))
-            if calculator is None:
+            result = self._raman_intensities(np.radians(psi_deg), pool=self.notebook.pool)
+            if result is None:
                 logger.warning(f"{self.settings['Legend']} _run_azimuthal_sweep: calculator failed at psi={psi_deg:.1f}")
                 return None
-            freqs, ints, sigmas = calculator.calculate_mode_intensities(
-                pool=self.notebook.pool,
-            )
+            freqs, ints, sigmas = result
             if mode_freqs is None:
                 mode_freqs = freqs
             spectrum = lorentzian_broaden(freqs, ints, sigmas, vs) if len(freqs) > 0 else np.zeros(len(vs))
