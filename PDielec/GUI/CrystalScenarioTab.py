@@ -3259,6 +3259,7 @@ class CrystalScenarioTab(ScenarioTab):
                 nac_tensors,
                 nac_sigmas,
                 _selection_for_nac_modes(selected, dominant_to_by_nac),
+                dominant_to_by_nac,
             )
 
         return nac_function
@@ -3347,6 +3348,12 @@ class CrystalScenarioTab(ScenarioTab):
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         sigmas_cm1      = self.notebook.settingsTab.sigmas_cm1
         modes_selected  = self.notebook.settingsTab.modes_selected
+        modal_pair_use_nac = self.notebook.settingsTab.modal_pair_use_nac
+        if len(modal_pair_use_nac) != len(frequencies_cm1):
+            modal_pair_use_nac = self.notebook.settingsTab._classify_modal_pair_nac_modes(
+                self.notebook.settingsTab.oscillator_strengths
+            )
+            self.notebook.settingsTab.modal_pair_use_nac = modal_pair_use_nac
 
         # Extract all settings needed for NAC and for the final LayeredRamanCalculator
         laser_wavelength_nm = self.settings.get("Laser wavelength nm", 532.0)
@@ -3531,6 +3538,7 @@ class CrystalScenarioTab(ScenarioTab):
             depth_integration=depth_integration,
             modal_pairs=modal_pairs_enabled,
             modal_pair_combination=modal_pair_combination,
+            modal_pair_use_nac=modal_pair_use_nac,
             modes_selected=modes_selected,
         )
 

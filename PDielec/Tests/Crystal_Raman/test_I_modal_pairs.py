@@ -924,6 +924,89 @@ class TestI7NACFrequencyShift:
             f"but got active_freqs={active_freqs.tolist()}"
         )
 
+    def test_modal_pairs_maps_to_mode_matched_nac_branch(self):
+        """A TO mode must use the NAC branch mapped back to that TO mode."""
+        system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)
+
+        phonon_freqs = np.array([self.NU_TO_LOW, self.NU_TO_HIGH])
+        to_tensors = [R_PP.astype(float), np.zeros((3, 3), dtype=float)]
+        linewidths = 5.0 * np.ones(2)
+
+        def nac_fn(_q_hat_lab):
+            nac_freqs = np.array([self.NU_TO_HIGH, self.NU_LO])
+            nac_tensors = [np.zeros((3, 3), dtype=complex), R_PP.astype(complex)]
+            nac_sigmas = np.array([5.0, 5.0])
+            dominant_to_by_nac = np.array([1, 0])
+            return nac_freqs, nac_tensors, nac_sigmas, None, dominant_to_by_nac
+
+        rl = RamanLayer(
+            layer_index=0,
+            phonon_frequencies_cm1=phonon_freqs,
+            raman_tensors=to_tensors,
+            rotation_matrix=np.eye(3),
+            nac_function=nac_fn,
+        )
+
+        calc = LayeredRamanCalculator(
+            system=system,
+            raman_layers=[rl],
+            laser_frequency_cm1=self.LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=21,
+            approximate_es=True,
+            modal_pairs=True,
+        )
+        freqs, intensities, _ = calc.calculate_mode_intensities()
+        lo_intensity = sum(i for f, i in zip(freqs, intensities, strict=True) if abs(f - self.NU_LO) < 1.0)
+        wrong_branch_intensity = sum(
+            i for f, i in zip(freqs, intensities, strict=True) if abs(f - self.NU_TO_HIGH) < 1.0
+        )
+
+        assert lo_intensity > 0.0
+        assert wrong_branch_intensity == pytest.approx(0.0, abs=1.0e-40)
+
+    def test_nonpolar_modal_pair_policy_uses_to_frequency(self):
+        """A mode marked q-independent must bypass modal-pair NAC shifts."""
+        system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)
+
+        phonon_freqs = np.array([self.NU_TO_LOW, self.NU_TO_HIGH])
+        to_tensors = [R_PP.astype(float), np.zeros((3, 3), dtype=float)]
+        linewidths = 5.0 * np.ones(2)
+        rl = RamanLayer(
+            layer_index=0,
+            phonon_frequencies_cm1=phonon_freqs,
+            raman_tensors=to_tensors,
+            rotation_matrix=np.eye(3),
+            nac_function=self._make_nac_function(),
+        )
+
+        common = dict(
+            system=system,
+            raman_layers=[rl],
+            laser_frequency_cm1=self.LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=21,
+            approximate_es=True,
+            modal_pairs=True,
+        )
+
+        polar_calc = LayeredRamanCalculator(**common, modal_pair_use_nac=[True, True])
+        polar_freqs, _polar_ints, _ = polar_calc.calculate_mode_intensities()
+        assert np.any(np.abs(np.asarray(polar_freqs) - self.NU_LO) < 1.0)
+
+        nonpolar_calc = LayeredRamanCalculator(**common, modal_pair_use_nac=[False, True])
+        nonpolar_freqs, _nonpolar_ints, _ = nonpolar_calc.calculate_mode_intensities()
+        assert np.any(np.abs(np.asarray(nonpolar_freqs) - self.NU_TO_LOW) < 1.0)
+        assert not np.any(np.abs(np.asarray(nonpolar_freqs) - self.NU_LO) < 1.0)
+
     def test_intensity_at_nac_mode_not_tiny(self):
         """Intensity at the LO peak must be of the same order as without NAC shift.
 

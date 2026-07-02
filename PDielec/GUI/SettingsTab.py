@@ -331,6 +331,7 @@ class SettingsTab(QWidget):
         self.raman_intensities_perp = []
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
+        self.modal_pair_use_nac = []
         self.mass_weighted_normal_modes = None
         self.CrystalPermittivityObject = None
         self.vs_cm1 = []
@@ -672,6 +673,7 @@ class SettingsTab(QWidget):
 
         # calculate the intensities from the trace of the oscillator strengths
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
+        self.modal_pair_use_nac = self._classify_modal_pair_nac_modes(self.oscillator_strengths)
 
         # calculate Raman activities if Raman tensors are available
         raman_tensors = self.reader.get_raman_tensors() if self.reader else None
@@ -1947,6 +1949,36 @@ class SettingsTab(QWidget):
             f"max |S - sym(S)| = {max_change:.3g}, operations = {len(cart_rotations)}"
         )
         return sym_strengths
+
+    def _classify_modal_pair_nac_modes(self, strengths):
+        """Classify modes that should retain q-resolved modal-pair NAC treatment.
+
+        Modes with negligible oscillator-strength tensor are treated as
+        q-independent/non-polar and use the standard coherent total-field path
+        in modal-pair calculations.  Modes with finite oscillator strength are
+        polar/NAC-active and keep q-resolved modal-pair treatment.  This
+        intrinsic classification is stable with respect to layer geometry,
+        incidence angle, and polarisation.
+
+        Parameters
+        ----------
+        strengths : list of array-like, each shape (3, 3)
+            Oscillator strength tensors for all phonon modes.
+
+        Returns
+        -------
+        list of bool
+            ``True`` for polar/NAC-active modes; ``False`` for non-polar modes.
+
+        """
+        if strengths is None:
+            return []
+        norms = [float(np.linalg.norm(np.asarray(s, dtype=float))) for s in strengths]
+        if len(norms) == 0:
+            return []
+        max_norm = max(norms)
+        threshold = max(1.0e-12, 1.0e-10 * max_norm)
+        return [norm > threshold for norm in norms]
 
     def on_symmetrise_optical_changed(self):
         """Handle a change in the 'Symmetrise optical permittivity' checkbox.
