@@ -605,6 +605,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Raman electro-optic term"] = True
         self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
+        self.settings["Modal pair q-angle tolerance"] = 0.0
         self.settings["Azimuthal sweep points"] = 36
         self.settings["Porto notation"] = ""
         # store the notebook
@@ -1947,10 +1948,32 @@ class CrystalScenarioTab(ScenarioTab):
         self.modal_pair_combination_label = QLabel("Modal pair combination")
         self.modal_pair_combination_label.setToolTip(self.modal_pair_combination_cb.toolTip())
         self.form.addRow(self.modal_pair_combination_label, self.modal_pair_combination_cb)
+
+        # q-angle tolerance spin box (visible only when Layer NAC mode = modal_pairs)
+        self.modal_pair_q_tol_sb = QDoubleSpinBox(self)
+        self.modal_pair_q_tol_sb.setRange(0.0, 90.0)
+        self.modal_pair_q_tol_sb.setDecimals(2)
+        self.modal_pair_q_tol_sb.setSingleStep(0.5)
+        self.modal_pair_q_tol_sb.setSuffix(" °")
+        self.modal_pair_q_tol_sb.setValue(self.settings["Modal pair q-angle tolerance"])
+        self.modal_pair_q_tol_sb.setToolTip(
+            "Angular tolerance (degrees) for grouping Berreman pairs into the same phonon\n"
+            "final-state channel when Layer NAC mode = modal_pairs.\n"
+            "Pairs whose q-hat directions differ by less than this angle are summed\n"
+            "coherently. 0° means exact direction matching (recommended default).\n"
+            "Increase if near-degenerate q channels should be treated as one final state."
+        )
+        self.modal_pair_q_tol_sb.valueChanged.connect(self.on_modal_pair_q_tol_sb_changed)
+        self.modal_pair_q_tol_label = QLabel("Modal pair q-angle tolerance")
+        self.modal_pair_q_tol_label.setToolTip(self.modal_pair_q_tol_sb.toolTip())
+        self.form.addRow(self.modal_pair_q_tol_label, self.modal_pair_q_tol_sb)
+
         # Only show this row when Layer NAC mode is "All modes"
         _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
         self.modal_pair_combination_label.setVisible(_show_modal)
         self.modal_pair_combination_cb.setVisible(_show_modal)
+        self.modal_pair_q_tol_label.setVisible(_show_modal)
+        self.modal_pair_q_tol_sb.setVisible(_show_modal)
 
         # Separator: azimuthal sweep
         sweep_label = QLabel("Azimuthal sweep")
@@ -2309,6 +2332,11 @@ class CrystalScenarioTab(ScenarioTab):
             _show_modal = (self.settings.get("Layer NAC mode", "none") == "modal_pairs")
             self.modal_pair_combination_label.setVisible(_show_modal)
             self.modal_pair_combination_cb.setVisible(_show_modal)
+            self.modal_pair_q_tol_label.setVisible(_show_modal)
+            self.modal_pair_q_tol_sb.blockSignals(True)
+            self.modal_pair_q_tol_sb.setValue(self.settings.get("Modal pair q-angle tolerance", 0.0))
+            self.modal_pair_q_tol_sb.blockSignals(False)
+            self.modal_pair_q_tol_sb.setVisible(_show_modal)
         #
         # Unblock signals after refresh
         #
@@ -2578,12 +2606,20 @@ class CrystalScenarioTab(ScenarioTab):
         _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
         self.modal_pair_combination_label.setVisible(_show_modal)
         self.modal_pair_combination_cb.setVisible(_show_modal)
+        self.modal_pair_q_tol_label.setVisible(_show_modal)
+        self.modal_pair_q_tol_sb.setVisible(_show_modal)
         self.calculation_required = True
         self.refresh_required = True
 
     def on_modal_pair_combination_cb_activated(self, index):
         """Handle a change in the modal-pair combination combo box."""
         self.settings["Modal pair combination"] = self.modal_pair_combination_cb.currentText()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def on_modal_pair_q_tol_sb_changed(self, value):
+        """Handle a change in the modal-pair q-angle tolerance spin box."""
+        self.settings["Modal pair q-angle tolerance"] = float(value)
         self.calculation_required = True
         self.refresh_required = True
 
@@ -3368,6 +3404,7 @@ class CrystalScenarioTab(ScenarioTab):
         approximate_es           = self.settings.get("Approximate ES", False)
         depth_integration        = self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
         modal_pair_combination   = self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q)
+        q_tol_deg                = float(self.settings.get("Modal pair q-angle tolerance", 0.0))
         collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
@@ -3539,6 +3576,7 @@ class CrystalScenarioTab(ScenarioTab):
             modal_pairs=modal_pairs_enabled,
             modal_pair_combination=modal_pair_combination,
             modal_pair_use_nac=modal_pair_use_nac,
+            q_tol_deg=q_tol_deg,
             modes_selected=modes_selected,
         )
 

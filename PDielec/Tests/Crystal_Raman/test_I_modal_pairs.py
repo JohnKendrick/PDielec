@@ -268,6 +268,54 @@ class TestI1BModalPairQGrouping:
         expected = 6.0 * weight**2 * bose_factor(NU_MODE, 0.0)
         np.testing.assert_allclose(intensities[0], expected, rtol=1e-12, atol=1e-12)
 
+    def test_same_qhat_different_q_magnitude_modal_pairs_are_coherent(self):
+        """Pairs with the same q direction are summed before squaring."""
+        system, _ = _make_system_and_layer()
+        r_tensor = np.eye(3)
+        linewidths = np.array([5.0])
+
+        def nac_function(_q_hat_lab):
+            return np.array([NU_MODE]), [r_tensor], linewidths
+
+        rl = RamanLayer(
+            layer_index=0,
+            phonon_frequencies_cm1=np.array([NU_MODE]),
+            raman_tensors=[r_tensor],
+            rotation_matrix=np.eye(3),
+            nac_function=nac_function,
+        )
+        calc = LayeredRamanCalculator(
+            system=system,
+            raman_layers=[rl],
+            laser_frequency_cm1=LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="s",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=1,
+            approximate_es=True,
+            modal_pairs=True,
+        )
+
+        def fake_modal_fields(_freq_cm1, _system, _angle_rad, z_arr):
+            modal_fields = np.zeros((4, 2, 3, len(z_arr)), dtype=complex)
+            modal_fields[0, 0, 0, :] = 1.0
+            modal_fields[1, 0, 0, :] = 1.0
+            modal_fields[2, 1, 0, :] = 1.0
+            qs_by_layer = {0: np.array([2.0, 1.0, 0.0, -10.0], dtype=complex)}
+            return modal_fields, qs_by_layer, 0.0
+
+        calc._get_modal_fields_at_gl_points = fake_modal_fields
+
+        _, intensities, _ = calc.calculate_mode_intensities()
+
+        weight = calc._gl_phys_weights[0]
+        coherent_same_qhat = 4.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+        old_q_magnitude_grouping = 2.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+        np.testing.assert_allclose(intensities[0], coherent_same_qhat, rtol=1e-12, atol=1e-12)
+        assert intensities[0] != pytest.approx(old_q_magnitude_grouping)
+
     def test_modal_pairs_respect_incoherent_depth_integration(self):
         """Modal pairs must honour the same depth-integration option as TO modes."""
         system, _ = _make_system_and_layer()

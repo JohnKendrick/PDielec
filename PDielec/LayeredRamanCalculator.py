@@ -879,6 +879,7 @@ class LayeredRamanCalculator:
         modal_pairs=False,
         modal_pair_combination=MODAL_PAIR_GROUP_Q,
         modal_pair_use_nac=None,
+        q_tol_deg=0.0,
         modes_selected=None,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
@@ -914,6 +915,7 @@ class LayeredRamanCalculator:
         self.modal_pairs = bool(modal_pairs)
         self.modal_pair_combination = modal_pair_combination
         self.modal_pair_use_nac = None if modal_pair_use_nac is None else np.asarray(modal_pair_use_nac, dtype=bool)
+        self.q_tol_deg = float(q_tol_deg)
         self.modes_selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
         # NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)
         self._nac_cache = {}
@@ -1389,7 +1391,17 @@ class LayeredRamanCalculator:
                             self._nac_cache[cache_key] = None  # use TO baseline
                         else:
                             q_hat_lab = q_ph / q_ph_norm
-                            q_key = tuple(float(x) for x in np.round(q_ph, decimals=10))
+                            # Group by q-hat direction (NAC depends only on direction,
+                            # not magnitude).  When q_tol_deg > 0 round each component
+                            # to the nearest multiple of sin(q_tol_rad) so that pairs
+                            # whose directions differ by less than q_tol_deg are merged
+                            # into a single coherent group.
+                            if self.q_tol_deg > 0.0:
+                                q_tol_rad = np.deg2rad(self.q_tol_deg)
+                                q_hat_rounded = np.round(q_hat_lab / q_tol_rad) * q_tol_rad
+                                q_key = tuple(float(x) for x in q_hat_rounded)
+                            else:
+                                q_key = tuple(float(x) for x in np.round(q_hat_lab, decimals=10))
                             self._modal_pair_q_keys[cache_key] = (q_key, det_key)
                             self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
