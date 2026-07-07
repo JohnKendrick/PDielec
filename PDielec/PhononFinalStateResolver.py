@@ -17,9 +17,13 @@ keys, and finite-thickness phase-matching weights.
 from __future__ import annotations
 
 import dataclasses
+import logging
+import warnings
 from collections.abc import Hashable, Iterable, Sequence
 
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 COHERENT_FILM = "coherent_film"
 INCOHERENT_DEPTH = "incoherent_depth"
@@ -83,6 +87,27 @@ class OpticalSubspace:
     projector: np.ndarray | None = None
 
 
+@dataclasses.dataclass(frozen=True)
+class NacBranchData:
+    """NAC branch data mapped back to one original TO mode."""
+
+    branch_index: int
+    frequency_cm1: float
+    raman_tensor: np.ndarray
+    linewidth_cm1: float | None = None
+    selected: bool = True
+    overlap: float | None = None
+
+
+@dataclasses.dataclass(frozen=True)
+class PhononSubspace:
+    """A nearly degenerate phonon branch subspace."""
+
+    indices: tuple[int, ...]
+    frequency_cm1: float
+    raman_tensor: np.ndarray
+
+
 class PhononFinalStateResolver:
     """Classify modal-pair phonon final states without optical-solver dependencies."""
 
@@ -93,6 +118,9 @@ class PhononFinalStateResolver:
         angular_tolerance_deg: float = 5.0,
         q_zero_tol: float = 1.0e-3,
         eps_optical: float = 1.0e-4,
+        eps_phonon: float = 1.0e-3,
+        min_nac_overlap: float = 0.5,
+        nonpolar_strength_threshold: float = 1.0e-4,
         layer_coherence_group: Hashable = "layer",
         detected_channel_key: Hashable = "detected",
     ) -> None:
@@ -105,6 +133,9 @@ class PhononFinalStateResolver:
         self.angular_tolerance_deg = float(angular_tolerance_deg)
         self.q_zero_tol = float(q_zero_tol)
         self.eps_optical = float(eps_optical)
+        self.eps_phonon = float(eps_phonon)
+        self.min_nac_overlap = float(min_nac_overlap)
+        self.nonpolar_strength_threshold = float(nonpolar_strength_threshold)
         self.layer_coherence_group = layer_coherence_group
         self.detected_channel_key = detected_channel_key
 
@@ -172,6 +203,114 @@ class PhononFinalStateResolver:
         """Return the physical final-state key for a mode and q-vector."""
         q_key: Hashable | tuple[str] = self.q_class_key(q_ph) if is_polar else ("q_independent",)
         return (self.layer_coherence_group, self.detected_channel_key, int(mode_idx), frequency_key, q_key)
+
+    def is_polar_mode(self, oscillator_strength: float, max_oscillator_strength: float) -> bool:
+        """Return whether a mode is polar according to the configured strength threshold."""
+        max_strength = max(float(max_oscillator_strength), 1.0e-30)
+        return float(oscillator_strength) / max_strength >= self.nonpolar_strength_threshold
+
+    def map_nac_branch(
+        self,
+        mode_idx: int,
+        to_eigenvectors: np.ndarray,
+        nac_eigenvectors: np.ndarray,
+        nac_frequencies_cm1: Sequence[float],
+        nac_raman_tensors: Sequence[np.ndarray],
+        to_frequencies_cm1: Sequence[float] | None = None,
+        nac_linewidths_cm1: Sequence[float] | None = None,
+        nac_selected: Sequence[bool] | None = None,
+        dominant_to_by_nac: Sequence[int] | None = None,
+    ) -> NacBranchData:
+        """Map an original TO mode to the matching NAC branch by subspace overlap."""
+        branch_index, overlap = self.nac_branch_index(
+            mode_idx,
+            to_eigenvectors,
+            nac_eigenvectors,
+            nac_frequencies_cm1=nac_frequencies_cm1,
+            fallback_frequency_cm1=None if to_frequencies_cm1 is None else float(to_frequencies_cm1[mode_idx]),
+            dominant_to_by_nac=dominant_to_by_nac,
+        )
+        linewidth = None if nac_linewidths_cm1 is None else float(nac_linewidths_cm1[branch_index])
+        selected = True if nac_selected is None else bool(nac_selected[branch_index])
+        return NacBranchData(
+            branch_index=branch_index,
+            frequency_cm1=float(nac_frequencies_cm1[branch_index]),
+            raman_tensor=np.asarray(nac_raman_tensors[branch_index], dtype=complex),
+            linewidth_cm1=linewidth,
+            selected=selected,
+            overlap=overlap,
+        )
+
+    def nac_branch_index(
+        self,
+        mode_idx: int,
+        to_eigenvectors: np.ndarray,
+        nac_eigenvectors: np.ndarray,
+        nac_frequencies_cm1: Sequence[float] | None = None,
+        fallback_frequency_cm1: float | None = None,
+        dominant_to_by_nac: Sequence[int] | None = None,
+    ) -> tuple[int, float]:
+        """Return the NAC branch index associated with an original TO mode."""
+        to_modes = self._modes_as_columns(to_eigenvectors)
+        nac_modes = self._modes_as_columns(nac_eigenvectors)
+        to_vec = to_modes[:, int(mode_idx)]
+        to_norm = np.linalg.norm(to_vec)
+        nac_norms = np.linalg.norm(nac_modes, axis=0)
+        overlaps = np.abs(np.conj(nac_modes).T @ to_vec) ** 2
+        overlaps /= np.maximum(nac_norms**2 * to_norm**2, 1.0e-30)
+        branch_index = self._dominant_map_branch(mode_idx, dominant_to_by_nac)
+        if branch_index is None:
+            branch_index = int(np.argmax(overlaps))
+
+        if overlaps[branch_index] < self.min_nac_overlap:
+            branch_index = self._fallback_nac_branch(
+                mode_idx,
+                branch_index,
+                float(overlaps[branch_index]),
+                nac_frequencies_cm1,
+                fallback_frequency_cm1,
+            )
+        return branch_index, float(overlaps[branch_index])
+
+    @staticmethod
+    def _dominant_map_branch(mode_idx: int, dominant_to_by_nac: Sequence[int] | None) -> int | None:
+        if dominant_to_by_nac is None:
+            return None
+        candidates = np.where(np.asarray(dominant_to_by_nac, dtype=int) == int(mode_idx))[0]
+        if len(candidates) == 0:
+            return None
+        return int(candidates[0])
+
+    def _fallback_nac_branch(
+        self,
+        mode_idx: int,
+        branch_index: int,
+        overlap: float,
+        nac_frequencies_cm1: Sequence[float] | None,
+        fallback_frequency_cm1: float | None,
+    ) -> int:
+        msg = (
+            f"NAC branch overlap {overlap:.3f} for TO mode {mode_idx} is below "
+            f"threshold {self.min_nac_overlap:.3f}"
+        )
+        if nac_frequencies_cm1 is None or fallback_frequency_cm1 is None:
+            warnings.warn(f"{msg}; retaining branch {branch_index} because no frequency fallback was supplied", stacklevel=2)
+            logger.warning("%s; retaining branch %s because no frequency fallback was supplied", msg, branch_index)
+            return branch_index
+
+        frequencies = np.asarray(nac_frequencies_cm1, dtype=float)
+        fallback_index = int(np.argmin(np.abs(frequencies - float(fallback_frequency_cm1))))
+        warnings.warn(
+            f"{msg}; falling back from NAC branch {branch_index} to closest-frequency branch {fallback_index}",
+            stacklevel=2,
+        )
+        logger.warning(
+            "%s; falling back from NAC branch %s to closest-frequency branch %s",
+            msg,
+            branch_index,
+            fallback_index,
+        )
+        return fallback_index
 
     def resolve_pair(  # noqa: PLR0911
         self,
@@ -273,23 +412,67 @@ class PhononFinalStateResolver:
     ) -> list[OpticalSubspace]:
         """Group nearly degenerate optical kz values and optionally attach projectors."""
         kz_array = np.asarray(kz_values, dtype=complex)
-        unused = set(range(len(kz_array)))
+        neighbours = self._connected_neighbours(len(kz_array))
+        for idx_a in range(len(kz_array)):
+            for idx_b in range(idx_a + 1, len(kz_array)):
+                if self._kz_degenerate(kz_array[idx_a], kz_array[idx_b]):
+                    neighbours[idx_a].add(idx_b)
+                    neighbours[idx_b].add(idx_a)
+
         groups: list[OpticalSubspace] = []
-        while unused:
-            seed = min(unused)
-            group = [seed]
-            unused.remove(seed)
-            for idx in list(unused):
-                if self._kz_degenerate(kz_array[seed], kz_array[idx]):
-                    group.append(idx)
-                    unused.remove(idx)
+        for group in self._connected_components(neighbours):
             projector = None if modes is None else self.subspace_projector(np.asarray(modes)[:, group])
             groups.append(OpticalSubspace(tuple(group), kz_array[group].mean(), projector))
         return groups
 
+    def classify_phonon_subspaces(
+        self,
+        frequencies_cm1: Sequence[float],
+        raman_tensors: Sequence[np.ndarray],
+    ) -> list[PhononSubspace]:
+        """Group nearly degenerate phonon branches and sum their Raman tensors."""
+        frequencies = np.asarray(frequencies_cm1, dtype=float)
+        neighbours = self._connected_neighbours(len(frequencies))
+        for idx_a in range(len(frequencies)):
+            for idx_b in range(idx_a + 1, len(frequencies)):
+                if self._phonon_degenerate(frequencies[idx_a], frequencies[idx_b]):
+                    neighbours[idx_a].add(idx_b)
+                    neighbours[idx_b].add(idx_a)
+
+        subspaces: list[PhononSubspace] = []
+        for group in self._connected_components(neighbours):
+            tensor = sum(np.asarray(raman_tensors[idx], dtype=complex) for idx in group)
+            subspaces.append(PhononSubspace(tuple(group), float(np.mean(frequencies[group])), tensor))
+        return subspaces
+
     def _kz_degenerate(self, kz_a: complex, kz_b: complex) -> bool:
         mean = max(0.5 * (abs(kz_a) + abs(kz_b)), 1.0e-30)
         return abs(kz_a - kz_b) / mean < self.eps_optical
+
+    def _phonon_degenerate(self, frequency_a: float, frequency_b: float) -> bool:
+        mean = max(0.5 * (abs(frequency_a) + abs(frequency_b)), 1.0e-30)
+        return abs(frequency_a - frequency_b) / mean < self.eps_phonon
+
+    @staticmethod
+    def _connected_neighbours(size: int) -> dict[int, set[int]]:
+        return {idx: set() for idx in range(size)}
+
+    @staticmethod
+    def _connected_components(neighbours: dict[int, set[int]]) -> list[list[int]]:
+        unused = set(neighbours)
+        components = []
+        while unused:
+            stack = [min(unused)]
+            group = []
+            while stack:
+                idx = stack.pop()
+                if idx not in unused:
+                    continue
+                unused.remove(idx)
+                group.append(idx)
+                stack.extend(sorted(neighbours[idx] & unused, reverse=True))
+            components.append(sorted(group))
+        return components
 
     @staticmethod
     def subspace_projector(modes: np.ndarray) -> np.ndarray:
@@ -299,6 +482,14 @@ class PhononFinalStateResolver:
         rank = np.linalg.matrix_rank(mode_array)
         q_basis = q_basis[:, :rank]
         return q_basis @ np.conj(q_basis).T
+
+    @staticmethod
+    def _modes_as_columns(modes: np.ndarray) -> np.ndarray:
+        mode_array = np.asarray(modes, dtype=complex)
+        if mode_array.ndim != 2:
+            msg = f"Expected a 2D mode array, got shape {mode_array.shape}"
+            raise ValueError(msg)
+        return mode_array
 
     @classmethod
     def project_field_onto_subspace(cls, modes: np.ndarray, field: Sequence[complex]) -> np.ndarray:
@@ -313,10 +504,14 @@ class PhononFinalStateResolver:
         incident_field: Sequence[complex],
         detector_field: Sequence[complex],
         detector_amplitude: complex = 1.0 + 0.0j,
+        detector_modes: np.ndarray | None = None,
     ) -> complex:
-        """Return ``d * E_S^T R P E_L`` for a degenerate incident subspace."""
+        """Return ``d * (P_S E_S)^T R P_L E_L`` for optical subspaces."""
         projected_incident = cls.project_field_onto_subspace(incident_modes, incident_field)
-        return detector_amplitude * (np.asarray(detector_field, dtype=complex) @ raman_tensor @ projected_incident)
+        projected_detector = np.asarray(detector_field, dtype=complex)
+        if detector_modes is not None:
+            projected_detector = cls.project_field_onto_subspace(detector_modes, projected_detector)
+        return detector_amplitude * (projected_detector @ raman_tensor @ projected_incident)
 
     @staticmethod
     def coherent_amplitude(
