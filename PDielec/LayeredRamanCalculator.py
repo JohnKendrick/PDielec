@@ -54,12 +54,16 @@ each Raman-active layer.
 """
 
 import dataclasses
+import inspect
 import logging
 from functools import partial
 
 import numpy as np
 
 from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
+from PDielec.OpticalChannelResolver import OpticalChannelResolver, compute_modal_fields_at_points
+from PDielec.PhononFinalStateResolver import PhononFinalStateResolver
+from PDielec.RamanAmplitudeAccumulator import RamanAmplitudeAccumulator
 
 logger = logging.getLogger(__name__)
 
@@ -1215,7 +1219,7 @@ class LayeredRamanCalculator:
             j_modes.extend([0, 2] if pol_idx == 0 else [1, 3])
         return [(i, j) for i in i_modes for j in j_modes]
 
-    def _get_modal_fields_at_gl_points(self, freq_cm1, system, angle_rad, z_arr):
+    def _get_modal_fields_at_gl_points(self, freq_cm1, system, angle_rad, z_arr, system_layer_indices=None):
         """Compute per-Berreman-mode electric field contributions at GL quadrature points.
 
         For each Raman-active layer and each of its GL z-points, the field
@@ -1233,6 +1237,10 @@ class LayeredRamanCalculator:
             Angle of incidence on ``system``'s superstrate, in radians.
         z_arr : ndarray
             GL z-coordinates in metres (in system's coordinate frame).
+        system_layer_indices : list of int or None
+            Optional mapping from Raman-layer physical indices to indices in
+            ``system.layers``.  This is required for reversed systems used by
+            forward-scattering reciprocal fields.
 
         Returns
         -------
@@ -1242,60 +1250,39 @@ class LayeredRamanCalculator:
             pol_idx: 0 = p-pol incidence on system, 1 = s-pol incidence.
             xyz: Ex, Ey, Ez components.
         qs_by_layer : dict of {int: ndarray(4,)}
-            Maps rl.layer_index → layer.qs (4 kz eigenvalues) from ``system``.
-            Note: for forward scatter (reversed system), rl.layer_index is
-            used directly as an index into system.layers, which is an
-            approximation; the physical-layer correspondence is exact only
-            for backscattering (es_system == self.system).
+            Maps physical ``rl.layer_index`` to layer.qs (4 kz eigenvalues)
+            from the corresponding optical-system layer.
         zeta : complex
             In-plane wavevector used for this system/frequency/angle.
         """
-        from PDielec.Constants import speed_light_si  # already imported at module level
-
         freq_hz = freq_cm1 * speed_light_si * 1e2
         system.initialize_sys(freq_hz)
         zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
-
-        modal_amps, zn = system.calculate_modal_amplitudes(freq_hz, zeta)
-
-        # Layer boundaries in system's coordinate frame
-        boundaries = system.get_layers_boundaries()
-
-        N_total = len(z_arr)
-        modal_fields = np.zeros((4, 2, 3, N_total), dtype=np.complex128)
-        qs_by_layer = {}
-
-        for rl_idx, (rl, sl) in enumerate(zip(self.raman_layers, self._gl_layer_slices)):
-            sys_k = rl.layer_index
-            if sys_k not in modal_amps or sys_k >= len(system.layers):
-                continue
-            layer = system.layers[sys_k]
-            # calculate_modal_amplitudes returns F_bk[k+1], the amplitude vector
-            # at the front (superstrate-side) interface of finite layer k.
-            # The partial-depth propagation uses boundaries[sys_k + 1] (front)
-            # as the reference, matching calculate_Efield after the global-phase fix.
-            z_reference = boundaries[sys_k + 1]
-
-            amps = modal_amps[sys_k]  # shape (8,): [0:4] p-pol, [4:8] s-pol
-            qs_by_layer[rl.layer_index] = layer.qs.copy()
-
-            z_pts = z_arr[sl]
-            for pt_offset, z_j in enumerate(z_pts):
-                global_idx = sl.start + pt_offset
-                # Partial-depth propagation factors: negated exponent matches
-                # the sign convention in calculate_Efield after the global-phase fix.
-                dKiz = np.array([
-                    np.exp(-layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
-                    for n in range(4)
-                ], dtype=np.complex128)
-
-                for n in range(4):
-                    Eprop_p = dKiz[n] * amps[n]      # p-pol incidence, mode n
-                    Eprop_s = dKiz[n] * amps[n + 4]  # s-pol incidence, mode n
-                    modal_fields[n, 0, :, global_idx] = Eprop_p * layer.gamma[n, :]
-                    modal_fields[n, 1, :, global_idx] = Eprop_s * layer.gamma[n, :]
-
+        layer_indices = [rl.layer_index for rl in self.raman_layers]
+        modal_fields, qs_by_layer = compute_modal_fields_at_points(
+            system,
+            freq_hz,
+            zeta,
+            np.asarray(z_arr, dtype=float),
+            layer_indices,
+            self._gl_layer_slices,
+            system_layer_indices=system_layer_indices,
+        )
         return modal_fields, qs_by_layer, zeta
+
+    def _call_get_modal_fields_at_gl_points(self, freq_cm1, system, angle_rad, z_arr, system_layer_indices=None):
+        """Call the modal-field helper while tolerating legacy test doubles."""
+        helper = self._get_modal_fields_at_gl_points
+        helper_identity = getattr(helper, "__func__", helper)
+        cached_identity = getattr(self, "_modal_fields_helper_identity", None)
+        if cached_identity is not helper_identity:
+            self._modal_fields_helper_identity = helper_identity
+            self._modal_fields_helper_accepts_system_layer_indices = (
+                "system_layer_indices" in inspect.signature(helper).parameters
+            )
+        if self._modal_fields_helper_accepts_system_layer_indices:
+            return helper(freq_cm1, system, angle_rad, z_arr, system_layer_indices=system_layer_indices)
+        return helper(freq_cm1, system, angle_rad, z_arr)
 
     def _get_modal_q_channels(self, modal_fields, qs_by_layer, pol_idx):
         """Group modal fields into propagation-q subspaces for one polarisation.
@@ -1349,9 +1336,11 @@ class LayeredRamanCalculator:
             total_thick = sum(layer.thick for layer in self.system.layers)
             z_s = total_thick - self._gl_z
             es_system = self.system.reversed_system()
+            detected_system_layer_indices = [len(self.system.layers) - 1 - rl.layer_index for rl in self.raman_layers]
         else:
             z_s = self._gl_z
             es_system = self.system
+            detected_system_layer_indices = [rl.layer_index for rl in self.raman_layers]
 
         ref_layer = self.raman_layers[0]
         n_modes = len(ref_layer.phonon_frequencies_cm1)
@@ -1364,7 +1353,7 @@ class LayeredRamanCalculator:
         )
 
         # Laser modal fields at laser frequency + incident angle
-        modal_fields_L, qs_L_dict, zeta_L = self._get_modal_fields_at_gl_points(
+        modal_fields_L, qs_L_dict, zeta_L = self._call_get_modal_fields_at_gl_points(
             self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
         )
         zeta_L_re = float(np.real(zeta_L))
@@ -1382,8 +1371,12 @@ class LayeredRamanCalculator:
 
         # ES modal fields at laser frequency (used for q_ph / NAC computation,
         # and also for the field integral when approximate_es=True)
-        modal_fields_S_base, qs_S_dict, zeta_S = self._get_modal_fields_at_gl_points(
-            self.laser_frequency_cm1, es_system, self.collection_angle_rad, z_s
+        modal_fields_S_base, qs_S_dict, zeta_S = self._call_get_modal_fields_at_gl_points(
+            self.laser_frequency_cm1,
+            es_system,
+            self.collection_angle_rad,
+            z_s,
+            system_layer_indices=detected_system_layer_indices,
         )
         zeta_S_re = float(np.real(zeta_S))
         channels_S_base = {
@@ -1631,8 +1624,12 @@ class LayeredRamanCalculator:
                                     continue
                                 freq_key = round(float(nu_m), 10)
                                 if freq_key not in channels_s_cache:
-                                    modal_fields_S, qs_S_mode, _ = self._get_modal_fields_at_gl_points(
-                                        nu_S, es_system, self.collection_angle_rad, z_s
+                                    modal_fields_S, qs_S_mode, _ = self._call_get_modal_fields_at_gl_points(
+                                        nu_S,
+                                        es_system,
+                                        self.collection_angle_rad,
+                                        z_s,
+                                        system_layer_indices=detected_system_layer_indices,
                                     )
                                     channels_s_cache[freq_key] = {
                                         pol_idx: self._get_modal_q_channels(modal_fields_S, qs_S_mode, pol_idx)
@@ -1716,6 +1713,190 @@ class LayeredRamanCalculator:
             np.array(active_sigmas),
         )
         return (*result, contributions) if return_contributions else result
+
+    def resolve_optical_channels(self, scattered_frequency_cm1=None):
+        """Return Phase-3 optical channel diagnostics for the configured stack.
+
+        This parallel diagnostic path exposes the incident laser field,
+        reciprocal detector field, q-resolved Berreman channel groups, and
+        external momentum transfer used by the final-state refactor.  It does
+        not alter the existing standard or modal-pairs Raman calculations.
+        """
+        if self.collection_side == "substrate":
+            total_thick = sum(layer.thick for layer in self.system.layers)
+            z_s = total_thick - self._gl_z
+            es_system = self.system.reversed_system()
+        else:
+            z_s = self._gl_z
+            es_system = self.system
+
+        nu_s = self.laser_frequency_cm1 if scattered_frequency_cm1 is None else float(scattered_frequency_cm1)
+        incident_pol_indices = [idx for idx, value in enumerate(self._incident_jones) if abs(value) > 1.0e-14]
+        detected_pol_indices = (
+            [0, 1]
+            if self._detected_jones is None
+            else [idx for idx, value in enumerate(self._detected_jones) if abs(value) > 1.0e-14]
+        )
+        layer_indices = [rl.layer_index for rl in self.raman_layers]
+        if self.collection_side == "substrate":
+            detected_system_layer_indices = [len(self.system.layers) - 1 - layer_index for layer_index in layer_indices]
+        else:
+            detected_system_layer_indices = layer_indices
+        resolver = OpticalChannelResolver(optical_subspace_tolerance=_MODAL_Q_GROUP_TOL)
+
+        incident = resolver.solve(
+            self.system,
+            self.laser_frequency_cm1,
+            self.incident_angle_rad,
+            self._gl_z,
+            layer_indices,
+            self._gl_layer_slices,
+            incident_pol_indices,
+        )
+        detected = resolver.solve(
+            es_system,
+            nu_s,
+            self.collection_angle_rad,
+            z_s,
+            layer_indices,
+            self._gl_layer_slices,
+            detected_pol_indices,
+            system_layer_indices=detected_system_layer_indices,
+        )
+        q_ext = resolver.external_momentum_transfer(
+            self.system,
+            self.laser_frequency_cm1,
+            self.incident_angle_rad,
+            es_system,
+            nu_s,
+            self.collection_angle_rad,
+            self.collection_side,
+        )
+        return {
+            "incident": incident,
+            "detected": detected,
+            "q_ext": q_ext,
+            "z_detected": z_s,
+            "collection_system": es_system,
+        }
+
+    def calculate_phase3_modal_pair_diagnostic_intensities(self):
+        """Run a Phase-3 q-independent modal diagnostic path.
+
+        This uses ``OpticalChannelResolver``, ``PhononFinalStateResolver`` and
+        ``RamanAmplitudeAccumulator`` together.  It is intentionally diagnostic:
+        it covers q-independent/TO tensor accumulation and is meant to compare
+        against simple existing modal-pairs cases before Phase 4 replacement.
+        """
+        if not self.approximate_es:
+            msg = (
+                "Phase-3 modal-pair diagnostics currently require approximate_es=True; "
+                "per-mode Stokes-frequency reciprocal channels will be added before Phase 4."
+            )
+            raise NotImplementedError(msg)
+        diagnostics = self.resolve_optical_channels(scattered_frequency_cm1=self.laser_frequency_cm1)
+        incident = diagnostics["incident"]
+        detected = diagnostics["detected"]
+        phase_resolver = PhononFinalStateResolver()
+        active_freqs = []
+        active_intensities = []
+        active_sigmas = []
+
+        ref_layer = self.raman_layers[0]
+        n_modes = len(ref_layer.phonon_frequencies_cm1)
+        incident_pol_indices = [idx for idx, value in enumerate(self._incident_jones) if abs(value) > 1.0e-14]
+        detected_pol_indices = (
+            [0, 1]
+            if self._detected_jones is None
+            else [idx for idx, value in enumerate(self._detected_jones) if abs(value) > 1.0e-14]
+        )
+        if self.modal_pair_combination == MODAL_PAIR_INCOHERENT:
+            self._raise_if_phase3_incoherent_has_degenerate_channels(incident, detected, incident_pol_indices, detected_pol_indices)
+
+        for mode_idx in range(n_modes):
+            nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
+            if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1 or not self._any_layer_mode_is_selected(mode_idx):
+                continue
+            sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
+            accumulator = RamanAmplitudeAccumulator()
+
+            for rl, layer_slice in zip(self.raman_layers, self._gl_layer_slices, strict=True):
+                if not self._layer_mode_is_selected(rl, mode_idx):
+                    continue
+                r_lab = self._rotate_raman_tensor(rl.raman_tensors[mode_idx], rl.rotation_matrix)
+                weights = self._gl_phys_weights[layer_slice]
+                layer_channels_l = []
+                for pol_idx in incident_pol_indices:
+                    coeff = self._incident_jones[pol_idx]
+                    for channel_idx, channel in enumerate(incident.channels_by_pol.get(pol_idx, {}).get(rl.layer_index, [])):
+                        layer_channels_l.append((pol_idx, channel_idx, coeff, channel))
+
+                layer_channels_s = []
+                for pol_idx in detected_pol_indices:
+                    coeff = 1.0 + 0.0j if self._detected_jones is None else self._detected_jones[pol_idx]
+                    for channel_idx, channel in enumerate(detected.channels_by_pol.get(pol_idx, {}).get(rl.layer_index, [])):
+                        layer_channels_s.append((pol_idx, channel_idx, coeff, channel))
+
+                for _pol_l, channel_l_idx, coeff_l, channel_l in layer_channels_l:
+                    for det_pol_idx, channel_s_idx, coeff_s, channel_s in layer_channels_s:
+                        q_ph = np.array([
+                            np.real(incident.zeta - detected.zeta),
+                            0.0,
+                            np.real(channel_l.qz - channel_s.qz),
+                        ])
+                        classification = phase_resolver.resolve_pair(
+                            mode_idx,
+                            q_ph,
+                            is_polar=False,
+                            frequency_cm1=nu_m,
+                            raman_tensor=r_lab,
+                            linewidth_cm1=sigma,
+                            selected=True,
+                        )
+                        r_e_l = r_lab @ (coeff_l * channel_l.field[:, layer_slice])
+                        integrand = np.einsum("ij,ij->j", coeff_s * channel_s.field[:, layer_slice], r_e_l)
+                        amplitude = np.dot(weights, integrand)
+                        if self.modal_pair_combination == MODAL_PAIR_INCOHERENT:
+                            group = (rl.layer_index, channel_l_idx, det_pol_idx, channel_s_idx)
+                        elif self.coherent_layers:
+                            group = ("all", det_pol_idx)
+                        else:
+                            group = (rl.layer_index, det_pol_idx)
+                        accumulator.add_classified(classification, amplitude, coherence_group=group)
+
+            intensity = accumulator.total_intensity() * bose_factor(nu_m, self.temperature_K)
+            if intensity > 0.0:
+                active_freqs.append(nu_m)
+                active_intensities.append(intensity)
+                active_sigmas.append(sigma)
+
+        return np.array(active_freqs), np.array(active_intensities), np.array(active_sigmas)
+
+    def _raise_if_phase3_incoherent_has_degenerate_channels(
+        self,
+        incident,
+        detected,
+        incident_pol_indices,
+        detected_pol_indices,
+    ):
+        """Reject incoherent diagnostics when q-channels contain modal subspaces."""
+        for rl in self.raman_layers:
+            for pol_idx in incident_pol_indices:
+                for channel in incident.channels_by_pol.get(pol_idx, {}).get(rl.layer_index, []):
+                    if len(channel.mode_indices) > 1:
+                        msg = (
+                            "Phase-3 MODAL_PAIR_INCOHERENT diagnostics require one Berreman mode per optical "
+                            "channel; degenerate subspace channels cannot reproduce raw per-mode incoherent sums."
+                        )
+                        raise NotImplementedError(msg)
+            for pol_idx in detected_pol_indices:
+                for channel in detected.channels_by_pol.get(pol_idx, {}).get(rl.layer_index, []):
+                    if len(channel.mode_indices) > 1:
+                        msg = (
+                            "Phase-3 MODAL_PAIR_INCOHERENT diagnostics require one Berreman mode per optical "
+                            "channel; degenerate subspace channels cannot reproduce raw per-mode incoherent sums."
+                        )
+                        raise NotImplementedError(msg)
 
     # ------------------------------------------------------------------
     # Public interface
