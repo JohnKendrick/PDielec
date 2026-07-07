@@ -314,19 +314,35 @@ class TestFS3WithImplementation:
     property; these tests will verify that the implementation enforces it.
     """
 
-    @pytest.mark.skip(reason="PhononFinalStateResolver not yet implemented — Phase 1")
     def test_accumulator_sums_coherently_across_berreman_pairs(self):
         """RamanAmplitudeAccumulator must sum amplitudes, not intensities."""
-        # Imports will succeed once Phase 1/2 are complete.
-        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver   # noqa: F401
-        from PDielec.RamanAmplitudeAccumulator import RamanAmplitudeAccumulator  # noqa: F401
-        raise NotImplementedError(
-            "Fill in using the API defined in modal_pairs_final_state_design.md "
-            "once PhononFinalStateResolver and RamanAmplitudeAccumulator exist."
-        )
+        from PDielec.RamanAmplitudeAccumulator import RamanAmplitudeAccumulator
 
-    @pytest.mark.skip(reason="PhononFinalStateResolver not yet implemented — Phase 1")
+        accumulator = RamanAmplitudeAccumulator()
+        key = ("layer", "detected", 0, "coherent_film")
+        accumulator.add(key, 0.5 + 0.0j)
+        accumulator.add(key, 0.5 + 0.0j)
+
+        assert accumulator.amplitude(key) == 1.0 + 0.0j
+        assert accumulator.total_intensity() == 1.0
+
     def test_coherent_film_regime_gives_basis_independent_result(self):
         """In coherent_film regime, two basis-rotated setups give the same intensity."""
-        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver   # noqa: F401
-        raise NotImplementedError("Fill in after Phase 1")
+        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver
+
+        rng = np.random.default_rng(77)
+        modes_L = rng.standard_normal((3, 4)) + 1j * rng.standard_normal((3, 4))
+        c_L = rng.standard_normal(4) + 1j * rng.standard_normal(4)
+        modes_S = rng.standard_normal((3, 4)) + 1j * rng.standard_normal((3, 4))
+        d_S = rng.standard_normal(4) + 1j * rng.standard_normal(4)
+        R = np.array([[1.0, 0.2, 0.0], [0.2, 0.4, 0.1], [0.0, 0.1, 0.3]], dtype=complex)
+
+        theta = np.radians(31.0)
+        U = np.array([[np.cos(theta), np.sin(theta)], [-np.sin(theta), np.cos(theta)]])
+        modes_rot, c_rot = _rotate_forward_modes(modes_L, c_L, U)
+
+        resolver = PhononFinalStateResolver(coherence_regime="coherent_film")
+        A_ref = resolver.coherent_amplitude(R, c_L, modes_L, d_S, modes_S)
+        A_rot = resolver.coherent_amplitude(R, c_rot, modes_rot, d_S, modes_S)
+
+        npt.assert_allclose(abs(A_rot) ** 2, abs(A_ref) ** 2, atol=1e-10)

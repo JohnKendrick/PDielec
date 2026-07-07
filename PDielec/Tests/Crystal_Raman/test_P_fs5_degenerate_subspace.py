@@ -346,22 +346,37 @@ class TestFS5WithImplementation:
     Replace the skip marker and fill in the body at that point.
     """
 
-    @pytest.mark.skip(reason="PhononFinalStateResolver not yet implemented — Phase 1")
     def test_resolver_detects_degenerate_optical_subspace(self):
         """PhononFinalStateResolver must detect kz degeneracy and use the projector."""
-        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver  # noqa: F401
-        raise NotImplementedError(
-            "Construct two Berreman modes with |kz_a - kz_b|/mean < eps_optical "
-            "and verify the resolver returns a subspace-projected contribution "
-            "rather than two separate pair amplitudes."
-        )
+        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver
 
-    @pytest.mark.skip(reason="PhononFinalStateResolver not yet implemented — Phase 1")
+        modes = np.array([[1.0, 0.0], [0.0, 1.0], [0.0, 0.0]], dtype=complex)
+        resolver = PhononFinalStateResolver(eps_optical=1e-4)
+        subspaces = resolver.classify_optical_subspaces([1.0 + 0j, 1.0 + 5e-6j], modes=modes)
+
+        assert len(subspaces) == 1
+        assert subspaces[0].indices == (0, 1)
+        npt.assert_allclose(subspaces[0].projector, np.diag([1.0, 1.0, 0.0]), atol=1e-14)
+
     def test_resolver_gives_basis_independent_intensity_at_normal_incidence(self):
         """At normal incidence, intensity must not change when Berreman basis is rotated."""
-        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver  # noqa: F401
-        raise NotImplementedError(
-            "Run PhononFinalStateResolver at normal incidence with a uniaxial "
-            "permittivity tensor and two different orthonormal bases for the "
-            "degenerate forward-mode subspace.  Assert intensities agree to 1e-8."
-        )
+        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver
+
+        R = np.array([[0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 0.0]], dtype=complex)
+        u_a = np.array([1.0, 0.0, 0.0], dtype=complex)
+        u_b = np.array([0.0, 1.0, 0.0], dtype=complex)
+        c_a = 1.0 + 0.0j
+        c_b = 0.0 + 0.0j
+        v = np.array([0.0, 1.0, 0.0], dtype=complex)
+
+        resolver = PhononFinalStateResolver()
+        E_ref = c_a * u_a + c_b * u_b
+        modes_ref = np.column_stack([u_a, u_b])
+        A_ref = resolver.subspace_amplitude(R, modes_ref, E_ref, v)
+
+        u_a_r, u_b_r, c_a_r, c_b_r = _rotate_degenerate_pair(u_a, u_b, c_a, c_b, 45.0)
+        E_rot = c_a_r * u_a_r + c_b_r * u_b_r
+        modes_rot = np.column_stack([u_a_r, u_b_r])
+        A_rot = resolver.subspace_amplitude(R, modes_rot, E_rot, v)
+
+        npt.assert_allclose(abs(A_rot) ** 2, abs(A_ref) ** 2, atol=1e-12)

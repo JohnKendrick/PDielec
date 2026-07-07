@@ -481,12 +481,22 @@ class TestFS16ValidationStub:
             "Verify convergence to the A1(TO) intensity."
         )
 
-    @pytest.mark.skip(reason="PhononFinalStateResolver not yet implemented — Phase 1")
     def test_resolver_uses_F_factor_not_hard_discard(self):
         """PhononFinalStateResolver must weight pairs by F_ij(L), not hard-discard them."""
-        from PDielec.PhononFinalStateResolver import PhononFinalStateResolver  # noqa: F401
-        raise NotImplementedError(
-            "Verify that the resolver returns pair-resolved contributions "
-            "with F_ij(L) weights, not a hard DiscardedInternalComponent "
-            "for cross-pairs."
+        from PDielec.PhononFinalStateResolver import (
+            COHERENT_EXTERNAL_CHANNEL,
+            PhononFinalStateResolver,
         )
+
+        resolver = PhononFinalStateResolver(coherence_regime="coherent_film", q_ext=[0.0, 0.0, 2.0])
+        contribution = resolver.resolve_pair(
+            mode_idx=0,
+            q_ph=[0.0, 0.0, 0.0],
+            is_polar=True,
+            reference_k=1.0,
+            delta_k=-2.0,
+            thickness=0.5,
+        )
+
+        assert contribution.kind == COHERENT_EXTERNAL_CHANNEL
+        npt.assert_allclose(contribution.phase_weight, _F(-2.0, 0.5), atol=1e-14)
