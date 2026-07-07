@@ -536,6 +536,18 @@ rotation within the degenerate subspace, which resolves the fragility at normal
 incidence on uniaxial crystals where the two forward modes are exactly
 degenerate.
 
+The Euclidean projector above is appropriate for the synthetic FS5 tests, where
+the test vectors are explicitly orthonormal.  Real Berreman eigenvectors from
+GTM may not be orthonormal under the ordinary Euclidean inner product,
+especially in anisotropic or absorbing media.  The implementation should either:
+
+- orthonormalise the degenerate electric-field basis before forming the
+  projector; or
+- use the correct biorthogonal projector for the Berreman eigenproblem.
+
+The chosen convention must be documented and tested.  A synthetic orthonormal
+projector test is necessary but not sufficient for the full GTM implementation.
+
 #### Phonon Branch Subspace Detection
 
 Two phonon branches are treated as a degenerate subspace when their NAC
@@ -689,6 +701,10 @@ real phonon data.  The recommended setup is:
 5. Assert that the full external-channel amplitudes agree to within `1e-10`.
    (They will only agree if the accumulator sums all pairs coherently before
    squaring.)
+6. Repeat the same check for a unitary rotation of the reciprocal detector
+   subspace.  The external-channel amplitude must be invariant to basis changes
+   in both `E_L` and `E_S_rec`; testing only the incident side is not sufficient
+   for the final implementation.
 
 **FS5 — Degenerate optical subspace at normal incidence:**
 1. Set up a uniaxial medium at normal incidence.  The two forward Berreman modes
@@ -697,6 +713,9 @@ real phonon data.  The recommended setup is:
    2D subspace).
 3. Compute the Raman intensity for `theta = 0, 15, 30, 45` degrees.
 4. Assert that the intensity is independent of `theta` to within `1e-8`.
+5. Add a second implementation-level test where the reciprocal detector
+   degenerate subspace is rotated.  The same basis-invariance requirement
+   applies on the detector side.
 
 **FS16 — Polar tensor bulk limit:**
 1. Construct synthetic pair amplitudes with two LO-like co-propagating pairs and
