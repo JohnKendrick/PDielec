@@ -483,6 +483,12 @@ def _accumulate_modal_pair_group(pair_groups, group_key, frequency_cm1, sigma_cm
         local_amps[local_key] += integrand
 
 
+def _modal_pair_is_zero_q(cache_key, modal_pair_q_keys):
+    """Return True when a modal-pair cache key represents a zero-q phonon."""
+    q_group = modal_pair_q_keys.get(cache_key)
+    return isinstance(q_group, tuple) and len(q_group) > 0 and q_group[0] == "zero_q"
+
+
 def _modal_pair_group_intensity(group_data, temperature_K, depth_integration):
     """Return the Bose-scaled intensity for one modal-pair group."""
     nu_m = group_data["frequency"]
@@ -516,10 +522,12 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
         nac_cache,
         modal_pair_q_keys,
         modal_pair_combination,
+        modal_pair_include_zero_q,
         approximate_es,
         depth_integration,
         temperature_K,
         coherent_layers,
+        detected_jones,
     ) = shared
 
     mode_idx, fallback_nu_m, sigma, laser_frequency_cm1, fallback_mode_selected = mode_args
@@ -564,6 +572,8 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                 for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
                     cache_key = (layer_index, i_channel, det_pol_idx, j_channel)
                     cache_val = nac_cache.get(cache_key)
+                    if not modal_pair_include_zero_q and _modal_pair_is_zero_q(cache_key, modal_pair_q_keys):
+                        continue
 
                     fallback_selected = fallback_mode_selected
                     layer_selected = modes_selected_by_layer[layer_pos]
@@ -605,6 +615,12 @@ def _compute_modal_pair_mode_worker(shared, mode_args):
                                     detected_pol_indices,
                                 )
                             )
+                            if detected_jones is not None:
+                                for pol_idx, pol_channels in channels_s_cache[freq_key].items():
+                                    coeff = detected_jones[pol_idx]
+                                    for channels in pol_channels.values():
+                                        for channel in channels:
+                                            channel["field"] = coeff * channel["field"]
                         channels_S = channels_s_cache[freq_key]
 
                     layer_channels_S = channels_S[det_pol_idx].get(layer_index, [])
@@ -763,6 +779,27 @@ def lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, f
     return spectrum
 
 
+def _polarisation_to_jones(pol, name, allow_unpolarised=False):
+    """Return a normalised p/s Jones vector, or None for unpolarised detection."""
+    if isinstance(pol, str):
+        if pol == "p":
+            return np.array([1.0 + 0j, 0.0 + 0j])
+        if pol == "s":
+            return np.array([0.0 + 0j, 1.0 + 0j])
+        if allow_unpolarised and pol == "unpolarised":
+            return None
+        allowed = "'p' or 's'" if not allow_unpolarised else "'p', 's', or 'unpolarised'"
+        raise ValueError(f"{name} must be {allowed}, got '{pol}'")
+
+    arr = np.asarray(pol, dtype=complex)
+    if arr.shape != (2,):
+        raise ValueError(f"{name} Jones vector must have shape (2,), got {arr.shape}")
+    norm = np.linalg.norm(arr)
+    if norm == 0.0:
+        raise ValueError(f"{name} Jones vector must be non-zero")
+    return arr / norm
+
+
 # ---------------------------------------------------------------------------
 # Main calculator class
 # ---------------------------------------------------------------------------
@@ -806,11 +843,12 @@ class LayeredRamanCalculator:
         Laser frequency in cm⁻¹.
     incident_angle_rad : float
         Angle of incidence in radians, measured from the surface normal.
-    incident_pol : {'p', 's'}
-        Incident polarisation channel.
-    detected_pol : {'p', 's', 'unpolarised'}
+    incident_pol : {'p', 's'} or array_like, shape (2,)
+        Incident polarisation channel, or a Jones vector ``[cp, cs]``.
+    detected_pol : {'p', 's', 'unpolarised'} or array_like, shape (2,)
         Detected polarisation channel.  'unpolarised' sums the p and s
-        intensities incoherently (no analyser on the detector side).
+        intensities incoherently (no analyser on the detector side).  A Jones
+        vector ``[cp, cs]`` describes a linear analyser channel.
     temperature_K : float
         Sample temperature in Kelvin for the Bose-Einstein factor.
     linewidths_cm1 : array_like, shape (n_modes,)
@@ -839,6 +877,11 @@ class LayeredRamanCalculator:
         squaring and is appropriate for thin coherent films.  ``'Incoherent
         intensity'`` integrates the local intensity and is more stable for
         thick or bulk samples where long-range phase coherence is not physical.
+    modal_pair_include_zero_q : bool, optional
+        In modal-pair NAC calculations, include zero-momentum pair channels as
+        TO-frequency lines.  The default is ``True`` for direct calculator use;
+        GUI backscattering scenarios set this to ``False`` in auto mode so that
+        Porto-style backscattering spectra retain only finite-q polar branches.
 
     Notes
     -----
@@ -879,14 +922,13 @@ class LayeredRamanCalculator:
         modal_pairs=False,
         modal_pair_combination=MODAL_PAIR_GROUP_Q,
         modal_pair_use_nac=None,
+        modal_pair_include_zero_q=True,
         q_tol_deg=0.0,
         modes_selected=None,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
-        if incident_pol not in ("p", "s"):
-            raise ValueError(f"incident_pol must be 'p' or 's', got '{incident_pol}'")
-        if detected_pol not in ("p", "s", "unpolarised"):
-            raise ValueError(f"detected_pol must be 'p', 's', or 'unpolarised', got '{detected_pol}'")
+        incident_jones = _polarisation_to_jones(incident_pol, "incident_pol", allow_unpolarised=False)
+        detected_jones = _polarisation_to_jones(detected_pol, "detected_pol", allow_unpolarised=True)
         if collection_side not in ("superstrate", "substrate"):
             raise ValueError(f"collection_side must be 'superstrate' or 'substrate', got '{collection_side}'")
         if depth_integration not in DEPTH_INTEGRATION_OPTIONS:
@@ -915,6 +957,7 @@ class LayeredRamanCalculator:
         self.modal_pairs = bool(modal_pairs)
         self.modal_pair_combination = modal_pair_combination
         self.modal_pair_use_nac = None if modal_pair_use_nac is None else np.asarray(modal_pair_use_nac, dtype=bool)
+        self.modal_pair_include_zero_q = bool(modal_pair_include_zero_q)
         self.q_tol_deg = float(q_tol_deg)
         self.modes_selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
         # NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)
@@ -926,9 +969,8 @@ class LayeredRamanCalculator:
         #     of p- and s-pol incident fields used in the overlap integral.
         # _detected_jones : (cp, cs) or None — None signals incoherent (no-analyser)
         #     detection: both p and s amplitudes are squared and summed.
-        _pol_to_jones = {"p": np.array([1.0 + 0j, 0.0]), "s": np.array([0.0, 1.0 + 0j])}
-        self._incident_jones = _pol_to_jones[incident_pol]
-        self._detected_jones = None if detected_pol == "unpolarised" else _pol_to_jones[detected_pol]
+        self._incident_jones = incident_jones
+        self._detected_jones = detected_jones
 
         # Gauss-Legendre nodes and weights on [-1, 1].  Large point counts use
         # a composite fixed-order Gauss rule so thick layers remain practical.
@@ -1160,15 +1202,17 @@ class LayeredRamanCalculator:
         list of (int, int)
             Cartesian product of incident × detected mode sets.
         """
-        # incident_pol is restricted to 'p' or 's' by __init__ validation.
-        i_modes = [0, 2] if self.incident_pol == "p" else [1, 3]
-        # Detected modes from detected_pol ('p', 's', or 'unpolarised').
-        if self.detected_pol == "p":
-            j_modes = [0, 2]
-        elif self.detected_pol == "s":
-            j_modes = [1, 3]
+        incident_pol_indices = [idx for idx, value in enumerate(self._incident_jones) if abs(value) > 1.0e-14]
+        i_modes = []
+        for pol_idx in incident_pol_indices:
+            i_modes.extend([0, 2] if pol_idx == 0 else [1, 3])
+        if self._detected_jones is None:
+            detected_pol_indices = [0, 1]
         else:
-            j_modes = [0, 1, 2, 3]
+            detected_pol_indices = [idx for idx, value in enumerate(self._detected_jones) if abs(value) > 1.0e-14]
+        j_modes = []
+        for pol_idx in detected_pol_indices:
+            j_modes.extend([0, 2] if pol_idx == 0 else [1, 3])
         return [(i, j) for i in i_modes for j in j_modes]
 
     def _get_modal_fields_at_gl_points(self, freq_cm1, system, angle_rad, z_arr):
@@ -1312,17 +1356,29 @@ class LayeredRamanCalculator:
         ref_layer = self.raman_layers[0]
         n_modes = len(ref_layer.phonon_frequencies_cm1)
 
-        incident_pol_idx = 0 if self.incident_pol == "p" else 1
-        detected_pol_indices = [0, 1] if self.detected_pol == "unpolarised" else [
-            0 if self.detected_pol == "p" else 1
-        ]
+        incident_pol_indices = [idx for idx, value in enumerate(self._incident_jones) if abs(value) > 1.0e-14]
+        detected_pol_indices = (
+            [0, 1]
+            if self._detected_jones is None
+            else [idx for idx, value in enumerate(self._detected_jones) if abs(value) > 1.0e-14]
+        )
 
         # Laser modal fields at laser frequency + incident angle
         modal_fields_L, qs_L_dict, zeta_L = self._get_modal_fields_at_gl_points(
             self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
         )
         zeta_L_re = float(np.real(zeta_L))
-        channels_L = self._get_modal_q_channels(modal_fields_L, qs_L_dict, incident_pol_idx)
+        channels_L_by_pol = {
+            pol_idx: self._get_modal_q_channels(modal_fields_L, qs_L_dict, pol_idx)
+            for pol_idx in incident_pol_indices
+        }
+        channels_L = {}
+        for pol_idx, pol_channels in channels_L_by_pol.items():
+            coeff = self._incident_jones[pol_idx]
+            for layer_index, channels in pol_channels.items():
+                merged = channels_L.setdefault(layer_index, [])
+                for channel in channels:
+                    merged.append({"qz": channel["qz"], "field": coeff * channel["field"]})
 
         # ES modal fields at laser frequency (used for q_ph / NAC computation,
         # and also for the field integral when approximate_es=True)
@@ -1334,6 +1390,12 @@ class LayeredRamanCalculator:
             pol_idx: self._get_modal_q_channels(modal_fields_S_base, qs_S_dict, pol_idx)
             for pol_idx in detected_pol_indices
         }
+        if self._detected_jones is not None:
+            for pol_idx, pol_channels in channels_S_base.items():
+                coeff = self._detected_jones[pol_idx]
+                for channels in pol_channels.values():
+                    for channel in channels:
+                        channel["field"] = coeff * channel["field"]
 
         if pool is not None:
             E_L_standard = self._get_field_parallel(
@@ -1387,7 +1449,7 @@ class LayeredRamanCalculator:
                         q_ph_norm = np.linalg.norm(q_ph)
                         det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
                         if q_ph_norm < 1e-8 or rl.nac_function is None:
-                            self._modal_pair_q_keys[cache_key] = ("to", det_key)
+                            self._modal_pair_q_keys[cache_key] = ("zero_q", det_key)
                             self._nac_cache[cache_key] = None  # use TO baseline
                         else:
                             q_hat_lab = q_ph / q_ph_norm
@@ -1445,10 +1507,12 @@ class LayeredRamanCalculator:
                 self._nac_cache,
                 self._modal_pair_q_keys,
                 self.modal_pair_combination,
+                self.modal_pair_include_zero_q,
                 self.approximate_es,
                 self.depth_integration,
                 self.temperature_K,
                 self.coherent_layers,
+                self._detected_jones,
             )
             mode_args_list = []
             for mode_idx in range(n_modes):
@@ -1539,6 +1603,11 @@ class LayeredRamanCalculator:
                         for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
                             cache_key = (rl.layer_index, i_channel, det_pol_idx, j_channel)
                             cache_val = self._nac_cache.get(cache_key)
+                            if (
+                                not self.modal_pair_include_zero_q
+                                and _modal_pair_is_zero_q(cache_key, self._modal_pair_q_keys)
+                            ):
+                                continue
 
                             fallback_selected = self._layer_mode_is_selected(rl, mode_idx)
                             nu_m, nac_tensors, line_sigma, mode_selected = _modal_pair_phonon_data(
@@ -1569,6 +1638,12 @@ class LayeredRamanCalculator:
                                         pol_idx: self._get_modal_q_channels(modal_fields_S, qs_S_mode, pol_idx)
                                         for pol_idx in detected_pol_indices
                                     }
+                                    if self._detected_jones is not None:
+                                        for _pol, _pol_channels in channels_s_cache[freq_key].items():
+                                            _coeff = self._detected_jones[_pol]
+                                            for _channels in _pol_channels.values():
+                                                for _channel in _channels:
+                                                    _channel["field"] = _coeff * _channel["field"]
                                     for _rl in self.raman_layers:
                                         for _pol in detected_pol_indices:
                                             _n_base = len(channels_S_base[_pol].get(_rl.layer_index, []))

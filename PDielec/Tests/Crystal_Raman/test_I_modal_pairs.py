@@ -972,6 +972,42 @@ class TestI7NACFrequencyShift:
             f"but got active_freqs={active_freqs.tolist()}"
         )
 
+    def test_zero_q_modal_pairs_can_be_suppressed(self):
+        """Backscattering-style calculations can drop zero-q TO channels."""
+        system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)
+
+        phonon_freqs = np.array([self.NU_TO_LOW, self.NU_TO_HIGH])
+        to_tensors = [R_PP.astype(float), np.zeros((3, 3), dtype=float)]
+        linewidths = 5.0 * np.ones(2)
+
+        rl = RamanLayer(
+            layer_index=0,
+            phonon_frequencies_cm1=phonon_freqs,
+            raman_tensors=to_tensors,
+            rotation_matrix=np.eye(3),
+            nac_function=self._make_nac_function(),
+        )
+
+        calc = LayeredRamanCalculator(
+            system=system,
+            raman_layers=[rl],
+            laser_frequency_cm1=self.LASER_CM1,
+            incident_angle_rad=0.0,
+            incident_pol="p",
+            detected_pol="p",
+            temperature_K=0.0,
+            linewidths_cm1=linewidths,
+            n_gauss=21,
+            approximate_es=True,
+            modal_pairs=True,
+            modal_pair_include_zero_q=False,
+        )
+        freqs, _intensities, _ = calc.calculate_mode_intensities()
+        active_freqs = np.asarray(freqs)
+
+        assert np.any(np.abs(active_freqs - self.NU_LO) < 1.0)
+        assert not np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0)
+
     def test_modal_pairs_maps_to_mode_matched_nac_branch(self):
         """A TO mode must use the NAC branch mapped back to that TO mode."""
         system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)

@@ -91,9 +91,10 @@ _PORTO_POL_BY_AXIS = {
 def _parse_porto_notation(porto):
     """Parse a simple normal-incidence Porto notation string.
 
-    Supported examples are ``x(yy)x``, ``x(yz)-x``, ``x(yz)barx`` and
-    ``x(yz)\\bar{x}``.  A bare final direction is treated as backscattering,
-    matching the shorthand commonly used in PDielec scripts and discussions.
+    Supported examples are ``x(yy)x``, ``x(yz)-x``, ``x(yz)barx``,
+    ``x(yz)\\bar{x}`` and ``z(x+y,x+y)z``.  A bare final direction is
+    treated as backscattering relative to the incident direction, matching the
+    shorthand commonly used in PDielec scripts and discussions.
     """
     text = porto.strip().lower()
     if not text:
@@ -104,40 +105,119 @@ def _parse_porto_notation(porto):
     text = text.replace("overline", "bar")
     text = text.replace("−", "-")
     text = text.replace("*", "")
-    match = re.fullmatch(r"([+-]?[xyz])\(([xyz])([xyz])\)([+-]?(?:bar)?[xyz]|[xyz]bar)", text)
+
+    match = re.fullmatch(r"(.+)\((.+)\)(.+)", text)
     if match is None:
-        raise ValueError("Use a form such as x(yy)x, x(yz)-x, or z(xy)barz")
-    incident_axis, incident_pol_axis, detected_pol_axis, scattered_axis = match.groups()
-    incident_sign, incident_axis = _split_porto_axis(incident_axis, default_sign=1)
-    scattered_sign, scattered_axis = _split_porto_axis(scattered_axis, default_sign=-1)
+        raise ValueError("Use a form such as x(yy)x, x(yz)-x, z(xy)barz, or z(x+y,x+y)z")
+
+    incident_axis, polarisations, scattered_axis = match.groups()
+    incident_sign, incident_axis, incident_was_signed = _split_porto_axis(incident_axis, default_sign=1)
+    scattered_sign, scattered_axis, scattered_was_signed = _split_porto_axis(scattered_axis, default_sign=-incident_sign)
     if scattered_axis != incident_axis:
         raise ValueError("PDielec Porto input currently requires collinear incident and scattered directions")
-    if incident_pol_axis == incident_axis or detected_pol_axis == incident_axis:
-        raise ValueError("Porto polarisations must be transverse to the propagation direction")
-    pol_map = _PORTO_POL_BY_AXIS[incident_axis]
-    if incident_pol_axis not in pol_map or detected_pol_axis not in pol_map:
-        raise ValueError(f"Unsupported polarisation for propagation along {incident_axis}")
+
+    incident_pol_token, detected_pol_token = _split_porto_polarisations(polarisations)
+    incident_pol = _parse_porto_polarisation(incident_pol_token, incident_axis)
+    detected_pol = _parse_porto_polarisation(detected_pol_token, incident_axis)
     collection_side = "substrate" if scattered_sign == incident_sign else "superstrate"
     return {
         "hkl": list(_PORTO_HKL_BY_AXIS[incident_axis]),
-        "incident_pol": pol_map[incident_pol_axis],
-        "detected_pol": pol_map[detected_pol_axis],
+        "incident_pol": incident_pol,
+        "detected_pol": detected_pol,
         "collection_side": collection_side,
         "collection_angle": -1.0,
         "angle_of_incidence": 0.0,
         "global_azimuthal_angle": 0.0,
+        "incident_direction_signed": incident_was_signed,
+        "scattered_direction_signed": scattered_was_signed,
     }
 
 
 def _split_porto_axis(axis, default_sign):
-    """Return ``(sign, axis)`` for a Porto direction token."""
-    if axis.startswith("-"):
-        return -1, axis[-1]
-    if axis.startswith("+"):
-        return 1, axis[-1]
-    if axis.startswith("bar") or axis.endswith("bar"):
-        return -1, axis.replace("bar", "")
-    return default_sign, axis
+    """Return ``(sign, axis, was_signed)`` for a Porto direction token."""
+    if re.fullmatch(r"-[xyz]", axis):
+        return -1, axis[-1], True
+    if re.fullmatch(r"\+[xyz]", axis):
+        return 1, axis[-1], True
+    if re.fullmatch(r"bar[xyz]|[xyz]bar", axis):
+        return -1, axis.replace("bar", ""), True
+    if axis not in _PORTO_HKL_BY_AXIS:
+        raise ValueError("Porto propagation directions must be one of x, y, z, -x, -y, -z, or barx/barz")
+    return default_sign, axis, False
+
+
+def _split_porto_polarisations(polarisations):
+    """Split the incident and detected polarisation tokens inside ``(...)``."""
+    if "," in polarisations:
+        fields = polarisations.split(",")
+        if len(fields) != 2 or not all(fields):
+            raise ValueError("Use two Porto polarisations, for example (yy), (yz), or (x+y,x+y)")
+        return fields[0], fields[1]
+    if len(polarisations) == 2 and all(axis in _PORTO_HKL_BY_AXIS for axis in polarisations):
+        return polarisations[0], polarisations[1]
+    raise ValueError("Use a comma between compound polarisations, for example z(x+y,x+y)z")
+
+
+def _parse_porto_polarisation(token, propagation_axis):
+    """Convert a Porto crystal-axis polarisation token to p/s or a Jones vector."""
+    pol_map = _PORTO_POL_BY_AXIS[propagation_axis]
+    if token in pol_map:
+        return pol_map[token]
+
+    coeffs = {axis: 0.0 for axis in _PORTO_HKL_BY_AXIS}
+    for sign_text, axis in re.findall(r"([+-]?)([xyz])", token):
+        coeffs[axis] += -1.0 if sign_text == "-" else 1.0
+    terms = re.findall(r"([+-]?)([xyz])", token)
+    reconstructed = "".join(
+        ("" if index == 0 and sign == "+" else sign) + axis
+        for index, (sign, axis) in enumerate(terms)
+    )
+    if reconstructed != token:
+        raise ValueError(f"Unsupported Porto polarisation '{token}'")
+    if abs(coeffs[propagation_axis]) > 0.0:
+        raise ValueError("Porto polarisations must be transverse to the propagation direction")
+
+    jones = np.array([0.0 + 0.0j, 0.0 + 0.0j])
+    for axis, value in coeffs.items():
+        if axis in pol_map and value != 0.0:
+            jones[0 if pol_map[axis] == "p" else 1] += value
+    norm = np.linalg.norm(jones)
+    if norm == 0.0:
+        raise ValueError(f"Unsupported Porto polarisation '{token}'")
+    return jones / norm
+
+
+def _set_combo_to_setting(combo, setting):
+    """Set a combo box only when the setting is one of its string labels."""
+    if not isinstance(setting, str):
+        return
+    idx = combo.findText(setting, Qt.MatchFixedString)
+    if idx >= 0:
+        combo.setCurrentIndex(idx)
+
+
+def _set_combo_to_porto(combo):
+    """Set a polarisation combo box to the Porto-controlled marker."""
+    idx = combo.findText("porto", Qt.MatchFixedString)
+    if idx >= 0:
+        combo.setCurrentIndex(idx)
+
+
+def _disable_combo_item(combo, text):
+    """Disable a marker item in a combo box while still allowing programmatic display."""
+    idx = combo.findText(text, Qt.MatchFixedString)
+    if idx >= 0:
+        item = combo.model().item(idx)
+        if item is not None:
+            item.setEnabled(False)
+
+
+def _dominant_pol_label(pol):
+    """Return the dominant p/s label for code paths that need one channel."""
+    if isinstance(pol, str):
+        return pol
+    jones = np.asarray(pol, dtype=complex)
+    return "p" if abs(jones[0]) >= abs(jones[1]) else "s"
 
 
 def _selection_for_nac_modes(modes_selected, dominant_to_by_nac):
@@ -605,6 +685,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Raman electro-optic term"] = True
         self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
+        self.settings["Modal pair include zero q"] = None
         self.settings["Modal pair q-angle tolerance"] = 0.0
         self.settings["Azimuthal sweep points"] = 36
         self.settings["Porto notation"] = ""
@@ -1767,27 +1848,47 @@ class CrystalScenarioTab(ScenarioTab):
         # Polarisation and Porto notation.  Keep this as one form row because the
         # Crystal Raman panel is already dense.
         self.incident_pol_cb = QComboBox(self)
-        self.incident_pol_cb.addItems(["p", "s"])
-        idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
-        if idx >= 0:
-            self.incident_pol_cb.setCurrentIndex(idx)
+        self.incident_pol_cb.addItems(["p", "s", "porto"])
+        _disable_combo_item(self.incident_pol_cb, "porto")
+        if self.settings.get("Porto notation", ""):
+            _set_combo_to_porto(self.incident_pol_cb)
+        else:
+            _set_combo_to_setting(self.incident_pol_cb, self.settings["Incident polarisation"])
         self.incident_pol_cb.activated.connect(self.on_incident_pol_cb_activated)
-        self.incident_pol_cb.setToolTip("Incident laser polarisation (p = in the plane of incidence, s = perpendicular)")
+        self.incident_pol_cb.setToolTip(
+            "Incident laser polarisation (p = in the plane of incidence, s = perpendicular).\n"
+            "'porto' means the value was set by the Porto notation entry."
+        )
 
         self.detected_pol_cb = QComboBox(self)
-        self.detected_pol_cb.addItems(["p", "s", "unpolarised"])
-        idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
-        if idx >= 0:
-            self.detected_pol_cb.setCurrentIndex(idx)
+        self.detected_pol_cb.addItems(["p", "s", "unpolarised", "porto"])
+        _disable_combo_item(self.detected_pol_cb, "porto")
+        if self.settings.get("Porto notation", ""):
+            _set_combo_to_porto(self.detected_pol_cb)
+        else:
+            _set_combo_to_setting(self.detected_pol_cb, self.settings["Detected polarisation"])
         self.detected_pol_cb.activated.connect(self.on_detected_pol_cb_activated)
-        self.detected_pol_cb.setToolTip("Detected polarisation (p, s, or 'unpolarised' for no analyser — sums |A_p|² + |A_s|²)")
+        self.detected_pol_cb.setToolTip(
+            "Detected polarisation (p, s, or 'unpolarised' for no analyser; sums |A_p|^2 + |A_s|^2).\n"
+            "'porto' means the value was set by the Porto notation entry."
+        )
 
         self.porto_le = QLineEdit(self)
         self.porto_le.setText(self.settings.get("Porto notation", ""))
         self.porto_le.setPlaceholderText("x(yy)x")
         self.porto_le.setToolTip(
-            "Apply simple normal-incidence Porto notation, for example x(yy)x, x(yz)-x, or z(xy)barz.\n"
-            "The notation sets hkl, p/s polarisations, normal incidence and collection side."
+            "Apply normal-incidence Porto notation. This sets the crystal hkl direction, incident/detected "
+            "polarisation, normal incidence, and collection side.\n"
+            "Propagation signs: same signs mean forward scattering, so the detector is on the substrate side; "
+            "opposite signs mean backscattering, so the detector is on the superstrate/incident side.\n"
+            "A bare final direction is treated as the common backscattering shorthand: x(yy)x is equivalent "
+            "to x(yy)-x, and -x(yy)x is also backscattering.\n"
+            "Examples: x(yy)x = backscattering, y-in/y-out; x(yz)-x = backscattering, y-in/z-out; "
+            "x(yz)+x = forward scattering.\n"
+            "Use comma-separated compound polarisations for mixed directions, for example "
+            "z(x+y,x+y)z for linear polarisation along the in-plane x+y direction. Compound Porto "
+            "polarisations override the p/s combo-box selections; after Apply the combos show 'porto' "
+            "to indicate that the Porto entry is controlling them."
         )
         self.porto_le.returnPressed.connect(self.on_porto_apply_button_clicked)
         self.porto_apply_button = QPushButton("Apply", self)
@@ -2286,12 +2387,12 @@ class CrystalScenarioTab(ScenarioTab):
             self.laser_wavelength_sb.setValue(self.settings["Laser wavelength nm"])
             self.temperature_sb.setValue(self.settings["Temperature K"])
             self.gl_density_sb.setValue(self.settings.get("GL point density", 20.0))
-            idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
-            if idx >= 0:
-                self.incident_pol_cb.setCurrentIndex(idx)
-            idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
-            if idx >= 0:
-                self.detected_pol_cb.setCurrentIndex(idx)
+            if self.settings.get("Porto notation", ""):
+                _set_combo_to_porto(self.incident_pol_cb)
+                _set_combo_to_porto(self.detected_pol_cb)
+            else:
+                _set_combo_to_setting(self.incident_pol_cb, self.settings["Incident polarisation"])
+                _set_combo_to_setting(self.detected_pol_cb, self.settings["Detected polarisation"])
             self.porto_le.setText(self.settings.get("Porto notation", ""))
             idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
             if idx >= 0:
@@ -2453,13 +2554,21 @@ class CrystalScenarioTab(ScenarioTab):
 
     def on_incident_pol_cb_activated(self, index):
         """Handle a change in the incident polarisation combo box."""
+        if self.incident_pol_cb.currentText() == "porto":
+            return
         self.settings["Incident polarisation"] = self.incident_pol_cb.currentText()
+        self.settings["Porto notation"] = ""
+        self.porto_le.setText("")
         self.calculation_required = True
         self.refresh_required = True
 
     def on_detected_pol_cb_activated(self, index):
         """Handle a change in the detected polarisation combo box."""
+        if self.detected_pol_cb.currentText() == "porto":
+            return
         self.settings["Detected polarisation"] = self.detected_pol_cb.currentText()
+        self.settings["Porto notation"] = ""
+        self.porto_le.setText("")
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2499,12 +2608,8 @@ class CrystalScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         try:
-            idx = self.incident_pol_cb.findText(self.settings["Incident polarisation"], Qt.MatchFixedString)
-            if idx >= 0:
-                self.incident_pol_cb.setCurrentIndex(idx)
-            idx = self.detected_pol_cb.findText(self.settings["Detected polarisation"], Qt.MatchFixedString)
-            if idx >= 0:
-                self.detected_pol_cb.setCurrentIndex(idx)
+            _set_combo_to_porto(self.incident_pol_cb)
+            _set_combo_to_porto(self.detected_pol_cb)
             idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
             if idx >= 0:
                 self.collection_side_cb.setCurrentIndex(idx)
@@ -3406,6 +3511,12 @@ class CrystalScenarioTab(ScenarioTab):
         modal_pair_combination   = self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q)
         q_tol_deg                = float(self.settings.get("Modal pair q-angle tolerance", 0.0))
         collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
+        modal_pair_include_zero_q_setting = self.settings.get("Modal pair include zero q", None)
+        modal_pair_include_zero_q = (
+            collection_side == "substrate"
+            if modal_pair_include_zero_q_setting is None
+            else bool(modal_pair_include_zero_q_setting)
+        )
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         layer_nac_mode = self.settings.get("Layer NAC mode", "none")
@@ -3475,7 +3586,7 @@ class CrystalScenarioTab(ScenarioTab):
                         scatter_angle_rad=collection_angle_rad,
                         collection_side=collection_side,
                         laser_freq_cm1=laser_freq_cm1,
-                        incident_pol=incident_pol,
+                        incident_pol=_dominant_pol_label(incident_pol),
                         modes_selected=modes_selected,
                     )
                     nac_freqs, nac_tensors, nac_sigmas, nac_selected = nac_result
@@ -3576,6 +3687,7 @@ class CrystalScenarioTab(ScenarioTab):
             modal_pairs=modal_pairs_enabled,
             modal_pair_combination=modal_pair_combination,
             modal_pair_use_nac=modal_pair_use_nac,
+            modal_pair_include_zero_q=modal_pair_include_zero_q,
             q_tol_deg=q_tol_deg,
             modes_selected=modes_selected,
         )
