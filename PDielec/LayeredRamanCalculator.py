@@ -368,48 +368,6 @@ def _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, laye
     return channels_by_layer
 
 
-def _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer_indices, layer_slices, pol_indices):
-    """Compute modal fields and qz channels for a set of polarisations."""
-    freq_hz = freq_cm1 * speed_light_si * 1e2
-    system.initialize_sys(freq_hz)
-    zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
-
-    modal_amps, _zn = system.calculate_modal_amplitudes(freq_hz, zeta)
-    boundaries = system.get_layers_boundaries()
-
-    n_total = len(z_arr)
-    modal_fields = np.zeros((4, 2, 3, n_total), dtype=np.complex128)
-    qs_by_layer = {}
-
-    for layer_index, sl in zip(layer_indices, layer_slices, strict=True):
-        if layer_index not in modal_amps or layer_index >= len(system.layers):
-            continue
-        layer = system.layers[layer_index]
-        z_reference = boundaries[layer_index + 1]
-        amps = modal_amps[layer_index]
-        qs_by_layer[layer_index] = layer.qs.copy()
-
-        z_pts = z_arr[sl]
-        for pt_offset, z_j in enumerate(z_pts):
-            global_idx = sl.start + pt_offset
-            dKiz = np.array([
-                np.exp(-layer.propagation_exponents[n] * (z_j - z_reference) / layer.thick)
-                for n in range(4)
-            ], dtype=np.complex128)
-
-            for n in range(4):
-                Eprop_p = dKiz[n] * amps[n]
-                Eprop_s = dKiz[n] * amps[n + 4]
-                modal_fields[n, 0, :, global_idx] = Eprop_p * layer.gamma[n, :]
-                modal_fields[n, 1, :, global_idx] = Eprop_s * layer.gamma[n, :]
-
-    channels = {
-        pol_idx: _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx)
-        for pol_idx in pol_indices
-    }
-    return modal_fields, qs_by_layer, zeta, channels
-
-
 def _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors,
                             fallback_sigma, fallback_selected, cache_val):
     """Return q-resolved phonon data and the selection flag for one pair."""
@@ -446,235 +404,6 @@ def _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors,
 def _line_key(frequency_cm1, sigma_cm1):
     """Hashable key for merging numerically identical spectral lines."""
     return (round(float(frequency_cm1), 10), round(float(sigma_cm1), 10))
-
-
-def _resolve_modal_pair_group(pair_groups, group_key, frequency_cm1, sigma_cm1):
-    """Return the accumulator for a modal-pair coherent group.
-
-    The same q-channel key can yield different NAC frequencies for different
-    sorted phonon branches.  Keep those spectral lines separate while still
-    coherently accumulating amplitudes that share both q and frequency.
-    """
-    existing = pair_groups.get(group_key)
-    if existing is not None and abs(existing["frequency"] - frequency_cm1) > 1.0e-10:
-        group_key = (group_key, _line_key(frequency_cm1, sigma_cm1))
-        existing = pair_groups.get(group_key)
-
-    if existing is None:
-        existing = {
-            "amp": 0.0 + 0.0j,
-            "frequency": frequency_cm1,
-            "sigma": sigma_cm1,
-            "local_amps": {},
-            "local_weights": {},
-        }
-        pair_groups[group_key] = existing
-    return group_key, existing
-
-
-def _accumulate_modal_pair_group(pair_groups, group_key, frequency_cm1, sigma_cm1,
-                                 amplitude, integrand, weights, local_key, depth_integration):
-    """Accumulate one modal-pair contribution into a coherent q group."""
-    _resolved_key, group_data = _resolve_modal_pair_group(
-        pair_groups, group_key, frequency_cm1, sigma_cm1
-    )
-    group_data["amp"] += amplitude
-    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
-        local_amps = group_data["local_amps"]
-        if local_key not in local_amps:
-            local_amps[local_key] = np.zeros_like(integrand, dtype=np.complex128)
-            group_data["local_weights"][local_key] = weights
-        local_amps[local_key] += integrand
-
-
-def _modal_pair_is_zero_q(cache_key, modal_pair_q_keys):
-    """Return True when a modal-pair cache key represents a zero-q phonon."""
-    q_group = modal_pair_q_keys.get(cache_key)
-    return isinstance(q_group, tuple) and len(q_group) > 0 and q_group[0] == "zero_q"
-
-
-def _modal_pair_group_intensity(group_data, temperature_K, depth_integration):
-    """Return the Bose-scaled intensity for one modal-pair group."""
-    nu_m = group_data["frequency"]
-    bose = bose_factor(nu_m, temperature_K)
-    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
-        local_intensity = 0.0
-        for local_key, local_amp in group_data["local_amps"].items():
-            weights = group_data["local_weights"][local_key]
-            local_intensity += np.dot(weights, np.abs(local_amp) ** 2)
-        return local_intensity * bose, local_intensity
-    return abs(group_data["amp"]) ** 2 * bose, 0.0
-
-
-def _compute_modal_pair_mode_worker(shared, mode_args):
-    """Compute one modal-pair Raman mode using picklable cached NAC data."""
-    (
-        es_system,
-        collection_angle_rad,
-        z_s,
-        channels_L,
-        channels_S_base,
-        detected_pol_indices,
-        layer_indices,
-        gl_layer_slices,
-        gl_phys_weights,
-        rotation_matrices,
-        raman_tensors_by_layer,
-        modes_selected_by_layer,
-        modal_pair_use_nac,
-        standard_shared,
-        nac_cache,
-        modal_pair_q_keys,
-        modal_pair_combination,
-        modal_pair_include_zero_q,
-        approximate_es,
-        depth_integration,
-        temperature_K,
-        coherent_layers,
-        detected_jones,
-    ) = shared
-
-    mode_idx, fallback_nu_m, sigma, laser_frequency_cm1, fallback_mode_selected = mode_args
-    use_q_resolved_nac = (
-        modal_pair_use_nac is None
-        or mode_idx >= len(modal_pair_use_nac)
-        or bool(modal_pair_use_nac[mode_idx])
-    )
-    if not use_q_resolved_nac:
-        mode_raman_tensors = []
-        mode_selected = False
-        for tensors, layer_selected in zip(raman_tensors_by_layer, modes_selected_by_layer, strict=True):
-            selected = fallback_mode_selected
-            if layer_selected is not None and mode_idx < len(layer_selected):
-                selected = bool(layer_selected[mode_idx])
-            mode_selected = mode_selected or selected
-            mode_raman_tensors.append(tensors[mode_idx] if selected else np.zeros_like(tensors[mode_idx]))
-        result = _compute_raman_mode_worker(
-            standard_shared,
-            (
-                mode_idx,
-                fallback_nu_m,
-                sigma,
-                laser_frequency_cm1 - fallback_nu_m,
-                mode_raman_tensors,
-                mode_selected,
-            ),
-        )
-        return None if result is None else [result]
-
-    # Accumulate amplitudes into groups according to the summation policy.
-    # The group key determines which amplitudes are coherently combined
-    # before squaring.
-    pair_groups = {}  # group_key -> {"amp", "frequency", "sigma"}
-    channels_s_cache = {}
-
-    for layer_pos, (layer_index, sl) in enumerate(zip(layer_indices, gl_layer_slices, strict=True)):
-        layer_channels_L = channels_L.get(layer_index, [])
-        for i_channel, channel_L in enumerate(layer_channels_L):
-            for det_pol_idx in detected_pol_indices:
-                layer_channels_S_base = channels_S_base[det_pol_idx].get(layer_index, [])
-                for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
-                    cache_key = (layer_index, i_channel, det_pol_idx, j_channel)
-                    cache_val = nac_cache.get(cache_key)
-                    if not modal_pair_include_zero_q and _modal_pair_is_zero_q(cache_key, modal_pair_q_keys):
-                        continue
-
-                    fallback_selected = fallback_mode_selected
-                    layer_selected = modes_selected_by_layer[layer_pos]
-                    if layer_selected is not None and mode_idx < len(layer_selected):
-                        fallback_selected = bool(layer_selected[mode_idx])
-
-                    nu_m, nac_tensors, line_sigma, mode_selected = _modal_pair_phonon_data(
-                        mode_idx,
-                        fallback_nu_m,
-                        raman_tensors_by_layer[layer_pos],
-                        sigma,
-                        fallback_selected,
-                        cache_val,
-                    )
-                    if not mode_selected:
-                        continue
-                    if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
-                        continue
-
-                    if mode_idx >= len(nac_tensors):
-                        continue
-
-                    if approximate_es:
-                        channels_S = channels_S_base
-                    else:
-                        nu_S_cm1 = laser_frequency_cm1 - nu_m
-                        if nu_S_cm1 <= 0.0:
-                            continue
-                        freq_key = round(float(nu_m), 10)
-                        if freq_key not in channels_s_cache:
-                            _modal_fields_S, _qs_S, _zeta_S, channels_s_cache[freq_key] = (
-                                _compute_modal_fields_and_channels(
-                                    nu_S_cm1,
-                                    es_system,
-                                    collection_angle_rad,
-                                    z_s,
-                                    layer_indices,
-                                    gl_layer_slices,
-                                    detected_pol_indices,
-                                )
-                            )
-                            if detected_jones is not None:
-                                for pol_idx, pol_channels in channels_s_cache[freq_key].items():
-                                    coeff = detected_jones[pol_idx]
-                                    for channels in pol_channels.values():
-                                        for channel in channels:
-                                            channel["field"] = coeff * channel["field"]
-                        channels_S = channels_s_cache[freq_key]
-
-                    layer_channels_S = channels_S[det_pol_idx].get(layer_index, [])
-                    if j_channel >= len(layer_channels_S):
-                        continue
-                    channel_S = layer_channels_S[j_channel]
-
-                    R_crystal = nac_tensors[mode_idx]
-                    R_lab = rotation_matrices[layer_pos] @ R_crystal @ rotation_matrices[layer_pos].T
-
-                    w = gl_phys_weights[sl]
-                    R_E_L = R_lab @ channel_L["field"]
-                    integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
-                    amp_ij = np.dot(w, integrand)
-
-                    if modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                        # Coherently sum all pairs sharing the same phonon q-vector
-                        # and detected-pol channel.  When coherent_layers=False each
-                        # layer is squared independently before summing across layers.
-                        q_group = modal_pair_q_keys.get(cache_key, ("unknown", det_pol_idx))
-                        group_key = q_group if coherent_layers else (layer_index,) + q_group
-                    elif modal_pair_combination == MODAL_PAIR_INCOHERENT:
-                        # Each (layer, i_L, j_S, det_pol) pair is squared
-                        # independently — already per-layer via layer_index in cache_key.
-                        group_key = cache_key
-                    else:  # MODAL_PAIR_COHERENT_ALL
-                        # Single group: sum all amplitudes then square.
-                        # When coherent_layers=False, separate per layer first.
-                        group_key = "all" if coherent_layers else (layer_index, "all")
-
-                    local_key = (layer_index, sl.start, sl.stop)
-                    _accumulate_modal_pair_group(
-                        pair_groups, group_key, nu_m, line_sigma,
-                        amp_ij, integrand, w, local_key, depth_integration,
-                    )
-
-    line_accumulator = {}
-    for group_data in pair_groups.values():
-        nu_m = group_data["frequency"]
-        sigma = group_data["sigma"]
-        intensity, _local_intensity = _modal_pair_group_intensity(
-            group_data, temperature_K, depth_integration
-        )
-        key = _line_key(nu_m, sigma)
-        if key not in line_accumulator:
-            line_accumulator[key] = [nu_m, intensity, sigma]
-        else:
-            line_accumulator[key][1] += intensity
-
-    return [(mode_idx, nu_m, intensity, sigma) for nu_m, intensity, sigma in line_accumulator.values()]
 
 
 # ---------------------------------------------------------------------------
@@ -881,12 +610,6 @@ class LayeredRamanCalculator:
         squaring and is appropriate for thin coherent films.  ``'Incoherent
         intensity'`` integrates the local intensity and is more stable for
         thick or bulk samples where long-range phase coherence is not physical.
-    modal_pair_include_zero_q : bool, optional
-        Deprecated Phase-3 compatibility flag.  The Phase-4 modal-pairs path no
-        longer filters zero-q channels here; zero-q and q-independent
-        contributions are classified by the final-state resolver/accumulator
-        path and retained as ordinary TO final states.
-
     Notes
     -----
     The E-field returned by ``calculate_Efield`` has shape ``(6, N)`` where
@@ -926,7 +649,6 @@ class LayeredRamanCalculator:
         modal_pairs=False,
         modal_pair_combination=MODAL_PAIR_GROUP_Q,
         modal_pair_use_nac=None,
-        modal_pair_include_zero_q=True,
         q_tol_deg=0.0,
         modes_selected=None,
     ):
@@ -961,12 +683,10 @@ class LayeredRamanCalculator:
         self.modal_pairs = bool(modal_pairs)
         self.modal_pair_combination = modal_pair_combination
         self.modal_pair_use_nac = None if modal_pair_use_nac is None else np.asarray(modal_pair_use_nac, dtype=bool)
-        self.modal_pair_include_zero_q = bool(modal_pair_include_zero_q)
         self.q_tol_deg = float(q_tol_deg)
         self.modes_selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
-        # NAC cache for Level 3 modal_pairs: keyed by (layer_index, i_mode, j_mode)
         self._nac_cache = {}
-        self._modal_pair_q_keys = {}
+        self._modal_pair_q_vectors = {}
 
         # Phase 3c: internal Jones vectors for incident and detected channels.
         # _incident_jones : (cp, cs) complex pair — determines the linear combination
@@ -1172,53 +892,6 @@ class LayeredRamanCalculator:
         integrand = np.einsum("ij,ij->j", E_S, R_E_L)
         return np.dot(w, np.abs(integrand) ** 2)
 
-    # ------------------------------------------------------------------
-    # Level 3 (modal_pairs) helpers
-    # ------------------------------------------------------------------
-
-    def _get_active_modal_pairs(self):
-        """Return the list of (i_L, j_S) Berreman mode-index pairs.
-
-        Each Berreman eigenmode has both a forward (kz > 0) and a backward
-        (kz < 0) variant per polarisation:
-
-          Mode 0: forward p-pol  (kz > 0)
-          Mode 1: forward s-pol  (kz > 0)
-          Mode 2: backward p-pol (kz < 0)
-          Mode 3: backward s-pol (kz < 0)
-
-        Both propagation directions contribute to the total field, so the
-        physically complete Level-3 sum includes all forward/backward pairs
-        for the appropriate polarisation.
-
-        For p-pol incidence: i_modes = {0, 2}  (both p modes, fwd and bwd).
-        For s-pol incidence: i_modes = {1, 3}.
-        Detected modes follow the same convention.
-
-        In backscattering the dominant amplitude comes from pair (0, 2) because
-        ``qs_L[0] + qs_S[2] ≈ 0`` gives a non-oscillating integrand.  Pairs
-        with both modes forward or both backward produce rapidly oscillating
-        integrands that are suppressed for thick layers, so the incoherent sum
-        ``Σ|A^{ij}|²`` is still dominated by the correct backscattering terms.
-
-        Returns
-        -------
-        list of (int, int)
-            Cartesian product of incident × detected mode sets.
-        """
-        incident_pol_indices = [idx for idx, value in enumerate(self._incident_jones) if abs(value) > 1.0e-14]
-        i_modes = []
-        for pol_idx in incident_pol_indices:
-            i_modes.extend([0, 2] if pol_idx == 0 else [1, 3])
-        if self._detected_jones is None:
-            detected_pol_indices = [0, 1]
-        else:
-            detected_pol_indices = [idx for idx, value in enumerate(self._detected_jones) if abs(value) > 1.0e-14]
-        j_modes = []
-        for pol_idx in detected_pol_indices:
-            j_modes.extend([0, 2] if pol_idx == 0 else [1, 3])
-        return [(i, j) for i in i_modes for j in j_modes]
-
     def _get_modal_fields_at_gl_points(self, freq_cm1, system, angle_rad, z_arr, system_layer_indices=None):
         """Compute per-Berreman-mode electric field contributions at GL quadrature points.
 
@@ -1395,7 +1068,6 @@ class LayeredRamanCalculator:
         # than qz values so the cache remains valid when E_S is recomputed at
         # the Stokes frequency and qz shifts slightly.
         self._nac_cache = {}
-        self._modal_pair_q_keys = {}
         self._modal_pair_q_vectors = {}
         for rl in self.raman_layers:
             layer_channels_L = channels_L.get(rl.layer_index, [])
@@ -1415,24 +1087,10 @@ class LayeredRamanCalculator:
                         self._modal_pair_q_vectors[cache_key] = q_ph
 
                         q_ph_norm = np.linalg.norm(q_ph)
-                        det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
                         if q_ph_norm < 1e-8 or rl.nac_function is None:
-                            self._modal_pair_q_keys[cache_key] = ("zero_q", det_key)
                             self._nac_cache[cache_key] = None  # use TO baseline
                         else:
                             q_hat_lab = q_ph / q_ph_norm
-                            # Group by q-hat direction (NAC depends only on direction,
-                            # not magnitude).  When q_tol_deg > 0 round each component
-                            # to the nearest multiple of sin(q_tol_rad) so that pairs
-                            # whose directions differ by less than q_tol_deg are merged
-                            # into a single coherent group.
-                            if self.q_tol_deg > 0.0:
-                                q_tol_rad = np.deg2rad(self.q_tol_deg)
-                                q_hat_rounded = np.round(q_hat_lab / q_tol_rad) * q_tol_rad
-                                q_key = tuple(float(x) for x in q_hat_rounded)
-                            else:
-                                q_key = tuple(float(x) for x in np.round(q_hat_lab, decimals=10))
-                            self._modal_pair_q_keys[cache_key] = (q_key, det_key)
                             self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
         modal_pair_use_nac = self.modal_pair_use_nac

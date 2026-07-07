@@ -8,9 +8,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
 import pytest
-from .conftest import build_system, iso_eps, make_layer, make_raman_layer, run_calc
 
-from PDielec.GTMcore import Layer, ScatteringMatrixSystem, TransferMatrixSystem
+from PDielec.GTMcore import ScatteringMatrixSystem
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_COHERENT,
     DEPTH_INTEGRATION_INCOHERENT,
@@ -18,6 +17,8 @@ from PDielec.LayeredRamanCalculator import (
     RamanLayer,
     bose_factor,
 )
+
+from .conftest import build_system, iso_eps, make_raman_layer
 
 # ---------------------------------------------------------------------------
 # Shared test fixtures
@@ -62,8 +63,6 @@ def _make_sm_layer(thickness_m, n):
 
 def _make_sm_system(n_layer=N_LAYER, thickness_m=THICKNESS_M):
     """Build an identical stack as a ScatteringMatrixSystem using CoherentLayers."""
-    from PDielec.GTMcore import CoherentLayer
-
     sup = _make_sm_layer(1e-3, 1.0)
     sub = _make_sm_layer(1e-3, n_layer)
     layer = _make_sm_layer(thickness_m, n_layer)
@@ -103,7 +102,7 @@ def _run_modal_pairs(system, raman_layers, phonon_freqs, incident_pol="p", detec
         raman_layers[0].nac_function = nac_function
 
     linewidths = 5.0 * np.ones(len(phonon_freqs))
-    calc = LayeredRamanCalculator(
+    return LayeredRamanCalculator(
         system=system,
         raman_layers=raman_layers,
         laser_frequency_cm1=LASER_CM1,
@@ -116,7 +115,6 @@ def _run_modal_pairs(system, raman_layers, phonon_freqs, incident_pol="p", detec
         approximate_es=approximate_es,
         modal_pairs=True,
     )
-    return calc
 
 
 # ---------------------------------------------------------------------------
@@ -581,69 +579,8 @@ class TestI1CModalPairParallel:
             np.testing.assert_allclose(serial_array, parallel_array, rtol=1e-10, atol=1e-10)
 
 
-# ---------------------------------------------------------------------------
-# TestI2: active pair selection
-# ---------------------------------------------------------------------------
-
-class TestI2ActivePairSelection:
-    """Verify _get_active_modal_pairs returns correct (i, j) sets."""
-
-    def _make_calc(self, incident_pol, detected_pol, angle=0.0):
-        system, rl = _make_system_and_layer()
-        linewidths = 5.0 * np.ones(1)
-        calc = LayeredRamanCalculator(
-            system=system,
-            raman_layers=[rl],
-            laser_frequency_cm1=LASER_CM1,
-            incident_angle_rad=angle,
-            incident_pol=incident_pol,
-            detected_pol=detected_pol,
-            temperature_K=0.0,
-            linewidths_cm1=linewidths,
-            n_gauss=5,
-            modal_pairs=True,
-        )
-        return calc
-
-    def test_p_p_gives_four_pairs(self):
-        # p-inc: modes {0,2}; p-detect: modes {0,2} → 4 pairs
-        calc = self._make_calc("p", "p")
-        pairs = calc._get_active_modal_pairs()
-        assert set(pairs) == {(0, 0), (0, 2), (2, 0), (2, 2)}
-
-    def test_s_s_gives_four_pairs(self):
-        # s-inc: modes {1,3}; s-detect: modes {1,3} → 4 pairs
-        calc = self._make_calc("s", "s")
-        pairs = calc._get_active_modal_pairs()
-        assert set(pairs) == {(1, 1), (1, 3), (3, 1), (3, 3)}
-
-    def test_p_s_gives_four_pairs(self):
-        # p-inc: modes {0,2}; s-detect: modes {1,3} → 4 cross-pol pairs
-        calc = self._make_calc("p", "s")
-        pairs = calc._get_active_modal_pairs()
-        assert set(pairs) == {(0, 1), (0, 3), (2, 1), (2, 3)}
-
-    def test_s_unpolarised_gives_eight_pairs(self):
-        # s-inc: modes {1,3}; unpolarised: modes {0,1,2,3} → 8 pairs
-        calc = self._make_calc("s", "unpolarised")
-        pairs = calc._get_active_modal_pairs()
-        assert set(pairs) == {(1, 0), (1, 1), (1, 2), (1, 3),
-                               (3, 0), (3, 1), (3, 2), (3, 3)}
-
-    def test_p_unpolarised_gives_eight_pairs(self):
-        # p-inc: modes {0,2}; unpolarised: modes {0,1,2,3} → 8 pairs
-        calc = self._make_calc("p", "unpolarised")
-        pairs = calc._get_active_modal_pairs()
-        assert set(pairs) == {(0, 0), (0, 1), (0, 2), (0, 3),
-                               (2, 0), (2, 1), (2, 2), (2, 3)}
-
-
-# ---------------------------------------------------------------------------
-# TestI3: NAC cache called once per pair, not per mode
-# ---------------------------------------------------------------------------
-
 class TestI3NACCacheCalledOncePerPair:
-    """Verify NAC function is called once per pair (layer, i, j), not per mode."""
+    """Verify NAC function is called once per optical channel pair, not per mode."""
 
     def test_nac_called_once_per_pair(self):
         """For N_pairs pairs, nac_function should be called exactly N_pairs times."""
@@ -683,17 +620,17 @@ class TestI3NACCacheCalledOncePerPair:
         )
         calc.calculate_mode_intensities()
 
-        n_pairs = len(calc._get_active_modal_pairs())
+        n_pairs = len(calc._nac_cache)
+        n_finite_q_pairs = sum(value is not None for value in calc._nac_cache.values())
         n_modes = len(nu_modes)
-        assert n_pairs == 8  # {0,2} × {0,1,2,3}
-        # Key invariant: NAC is cached per pair, not called once per mode per pair.
-        # Some pairs have q_ph=0 and skip the NAC call; others call it exactly once.
+        assert n_pairs > 0
+        # Key invariant: NAC is cached per optical channel pair, not called once
+        # per mode per channel pair. Zero-q pairs stay in the cache as TO entries.
         assert len(call_log) > 0, "NAC should be called for at least one pair"
-        assert len(call_log) <= n_pairs, (
-            f"Expected at most {n_pairs} nac_function calls (once per pair), "
+        assert len(call_log) == n_finite_q_pairs, (
+            f"Expected {n_finite_q_pairs} nac_function calls (once per finite-q channel pair), "
             f"got {len(call_log)}"
         )
-        # Without caching, would be called n_modes × n_pairs_nonzero times:
         assert len(call_log) < n_modes * n_pairs, (
             f"Caching should reduce calls below n_modes×n_pairs={n_modes*n_pairs}, "
             f"got {len(call_log)}"
@@ -733,17 +670,17 @@ class TestI3NACCacheCalledOncePerPair:
         )
         calc.calculate_mode_intensities()
 
-        n_pairs = len(calc._get_active_modal_pairs())  # 4
-        n_layers_raman = 2
+        n_pairs = len(calc._nac_cache)
+        n_finite_q_pairs = sum(value is not None for value in calc._nac_cache.values())
         n_modes = len(nu_modes)
-        # Key invariant: NAC called at most once per (pair, layer), not per mode.
+        # Key invariant: NAC called once per finite-q channel pair/layer, not per mode.
         assert call_counts[0] > 0, "NAC should be called for non-zero q_ph pairs"
-        assert call_counts[0] <= n_pairs * n_layers_raman, (
-            f"Expected at most {n_pairs*n_layers_raman} calls (once per pair per layer), "
+        assert call_counts[0] == n_finite_q_pairs, (
+            f"Expected {n_finite_q_pairs} calls (once per finite-q channel pair/layer), "
             f"got {call_counts[0]}"
         )
-        assert call_counts[0] < n_modes * n_pairs * n_layers_raman, (
-            "Caching should reduce calls below n_modes×n_pairs×n_layers"
+        assert call_counts[0] < n_modes * n_pairs, (
+            "Caching should reduce calls below n_modes×n_channel_pairs"
         )
 
 
@@ -1000,7 +937,6 @@ class TestI7NACFrequencyShift:
             n_gauss=21,
             approximate_es=True,
             modal_pairs=True,
-            modal_pair_include_zero_q=False,
         )
         freqs, _intensities, _ = calc.calculate_mode_intensities()
         active_freqs = np.asarray(freqs)

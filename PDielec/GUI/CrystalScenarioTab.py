@@ -3511,12 +3511,6 @@ class CrystalScenarioTab(ScenarioTab):
         modal_pair_combination   = self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q)
         q_tol_deg                = float(self.settings.get("Modal pair q-angle tolerance", 0.0))
         collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
-        modal_pair_include_zero_q_setting = self.settings.get("Modal pair include zero q", None)
-        modal_pair_include_zero_q = (
-            collection_side == "substrate"
-            if modal_pair_include_zero_q_setting is None
-            else bool(modal_pair_include_zero_q_setting)
-        )
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         layer_nac_mode = self.settings.get("Layer NAC mode", "none")
@@ -3687,7 +3681,6 @@ class CrystalScenarioTab(ScenarioTab):
             modal_pairs=modal_pairs_enabled,
             modal_pair_combination=modal_pair_combination,
             modal_pair_use_nac=modal_pair_use_nac,
-            modal_pair_include_zero_q=modal_pair_include_zero_q,
             q_tol_deg=q_tol_deg,
             modes_selected=modes_selected,
         )
