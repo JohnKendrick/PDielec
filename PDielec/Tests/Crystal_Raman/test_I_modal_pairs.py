@@ -972,8 +972,8 @@ class TestI7NACFrequencyShift:
             f"but got active_freqs={active_freqs.tolist()}"
         )
 
-    def test_zero_q_modal_pairs_can_be_suppressed(self):
-        """Backscattering-style calculations can drop zero-q TO channels."""
+    def test_zero_q_modal_pairs_are_retained_by_final_state_path(self):
+        """Phase-4 final-state grouping retains zero-q TO channels."""
         system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)
 
         phonon_freqs = np.array([self.NU_TO_LOW, self.NU_TO_HIGH])
@@ -1006,7 +1006,7 @@ class TestI7NACFrequencyShift:
         active_freqs = np.asarray(freqs)
 
         assert np.any(np.abs(active_freqs - self.NU_LO) < 1.0)
-        assert not np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0)
+        assert np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0)
 
     def test_modal_pairs_maps_to_mode_matched_nac_branch(self):
         """A TO mode must use the NAC branch mapped back to that TO mode."""
