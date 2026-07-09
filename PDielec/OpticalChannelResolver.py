@@ -203,7 +203,7 @@ def compute_modal_fields_at_points(
         layer = system.layers[system_layer_index]
         amps = modal_amps[system_layer_index]
         qs_by_layer[physical_layer_index] = layer.qs.copy()
-        z_reference = boundaries[system_layer_index + 1]
+        z_reference = boundaries[system_layer_index + 2]
 
         for offset, z_value in enumerate(z_array[layer_slice]):
             z_pos = layer_slice.start + offset
