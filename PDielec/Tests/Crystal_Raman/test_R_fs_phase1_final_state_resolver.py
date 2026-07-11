@@ -173,6 +173,15 @@ def test_forward_zero_q_polar_mode_is_resolved_final_state_in_bulk():
     assert state.final_state.key[-1] == ("q_zero",)
 
 
+def test_forward_nonzero_internal_q_is_not_resolved_when_external_q_is_zero():
+    """A non-zero internal polar q is not a separate forward-scattering final state."""
+    resolver = PhononFinalStateResolver(coherence_regime=BULK_PHASE_MATCHED, q_ext=[0.0, 0.0, 0.0])
+
+    state = resolver.resolve_pair(0, [0.0, 0.0, 2.0], is_polar=True, reference_k=1.0)
+
+    assert state.kind == DISCARDED_INTERNAL_COMPONENT
+
+
 def test_bulk_phase_matched_keeps_only_q_matching_external_direction():
     """Bulk phase matching keeps q parallel to q_ext and discards other directions."""
     resolver = PhononFinalStateResolver(coherence_regime=BULK_PHASE_MATCHED, q_ext=[0.0, 0.0, 2.0])

@@ -2360,6 +2360,7 @@ class CrystalScenarioTab(ScenarioTab):
             self.material_names = self.set_material_names()
         # Generate the layers from the settings
         self.settings2Layers()
+        self.apply_porto_notation_from_settings(show_warnings=False, update_widgets=False)
         self.generate_layer_settings()
         # Force recalculation
         self.calculation_required = True
@@ -2387,13 +2388,14 @@ class CrystalScenarioTab(ScenarioTab):
             self.laser_wavelength_sb.setValue(self.settings["Laser wavelength nm"])
             self.temperature_sb.setValue(self.settings["Temperature K"])
             self.gl_density_sb.setValue(self.settings.get("GL point density", 20.0))
-            if self.settings.get("Porto notation", ""):
+            porto_notation = self.settings.get("Porto notation", "")
+            if porto_notation:
                 _set_combo_to_porto(self.incident_pol_cb)
                 _set_combo_to_porto(self.detected_pol_cb)
             else:
                 _set_combo_to_setting(self.incident_pol_cb, self.settings["Incident polarisation"])
                 _set_combo_to_setting(self.detected_pol_cb, self.settings["Detected polarisation"])
-            self.porto_le.setText(self.settings.get("Porto notation", ""))
+            self.porto_le.setText(porto_notation if isinstance(porto_notation, str) else "")
             idx = self.collection_side_cb.findText(self.settings["Collection side"], Qt.MatchFixedString)
             if idx >= 0:
                 self.collection_side_cb.setCurrentIndex(idx)
@@ -2575,11 +2577,34 @@ class CrystalScenarioTab(ScenarioTab):
     def on_porto_apply_button_clicked(self):
         """Apply a simple Porto notation to the Crystal Raman geometry."""
         porto = self.porto_le.text().strip()
+        if self.apply_porto_notation(porto, show_warnings=True, update_widgets=True):
+            self.calculation_required = True
+            self.refresh_required = True
+
+    def apply_porto_notation_from_settings(self, show_warnings=False, update_widgets=False):
+        """Apply any Porto notation stored in the scenario settings."""
+        porto = self.settings.get("Porto notation", "")
+        if not porto:
+            return False
+        return self.apply_porto_notation(porto, show_warnings=show_warnings, update_widgets=update_widgets)
+
+    def apply_porto_notation(self, porto, show_warnings=False, update_widgets=False):
+        """Apply a Porto notation string to the Crystal Raman geometry."""
+        if not isinstance(porto, str):
+            message = f"Porto notation must be a string, not {type(porto).__name__}"
+            if show_warnings:
+                QMessageBox.warning(self, "Porto notation", message)
+            else:
+                logger.warning(message)
+            return False
         try:
             mapped = _parse_porto_notation(porto)
         except ValueError as exc:
-            QMessageBox.warning(self, "Porto notation", str(exc))
-            return
+            if show_warnings:
+                QMessageBox.warning(self, "Porto notation", str(exc))
+            else:
+                logger.warning(f"Invalid Porto notation {porto!r}: {exc}")
+            return False
 
         dielectric_index = None
         for index, layer in enumerate(self.layers):
@@ -2587,8 +2612,12 @@ class CrystalScenarioTab(ScenarioTab):
                 dielectric_index = index
                 break
         if dielectric_index is None:
-            QMessageBox.warning(self, "Porto notation", "No dielectric layer is available for Porto notation")
-            return
+            message = "No dielectric layer is available for Porto notation"
+            if show_warnings:
+                QMessageBox.warning(self, "Porto notation", message)
+            else:
+                logger.warning(message)
+            return False
 
         hkl = mapped["hkl"]
         self.settings["Layer hkls"][dielectric_index] = list(hkl)
@@ -2604,6 +2633,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Collection angle"] = mapped["collection_angle"]
         self.settings["Angle of incidence"] = mapped["angle_of_incidence"]
         self.settings["Global azimuthal angle"] = mapped["global_azimuthal_angle"]
+
+        if not update_widgets:
+            return True
 
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
@@ -2621,8 +2653,7 @@ class CrystalScenarioTab(ScenarioTab):
             for w in self.findChildren(QWidget):
                 w.blockSignals(False)
 
-        self.calculation_required = True
-        self.refresh_required = True
+        return True
 
     def on_collection_side_cb_activated(self, index):
         """Handle a change in the collection side combo box."""

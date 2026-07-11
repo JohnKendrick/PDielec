@@ -62,7 +62,14 @@ import numpy as np
 
 from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
 from PDielec.OpticalChannelResolver import OpticalChannelResolver, compute_modal_fields_at_points
-from PDielec.PhononFinalStateResolver import PhononFinalStateResolver
+from PDielec.PhononFinalStateResolver import (
+    BULK_PHASE_MATCHED,
+    COHERENT_EXTERNAL_CHANNEL,
+    COHERENT_FILM,
+    DISCARDED_INTERNAL_COMPONENT,
+    RESOLVED_FINAL_STATE,
+    PhononFinalStateResolver,
+)
 from PDielec.RamanAmplitudeAccumulator import RamanAmplitudeAccumulator
 
 logger = logging.getLogger(__name__)
@@ -340,6 +347,171 @@ def _compute_raman_mode_worker(shared, mode_args):
     return (mode_idx, nu_m, I_m, sigma)
 
 
+def _modal_pair_layer_worker_data(raman_layers):
+    """Return pickle-friendly Raman layer data for modal-pair workers."""
+    return [
+        (
+            rl.layer_index,
+            rl.phonon_frequencies_cm1,
+            rl.raman_tensors,
+            rl.rotation_matrix,
+            rl.modes_selected,
+        )
+        for rl in raman_layers
+    ]
+
+
+def _raman_layer_mode_is_selected(modes_selected, mode_idx):
+    """Return whether a mode is selected for a RamanLayer in worker code."""
+    if modes_selected is None:
+        return True
+    return mode_idx < len(modes_selected) and bool(modes_selected[mode_idx])
+
+
+def _compute_modal_pair_mode_worker(shared, mode_idx):
+    """Compute modal-pair spectral rows for one phonon mode."""
+    (
+        gl_layer_slices,
+        gl_phys_weights,
+        channels_L,
+        channels_S_base,
+        channels_S_by_frequency,
+        nac_cache,
+        modal_pair_q_vectors,
+        raman_layer_data,
+        linewidths_cm1,
+        modal_pair_use_nac,
+        detected_pol_indices,
+        detected_pol,
+        modal_pair_combination,
+        coherent_layers,
+        depth_integration,
+        approximate_es,
+        resolver,
+        temperature_K,
+    ) = shared
+
+    _ref_layer_index, ref_freqs, _ref_tensors, _ref_rotation, _ref_selected = raman_layer_data[0]
+    fallback_nu_m = ref_freqs[mode_idx]
+    sigma = linewidths_cm1[mode_idx] if mode_idx < len(linewidths_cm1) else 5.0
+    use_q_resolved_nac = (
+        modal_pair_use_nac is None
+        or mode_idx >= len(modal_pair_use_nac)
+        or bool(modal_pair_use_nac[mode_idx])
+    )
+    accumulator = RamanAmplitudeAccumulator()
+    local_integrands = {}
+    line_metadata = {}
+
+    for layer_data, sl in zip(raman_layer_data, gl_layer_slices, strict=False):
+        layer_index, _phonon_frequencies_cm1, raman_tensors, rotation_matrix, modes_selected = layer_data
+        layer_channels_L = channels_L.get(layer_index, [])
+        for i_channel, channel_L in enumerate(layer_channels_L):
+            for det_pol_idx in detected_pol_indices:
+                layer_channels_S_base = channels_S_base[det_pol_idx].get(layer_index, [])
+                for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
+                    cache_key = (layer_index, i_channel, det_pol_idx, j_channel)
+                    cache_val = nac_cache.get(cache_key) if use_q_resolved_nac else None
+                    fallback_selected = _raman_layer_mode_is_selected(modes_selected, mode_idx)
+                    nu_m, nac_tensors, line_sigma, mode_selected = _modal_pair_phonon_data(
+                        mode_idx, fallback_nu_m, raman_tensors, sigma, fallback_selected, cache_val
+                    )
+                    if not mode_selected or abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                        continue
+                    if mode_idx >= len(nac_tensors):
+                        continue
+
+                    if approximate_es:
+                        channels_S = channels_S_base
+                    else:
+                        freq_key = round(float(nu_m), 10)
+                        channels_S = channels_S_by_frequency.get(freq_key)
+                        if channels_S is None:
+                            continue
+
+                    layer_channels_S = channels_S[det_pol_idx].get(layer_index, [])
+                    if j_channel >= len(layer_channels_S):
+                        continue
+                    channel_S = layer_channels_S[j_channel]
+
+                    R_crystal = nac_tensors[mode_idx]
+                    R_lab = rotation_matrix @ R_crystal @ rotation_matrix.T
+
+                    w = gl_phys_weights[sl]
+                    R_E_L = R_lab @ channel_L["field"]
+                    integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
+                    amp_ij = np.dot(w, integrand)
+
+                    if modal_pair_combination == MODAL_PAIR_GROUP_Q:
+                        q_ph = modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
+                        classification = resolver.resolve_pair(
+                            mode_idx,
+                            q_ph,
+                            is_polar=use_q_resolved_nac,
+                            frequency_cm1=nu_m,
+                            raman_tensor=R_lab,
+                            linewidth_cm1=line_sigma,
+                            selected=mode_selected,
+                            reference_k=max(np.linalg.norm(resolver.q_ext), 1.0),
+                        )
+                        if classification.kind == DISCARDED_INTERNAL_COMPONENT:
+                            continue
+                        if not use_q_resolved_nac:
+                            q_key = ("q_independent",)
+                        elif classification.kind == RESOLVED_FINAL_STATE:
+                            q_key = classification.final_state.key[-1]
+                        elif classification.kind == COHERENT_EXTERNAL_CHANNEL:
+                            q_key = resolver.q_class_key(q_ph)
+                        else:
+                            q_key = resolver.q_class_key(q_ph)
+                        det_key = det_pol_idx if detected_pol == "unpolarised" else 0
+                        final_state_key = (
+                            "modal_pair",
+                            det_key,
+                            mode_idx,
+                            _line_key(nu_m, line_sigma),
+                            q_key,
+                        )
+                        group_key = final_state_key if coherent_layers else (layer_index, final_state_key)
+                    elif modal_pair_combination == MODAL_PAIR_INCOHERENT:
+                        if not use_q_resolved_nac:
+                            # Non-polar mode: all pairs are q-independent — group coherently
+                            # so the combination option does not affect non-polar intensities.
+                            final_state_key = ("modal_pair_incoherent_np", mode_idx, _line_key(nu_m, line_sigma))
+                            group_key = "all" if coherent_layers else (layer_index, "all")
+                        else:
+                            final_state_key = ("modal_pair_incoherent", cache_key, _line_key(nu_m, line_sigma))
+                            group_key = cache_key
+                    else:
+                        final_state_key = ("modal_pair_all", mode_idx, _line_key(nu_m, line_sigma))
+                        group_key = "all" if coherent_layers else (layer_index, "all")
+
+                    line_metadata[final_state_key] = (nu_m, line_sigma)
+                    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+                        local_key = (layer_index, sl.start, sl.stop)
+                        integrand_key = (final_state_key, group_key, local_key)
+                        if integrand_key not in local_integrands:
+                            local_integrands[integrand_key] = [np.zeros_like(integrand), w]
+                        local_integrands[integrand_key][0] += integrand
+                    else:
+                        accumulator.add_amplitude(final_state_key, amp_ij, coherence_group=group_key)
+
+    for (final_state_key, _group_key, _local_key), (integrand, weights) in local_integrands.items():
+        accumulator.add_incoherent_intensity(final_state_key, float(np.dot(weights, np.abs(integrand) ** 2)))
+
+    line_accumulator = {}
+    for final_state_key, raw_intensity in accumulator.intensities().items():
+        nu_m, sigma = line_metadata[final_state_key]
+        intensity = raw_intensity * bose_factor(nu_m, temperature_K)
+        lkey = _line_key(nu_m, sigma)
+        if lkey not in line_accumulator:
+            line_accumulator[lkey] = [nu_m, intensity, sigma]
+        else:
+            line_accumulator[lkey][1] += intensity
+
+    return mode_idx, list(line_accumulator.values())
+
+
 def _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx):
     """Group modal field contributions into qz subspace channels."""
     channels_by_layer = {}
@@ -366,6 +538,55 @@ def _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, laye
             for data in sorted(groups, key=lambda item: item["qz"], reverse=True)
         ]
     return channels_by_layer
+
+
+def _modal_pair_stokes_channels(
+    es_system,
+    collection_angle_rad,
+    z_s,
+    layer_indices,
+    gl_layer_slices,
+    detected_system_layer_indices,
+    detected_pol_indices,
+    detected_jones,
+    laser_frequency_cm1,
+    mode_frequency_cm1,
+):
+    """Return scattered modal channels for a Stokes-shifted phonon frequency."""
+    nu_S = laser_frequency_cm1 - mode_frequency_cm1
+    if nu_S <= 0.0:
+        logger.warning("modal_pairs: mode %.1f cm⁻¹ exceeds laser freq; skipping.", mode_frequency_cm1)
+        return None
+
+    freq_hz = nu_S * speed_light_si * 1e2
+    es_system.initialize_sys(freq_hz)
+    zeta = np.sin(collection_angle_rad) * np.sqrt(es_system.superstrate.epsilon[0, 0])
+    modal_fields_S, qs_S_mode = compute_modal_fields_at_points(
+        es_system,
+        freq_hz,
+        zeta,
+        np.asarray(z_s, dtype=float),
+        layer_indices,
+        gl_layer_slices,
+        system_layer_indices=detected_system_layer_indices,
+    )
+    channels_S = {
+        pol_idx: _modal_q_channels_from_fields(
+            modal_fields_S,
+            qs_S_mode,
+            layer_indices,
+            gl_layer_slices,
+            pol_idx,
+        )
+        for pol_idx in detected_pol_indices
+    }
+    if detected_jones is not None:
+        for pol_idx, pol_channels in channels_S.items():
+            coeff = detected_jones[pol_idx]
+            for channels in pol_channels.values():
+                for channel in channels:
+                    channel["field"] = coeff * channel["field"]
+    return channels_S
 
 
 def _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors,
@@ -404,6 +625,13 @@ def _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors,
 def _line_key(frequency_cm1, sigma_cm1):
     """Hashable key for merging numerically identical spectral lines."""
     return (round(float(frequency_cm1), 10), round(float(sigma_cm1), 10))
+
+
+def _resolver_coherence_regime(depth_integration):
+    """Return the final-state resolver regime matching the depth treatment."""
+    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+        return BULK_PHASE_MATCHED
+    return COHERENT_FILM
 
 
 # ---------------------------------------------------------------------------
@@ -1025,6 +1253,17 @@ class LayeredRamanCalculator:
             else [idx for idx, value in enumerate(self._detected_jones) if abs(value) > 1.0e-14]
         )
 
+        q_ext = OpticalChannelResolver().external_momentum_transfer(
+            self.system,
+            self.laser_frequency_cm1,
+            self.incident_angle_rad,
+            es_system,
+            self.laser_frequency_cm1,
+            self.collection_angle_rad,
+            self.collection_side,
+        )
+        use_external_q_for_modal_nac = self.depth_integration == DEPTH_INTEGRATION_INCOHERENT
+
         # Laser modal fields at laser frequency + incident angle
         modal_fields_L, qs_L_dict, zeta_L = self._call_get_modal_fields_at_gl_points(
             self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
@@ -1079,11 +1318,12 @@ class LayeredRamanCalculator:
 
                         # q_ph = k_laser − k_scattered.  Channel qz values are
                         # coherent sums over degenerate Berreman eigenmodes.
-                        q_ph = np.array([
+                        q_pair = np.array([
                             zeta_L_re - zeta_S_re,
                             0.0,
                             channel_L["qz"] - channel_S["qz"],
                         ])
+                        q_ph = q_ext if use_external_q_for_modal_nac else q_pair
                         self._modal_pair_q_vectors[cache_key] = q_ph
 
                         q_ph_norm = np.linalg.norm(q_ph)
@@ -1094,21 +1334,104 @@ class LayeredRamanCalculator:
                             self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
         modal_pair_use_nac = self.modal_pair_use_nac
-
-        if pool is not None:
-            logger.info(
-                "modal_pairs Phase-4 final-state path is running serially; "
-                "the legacy worker path is retained only for Phase-5 cleanup."
-            )
+        resolver = PhononFinalStateResolver(
+            coherence_regime=_resolver_coherence_regime(self.depth_integration),
+            q_ext=q_ext,
+            angular_tolerance_deg=max(float(self.q_tol_deg), 1.0e-10),
+            q_zero_tol=1.0e-3,
+        )
 
         active_freqs = []
         active_intensities = []
         active_sigmas = []
         contributions: list = []
-        q_key_resolver = PhononFinalStateResolver(
-            angular_tolerance_deg=max(float(self.q_tol_deg), 1.0e-10),
-            q_zero_tol=1.0e-8,
-        )
+
+        if pool is not None and not return_contributions:
+            layer_indices = [rl.layer_index for rl in self.raman_layers]
+            raman_layer_data = _modal_pair_layer_worker_data(self.raman_layers)
+            channels_S_by_frequency = {}
+            if not self.approximate_es:
+                required_stokes_channels = {}
+                for mode_idx in range(n_modes):
+                    fallback_nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
+                    sigma = self.linewidths_cm1[mode_idx] if mode_idx < len(self.linewidths_cm1) else 5.0
+                    use_q_resolved_nac = (
+                        modal_pair_use_nac is None
+                        or mode_idx >= len(modal_pair_use_nac)
+                        or bool(modal_pair_use_nac[mode_idx])
+                    )
+                    for layer_data in raman_layer_data:
+                        layer_index, _freqs, raman_tensors, _rotation_matrix, modes_selected = layer_data
+                        layer_channels_L = channels_L.get(layer_index, [])
+                        for i_channel, _channel_L in enumerate(layer_channels_L):
+                            for det_pol_idx in detected_pol_indices:
+                                layer_channels_S_base = channels_S_base[det_pol_idx].get(layer_index, [])
+                                for j_channel, _channel_S_base in enumerate(layer_channels_S_base):
+                                    cache_key = (layer_index, i_channel, det_pol_idx, j_channel)
+                                    cache_val = self._nac_cache.get(cache_key) if use_q_resolved_nac else None
+                                    fallback_selected = _raman_layer_mode_is_selected(modes_selected, mode_idx)
+                                    nu_m, nac_tensors, _line_sigma, mode_selected = _modal_pair_phonon_data(
+                                        mode_idx,
+                                        fallback_nu_m,
+                                        raman_tensors,
+                                        sigma,
+                                        fallback_selected,
+                                        cache_val,
+                                    )
+                                    if not mode_selected or abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                                        continue
+                                    if mode_idx >= len(nac_tensors):
+                                        continue
+                                    required_stokes_channels.setdefault(round(float(nu_m), 10), nu_m)
+                for freq_key, nu_m in required_stokes_channels.items():
+                    channels_S = _modal_pair_stokes_channels(
+                        es_system,
+                        self.collection_angle_rad,
+                        z_s,
+                        layer_indices,
+                        self._gl_layer_slices,
+                        detected_system_layer_indices,
+                        detected_pol_indices,
+                        self._detected_jones,
+                        self.laser_frequency_cm1,
+                        nu_m,
+                    )
+                    if channels_S is not None:
+                        channels_S_by_frequency[freq_key] = channels_S
+
+            shared = (
+                self._gl_layer_slices,
+                self._gl_phys_weights,
+                channels_L,
+                channels_S_base,
+                channels_S_by_frequency,
+                self._nac_cache,
+                self._modal_pair_q_vectors,
+                raman_layer_data,
+                self.linewidths_cm1,
+                modal_pair_use_nac,
+                detected_pol_indices,
+                self.detected_pol,
+                self.modal_pair_combination,
+                self.coherent_layers,
+                self.depth_integration,
+                self.approximate_es,
+                resolver,
+                self.temperature_K,
+            )
+            worker_fn = partial(_compute_modal_pair_mode_worker, shared)
+            for _mode_idx, rows in pool.imap(worker_fn, range(n_modes), chunksize=1):
+                if progress_callback is not None:
+                    progress_callback()
+                for nu_m, intensity, sigma in rows:
+                    active_freqs.append(nu_m)
+                    active_intensities.append(intensity)
+                    active_sigmas.append(sigma)
+            return (
+                np.array(active_freqs),
+                np.array(active_intensities),
+                np.array(active_sigmas),
+            )
 
         for mode_idx in range(n_modes):
             if progress_callback is not None:
@@ -1203,11 +1526,26 @@ class LayeredRamanCalculator:
 
                             if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
                                 q_ph = self._modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
-                                q_key = (
-                                    q_key_resolver.q_class_key(q_ph)
-                                    if use_q_resolved_nac
-                                    else ("q_independent",)
+                                classification = resolver.resolve_pair(
+                                    mode_idx,
+                                    q_ph,
+                                    is_polar=use_q_resolved_nac,
+                                    frequency_cm1=nu_m,
+                                    raman_tensor=R_lab,
+                                    linewidth_cm1=line_sigma,
+                                    selected=mode_selected,
+                                    reference_k=max(np.linalg.norm(q_ext), 1.0),
                                 )
+                                if classification.kind == DISCARDED_INTERNAL_COMPONENT:
+                                    continue
+                                if not use_q_resolved_nac:
+                                    q_key = ("q_independent",)
+                                elif classification.kind == RESOLVED_FINAL_STATE:
+                                    q_key = classification.final_state.key[-1]
+                                elif classification.kind == COHERENT_EXTERNAL_CHANNEL:
+                                    q_key = resolver.q_class_key(q_ph)
+                                else:
+                                    q_key = resolver.q_class_key(q_ph)
                                 det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
                                 final_state_key = (
                                     "modal_pair",
@@ -1218,8 +1556,14 @@ class LayeredRamanCalculator:
                                 )
                                 group_key = final_state_key if self.coherent_layers else (rl.layer_index, final_state_key)
                             elif self.modal_pair_combination == MODAL_PAIR_INCOHERENT:
-                                final_state_key = ("modal_pair_incoherent", cache_key, _line_key(nu_m, line_sigma))
-                                group_key = cache_key  # already per-layer via layer_index in cache_key
+                                if not use_q_resolved_nac:
+                                    # Non-polar mode: all pairs are q-independent — group coherently
+                                    # so the combination option does not affect non-polar intensities.
+                                    final_state_key = ("modal_pair_incoherent_np", mode_idx, _line_key(nu_m, line_sigma))
+                                    group_key = "all" if self.coherent_layers else (rl.layer_index, "all")
+                                else:
+                                    final_state_key = ("modal_pair_incoherent", cache_key, _line_key(nu_m, line_sigma))
+                                    group_key = cache_key  # already per-layer via layer_index in cache_key
                             else:  # MODAL_PAIR_COHERENT_ALL
                                 final_state_key = ("modal_pair_all", mode_idx, _line_key(nu_m, line_sigma))
                                 group_key = "all" if self.coherent_layers else (rl.layer_index, "all")
@@ -1235,7 +1579,7 @@ class LayeredRamanCalculator:
                             else:
                                 accumulator.add_amplitude(final_state_key, amp_ij, coherence_group=group_key)
 
-            for (final_state_key, group_key, _local_key), (integrand, weights) in local_integrands.items():
+            for (final_state_key, _group_key, _local_key), (integrand, weights) in local_integrands.items():
                 accumulator.add_incoherent_intensity(final_state_key, float(np.dot(weights, np.abs(integrand) ** 2)))
 
             line_accumulator = {}

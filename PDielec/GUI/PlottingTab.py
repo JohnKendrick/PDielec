@@ -253,6 +253,7 @@ class PlottingTab(QWidget):
         self.settings["Scenarios to plot"] = []
         # self.settings['Plot title'] = 'Plot Title'
         self.legends = []
+        self.scenario_lines = {}
         self.vs_cm1 = []
         self.frequency_length = len(self.vs_cm1)
         self.vmin = 0.0
@@ -566,11 +567,10 @@ class PlottingTab(QWidget):
         """Return a scenario selection list matching the current scenario count."""
         nscenarios = len(self.notebook.scenarios)
         selected = list(self.settings.get("Scenarios to plot", []))
-        if len(selected) < nscenarios:
-            selected.extend([True] * (nscenarios - len(selected)))
-        elif len(selected) > nscenarios:
-            selected = selected[:nscenarios]
-        selected = [bool(value) for value in selected]
+        if len(selected) != nscenarios:
+            selected = [True] * nscenarios
+        else:
+            selected = [bool(value) for value in selected]
         self.settings["Scenarios to plot"] = selected
         return selected
 
@@ -608,6 +608,34 @@ class PlottingTab(QWidget):
             text = f"{nselected} of {nscenarios} scenarios selected"
         self.scenario_selection_label.setText(text)
         return
+
+    def _update_scenario_line_visibility(self):
+        """Update existing plot lines for scenario selection changes."""
+        if not self.scenario_lines:
+            return False
+        selected = self._normalise_scenario_selection()
+        if any(index not in self.scenario_lines for index in range(len(selected))):
+            return False
+        for index, line in self.scenario_lines.items():
+            line.set_visible(index < len(selected) and selected[index])
+        handles = [
+            self.scenario_lines[index]
+            for index, is_selected in enumerate(selected)
+            if is_selected and index in self.scenario_lines
+        ]
+        labels = [
+            self.notebook.scenarios[index].settings["Legend"]
+            for index, is_selected in enumerate(selected)
+            if is_selected and index in self.scenario_lines
+        ]
+        if self.subplot is not None:
+            legend = self.subplot.get_legend()
+            if legend is not None:
+                legend.remove()
+            if handles:
+                self.subplot.legend(handles, labels, loc="best")
+            self.canvas.draw_idle()
+        return True
 
     def open_scenario_selection_dialog(self):
         """Open a dialog to choose which scenarios are included in the plot."""
@@ -647,8 +675,8 @@ class PlottingTab(QWidget):
                 for row in range(table.rowCount())
             ]
             self._update_scenario_selection_summary()
-            self.notebook.progressbars_set_maximum(self.get_total_number_of_frequency_calculations())
-            self.plot()
+            if not self._update_scenario_line_visibility():
+                self.plot()
         logger.debug("Finished:: open_scenario_selection_dialog")
         return
 
@@ -1453,6 +1481,7 @@ class PlottingTab(QWidget):
         vinc = self.settings["Frequency increment"]
         self.vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
         self.subplot = None
+        self.scenario_lines = {}
         self.figure.clf()
         x = np.array(self.vs_cm1)
         removeFirstElement = False
@@ -1507,6 +1536,7 @@ class PlottingTab(QWidget):
                     y = y * self.settings["cell concentration"]/self.settings["concentration"]
                 plots += 1
                 line, = self.subplot.plot(x,y,lw=2, label=legend, color=scenario_colours[scenario_index] )
+                self.scenario_lines[scenario_index] = line
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
             if self.settings.get("Spectrum renormalisation", "none") == "layer depth":

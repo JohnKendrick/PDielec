@@ -1477,8 +1477,19 @@ CoheAll and IncoherentPairs.
 | modal_pairs CoheAll | 1.0000 | 1.0000 |
 | modal_pairs IncoherentPairs | 1.0000 | 1.0000 |
 
-**Impact on previously published `modal_pairs` quantitative results:** The channel fields
-computed by `compute_modal_fields_at_points` are now physically correct (matching
-`calculate_Efield`).  Absolute intensities from `modal_pairs` may differ slightly from
-pre-fix values; the `divide_incoherent_depth_layers.py` reference entry in the CLAUDE.md
-table should be updated to reflect the new invariant behaviour.
+**Impact on other verification tests (assessed 2026-07-09):**
+
+All tests using only `geometry`, `dominant_mode`, or `none` NAC are completely unaffected.
+For `modal_pairs` tests, the following changes were observed:
+
+- `divide_incoherent_depth_layers.py`: all ratios now 1.0000 — fixed (was 0.79).
+- `divide_layers.py` (coherent depth + coherent layers): CoheAll now invariant (1.000/1.000,
+  was 0.248/0.995); IncoherentPairs now E₂=1.023, A₁=0.505 (was 0.246/1.953).
+- `divide_incoherent_layers.py` (coherent depth + incoherent layers): modal_pairs E₂ ratio
+  ~3× (was ~4.4×), now matching standard NAC modes; A₁(LO) ratio unchanged at ~0.5×.
+- `forward_scatter_nac_comparison.py`: unchanged to 3 significant figures.
+- `modal_pairs_ps_anomaly.py`: pp E₂/geometry ratios unchanged (1.003/1.012/1.047 at
+  0°/40°/80°); ps unchanged (1.000 to ppm). The pp residual is not caused by the z_reference
+  bug — it persists after the fix and has a different numerical origin.
+- `nac_angle_comparison.py`, `nac_angle_comparison_ps.py`: unchanged (polar mode ratios,
+  single pair per Group q group).

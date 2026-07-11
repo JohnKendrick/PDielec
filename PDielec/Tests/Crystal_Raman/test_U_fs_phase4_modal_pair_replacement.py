@@ -94,8 +94,15 @@ def test_phase4_group_q_sums_same_final_state_coherently():
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
 
 
-def test_phase4_incoherent_nonpolar_mode_sums_channel_intensities_not_total_field():
-    """Non-polar modal-pair modes stay in the final-state path for INCOHERENT."""
+def test_phase4_incoherent_nonpolar_mode_groups_coherently():
+    """Non-polar modal-pair modes are grouped coherently for INCOHERENT.
+
+    When ``modal_pair_use_nac`` is False (non-polar mode), all Berreman pairs
+    are q-independent and must be summed coherently regardless of the combination
+    option.  The MODAL_PAIR_INCOHERENT path therefore uses the same coherent
+    grouping as MODAL_PAIR_COHERENT_ALL, giving the same result as the total-field
+    integral.  This is the corrected behaviour after the non-polar bypass fix.
+    """
     calc = _calculator(
         modal_pair_combination=MODAL_PAIR_INCOHERENT,
         modal_pair_use_nac=[False],
@@ -109,10 +116,9 @@ def test_phase4_incoherent_nonpolar_mode_sums_channel_intensities_not_total_fiel
     _freqs, intensities, _sigmas = calc.calculate_mode_intensities()
 
     weight = calc._gl_phys_weights[0]
-    expected_incoherent_pairs = 4.0 * weight**2 * bose_factor(NU_MODE, 0.0)
-    old_total_field_fallback = 16.0 * weight**2 * bose_factor(NU_MODE, 0.0)
-    npt.assert_allclose(intensities[0], expected_incoherent_pairs, rtol=1.0e-12, atol=1.0e-12)
-    assert intensities[0] != old_total_field_fallback
+    # Coherent sum of both pairs: amplitude = weight*(1+1)*(1+1) → squared = 16*weight²
+    expected_coherent_grouping = 16.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+    npt.assert_allclose(intensities[0], expected_coherent_grouping, rtol=1.0e-12, atol=1.0e-12)
 
 
 def test_phase4_coherent_all_nonpolar_mode_matches_total_field_integral():
