@@ -25,7 +25,7 @@ dependencies = [
     "imageio-ffmpeg",
     "pytest",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
   {name = "John Kendrick", email = "john@kendrick.me.uk"},
   {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
@@ -43,8 +43,6 @@ keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Sp
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
