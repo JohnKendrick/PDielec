@@ -1323,14 +1323,16 @@ class LayeredRamanCalculator:
                             0.0,
                             channel_L["qz"] - channel_S["qz"],
                         ])
-                        q_ph = q_ext if use_external_q_for_modal_nac else q_pair
-                        self._modal_pair_q_vectors[cache_key] = q_ph
-
-                        q_ph_norm = np.linalg.norm(q_ph)
-                        if q_ph_norm < 1e-8 or rl.nac_function is None:
+                        # Store q_pair for q-matching in resolve_pair / q_class_key.
+                        # NAC uses q_ext (incoherent depth, so all pairs share the same
+                        # macroscopic LO-TO character) or q_pair (coherent depth).
+                        self._modal_pair_q_vectors[cache_key] = q_pair
+                        q_for_nac = q_ext if use_external_q_for_modal_nac else q_pair
+                        q_for_nac_norm = np.linalg.norm(q_for_nac)
+                        if q_for_nac_norm < 1e-8 or rl.nac_function is None:
                             self._nac_cache[cache_key] = None  # use TO baseline
                         else:
-                            q_hat_lab = q_ph / q_ph_norm
+                            q_hat_lab = q_for_nac / q_for_nac_norm
                             self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
 
         modal_pair_use_nac = self.modal_pair_use_nac
