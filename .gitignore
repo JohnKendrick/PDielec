@@ -7,6 +7,8 @@ __pycache__/
 
 # Private Development an independent git repo
 Examples/Crystal_Raman/Castep_project
+Examples/Crystal_Raman/Crystal_project
+Examples/Crystal_Raman/BaTiO3
 Raman-Documentation
 
 # Distribution / packaging

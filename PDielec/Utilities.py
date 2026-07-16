@@ -28,6 +28,7 @@ from PDielec.AimsOutputReader import AimsOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
 from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.ExperimentOutputReader import ExperimentOutputReader
+from PDielec.FiniteFieldOutputReader import FiniteFieldOutputReader
 from PDielec.GulpOutputReader import GulpOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
 from PDielec.QEOutputReader import QEOutputReader
@@ -126,21 +127,26 @@ def find_program_from_name( filename ):
         return "gulp"
     if ext == ".castep":
         return "castep"
+    if ext == ".json":
+        try:
+            import json
+            with open(filename) as fd:
+                schema = json.load(fd).get("schema", "")
+            if schema.startswith("pdielect-") and ("raman" in schema or "r_epsilon" in schema):
+                return "finite field"
+        except Exception:
+            pass
     if ext ==  ".out":
         if os.path.isfile(head_root+".files"):
             return "abinit"
-        elif os.path.isfile(head_root+".dynG"):
-            return "quantum espresso"
-        elif glob.glob(os.path.join(head if head else ".", "*.dynG")):
+        elif os.path.isfile(head_root+".dynG") or glob.glob(os.path.join(head if head else ".", "*.dynG")):
             return "quantum espresso"
         else:
             return "crystal"
     if ext ==  ".log":
         if os.path.isfile(head_root+".files"):
             return "abinit"
-        elif os.path.isfile(head_root+".dynG"):
-            return "quantum espresso"
-        elif glob.glob(os.path.join(head if head else ".", "*.dynG")):
+        elif os.path.isfile(head_root+".dynG") or glob.glob(os.path.join(head if head else ".", "*.dynG")):
             return "quantum espresso"
         else:
             return "crystal"
@@ -318,9 +324,10 @@ def get_reader( name, program):
     elif program == "experiment":
         names = [ name ]
         reader = ExperimentOutputReader(names)
+    elif program == "finite field":
+        names = [ name ]
+        reader = FiniteFieldOutputReader(names)
     else:
         logger.debug(f"Program name not recognized {program}")
         sys.exit()
     return reader
-
-
