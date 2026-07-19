@@ -21,13 +21,45 @@ import os
 import numpy as np
 
 from PDielec.Calculator import calculate_normal_modes_and_frequencies, cleanup_symbol
-from PDielec.Constants import amu, avogadro_si, wavenumber
+from PDielec.Constants import (
+    amu,
+    avogadro_si,
+    elementary_charge_si,
+    epsilon_0_si,
+    wavenumber,
+)
 from PDielec.IO import pdielec_io
 from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
 
 logger = logging.getLogger(__name__)
 
-CHI2_PM_PER_V_TO_REPSILON = 1.0e-2
+# Volume-independent numerator of the pm/V -> R_epsilon conversion.  The
+# complete factor is CHI2_PM_PER_V_TO_REPSILON / sqrt(Vcell [Angstrom^3]).
+# It follows from eq-nonanalytic after expressing Born charges in electrons,
+# masses in electron masses, and mode coordinates in Angstrom*sqrt(amu).
+CHI2_PM_PER_V_TO_REPSILON = (
+    math.sqrt(amu) * elementary_charge_si * 1.0e8 / (4.0 * math.pi * epsilon_0_si)
+)
+
+
+def chi2_pm_per_v_to_repsilon(volume_angstrom3):
+    """Return the cell-dependent conversion from pm/V to ``R_epsilon`` units.
+
+    Parameters
+    ----------
+    volume_angstrom3 : float
+        Primitive-cell volume in Angstrom cubed.
+
+    Returns
+    -------
+    float
+        Factor that converts physical chi(2) in pm/V for use with mass-weighted
+        Born charges and ``R_epsilon = sqrt(Vcell) d epsilon / dQ`` tensors.
+
+    """
+    if volume_angstrom3 <= 0.0:
+        raise ValueError("A positive cell volume is required to convert chi(2) from pm/V")
+    return CHI2_PM_PER_V_TO_REPSILON / math.sqrt(volume_angstrom3)
 
 
 
@@ -203,13 +235,12 @@ class GenericOutputReader:
         self.primitive_transformation   = None
         self.raman_tensors              = None
         self.nonlinear_optical_susceptibility = None   # 3×3×3 ndarray (χ^(2)) in R_epsilon units, or None
+        self._nonlinear_optical_susceptibility_pm_per_v = None
         return
 
     def _store_nonlinear_optical_susceptibility_pm_per_v(self, chi2_pm_per_v):
-        """Store χ^(2) after converting from pm/V to the internal R_epsilon convention."""
-        self.nonlinear_optical_susceptibility = (
-            np.asarray(chi2_pm_per_v, dtype=float) * CHI2_PM_PER_V_TO_REPSILON
-        )
+        """Retain physical χ^(2) for conversion after the final cell volume is known."""
+        self._nonlinear_optical_susceptibility_pm_per_v = np.asarray(chi2_pm_per_v, dtype=float)
         return
 
     def read_output(self):
@@ -225,6 +256,11 @@ class GenericOutputReader:
 
         """
         self._read_output_files()
+        if self._nonlinear_optical_susceptibility_pm_per_v is not None:
+            self.nonlinear_optical_susceptibility = (
+                self._nonlinear_optical_susceptibility_pm_per_v
+                * chi2_pm_per_v_to_repsilon(self.volume)
+            )
         self._symmetrise_nonlinear_optical_susceptibility()
         return
 

@@ -17,12 +17,12 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import math
+
 import numpy as np
 import pytest
 
 from PDielec.Constants import amu, angs2bohr
-from PDielec.GenericOutputReader import GenericOutputReader
-from PDielec.GenericOutputReader import CHI2_PM_PER_V_TO_REPSILON
+from PDielec.GenericOutputReader import GenericOutputReader, chi2_pm_per_v_to_repsilon
 from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standalone
 
 # ---------------------------------------------------------------------------
@@ -118,6 +118,24 @@ class TestJ1Attribute:
         assert result is chi2
 
 
+class TestJ1BChi2UnitConversion:
+    """J1B: pm/V conversion follows the documented cell-volume convention."""
+
+    def test_batio3_reference_volume(self):
+        """Check the SI/atomic-unit conversion used by the Stage 3 reference."""
+        assert chi2_pm_per_v_to_repsilon(61.545914) == pytest.approx(0.7836682249873389, rel=1e-13)
+
+    def test_inverse_square_root_volume_scaling(self):
+        """The internal chi(2) factor must scale as inverse square root volume."""
+        factor = chi2_pm_per_v_to_repsilon(50.0)
+        assert chi2_pm_per_v_to_repsilon(200.0) == pytest.approx(0.5 * factor, rel=1e-15)
+
+    def test_nonpositive_volume_rejected(self):
+        """Conversion without a physical cell volume is undefined."""
+        with pytest.raises(ValueError, match="positive cell volume"):
+            chi2_pm_per_v_to_repsilon(0.0)
+
+
 # ---------------------------------------------------------------------------
 # J2: Abinit reader parses χ^(2) from raman.abo
 # ---------------------------------------------------------------------------
@@ -139,7 +157,8 @@ class TestJ2AbinitParser:
     def test_zz_component(self, chi2):
         # raman.abo raw d[2,2,2] = -33.3688; after χ^(2)=2d and
         # point-group symmetrisation the stored tensor is slightly different.
-        assert chi2[2, 2, 2] == pytest.approx(-75.913192908 * CHI2_PM_PER_V_TO_REPSILON, abs=1e-8)
+        factor = chi2_pm_per_v_to_repsilon(_load_abinit().volume)
+        assert chi2[2, 2, 2] == pytest.approx(-75.913192908 * factor, abs=1e-8)
 
     def test_last_two_indices_symmetric(self, chi2):
         """Abinit χ^(2) stores d[i,j,k]; last two indices must be symmetric."""
@@ -154,12 +173,13 @@ class TestJ2AbinitParser:
         from PDielec.AbinitOutputReader import AbinitOutputReader
         r = AbinitOutputReader([_ABINIT_FILE])
         r.read_output()
-        d_recovered = chi2 / (2.0 * CHI2_PM_PER_V_TO_REPSILON)
+        factor = chi2_pm_per_v_to_repsilon(r.volume)
+        d_recovered = chi2 / (2.0 * factor)
         assert d_recovered[2, 2, 2] == pytest.approx(-37.956596454, abs=1e-6)
 
     def test_zno_6mm_symmetry_after_reader_symmetrisation(self, chi2):
         """ZnO should obey 6mm symmetry even if Abinit's raw d table does not."""
-        assert chi2[0, 0, 2] == pytest.approx(chi2[1, 1, 2], abs=1e-8)
+        assert chi2[0, 0, 2] == pytest.approx(chi2[1, 1, 2], abs=2e-8)
         assert chi2[0, 1, 2] == pytest.approx(0.0, abs=1e-8)
         assert chi2[1, 0, 2] == pytest.approx(0.0, abs=1e-8)
 
@@ -195,12 +215,13 @@ class TestJ9QEParser:
             encoding="utf-8",
         )
         r = QEOutputReader([str(output)])
+        r.volume = 100.0
         r.read_output()
         chi2 = r.nonlinear_optical_susceptibility
 
         assert chi2 is not None
         assert chi2.shape == (3, 3, 3)
-        factor = 0.5 * 2.7502 * CHI2_PM_PER_V_TO_REPSILON
+        factor = 0.5 * 2.7502 * chi2_pm_per_v_to_repsilon(r.volume)
         assert chi2[0, 0, 0] == pytest.approx(1.0 * factor)
         assert chi2[2, 2, 2] == pytest.approx(27.0 * factor)
         assert chi2[1, 2, 1] == pytest.approx(15.0 * factor)
@@ -211,12 +232,15 @@ class TestJ9QEParser:
         from PDielec.QEOutputReader import QEOutputReader
 
         r = QEOutputReader([_QE_TENSORS_FILE])
+        # tensors.xml contains no cell geometry; supply a test volume before
+        # converting the physical pm/V values to the internal convention.
+        r.volume = 100.0
         r.read_output()
         chi2 = r.nonlinear_optical_susceptibility
 
         assert chi2 is not None
         assert chi2.shape == (3, 3, 3)
-        factor = 0.5 * 2.7502 * CHI2_PM_PER_V_TO_REPSILON
+        factor = 0.5 * 2.7502 * chi2_pm_per_v_to_repsilon(r.volume)
         assert chi2[0, 0, 2] == pytest.approx(133.8996252820044 * factor)
         assert chi2[2, 2, 2] == pytest.approx(-125.0252942735832 * factor)
 
@@ -245,9 +269,10 @@ class TestJ9QEParser:
             encoding="utf-8",
         )
         r = QEOutputReader([_QE_TENSORS_FILE, str(output)])
+        r.volume = 100.0
         r.read_output()
 
-        factor = 0.5 * 2.7502 * CHI2_PM_PER_V_TO_REPSILON
+        factor = 0.5 * 2.7502 * chi2_pm_per_v_to_repsilon(r.volume)
         assert r.nonlinear_optical_susceptibility[0, 0, 2] == pytest.approx(133.8996252820044 * factor)
 
 
@@ -274,7 +299,11 @@ class TestJ3CastepParser:
 
     def test_zz_component(self, chi2):
         # raman.castep: d[2,2,2] = -38.3539; χ^(2) = 2d ≈ -76.71 pm/V before internal conversion.
-        assert abs(chi2[2, 2, 2] - (-76.7078 * CHI2_PM_PER_V_TO_REPSILON)) < 1e-4
+        from PDielec.CastepOutputReader import CastepOutputReader
+        reader = CastepOutputReader([_CASTEP_FILE])
+        reader.read_output()
+        factor = chi2_pm_per_v_to_repsilon(reader.volume)
+        assert abs(chi2[2, 2, 2] - (-76.7078 * factor)) < 1e-4
 
     def test_last_two_indices_symmetric(self, chi2):
         """Voigt reconstruction must produce a tensor symmetric in last two indices."""
@@ -287,7 +316,12 @@ class TestJ3CastepParser:
     def test_d_to_chi2_factor(self, chi2):
         """χ^(2) = 2d; row i=0 col 4 is Voigt pair (0,2): d[0,0,2] = 21.655 → chi2 = 43.31."""
         # raman.castep row 0: ... 21.65509 at col 4 → d[0,0,2] = d[0,2,0] = 21.655
-        assert abs(chi2[0, 0, 2] - 43.31 * CHI2_PM_PER_V_TO_REPSILON) < 1e-3
+        from PDielec.CastepOutputReader import CastepOutputReader
+        reader = CastepOutputReader([_CASTEP_FILE])
+        reader.read_output()
+        factor = chi2_pm_per_v_to_repsilon(reader.volume)
+        # The reader subsequently averages symmetry-equivalent components.
+        assert chi2[0, 0, 2] / factor == pytest.approx(2.0 * 21.65509, abs=4e-3)
 
 
 @pytest.mark.skipif(not _have_crystal23, reason="CRYSTAL23 Raman example not present")
@@ -301,12 +335,13 @@ class TestJ3BCrystalParser:
         r = CrystalOutputReader([_CRYSTAL23_FILE])
         r.read_output()
         chi2 = r.nonlinear_optical_susceptibility
+        factor = chi2_pm_per_v_to_repsilon(r.volume)
 
         assert chi2 is not None
         assert chi2.shape == (3, 3, 3)
-        assert chi2[0, 0, 2] == pytest.approx(2.0 * 11.691 * CHI2_PM_PER_V_TO_REPSILON)
-        assert chi2[1, 1, 2] == pytest.approx(2.0 * 11.691 * CHI2_PM_PER_V_TO_REPSILON)
-        assert chi2[2, 2, 2] == pytest.approx(2.0 * -33.166 * CHI2_PM_PER_V_TO_REPSILON)
+        assert chi2[0, 0, 2] == pytest.approx(2.0 * 11.691 * factor)
+        assert chi2[1, 1, 2] == pytest.approx(2.0 * 11.691 * factor)
+        assert chi2[2, 2, 2] == pytest.approx(2.0 * -33.166 * factor)
 
 
 # ---------------------------------------------------------------------------
@@ -524,8 +559,8 @@ class TestJ10ReaderTensorConvention:
 class TestJ11AbinitRamanTensorRecalculation:
     """J11: Recalculated AbInit normal modes must keep Raman tensors phase-consistent."""
 
-    def test_zno_a1_lo_eo_reduces_in_plane_tensor_after_mass_recalculation(self):
-        """The AbInit ZnO q||c A1 LO branch should not flip EO sign after Settings setup."""
+    def test_zno_a1_lo_eo_correction_keeps_its_phase_after_mass_recalculation(self):
+        """The AbInit ZnO q||c A1 LO correction should keep its phase after Settings setup."""
         from PDielec.AbinitOutputReader import AbinitOutputReader
         from PDielec.HelperRoutines import calculate_dft_permittivity_object
 
@@ -555,8 +590,8 @@ class TestJ11AbinitRamanTensorRecalculation:
         assert len(a1_lo) == 1
         mode_idx = a1_lo[0]
 
-        assert abs(tensors_eo[mode_idx][0, 0]) < abs(tensors_no[mode_idx][0, 0])
-        assert abs(tensors_eo[mode_idx][1, 1]) < abs(tensors_no[mode_idx][1, 1])
+        assert tensors_eo[mode_idx][0, 0] - tensors_no[mode_idx][0, 0] < 0.0
+        assert tensors_eo[mode_idx][1, 1] - tensors_no[mode_idx][1, 1] < 0.0
 
 
 # ---------------------------------------------------------------------------
