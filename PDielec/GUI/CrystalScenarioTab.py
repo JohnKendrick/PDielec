@@ -47,22 +47,22 @@ from scipy import signal
 
 import PDielec.GTMcore as GTM
 from PDielec import Materials
-from PDielec.Constants import amu, angs2bohr, speed_light_si, wavenumber
+from PDielec.Constants import amu, angs2bohr, speed_light_si
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_COHERENT,
     DEPTH_INTEGRATION_INCOHERENT,
+    MODAL_PAIR_COHERENT_ALL,
     MODAL_PAIR_GROUP_Q,
     MODAL_PAIR_INCOHERENT,
-    MODAL_PAIR_COHERENT_ALL,
     MODAL_PAIR_OPTIONS,
-    RamanContribution,
     LayeredRamanCalculator,
     RamanLayer,
     lorentzian_broaden,
 )
 from PDielec.Materials import MaterialsDataBase
+from PDielec.NACDiagnostics import compute_nac_direction_diagnostics
 
 logger = logging.getLogger(__name__)
 thickness_conversion_factors = {"ang":1.0E-10, "nm":1.0E-9, "um":1.0E-6, "mm":1.0E-3, "cm":1.0E-2}
@@ -365,59 +365,22 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
     dominant_to_by_nac : ndarray, shape (3N,), optional
         Only returned when ``return_mode_map=True``.
     """
-    import math
-    nAtoms = len(masses_au)
-    n_modes = 3 * nAtoms
-    n_to_modes = U_TO.shape[0]
-
-    # Mass-weighted Born charges: Z'[α, κβ] = Z*[κ, α, β] / √M_κ
-    Z_mat = np.zeros((3, n_modes))
-    for kappa in range(nAtoms):
-        inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
-        for beta in range(3):
-            Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
-
-    # NAC screening tensor: S = q̂ q̂^T / (q̂^T ε_∞ q̂)
-    eps_b_q = float(q_hat_crystal @ eps_inf @ q_hat_crystal)
-    if abs(eps_b_q) < 1e-12:
-        eps_b_q = 1.0
-    S_nac = np.outer(q_hat_crystal, q_hat_crystal) / eps_b_q
-
-    # Dynamical matrix with NAC
-    delta_D = (4.0 * np.pi / volume_au) * (Z_mat.T @ S_nac @ Z_mat)
-    D_TO = np.array(hessian, dtype=float)
-    eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
-
-    # Frequencies in cm⁻¹ (preserve sign for unstable modes)
-    nac_freqs = np.array([
-        (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
-        for ev in eig_val
-    ])
-
-    # Overlap matrix C[n, m] = <u_n^TO | u_m^NAC>
-    C = U_TO @ eig_vec  # (n_to_modes, 3N)
-
-    sigmas = np.asarray(to_sigmas, dtype=float)
-    nac_tensors = []
-    nac_sigmas = np.zeros(n_modes)
-    dominant_to_by_nac = np.zeros(n_modes, dtype=int)
-    for p_idx in range(n_modes):
-        R_p = np.zeros((3, 3), dtype=float)
-        for n_to in range(n_to_modes):
-            if n_to < len(raman_tensors):
-                R_p += C[n_to, p_idx] * np.asarray(raman_tensors[n_to], dtype=float)
-        nac_tensors.append(R_p)
-        dominant_to = int(np.argmax(np.abs(C[:, p_idx])))
-        dominant_to_by_nac[p_idx] = dominant_to
-        nac_sigmas[p_idx] = sigmas[dominant_to] if dominant_to < len(sigmas) else 5.0
-
-    # Electro-optic (EO) correction to Raman tensors from eq-nonanalytic and
-    # eq-nac_ramantensor. Applied only when χ^(2) is available.
-    if chi2_repsilon is not None:
-        from PDielec.RamanPolarCalculator import apply_eo_correction
-        # EO correction should be a small fraction (~1–20%) of the uncorrected tensor.
-        nac_tensors = apply_eo_correction(nac_tensors, chi2_repsilon, q_hat_crystal,
-                                          Z_mat, eig_vec, eps_inf)
+    diagnostics = compute_nac_direction_diagnostics(
+        q_hat_crystal,
+        hessian,
+        born_charges,
+        eps_inf,
+        volume_au,
+        masses_au,
+        U_TO,
+        raman_tensors,
+        to_sigmas,
+        chi2_repsilon=chi2_repsilon,
+    )
+    nac_freqs = diagnostics["frequencies_cm1"]
+    nac_tensors = diagnostics["raman_tensors_with_eo"]
+    nac_sigmas = diagnostics["linewidths_cm1"]
+    dominant_to_by_nac = diagnostics["dominant_to_by_nac"]
 
     if return_mode_map:
         return nac_freqs, nac_tensors, nac_sigmas, dominant_to_by_nac
