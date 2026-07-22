@@ -21,7 +21,6 @@ from functools import partial
 from multiprocessing import Array
 
 import numpy as np
-from scipy.stats.qmc import Sobol
 from qtpy.QtCore import QCoreApplication, Qt
 from qtpy.QtWidgets import (
     QCheckBox,
@@ -41,7 +40,7 @@ from PDielec import Calculator, DielectricFunction, Materials
 from PDielec.Constants import amu, angs2bohr, boltzmann_si, planck_si, speed_light_si, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
-from PDielec.RamanPolarCalculator import apply_eo_correction
+from PDielec.RamanPolarCalculator import apply_particle_eo_correction
 
 logger = logging.getLogger(__name__)
 class PowderScenarioTab(ScenarioTab):
@@ -935,10 +934,7 @@ class PowderScenarioTab(ScenarioTab):
         rho1 = self.crystal_density()
         rho2 = self.settings["Matrix density"]
         denominator = rho1*vf1 + rho2*vf2
-        if denominator < 1e-30:
-            mf1 = 1.0
-        else:
-            mf1 = rho1*vf1 / denominator
+        mf1 = 1.0 if denominator < 1e-30 else rho1 * vf1 / denominator
         self.settings["Mass fraction"] = mf1
         blocking_state = self.mf_sb.signalsBlocked()
         self.mf_sb.blockSignals(True)
@@ -1425,13 +1421,13 @@ class PowderScenarioTab(ScenarioTab):
         Two code paths are used depending on particle shape:
 
         * **Sphere** — the depolarisation tensor L = I/3 is rotationally invariant, so
-          R_particle(Ω) = R @ R_particle_crystal @ R.T is a pure rank-2 tensor rotation
+          R_eff(Ω) = R @ R_eff_crystal @ R.T is a pure rank-2 tensor rotation
           and the analytical rotational invariants (``eq-invariants1`` and
           ``eq-Intensities``) are exact.
         * **Non-sphere** — D^{particle} is diagonalised once in the crystal frame
           (ΔD is orientation-invariant); for each of ``n_samples`` SO(3) orientations
-          the orientation-dependent N_bg_lab(Ω) is recomputed and used to evaluate the
-          effective particle Raman tensor R_particle(Ω), whose contribution is
+          the optical internal-field tensor is recomputed and used to evaluate the
+          effective bulk Raman tensor R_eff(Ω), whose contribution is
           accumulated into the spectrum.
 
         Parameters
@@ -1514,19 +1510,29 @@ class PowderScenarioTab(ScenarioTab):
         temperature = self.settings["Raman temperature"]
         n_samples = self.settings["Raman orientation samples"]
         chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
+        eo_requested = self.settings.get("Raman electro-optic term", True)
         include_eo = (
-            self.settings.get("Raman electro-optic term", True)
+            eo_requested
+            and not is_none_matrix
+            and has_correction_data
             and chi2 is not None
-            and len(self.reader.born_charges) > 0
-            and np.any(self.reader.mass_weighted_normal_modes)
         )
+        if eo_requested and not include_eo:
+            logger.debug(
+                "%s _calculate_raman: particle EO disabled "
+                "(matrix=%s, correction_data=%s, chi2=%s)",
+                self.settings["Legend"],
+                not is_none_matrix,
+                has_correction_data,
+                chi2 is not None,
+            )
 
         vs_cm1 = np.array(vs_cm1, dtype=float)
 
-        # Non-sphere: numerical SO(3) averaging with per-orientation N_bg.
-        # EO is q-dependent, so even spherical particles use this path when
-        # the separable χ² correction is enabled.
-        if ((not is_sphere and has_correction_data) or include_eo):
+        # Non-sphere: numerical SO(3) averaging.  The finite-particle EO
+        # correction is constructed once in the particle frame and does not
+        # by itself require orientation sampling.
+        if not is_sphere and has_correction_data:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: orientation numerical average ({n_samples} samples)")
             n_freqs = len(vs_cm1)
             _accumulated = [0.0]
@@ -1566,7 +1572,8 @@ class PowderScenarioTab(ScenarioTab):
             logger.debug(f"{self.settings['Legend']} _calculate_raman: applying particle frequency correction")
             loop_freqs, loop_raman, loop_sigmas, loop_selected = self._compute_particle_modes(
                 N, L, epsilon_e, epsilon_inf_i, I3,
-                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected)
+                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected,
+                include_eo=include_eo, chi2_repsilon=chi2)
         else:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: no hessian/born charges, using bulk TO frequencies")
             loop_freqs = np.array(frequencies_cm1)
@@ -1590,19 +1597,18 @@ class PowderScenarioTab(ScenarioTab):
 
                 # Effective particle Raman tensor.
                 if is_none_matrix:
-                    R_particle = np.array(R_eps, dtype=complex)
+                    R_eff = np.array(R_eps, dtype=complex)
                 else:
-                    R_particle = Calculator.compute_particle_raman_tensor(
-                        R_eps, N, L, epsilon_inf_i, epsilon_e)
+                    R_eff = Calculator.compute_effective_raman_tensor(R_eps, N, N)
 
                 # Powder-averaged scattering intensity for the chosen polarisation.
                 if polarisation in ("VV", "VH", "HV"):
-                    vv, vh = Calculator.compute_powder_raman_intensities(R_particle)
+                    vv, vh = Calculator.compute_powder_raman_intensities(R_eff)
                     intensity_factor = vv if polarisation == "VV" else vh
                 else:  # Unpolarised: 45α² + 7γ² + 5κ² (≠ VV+VH for antisymmetric tensors)
-                    alpha = np.trace(R_particle) / 3.0
-                    gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
-                    kappa_t = 0.5 * (R_particle - R_particle.T)
+                    alpha = np.trace(R_eff) / 3.0
+                    gamma_t = 0.5 * (R_eff + R_eff.T) - alpha * I3
+                    kappa_t = 0.5 * (R_eff - R_eff.T)
                     alpha2 = float(np.real(alpha * np.conj(alpha)))
                     gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
                     kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
@@ -1631,7 +1637,8 @@ class PowderScenarioTab(ScenarioTab):
         logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
 
     def _compute_particle_modes(self, N_bg, L, epsilon_e, epsilon_inf_i, I3,
-                                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected):
+                                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected,
+                                include_eo=False, chi2_repsilon=None):
         """Compute particle phonon frequencies and Raman tensors in the particle normal-mode basis.
 
         Implements ``eq-particle_dynamical`` and ``eq-particle_eigenvalues``.
@@ -1670,6 +1677,10 @@ class PowderScenarioTab(ScenarioTab):
             Lorentzian half-widths in cm^{-1} (one per TO mode).
         modes_selected : list of bool
             Mode selection flags (one per TO mode).
+        include_eo : bool, optional
+            Apply the finite-particle electro-optic correction in the particle-mode basis.
+        chi2_repsilon : ndarray, shape (3, 3, 3), optional
+            Electro-optic susceptibility in the internal ``R_epsilon`` convention.
 
         Returns
         -------
@@ -1780,6 +1791,11 @@ class PowderScenarioTab(ScenarioTab):
             particle_sigmas.append(sigmas_cm1[dominant_to])
             particle_selected.append(modes_selected[dominant_to])
 
+        if include_eo and chi2_repsilon is not None:
+            K_particle = NbgL / epsilon_e
+            particle_raman = apply_particle_eo_correction(
+                particle_raman, chi2_repsilon, K_particle, Z_mat, eig_vec)
+
         return particle_freqs, particle_raman, particle_sigmas, particle_selected
 
     @staticmethod
@@ -1798,6 +1814,7 @@ class PowderScenarioTab(ScenarioTab):
         -------
         list of ndarray, each shape (3, 3)
             Orthogonal rotation matrices (det = +1).
+
         """
         return Calculator.sobol_rotations(n_samples, seed=42)
 
@@ -1811,10 +1828,11 @@ class PowderScenarioTab(ScenarioTab):
 
         The particle dynamical matrix correction ΔD is orientation-invariant (proof: rotating
         L, ε_inf, and Z to the lab frame and back always recovers ΔD_crystal), so D^{particle}
-        is diagonalised **once** before the orientation loop.  For each sampled orientation
-        Ω ∈ SO(3) only the orientation-dependent internal field tensor N_bg_lab(Ω) is
-        recomputed; this is used to apply the local-field correction to the
-        pre-rotated Raman tensors.  Scattering strengths from
+        is diagonalised **once** before the orientation loop.  The finite-particle EO
+        correction is also constructed once in the particle frame using the same
+        electrostatic kernel as ΔD.  For each sampled orientation Ω ∈ SO(3), the
+        optical internal-field tensor is recomputed and supplies exactly one incident
+        and one scattered local-field factor.  Scattering strengths from
         ``eq-ramanefficiency_depolarised`` are accumulated as Lorentzian
         contributions from ``eq-raman-intensity`` and normalised by ``n_samples``.
 
@@ -1849,7 +1867,7 @@ class PowderScenarioTab(ScenarioTab):
         no_matrix : bool, optional
             If True, skip particle frequency and local-field corrections.
         include_eo : bool, optional
-            If True, include the q-dependent electro-optic χ² tensor correction.
+            If True, include the finite-particle electro-optic χ² correction.
         chi2_repsilon : ndarray or None, optional
             Reader χ² tensor in the internal R_epsilon convention.
         progress_callback : callable or None, optional
@@ -1875,77 +1893,24 @@ class PowderScenarioTab(ScenarioTab):
         TO component of each particle mode (same heuristic as ``_compute_particle_modes``).
 
         """
-        nAtoms = self.reader.nions
-        n_modes = 3 * nAtoms
-
-        # Unit-cell volume in Bohr³
-        volume_au = self.reader.volume * angs2bohr ** 3
-
-        # Atomic masses in electron-mass units
-        masses_au = np.array(self.reader.masses) * amu
-
-        # Born effective charges Z*[κ, α, β]: shape (nAtoms, 3, 3)
-        born_charges = np.array(self.reader.born_charges)
-
-        # Crystal-frame mass-weighted Born charge matrix Z' (3 × 3N)
-        # Z'[α, κβ] = Z*[κ, α, β] / √M_κ from eq-polarisation-born-mass-weighted.
-        Z_mat = np.zeros((3, n_modes))
-        for kappa in range(nAtoms):
-            inv_sqrtM = 1.0 / math.sqrt(masses_au[kappa])
-            for beta in range(3):
-                Z_mat[:, kappa * 3 + beta] = born_charges[kappa, :, beta] * inv_sqrtM
-
-        # Bulk TO dynamical matrix (mass-weighted Hessian)
-        D_TO = np.array(self.reader.hessian, dtype=float)
-
-        # TO normal modes: rows of U_TO are the mass-weighted eigenvectors (n_to_modes × 3N)
-        n_to_modes = len(self.reader.mass_weighted_normal_modes)
-        U_TO = np.zeros((n_to_modes, n_modes))
-        for imode, mode in enumerate(self.reader.mass_weighted_normal_modes):
-            col = 0
-            for atom in mode:
-                U_TO[imode, col:col + 3] = atom
-                col += 3
-
-        # Raman tensors as complex arrays
-        raman_tensors_c = [np.array(rt, dtype=complex) for rt in raman_tensors]
-
         # Bose-Einstein prefactor: hc/k in units of cm·K
         hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
 
-        # ── Pre-loop: orientation-invariant quantities ────────────────────────────────
-        # ΔD is invariant under rotation: Z_lab^T NbgL_lab Z_lab = Z_mat^T N L Z_mat
-        # for any R (proof in raman_notes.md).  Diagonalise D^particle once here.
+        # Build all orientation-independent particle-mode data through the same
+        # path used by the analytical sphere calculation.
         if no_matrix:
-            eig_vec = U_TO.T
             part_freqs = np.asarray(frequencies_cm1, dtype=float)
-            R_eps_cryst_list = raman_tensors_c
-            dominant_to_by_mode = list(range(len(part_freqs)))
+            R_eps_cryst_list = [np.asarray(tensor, dtype=complex) for tensor in raman_tensors]
+            part_sigmas = list(sigmas_cm1)
+            part_selected = list(modes_selected)
         else:
-            N_bg_crystal = Calculator.compute_internal_field_tensor(
+            N_phonon_bg_crystal = Calculator.compute_internal_field_tensor(
                 np.real(L), np.real(epsilon_inf_i), epsilon_e)
-            NbgL = np.real(N_bg_crystal) @ np.real(L)
-            delta_D = (4.0 * np.pi / (epsilon_e * volume_au)) * (Z_mat.T @ NbgL @ Z_mat)
-
-            eig_val, eig_vec = np.linalg.eigh(D_TO + delta_D)
-
-            part_freqs = np.array([
-                (math.sqrt(abs(ev)) / wavenumber) * (1.0 if ev >= 0.0 else -1.0)
-                for ev in eig_val
-            ])
-
-            # Overlap matrix C[n_to, p]: <u_n^TO | u_p^particle>
-            C = U_TO @ eig_vec  # (n_to_modes, 3N)
-
-            # Crystal-frame Raman tensor in particle-mode basis, per mode
-            R_eps_cryst_list = []
-            dominant_to_by_mode = []
-            for p_idx in range(n_modes):
-                R_eps = np.zeros((3, 3), dtype=complex)
-                for n_to in range(n_to_modes):
-                    R_eps += C[n_to, p_idx] * raman_tensors_c[n_to]
-                R_eps_cryst_list.append(R_eps)
-                dominant_to_by_mode.append(int(np.argmax(np.abs(C[:, p_idx]))))
+            part_freqs, R_eps_cryst_list, part_sigmas, part_selected = self._compute_particle_modes(
+                N_phonon_bg_crystal, L, epsilon_e, epsilon_inf_i, I3,
+                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected,
+                include_eo=include_eo, chi2_repsilon=chi2_repsilon)
+        n_modes = len(part_freqs)
 
         # Per-mode orientation-independent scalars: (freq, sigma, n_bose, nu_s)
         # None marks modes that should be skipped entirely.
@@ -1955,11 +1920,10 @@ class PowderScenarioTab(ScenarioTab):
             if abs(freq) < 1.0:
                 mode_data.append(None)
                 continue
-            dominant_to = dominant_to_by_mode[p_idx]
-            if not modes_selected[dominant_to]:
+            if not part_selected[p_idx]:
                 mode_data.append(None)
                 continue
-            sigma = sigmas_cm1[dominant_to]
+            sigma = part_sigmas[p_idx]
             x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
             n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
             nu_s = nu_L - freq
@@ -1973,9 +1937,6 @@ class PowderScenarioTab(ScenarioTab):
         e_L  = np.array([0.0, 1.0, 0.0])
         e_VV = np.array([0.0, 1.0, 0.0])
         e_VH = np.array([1.0, 0.0, 0.0])
-        q_lab = np.array([0.0, 0.0, 1.0])
-        eps_inf_real = np.real(epsilon_inf_i)
-
         spectrum = np.zeros(len(vs_cm1))
         
         # Loop over a random set of rotations
@@ -1985,15 +1946,11 @@ class PowderScenarioTab(ScenarioTab):
             L_lab   = R @ np.real(L) @ R.T
             eps_lab = R @ np.real(epsilon_inf_i) @ R.T
 
-            # Orientation-dependent internal field tensor N_bg_lab.
-            N_bg_lab = I3 if no_matrix else Calculator.compute_internal_field_tensor(L_lab, eps_lab, epsilon_e)
-
-            if include_eo:
-                q_crystal = R.T @ q_lab
-                R_eps_for_orientation = apply_eo_correction(
-                    R_eps_cryst_list, chi2_repsilon, q_crystal, Z_mat, eig_vec, eps_inf_real)
-            else:
-                R_eps_for_orientation = R_eps_cryst_list
+            # Optical internal-field tensor.  The present approximation uses
+            # the same optical permittivity at the laser and Stokes
+            # frequencies, while the helper preserves their separate roles.
+            N_optical_lab = I3 if no_matrix else Calculator.compute_internal_field_tensor(
+                L_lab, eps_lab, epsilon_e)
 
             # Loop over particle modes (skip inactive ones)
             for p_idx in range(n_modes):
@@ -2002,24 +1959,24 @@ class PowderScenarioTab(ScenarioTab):
                 freq, sigma, n_bose, nu_s = mode_data[p_idx]
 
                 # Rotate crystal-frame Raman tensor to the lab frame
-                R_eps_lab = R @ R_eps_for_orientation[p_idx] @ R.T
+                R_eps_lab = R @ R_eps_cryst_list[p_idx] @ R.T
 
                 # Effective particle Raman tensor in the lab frame.
                 if no_matrix:
-                    R_part_lab = R_eps_lab
+                    R_eff_lab = R_eps_lab
                 else:
-                    R_part_lab = Calculator.compute_particle_raman_tensor(
-                        R_eps_lab, N_bg_lab, L_lab, eps_lab, epsilon_e)
+                    R_eff_lab = Calculator.compute_effective_raman_tensor(
+                        R_eps_lab, N_optical_lab, N_optical_lab)
 
                 # Polarisation-specific intensity
                 if polarisation == "VV":
-                    intensity_factor = 45.0 * abs(e_VV @ R_part_lab @ e_L) ** 2
+                    intensity_factor = 45.0 * abs(e_VV @ R_eff_lab @ e_L) ** 2
                 elif polarisation in ("VH", "HV"):
-                    intensity_factor = 45.0 * abs(e_VH @ R_part_lab @ e_L) ** 2
+                    intensity_factor = 45.0 * abs(e_VH @ R_eff_lab @ e_L) ** 2
                 else:  # Unpolarised
                     intensity_factor = 45.0 * (
-                        abs(e_VV @ R_part_lab @ e_L) ** 2
-                        + abs(e_VH @ R_part_lab @ e_L) ** 2
+                        abs(e_VV @ R_eff_lab @ e_L) ** 2
+                        + abs(e_VH @ R_eff_lab @ e_L) ** 2
                     )
 
                 # Scattering strength accumulated as a Lorentzian line contribution.
@@ -2544,7 +2501,8 @@ class PowderScenarioTab(ScenarioTab):
         self.eo_term_cb.setChecked(self.settings["Raman electro-optic term"])
         self.eo_term_cb.toggled.connect(self.on_eo_term_cb_toggled)
         self.eo_term_cb.setToolTip(
-            "Include the electro-optic χ⁽²⁾ contribution in Raman tensors when χ⁽²⁾ is available."
+            "Include the finite-particle electro-optic χ⁽²⁾ contribution using the same "
+            "depolarisation-field kernel as the particle phonon frequencies."
         )
         label = QLabel("Include electro-optic term", self)
         label.setToolTip(self.eo_term_cb.toolTip())

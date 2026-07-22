@@ -385,3 +385,69 @@ def apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, e
         scalar_p = float(np.dot(Z_q, eigvecs[:, p_idx]))
         corrected.append(tensors[p_idx] + (-2.0 * f_ij * scalar_p / eps_b_q))
     return corrected
+
+
+def apply_particle_eo_correction(tensors, chi2_repsilon, K_particle, Z_mat, eigvecs):
+    """Apply the finite-particle macroscopic EO correction to Raman tensors.
+
+    Implements ``eq-particle-eo-raman-correction`` using the same electrostatic
+    kernel as the particle dynamical matrix.  For particle mode *m*::
+
+        z_m = Z_mat @ eigvecs[:, m]
+        Delta R_m = -2 chi2_repsilon : (K_particle @ z_m)
+
+    ``chi2_repsilon`` is already converted by the output readers to the
+    internal ``R_epsilon`` convention, so no further volume or unit factor is
+    applied here.  Unlike :func:`apply_eo_correction`, this function has no
+    bulk propagation direction.
+
+    Parameters
+    ----------
+    tensors : sequence of array_like, each shape (3, 3)
+        Zero-field Raman tensors in the particle-mode basis.
+    chi2_repsilon : array_like, shape (3, 3, 3)
+        Second-order susceptibility in the reader ``R_epsilon`` convention.
+    K_particle : array_like, shape (3, 3)
+        Finite-particle kernel ``N_bg @ L / epsilon_e_b``.
+    Z_mat : array_like, shape (3, n_dof)
+        Mass-weighted Born-charge matrix.
+    eigvecs : array_like, shape (n_dof, n_modes)
+        Particle eigenvectors as columns.
+
+    Returns
+    -------
+    list of ndarray
+        EO-corrected tensor copies, one per particle mode.
+
+    """
+    chi2_repsilon = np.asarray(chi2_repsilon)
+    K_particle = np.asarray(K_particle)
+    Z_mat = np.asarray(Z_mat)
+    eigvecs = np.asarray(eigvecs)
+
+    if chi2_repsilon.shape != (3, 3, 3):
+        raise ValueError(
+            f"chi2_repsilon must have shape (3, 3, 3), got {chi2_repsilon.shape}")
+    if K_particle.shape != (3, 3):
+        raise ValueError(f"K_particle must have shape (3, 3), got {K_particle.shape}")
+    if Z_mat.ndim != 2 or Z_mat.shape[0] != 3:
+        raise ValueError(f"Z_mat must have shape (3, n_dof), got {Z_mat.shape}")
+    if eigvecs.ndim != 2 or eigvecs.shape[0] != Z_mat.shape[1]:
+        raise ValueError(
+            "eigvecs must have shape (n_dof, n_modes) consistent with Z_mat; "
+            f"got Z_mat {Z_mat.shape} and eigvecs {eigvecs.shape}")
+    if len(tensors) != eigvecs.shape[1]:
+        raise ValueError(
+            "the number of tensors must equal the number of eigenvectors; "
+            f"got {len(tensors)} tensors and {eigvecs.shape[1]} eigenvectors")
+
+    corrected = []
+    for mode, tensor in enumerate(tensors):
+        tensor = np.asarray(tensor, dtype=complex)
+        if tensor.shape != (3, 3):
+            raise ValueError(f"tensor {mode} must have shape (3, 3), got {tensor.shape}")
+        mode_charge = Z_mat @ eigvecs[:, mode]
+        field_vector = K_particle @ mode_charge
+        delta_raman = -2.0 * np.einsum("ijl,l->ij", chi2_repsilon, field_vector)
+        corrected.append(tensor + delta_raman)
+    return corrected

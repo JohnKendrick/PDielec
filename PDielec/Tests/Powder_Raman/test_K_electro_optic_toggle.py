@@ -21,7 +21,7 @@ class _Reader:
         [[0.0, 1.0, 0.0]],
         [[0.0, 0.0, 1.0]],
     ]
-    hessian = np.diag([1.0, 4.0, 9.0])
+    hessian = np.diag((np.array([100.0, 150.0, 220.0]) * powder_tab.wavenumber) ** 2)
 
 
 def _tab_with_reader(reader=None):
@@ -30,7 +30,7 @@ def _tab_with_reader(reader=None):
     return tab
 
 
-def _spectrum(tab, include_eo, chi2, born_charges=None):
+def _spectrum(tab, include_eo, chi2, born_charges=None, no_matrix=False):
     if born_charges is not None:
         tab.reader.born_charges = born_charges
     raman_tensors = [
@@ -40,7 +40,7 @@ def _spectrum(tab, include_eo, chi2, born_charges=None):
     ]
     return tab._compute_orientation_sampled_spectrum(
         L=np.eye(3) / 3.0,
-        epsilon_e=None,
+        epsilon_e=None if no_matrix else 1.5,
         epsilon_inf_i=np.diag([2.0, 2.5, 3.0]),
         I3=np.eye(3, dtype=complex),
         raman_tensors=raman_tensors,
@@ -52,7 +52,7 @@ def _spectrum(tab, include_eo, chi2, born_charges=None):
         temperature=298.0,
         n_samples=32,
         vs_cm1=np.linspace(80.0, 240.0, 41),
-        no_matrix=True,
+        no_matrix=no_matrix,
         include_eo=include_eo,
         chi2_repsilon=chi2,
     )
@@ -85,24 +85,38 @@ def test_powder_eo_enabled_changes_nonzero_chi2_spectrum():
 
 
 def test_powder_eo_zero_born_charges_no_change():
-    """The EO correction is proportional to Born-charge projection on q."""
+    """The EO correction vanishes when particle-mode effective charges vanish."""
     tab = _tab_with_reader()
     chi2 = np.zeros((3, 3, 3))
     chi2[0, 0, 2] = 4.0
 
-    disabled = _spectrum(tab, include_eo=False, chi2=chi2)
+    zero_born = [np.zeros((3, 3))]
+    disabled = _spectrum(
+        tab, include_eo=False, chi2=chi2, born_charges=zero_born)
     enabled = _spectrum(
         tab,
         include_eo=True,
         chi2=chi2,
-        born_charges=[np.zeros((3, 3))],
+        born_charges=zero_born,
     )
 
     np.testing.assert_allclose(enabled, disabled, rtol=0.0, atol=1.0e-12)
 
 
+def test_powder_eo_is_bypassed_when_matrix_is_none():
+    """Matrix=none retains the documented no-particle-correction behavior."""
+    tab = _tab_with_reader()
+    chi2 = np.zeros((3, 3, 3))
+    chi2[0, 0, 2] = 4.0
+
+    disabled = _spectrum(tab, include_eo=False, chi2=chi2, no_matrix=True)
+    enabled = _spectrum(tab, include_eo=True, chi2=chi2, no_matrix=True)
+
+    np.testing.assert_allclose(enabled, disabled, rtol=0.0, atol=1.0e-12)
+
+
 def test_powder_eo_sampling_is_deterministic():
-    """The Sobol backscatter q model gives reproducible EO-enabled spectra."""
+    """The Sobol particle-EO model gives reproducible EO-enabled spectra."""
     tab = _tab_with_reader()
     chi2 = np.zeros((3, 3, 3))
     chi2[0, 0, 2] = 4.0
@@ -142,8 +156,44 @@ def test_powder_particle_modes_selection_follows_dominant_to_mode(monkeypatch):
     np.testing.assert_allclose(particle_sigmas, [5.0, 3.0, 7.0])
 
 
+def test_powder_eo_changes_tensors_but_not_particle_frequencies():
+    """EO uses particle eigenvectors but does not alter the particle dynamical matrix."""
+    tab = _tab_with_reader()
+    epsilon_e = 1.5
+    epsilon_inf = np.diag([2.0, 2.5, 3.0])
+    depolarisation = np.eye(3) / 3.0
+    n_background = powder_tab.Calculator.compute_internal_field_tensor(
+        depolarisation, epsilon_inf, epsilon_e)
+    tensors = [
+        np.diag([1.0, 0.2, 0.1]),
+        np.array([[0.0, 0.7, 0.0], [0.7, 0.0, 0.1], [0.0, 0.1, 0.0]]),
+        np.diag([0.3, 0.4, 1.2]),
+    ]
+    chi2 = np.zeros((3, 3, 3))
+    chi2[0, 0, 2] = 4.0
+    chi2[1, 1, 2] = -2.0
+    arguments = (
+        n_background,
+        depolarisation,
+        epsilon_e,
+        epsilon_inf,
+        np.eye(3, dtype=complex),
+        tensors,
+        np.array([100.0, 150.0, 220.0]),
+        np.array([5.0, 5.0, 5.0]),
+        [True, True, True],
+    )
+
+    frequencies_off, tensors_off, _, _ = tab._compute_particle_modes(*arguments)
+    frequencies_on, tensors_on, _, _ = tab._compute_particle_modes(
+        *arguments, include_eo=True, chi2_repsilon=chi2)
+
+    np.testing.assert_allclose(frequencies_on, frequencies_off, rtol=0.0, atol=0.0)
+    assert max(np.max(np.abs(on - off)) for on, off in zip(tensors_on, tensors_off)) > 0.0
+
+
 def test_powder_eo_orientation_selection_follows_dominant_to_mode(monkeypatch):
-    """The q-dependent EO powder path should not apply the GUI mask by sorted mode index."""
+    """The particle EO powder path should not apply the GUI mask by sorted mode index."""
     tab = _tab_with_reader()
     eig_vec = np.array([
         [0.0, 1.0, 0.0],

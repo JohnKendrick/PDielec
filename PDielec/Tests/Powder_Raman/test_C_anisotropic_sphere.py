@@ -13,18 +13,19 @@ Tests verify:
 - complex symmetric off-diagonal ε_i handled correctly (C3);
 - isotropic R with anisotropic ε_i can make the effective tensor anisotropic (K4).
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
 import pytest
+
 from PDielec.Calculator import (
     compute_internal_field_tensor,
     compute_particle_raman_tensor,
     compute_powder_raman_intensities,
     initialise_sphere_depolarisation_matrix,
-    sobol_rotations,
 )
 
 
@@ -83,7 +84,7 @@ def test_c1_R_particle_off_diagonal_remains_zero():
 
 
 def test_c1_diagonal_R_particle_components():
-    """C1: Each diagonal element of R_particle satisfies R_p_jj = N_j^2*(1-...) R_jj."""
+    """C1: Each diagonal component contains one incident and one scattered factor."""
     eps_x, eps_y, eps_z, eps_e = 2.0, 4.0, 6.0, 1.0
     eps_i_diag = np.array([eps_x, eps_y, eps_z])
     eps_i = np.diag(eps_i_diag).astype(complex)
@@ -93,8 +94,8 @@ def test_c1_diagonal_R_particle_components():
 
     for j, eps_j in enumerate(eps_i_diag):
         N_j = 3.0 * eps_e / (eps_j + 2.0 * eps_e)
-        # For diagonal case, R_p_jj = N_j^3 * R_jj
-        expected = N_j**3 * R[j, j]
+        # The present optical approximation uses the same N_j at both frequencies.
+        expected = N_j**2 * R[j, j]
         assert abs(R_p[j, j] - expected) < 1e-12, \
             f"j={j}: R_p[{j},{j}]={R_p[j,j]}, expected {expected}"
 

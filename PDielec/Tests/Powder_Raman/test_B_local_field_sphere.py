@@ -10,26 +10,27 @@ For an isotropic sphere (L = I/3) with scalar particle permittivity ε_i and
 scalar matrix permittivity ε_e::
 
   N = (3 ε_e / (ε_i + 2 ε_e)) × I   (scalar factor × identity)
-  R_particle = N_s^3 × R_eps        (cubic in the scalar factor N_s)
+  R_eff = N_s^2 × R_eps
 
 where N_s = 3 ε_e / (ε_i + 2 ε_e).
 
-Note: the effective Raman tensor scales as N_s^3 (not N_s^2) because the
-formula R = N (R_eps - correction) N introduces an additional N factor via the
-back-action correction term.  Intensities therefore scale as N_s^6.
+There is one local-field factor at the laser frequency and one at the
+scattered frequency.  In the present non-dispersive optical approximation
+they are equal, so intensities scale as |N_s|^4.
 """
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
 import numpy as np
 import pytest
+
 from PDielec.Calculator import (
     compute_internal_field_tensor,
     compute_particle_raman_tensor,
     compute_powder_raman_intensities,
     initialise_sphere_depolarisation_matrix,
-    sobol_rotations,
 )
 
 L_sphere = initialise_sphere_depolarisation_matrix()
@@ -77,8 +78,8 @@ def test_b2_matched_permittivity_VV_unchanged():
 def test_b2_matched_any_shape():
     """B2: Result must be shape-independent when ε_i = ε_e (correction is zero)."""
     from PDielec.Calculator import (
-        initialise_plate_depolarisation_matrix,
         initialise_needle_depolarisation_matrix,
+        initialise_plate_depolarisation_matrix,
     )
     eps = 3.0
     R = np.diag([1.0, 2.0, 3.0])
@@ -107,19 +108,19 @@ def test_b1_scalar_N_equals_analytic():
             f"ε_i={eps_i}, ε_e={eps_e}: N not scalar"
 
 
-def test_b1_R_particle_scales_as_Ns_cubed():
-    """B1: For isotropic sphere with scalar ε_i, R_particle = N_s^3 × R_eps."""
+def test_b1_R_eff_scales_as_Ns_squared():
+    """B1: For an isotropic sphere with scalar ε_i, R_eff = N_s^2 × R_eps."""
     eps_i, eps_e = 4.0, 1.0
     R = np.diag([2.0, 1.0, 0.5])
     N_s = _scalar_N(eps_i, eps_e)
     N = compute_internal_field_tensor(L_sphere, eps_i * np.eye(3), eps_e)
     R_p = compute_particle_raman_tensor(R, N, L_sphere, eps_i * np.eye(3), eps_e)
-    assert np.allclose(R_p, N_s**3 * R, atol=1e-12), \
-        f"R_particle != N_s^3 R; N_s={N_s}"
+    assert np.allclose(R_p, N_s**2 * R, atol=1e-12), \
+        f"R_eff != N_s^2 R; N_s={N_s}"
 
 
-def test_b1_intensity_scales_as_Ns_sixth():
-    """B1: Powder intensity (VV or VH) scales as N_s^6 for scalar isotropic sphere."""
+def test_b1_intensity_scales_as_Ns_fourth():
+    """B1: Powder intensity (VV or VH) scales as |N_s|^4 for an isotropic sphere."""
     R = np.diag([1.0, 2.0, 0.5])
     vv_bare, vh_bare = compute_powder_raman_intensities(R)
 
@@ -128,11 +129,11 @@ def test_b1_intensity_scales_as_Ns_sixth():
         N = compute_internal_field_tensor(L_sphere, eps_i * np.eye(3), eps_e)
         R_p = compute_particle_raman_tensor(R, N, L_sphere, eps_i * np.eye(3), eps_e)
         vv_p, vh_p = compute_powder_raman_intensities(R_p)
-        scale = N_s**6
+        scale = N_s**4
         assert abs(vv_p / vv_bare - scale) < 1e-10, \
-            f"ε_i={eps_i}: VV scale {vv_p/vv_bare} != N_s^6={scale}"
+            f"ε_i={eps_i}: VV scale {vv_p/vv_bare} != N_s^4={scale}"
         assert abs(vh_p / vh_bare - scale) < 1e-10, \
-            f"ε_i={eps_i}: VH scale {vh_p/vh_bare} != N_s^6={scale}"
+            f"ε_i={eps_i}: VH scale {vh_p/vh_bare} != N_s^4={scale}"
 
 
 def test_b1_depolarisation_ratio_unchanged_for_scalar_eps():
@@ -182,7 +183,7 @@ def test_b3_high_contrast_no_nan_or_inf():
 
 
 def test_b3_N_s_value_for_test_case():
-    """B3: For ε_i=4, ε_e=1 sphere: N_s=0.5, intensity scaling = (0.5)^6 = 1/64."""
+    """B3: For ε_i=4, ε_e=1 sphere: N_s=0.5 and intensity scaling is 1/16."""
     eps_i, eps_e = 4.0, 1.0
     N_s = _scalar_N(eps_i, eps_e)
     assert abs(N_s - 0.5) < 1e-12
@@ -191,8 +192,8 @@ def test_b3_N_s_value_for_test_case():
     N = compute_internal_field_tensor(L_sphere, eps_i * np.eye(3), eps_e)
     R_p = compute_particle_raman_tensor(R, N, L_sphere, eps_i * np.eye(3), eps_e)
     vv_p, _ = compute_powder_raman_intensities(R_p)
-    assert abs(vv_p / vv_bare - 1.0 / 64.0) < 1e-12, \
-        f"scaling={vv_p/vv_bare}, expected 1/64"
+    assert abs(vv_p / vv_bare - 1.0 / 16.0) < 1e-12, \
+        f"scaling={vv_p/vv_bare}, expected 1/16"
 
 
 # ---------------------------------------------------------------------------

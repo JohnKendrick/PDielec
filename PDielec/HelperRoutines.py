@@ -429,18 +429,15 @@ def calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume
         if not is_selected or abs(frequency) < 1.0:
             continue
         R_eps = np.asarray(raman_tensor, dtype=complex)
-        if no_matrix:
-            R_particle = R_eps
-        else:
-            R_particle = Calculator.compute_particle_raman_tensor(R_eps, N, L, epsilon_inf_i, epsilon_e)
+        R_eff = R_eps if no_matrix else Calculator.compute_effective_raman_tensor(R_eps, N, N)
 
         if polarisation in ("VV", "VH", "HV"):
-            vv, vh = Calculator.compute_powder_raman_intensities(R_particle)
+            vv, vh = Calculator.compute_powder_raman_intensities(R_eff)
             intensity_factor = vv if polarisation == "VV" else vh
         elif polarisation == "Unpolarised":
-            alpha = np.trace(R_particle) / 3.0
-            gamma_t = 0.5 * (R_particle + R_particle.T) - alpha * I3
-            kappa_t = 0.5 * (R_particle - R_particle.T)
+            alpha = np.trace(R_eff) / 3.0
+            gamma_t = 0.5 * (R_eff + R_eff.T) - alpha * I3
+            kappa_t = 0.5 * (R_eff - R_eff.T)
             alpha2 = float(np.real(alpha * np.conj(alpha)))
             gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
             kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))

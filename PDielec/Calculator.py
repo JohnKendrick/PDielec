@@ -516,6 +516,7 @@ def compute_internal_field_tensor(L, epsilon_i, epsilon_e):
     -------
     N : ndarray, shape (3, 3), complex
         Internal field tensor.
+
     """
     I3 = np.eye(3, dtype=complex)
     epsilon_i = np.asarray(epsilon_i, dtype=complex)
@@ -525,10 +526,58 @@ def compute_internal_field_tensor(L, epsilon_i, epsilon_e):
     return np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_i - epsilon_e * I3))
 
 
-def compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e):
-    """Compute the effective particle Raman tensor from the Raman-Theory local-field expression.
+def compute_effective_raman_tensor(R_internal, N_laser, N_scattered=None):
+    """Apply the incident and scattered optical local-field factors.
 
-    R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
+    Implements ``eq:effective-raman-tensor`` and
+    ``eq-particle-effective-raman-eo`` for a reciprocal dielectric::
+
+        R_eff(nu_L, nu_S) = N(nu_S).T @ R_internal @ N(nu_L)
+
+    The transpose is an ordinary transpose, not a Hermitian conjugate.  The
+    returned tensor has the same bulk ``R_epsilon`` normalisation as
+    ``R_internal``.
+
+    Parameters
+    ----------
+    R_internal : array_like, shape (3, 3)
+        Internal particle-mode Raman tensor, including any particle EO
+        correction but excluding optical local-field factors.
+    N_laser : array_like, shape (3, 3)
+        Internal-field tensor at the laser frequency.
+    N_scattered : array_like, shape (3, 3), optional
+        Internal-field tensor at the scattered frequency.  If omitted, the
+        same tensor is used at both optical frequencies.
+
+    Returns
+    -------
+    R_eff : ndarray, shape (3, 3), complex
+        Local-field-corrected effective bulk Raman tensor.
+
+    """
+    R_internal = np.asarray(R_internal, dtype=complex)
+    N_laser = np.asarray(N_laser, dtype=complex)
+    N_scattered = N_laser if N_scattered is None else np.asarray(N_scattered, dtype=complex)
+    for name, tensor in (
+            ("R_internal", R_internal),
+            ("N_laser", N_laser),
+            ("N_scattered", N_scattered)):
+        if tensor.shape != (3, 3):
+            raise ValueError(f"{name} must have shape (3, 3), got {tensor.shape}")
+    return N_scattered.T @ R_internal @ N_laser
+
+
+def compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e):
+    """Compatibility wrapper for the effective bulk particle Raman tensor.
+
+    This historical API accepted the depolarisation tensor and permittivities
+    needed by the former three-factor expression.  The corrected expression
+    contains one scattered and one incident local-field factor, both ``N`` in
+    the present non-dispersive optical approximation::
+
+        R_eff = N.T @ R_eps @ N
+
+    New code should call :func:`compute_effective_raman_tensor` directly.
 
     Parameters
     ----------
@@ -545,17 +594,12 @@ def compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e):
 
     Returns
     -------
-    R_particle : ndarray, shape (3, 3), complex
-        Effective particle Raman tensor.
+    R_eff : ndarray, shape (3, 3), complex
+        Effective bulk Raman tensor in the same normalisation as ``R_eps``.
+
     """
-    I3 = np.eye(3, dtype=complex)
-    epsilon_i = np.asarray(epsilon_i, dtype=complex)
-    if epsilon_i.ndim == 0:
-        epsilon_i = float(epsilon_i) * I3
-    R_eps = np.asarray(R_eps, dtype=complex)
-    L = np.asarray(L, dtype=complex)
-    correction = (1.0 / epsilon_e) * (epsilon_i - epsilon_e * I3) @ N @ L @ R_eps
-    return N @ (R_eps - correction) @ N
+    del L, epsilon_i, epsilon_e
+    return compute_effective_raman_tensor(R_eps, N, N)
 
 
 def compute_powder_raman_intensities(R):
@@ -576,6 +620,7 @@ def compute_powder_raman_intensities(R):
         VV (parallel) powder intensity: 45α² + 4γ² + 5κ²
     vh : float
         VH (crossed) powder intensity: 3γ² + 5κ²
+
     """
     R = np.asarray(R, dtype=complex)
     I3 = np.eye(3, dtype=complex)
@@ -606,6 +651,7 @@ def sobol_rotations(n_samples, seed=42):
     -------
     list of ndarray, each shape (3, 3)
         Orthogonal rotation matrices (det = +1).
+
     """
     from scipy.stats.qmc import Sobol
     n_pow2 = 2 ** int(np.ceil(np.log2(max(n_samples, 1))))
