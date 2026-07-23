@@ -1705,6 +1705,11 @@ class SettingsTab(QWidget):
             self.set_masses_tw()
             # Optical dielectric
             if self.settings["Optical permittivity"] is None:
+                self.settings["Symmetrise optical permittivity"] = getattr(
+                    self.reader,
+                    "default_symmetrise_optical_permittivity",
+                    True,
+                )
                 self.set_optical_permittivity_tw()
             else:
                 self.refresh_optical_permittivity_tw()

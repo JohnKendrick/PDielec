@@ -83,6 +83,9 @@ class ExperimentOutputReader(GenericOutputReader):
         """        
         GenericOutputReader.__init__(self, names)
         self.type                    = "Experimental output"
+        # Experimental files may use nominal or redundant structural data that
+        # do not describe the symmetry of the measured dielectric tensor.
+        self.default_symmetrise_optical_permittivity = False
         self._ion_type_index = {}
         self.CrystalPermittivity = None
         self.zerof_optical_dielectric = None
