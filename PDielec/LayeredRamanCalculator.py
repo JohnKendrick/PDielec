@@ -443,10 +443,11 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                     amp_ij = np.dot(w, integrand)
 
                     if modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                        q_ph = modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
+                        q_pair = modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
+                        q_final = _modal_pair_final_state_q(q_pair, resolver.q_ext, depth_integration)
                         classification = resolver.resolve_pair(
                             mode_idx,
-                            q_ph,
+                            q_final,
                             is_polar=use_q_resolved_nac,
                             frequency_cm1=nu_m,
                             raman_tensor=R_lab,
@@ -461,9 +462,9 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                         elif classification.kind == RESOLVED_FINAL_STATE:
                             q_key = classification.final_state.key[-1]
                         elif classification.kind == COHERENT_EXTERNAL_CHANNEL:
-                            q_key = resolver.q_class_key(q_ph)
+                            q_key = resolver.q_class_key(q_final)
                         else:
-                            q_key = resolver.q_class_key(q_ph)
+                            q_key = resolver.q_class_key(q_final)
                         det_key = det_pol_idx if detected_pol == "unpolarised" else 0
                         final_state_key = (
                             "modal_pair",
@@ -632,6 +633,19 @@ def _resolver_coherence_regime(depth_integration):
     if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
         return BULK_PHASE_MATCHED
     return COHERENT_FILM
+
+
+def _modal_pair_final_state_q(q_pair, q_ext, depth_integration):
+    """Return the phonon q used to classify a modal-pair final state.
+
+    Under incoherent-depth integration, the external photon momentum transfer
+    selects the phonon branch.  Internal Berreman q differences remain coherent
+    local-field components of that external final state.  Coherent-depth
+    calculations retain the pair-resolved q from eq-layer-qph.
+    """
+    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+        return np.asarray(q_ext, dtype=float)
+    return np.asarray(q_pair, dtype=float)
 
 
 # ---------------------------------------------------------------------------
@@ -1214,13 +1228,12 @@ class LayeredRamanCalculator:
         are degenerate or nearly degenerate, as at normal incidence in a
         uniaxial layer.
 
-        The phonon wavevector for each channel pair is q_ph = k_L − k_S,
-        giving a distinct NAC-corrected phonon frequency and Raman tensor per
-        pair.  NAC results are cached per layer/channel pair and reused across
-        all phonon modes.  The returned arrays are q-resolved: one input
-        ``mode_idx`` can produce multiple spectral rows when different q-groups
-        have different NAC frequencies.  Groups with numerically identical
-        frequencies and linewidths are merged as incoherent intensities.
+        For coherent depth, the phonon wavevector for each channel pair is
+        q_ph = k_L − k_S, giving pair-resolved NAC tensors and finite-film
+        contributions.  For incoherent depth, the external photon momentum
+        transfer selects one phonon final state; internal Berreman q differences
+        remain coherent local-field components of that state.  NAC results are
+        cached per layer/channel pair and reused across all phonon modes.
 
         NAC closures are evaluated only while building the serial cache.  When a
         worker pool is supplied, the per-mode field and intensity calculations
@@ -1323,7 +1336,8 @@ class LayeredRamanCalculator:
                             0.0,
                             channel_L["qz"] - channel_S["qz"],
                         ])
-                        # Store q_pair for q-matching in resolve_pair / q_class_key.
+                        # Retain q_pair for coherent-depth final-state classification
+                        # and diagnostics.
                         # NAC uses q_ext (incoherent depth, so all pairs share the same
                         # macroscopic LO-TO character) or q_pair (coherent depth).
                         self._modal_pair_q_vectors[cache_key] = q_pair
@@ -1527,10 +1541,11 @@ class LayeredRamanCalculator:
                             amp_ij = np.dot(w, integrand)
 
                             if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                                q_ph = self._modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
+                                q_pair = self._modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
+                                q_final = _modal_pair_final_state_q(q_pair, q_ext, self.depth_integration)
                                 classification = resolver.resolve_pair(
                                     mode_idx,
-                                    q_ph,
+                                    q_final,
                                     is_polar=use_q_resolved_nac,
                                     frequency_cm1=nu_m,
                                     raman_tensor=R_lab,
@@ -1545,9 +1560,9 @@ class LayeredRamanCalculator:
                                 elif classification.kind == RESOLVED_FINAL_STATE:
                                     q_key = classification.final_state.key[-1]
                                 elif classification.kind == COHERENT_EXTERNAL_CHANNEL:
-                                    q_key = resolver.q_class_key(q_ph)
+                                    q_key = resolver.q_class_key(q_final)
                                 else:
-                                    q_key = resolver.q_class_key(q_ph)
+                                    q_key = resolver.q_class_key(q_final)
                                 det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
                                 final_state_key = (
                                     "modal_pair",
