@@ -22,6 +22,7 @@ import re
 
 import numpy as np
 
+from PDielec.Constants import angs2bohr
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
 
@@ -92,6 +93,8 @@ class CastepOutputReader(GenericOutputReader):
         self._ion_type_index         = {}
         self._ion_index_type         = {}
         self._intensities             = None
+        self._castep_raman_polar_deriv = None
+        self._castep_raman_polar_deriv_source = None
         self.de_ion                  = []
         self.fmax                    = []
         self.dr_max                  = []
@@ -130,6 +133,14 @@ class CastepOutputReader(GenericOutputReader):
         #  For the .phonon file
         self.manage["frequency"]      = (re.compile("     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$"), self._read_frequencies)
         self.manage["nbranches"]      = (re.compile(" Number of branches"), self._read_nbranches)
+        self.manage["ramanAtomicPolarTensor"] = (
+            re.compile(r".*Raman atomic polar tensor V\*dChi\(1\)/dR"),
+            self._read_raman_atomic_polar_tensors,
+        )
+        self.manage["ramanPolarDeriv"] = (
+            re.compile(r"\s*BEGIN DFPT RAMAN POLAR_DERIV"),
+            self._read_raman_polar_derivatives,
+        )
         self.manage["ramanTensors"]   = (re.compile(".*Raman Susceptibility Tensors"), self._read_raman_tensors)
         self.manage["nloSusceptibility"] = (
             re.compile(r" *Nonlinear Optical Susceptibility"),
@@ -137,6 +148,8 @@ class CastepOutputReader(GenericOutputReader):
         )
         for f in self._outputfiles:
             self._read_output_file(f)
+        if self._castep_raman_polar_deriv is not None:
+            self._calculate_raman_tensors_from_polar_derivatives()
         return
 
     def _read_nbranches(self, line):
@@ -227,6 +240,233 @@ class CastepOutputReader(GenericOutputReader):
         # end of for freq
         return
 
+    def _set_raman_polar_derivatives(self, polar_deriv, source):
+        """Store atom-resolved CASTEP Raman derivatives according to source priority."""
+        priorities = {"developer": 0, "official": 1}
+        current_priority = priorities.get(self._castep_raman_polar_deriv_source, -1)
+        if priorities[source] < current_priority:
+            return
+        self._castep_raman_polar_deriv = polar_deriv
+        self._castep_raman_polar_deriv_source = source
+        return
+
+    def _read_raman_atomic_polar_tensors(self, line):
+        """Read CASTEP's official atom-resolved Raman polar-tensor table.
+
+        Recent CASTEP versions print a table headed
+        ``Raman atomic polar tensor V*dChi(1)/dR (A**2)``. Each atom and
+        Cartesian displacement has a 3x3 derivative tensor. The species-local
+        atom number is mapped back onto the atom ordering of the unit cell.
+        Values are converted from Angstrom squared to the internal Bohr-squared
+        representation used by the common projection routine.
+
+        This official table takes priority over the older optional developer
+        ``POLAR_DERIV`` block if both are present.
+
+        Parameters
+        ----------
+        line : str
+            The table heading that triggered this method.
+
+        """
+        del line
+        values = {}
+        atom_labels = []
+        displacement_indices = {"X": 0, "Y": 1, "Z": 2}
+
+        while True:
+            derivative_line = self.file_descriptor.readline()
+            if derivative_line == "":
+                logger.warning("CASTEP Raman atomic polar tensor table ended unexpectedly")
+                return
+            if "+====" in derivative_line:
+                break
+
+            fields = derivative_line.replace("+", " ").split()
+            if len(fields) < 6 or fields[2].upper() not in displacement_indices:
+                continue
+
+            species = fields[0].capitalize()
+            try:
+                species_index = int(fields[1])
+                displacement = displacement_indices[fields[2].upper()]
+                rows = [[float(value) for value in fields[3:6]]]
+                for _row in range(2):
+                    row_fields = self.file_descriptor.readline().replace("+", " ").split()
+                    if len(row_fields) < 3:
+                        raise ValueError
+                    rows.append([float(value) for value in row_fields[:3]])
+            except (ValueError, IndexError):
+                logger.warning(
+                    f"Malformed CASTEP Raman atomic polar tensor row: {derivative_line.rstrip()}"
+                )
+                return
+
+            atom_label = (species, species_index)
+            if atom_label not in atom_labels:
+                atom_labels.append(atom_label)
+            values[atom_label, displacement] = np.asarray(rows, dtype=float)
+
+        if not values:
+            logger.warning("CASTEP Raman atomic polar tensor table contained no derivative data")
+            return
+
+        atom_indices = {}
+        if self.unit_cells and len(self.unit_cells[-1].get_element_names()) == self.nions:
+            species_counts = {}
+            for atom, species in enumerate(self.unit_cells[-1].get_element_names()):
+                species = species.capitalize()
+                species_counts[species] = species_counts.get(species, 0) + 1
+                atom_indices[species, species_counts[species]] = atom
+        elif len(atom_labels) == self.nions:
+            atom_indices = {atom_label: atom for atom, atom_label in enumerate(atom_labels)}
+        else:
+            logger.warning("Cannot map CASTEP Raman atomic polar tensors onto the structure")
+            return
+
+        expected_entries = self.nions * 3
+        if len(values) != expected_entries:
+            logger.warning(
+                f"CASTEP Raman atomic polar tensor table contains {len(values)} entries; "
+                f"expected {expected_entries}"
+            )
+            return
+
+        polar_deriv = np.zeros((self.nions, 3, 3, 3), dtype=float)
+        for (atom_label, displacement), tensor in values.items():
+            if atom_label not in atom_indices:
+                logger.warning(
+                    f"CASTEP Raman atomic polar tensor contains unknown atom "
+                    f"{atom_label[0]} {atom_label[1]}"
+                )
+                return
+            polar_deriv[atom_indices[atom_label], displacement] = tensor * angs2bohr**2
+
+        self._set_raman_polar_derivatives(polar_deriv, "official")
+        if self.debug:
+            logger.debug(
+                f"_read_raman_atomic_polar_tensors: read derivatives for {self.nions} atoms"
+            )
+
+    def _read_raman_polar_derivatives(self, line):
+        """Read CASTEP's atom-resolved DFPT polarizability derivatives.
+
+        This legacy fallback reads the optional developer block containing the
+        internal ``polar_deriv`` array immediately before CASTEP contracts it
+        with its in-memory phonon eigenvectors. Its layout is
+
+        ``polar_deriv[atom, displacement, tensor_row, tensor_column]``.
+
+        Atom, displacement, and tensor-row indices in the output are one-based.
+        Values are derivatives of the cell polarizability in CASTEP atomic
+        units and therefore have dimensions of Bohr squared. They are retained
+        in their native units and projected only after the companion
+        ``.phonon`` file has supplied the normal modes.
+
+        Parameters
+        ----------
+        line : str
+            The ``BEGIN DFPT RAMAN POLAR_DERIV`` marker.
+
+        """
+        del line
+        # Skip the array-description and column-heading lines.
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+
+        values = {}
+        while True:
+            derivative_line = self.file_descriptor.readline()
+            if derivative_line == "":
+                logger.warning("CASTEP DFPT RAMAN POLAR_DERIV block ended unexpectedly")
+                return
+            if "END DFPT RAMAN POLAR_DERIV" in derivative_line:
+                break
+            fields = derivative_line.split()
+            if len(fields) != 6:
+                logger.warning(f"Ignoring malformed CASTEP POLAR_DERIV row: {derivative_line.rstrip()}")
+                continue
+            atom, displacement, tensor_row = (int(value) - 1 for value in fields[:3])
+            values[atom, displacement, tensor_row] = np.asarray(fields[3:6], dtype=float)
+
+        if not values:
+            logger.warning("CASTEP DFPT RAMAN POLAR_DERIV block contained no derivative data")
+            return
+        nions = max(atom for atom, _displacement, _tensor_row in values) + 1
+        if self.nions > 0 and nions != self.nions:
+            logger.warning(
+                f"CASTEP POLAR_DERIV block contains {nions} atoms but the structure contains {self.nions}"
+            )
+            return
+
+        expected_rows = nions * 3 * 3
+        if len(values) != expected_rows:
+            logger.warning(
+                f"CASTEP POLAR_DERIV block contains {len(values)} rows; expected {expected_rows}"
+            )
+            return
+
+        polar_deriv = np.zeros((nions, 3, 3, 3), dtype=float)
+        for (atom, displacement, tensor_row), tensor_columns in values.items():
+            if not (0 <= displacement < 3 and 0 <= tensor_row < 3):
+                logger.warning("CASTEP POLAR_DERIV block contains an out-of-range Cartesian index")
+                return
+            polar_deriv[atom, displacement, tensor_row, :] = tensor_columns
+        self._set_raman_polar_derivatives(polar_deriv, "developer")
+        if self.debug:
+            logger.debug(
+                f"_read_raman_polar_derivatives: read derivatives for {nions} atoms"
+            )
+        return
+
+    def _calculate_raman_tensors_from_polar_derivatives(self):
+        """Project CASTEP atomic polarizability derivatives onto current modes."""
+        polar_deriv = self._castep_raman_polar_deriv
+        if polar_deriv is None:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
+            return
+        if len(self.masses) != polar_deriv.shape[0]:
+            logger.warning("Cannot project CASTEP POLAR_DERIV data: masses and atoms are inconsistent")
+            return
+        if self.volume <= 0.0:
+            logger.warning("Cannot project CASTEP POLAR_DERIV data: unit-cell volume is unavailable")
+            return
+
+        modes = np.asarray(self.mass_weighted_normal_modes, dtype=float)
+        masses = np.asarray(self.masses, dtype=float)
+        # polar_deriv is in Bohr^2. CASTEP's printed mode tensor is obtained by
+        # converting it to Angstrom^2, projecting with e/sqrt(M_amu), and
+        # dividing by sqrt(V_A^3). Multiplication by 4*pi then gives PDielec's
+        # R_epsilon = sqrt(V) d epsilon / dQ convention.
+        unit_factor = 4.0 * math.pi / (math.sqrt(self.volume) * angs2bohr**2)
+        tensors = []
+        for mode in modes:
+            tensor = np.zeros((3, 3), dtype=float)
+            for atom, mass in enumerate(masses):
+                for displacement in range(3):
+                    tensor += (
+                        polar_deriv[atom, displacement]
+                        * mode[atom, displacement]
+                        / math.sqrt(mass)
+                    )
+            tensors.append(tensor * unit_factor)
+        self.raman_tensors = tensors
+        if self.debug:
+            logger.debug(
+                "_calculate_raman_tensors_from_polar_derivatives: "
+                f"computed {len(tensors)} mode tensors"
+            )
+        return
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Reproject raw CASTEP derivatives after a normal-mode recalculation."""
+        if self._castep_raman_polar_deriv is not None:
+            self._calculate_raman_tensors_from_polar_derivatives()
+            return
+        super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+        return
+
     def _read_raman_tensors(self, line):
         """Read the Raman susceptibility tensors from the .castep file.
 
@@ -236,15 +476,14 @@ class CastepOutputReader(GenericOutputReader):
         own ``A**4 amu**(-1)`` activities are recovered as ``Vcell`` times the
         rotational invariants of the printed tensor.  PDielec stores the shared
         ``R_epsilon = sqrt(Vcell) dε/dQ`` convention, so the printed tensor is
-        multiplied by ``4*pi``.  Precision is limited to 4 decimal places; no
-        higher-precision text source exists
-        (the binary ``castep_bin`` checkpoint holds full double precision but
-        cannot be read without a Fortran binary parser).
+        multiplied by ``4*pi``. Precision is limited by CASTEP's formatted
+        output.
 
-        The tensors are stored directly in ``self.raman_tensors`` as a list of
-        ``(3, 3)`` NumPy arrays, one per mode in frequency order.  No eigenvector
-        projection is required because CASTEP writes the already-projected
-        per-mode tensors.
+        The tensors are stored directly in ``self.raman_tensors`` as a fallback
+        when neither the official atomic polar-tensor table nor the legacy
+        developer ``POLAR_DERIV`` block is available. Atom-resolved derivatives
+        are projected using the companion ``.phonon`` eigenvectors after all
+        files have been read and replace these pre-projected tensors.
 
         Parameters
         ----------
@@ -311,6 +550,7 @@ class CastepOutputReader(GenericOutputReader):
         -------
         bool
             True on success.
+
         """
         # skip separator line "  ------..."
         self.file_descriptor.readline()

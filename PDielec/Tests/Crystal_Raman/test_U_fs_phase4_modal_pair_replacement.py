@@ -8,6 +8,8 @@
 #
 """Phase-4 tests for the modal-pair final-state replacement path."""
 
+from multiprocessing.pool import ThreadPool
+
 import numpy as np
 import numpy.testing as npt
 
@@ -30,6 +32,7 @@ THICKNESS_M = 1.0e-6
 def _calculator(
     *,
     detected_pol="p",
+    collection_side="superstrate",
     modal_pair_combination=MODAL_PAIR_GROUP_Q,
     modal_pair_use_nac=None,
     depth_integration=None,
@@ -56,6 +59,7 @@ def _calculator(
         raman_layers=[layer],
         laser_frequency_cm1=LASER_CM1,
         incident_angle_rad=0.0,
+        collection_side=collection_side,
         incident_pol="p",
         detected_pol=detected_pol,
         temperature_K=0.0,
@@ -156,7 +160,35 @@ def test_phase4_incoherent_depth_squares_local_final_state_integrand():
     _install_fake_modal_fields(calc, modal_fields, [2.0, 1.0, 0.0, -10.0])
 
     _freqs, intensities, _sigmas = calc.calculate_mode_intensities()
+    with ThreadPool(2) as pool:
+        _parallel_freqs, parallel_intensities, _parallel_sigmas = calc.calculate_mode_intensities(pool=pool)
 
     expected_local_integrand = np.array([5.0, 7.0, 9.0])
     expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
+    npt.assert_allclose(parallel_intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
+
+
+def test_phase4_incoherent_forward_cross_pairs_share_external_final_state():
+    """Internal p-s q differences remain local-field terms in forward scattering."""
+    calc = _calculator(
+        detected_pol="s",
+        collection_side="substrate",
+        modal_pair_combination=MODAL_PAIR_GROUP_Q,
+        depth_integration=DEPTH_INTEGRATION_INCOHERENT,
+        n_gauss=3,
+    )
+    modal_fields = np.zeros((4, 2, 3, 3), dtype=complex)
+    modal_fields[0, 0, 0, :] = np.array([1.0, 2.0, 3.0])
+    modal_fields[1, 0, 0, :] = np.array([4.0, 5.0, 6.0])
+    modal_fields[2, 1, 0, :] = 1.0
+    _install_fake_modal_fields(calc, modal_fields, [2.0, 1.0, 0.5, -10.0])
+
+    _freqs, intensities, _sigmas = calc.calculate_mode_intensities()
+    with ThreadPool(2) as pool:
+        _parallel_freqs, parallel_intensities, _parallel_sigmas = calc.calculate_mode_intensities(pool=pool)
+
+    expected_local_integrand = np.array([5.0, 7.0, 9.0])
+    expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * bose_factor(NU_MODE, 0.0)
+    npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
+    npt.assert_allclose(parallel_intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)

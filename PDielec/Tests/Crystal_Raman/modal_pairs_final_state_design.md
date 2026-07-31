@@ -285,9 +285,9 @@ ad hoc switch:
 - In external backscattering along the polar axis, `q_ext` is finite and the
   surviving polar branch is LO-like.
 - Internal cross-pairs that produce near-zero `q_ph` in a backscattering field
-  can contribute to a finite coherent film, but their normalized contribution
-  must vanish in the bulk phase-matched limit unless the external momentum
-  transfer is also near zero.
+  can contribute to a finite coherent film.  Under incoherent-depth
+  integration they are local-field components of the same externally selected
+  final state, rather than separate phonon final states.
 
 The final-state resolver can still classify pair products, but for
 `coherent_film` polar modes it should return coherent pair-resolved
@@ -464,11 +464,13 @@ above, is:
   a genuine TO-like final state and is classified `ResolvedFinalState`.
 - If `|q_ext|` is above threshold but a particular Berreman pair `(i,j)` happens
   to produce a near-zero `q_ph(i,j)` (i.e. it is a cross-pair in a backscattering
-  geometry), the resolver checks the coherence regime:
+  geometry), the calculator checks the depth-integration regime:
   - In `coherent_film`: classify as `CoherentExternalChannelContribution` — the
     cross-pair is a coherent interference term, not an independent TO final state.
-  - In `incoherent_depth` or `bulk_phase_matched`: classify as
-    `DiscardedInternalComponent(reason="cross-pair phase-averages to zero")`.
+  - In `incoherent_depth`: resolve the phonon using `q_ext`, then add the
+    pair's local intensity to that external final-state channel.  The internal
+    `q_ph(i,j)` remains available for diagnostics and coherent phase matching,
+    but must not suppress a valid external channel.
 
 This rule replaces all current zero-q suppression switches.  The near-zero
 threshold for `|q_ph|` should be `1e-3` in units of the laser wavevector
