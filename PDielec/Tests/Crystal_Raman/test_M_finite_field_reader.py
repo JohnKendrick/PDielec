@@ -15,19 +15,14 @@ _RAMAN_JSON = os.path.join(
     _REPO,
     "Examples",
     "Crystal_Raman",
-    "BaTiO3",
-    "Vasp",
-    "FixedCell",
+    "Finite_field",
     "raman_results.json",
 )
 _FINITE_FIELD_JSON = os.path.join(
     _REPO,
     "Examples",
     "Crystal_Raman",
-    "BaTiO3",
-    "Vasp",
-    "FixedCell",
-    "Raman_Cartesian",
+    "Finite_field",
     "finite_field_dataset.json",
 )
 

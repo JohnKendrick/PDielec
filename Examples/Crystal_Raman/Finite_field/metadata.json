@@ -1,0 +1,23 @@
+{
+  "schema": "pdielect-vASP-cartesian-finite-field-v1",
+  "base_dir": "Vasp/FixedCell",
+  "elastic_dir": "Vasp/FixedCell/Elastic",
+  "structure": "Vasp/FixedCell/CONTCAR",
+  "delta_angstrom": 0.01,
+  "volume_angstrom3": 64.953592751027,
+  "symbols": [
+    "Ba",
+    "O",
+    "O",
+    "O",
+    "Ti"
+  ],
+  "masses_amu": [
+    137.327,
+    15.9994,
+    15.9994,
+    15.9994,
+    47.867
+  ],
+  "displacement_convention": "central finite difference in Cartesian atom displacement r[a,k], Angstrom"
+}

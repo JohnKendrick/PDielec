@@ -1,0 +1,30 @@
+# CELL file written 16:09:56 (GMT+1.0) 29th July 2026 from run optimise
+
+%BLOCK lattice_cart
+   ANG
+       2.86445083179892       -1.65379145881956       0.179584979576716E-35
+     -0.225158227779745E-21    3.30758291763911      -0.138134085904392E-51
+      0.334933378858839E-35  -0.223110449354751E-51    5.34235909394806    
+%ENDBLOCK lattice_cart
+
+%BLOCK positions_frac
+   O                0.333333333333333       0.666666666666667       0.378851110069647
+   O                0.666666666666667       0.333333333333333       0.878851110069647
+   Zn               0.333333333333333       0.666666666666667      -0.000000807344860
+   Zn               0.666666666666667       0.333333333333333       0.499999192655140
+%ENDBLOCK positions_frac
+
+FIX_COM : true
+
+%BLOCK species_pot
+   O       NCP19
+   Zn      NCP19
+%ENDBLOCK species_pot
+
+snap_to_symmetry : true
+symmetry_tol     : 1.0e-4
+
+kpoint_mp_grid :   11  11   6
+
+phonon_kpoint_mp_grid :    1   1   1
+

@@ -1,0 +1,26 @@
+%BLOCK lattice_cart
+   ANG
+       2.86451258971000       -1.65382711476614       0.0                  
+       0.0                     3.30765422953228       0.0
+       0.0                     0.0                     5.34243388682406    
+%ENDBLOCK lattice_cart
+
+%BLOCK positions_frac
+   O                0.333333333333333       0.666666666666667       0.378850302724787
+   O                0.666666666666667       0.333333333333333       0.878850302724787
+   Zn               0.333333333333333       0.666666666666667       0.0
+   Zn               0.666666666666667       0.333333333333333       0.5
+%ENDBLOCK positions_frac
+
+FIX_COM : true
+
+%BLOCK SPECIES_POT
+O   NCP19
+Zn  NCP19
+%ENDBLOCK SPECIES_POT
+
+SYMMETRY_TOL      = 0.001
+SYMMETRY_GENERATE
+
+KPOINT_MP_GRID = 11 11 6
+

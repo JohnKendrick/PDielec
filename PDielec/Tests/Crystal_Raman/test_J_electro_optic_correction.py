@@ -156,10 +156,10 @@ class TestJ2AbinitParser:
         assert chi2.shape == (3, 3, 3)
 
     def test_zz_component(self, chi2):
-        # raman.abo raw d[2,2,2] = -33.3688; after χ^(2)=2d and
-        # point-group symmetrisation the stored tensor is slightly different.
+        # raman.abo raw d[2,2,2] = -42.296970629; the reader stores
+        # χ^(2)=2d after converting from pm/V to R_epsilon units.
         factor = chi2_pm_per_v_to_repsilon(_load_abinit().volume)
-        assert chi2[2, 2, 2] == pytest.approx(-75.913192908 * factor, abs=1e-8)
+        assert chi2[2, 2, 2] == pytest.approx(-84.593941258 * factor, abs=1e-8)
 
     def test_last_two_indices_symmetric(self, chi2):
         """Abinit χ^(2) stores d[i,j,k]; last two indices must be symmetric."""
@@ -176,7 +176,7 @@ class TestJ2AbinitParser:
         r.read_output()
         factor = chi2_pm_per_v_to_repsilon(r.volume)
         d_recovered = chi2 / (2.0 * factor)
-        assert d_recovered[2, 2, 2] == pytest.approx(-37.956596454, abs=1e-6)
+        assert d_recovered[2, 2, 2] == pytest.approx(-42.296970629, abs=1e-6)
 
     def test_zno_6mm_symmetry_after_reader_symmetrisation(self, chi2):
         """ZnO should obey 6mm symmetry even if Abinit's raw d table does not."""
