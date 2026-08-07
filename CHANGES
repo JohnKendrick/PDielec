@@ -3,8 +3,10 @@ version 10.0.0
    - Automatic collection now uses retro-backscattering on the superstrate side and collinear forward scattering
      on the substrate side. Explicitly setting the collection angle equal to the incidence angle retains specular
      reflection.
+   - Approximate ES now evaluates the resolved detector geometry once at the laser frequency; it reuses the
+     incident field only when the detector system and signed angle are identical.
    - Migration note: saved scenarios with Collection angle = -1 change at nonzero incidence. Normal-incidence
-     scenarios are unchanged.
+     automatic scenarios are unchanged. Negative values other than the -1 sentinel are now explicit signed angles.
    Extensive code quality improvements across the entire codebase.
    NOTE: Scripts written before this version that call renamed methods will not be compatible.
 

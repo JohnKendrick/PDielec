@@ -140,6 +140,41 @@ def test_oblique_automatic_retro_specular_and_forward_q_ext():
     npt.assert_allclose(q_forward, [0.0, 0.0, 0.0], atol=1e-12)
 
 
+@pytest.mark.parametrize(
+    ("collection_side", "collection_angle_rad", "expected_field_angles"),
+    [
+        ("superstrate", None, (30.0, -30.0)),
+        ("superstrate", np.radians(30.0), (30.0,)),
+        ("substrate", None, (30.0, 30.0)),
+    ],
+)
+def test_approximate_es_reuses_incident_field_only_for_identical_optical_problem(
+    monkeypatch,
+    collection_side,
+    collection_angle_rad,
+    expected_field_angles,
+):
+    """The laser-frequency ES approximation retains the resolved detector ray."""
+    angle = np.radians(30.0)
+    calc = _calculator(
+        collection_side=collection_side,
+        incident_angle_rad=angle,
+        collection_angle_rad=collection_angle_rad,
+        approximate_es=True,
+    )
+    original = calc._get_field_at_gl_points
+    field_angles = []
+
+    def record_field_angle(freq_cm1, system, angle_rad, z_arr):
+        field_angles.append(np.degrees(angle_rad))
+        return original(freq_cm1, system, angle_rad, z_arr)
+
+    monkeypatch.setattr(calc, "_get_field_at_gl_points", record_field_angle)
+    calc.calculate_mode_intensities()
+
+    npt.assert_allclose(field_angles, expected_field_angles, atol=1.0e-12)
+
+
 def test_layered_calculator_exposes_phase3_optical_diagnostics():
     """LayeredRamanCalculator exposes incident/detected optical channel diagnostics."""
     calc = _calculator()

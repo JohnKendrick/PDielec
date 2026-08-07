@@ -31,8 +31,8 @@ is the Raman tensor of mode m in layer ℓ rotated into the laboratory frame.
 
 Phase 2 features (all enabled by default):
 
-- E_S evaluated at ν_S per mode (set ``approximate_es=True`` for the Phase 1
-  approximation E_S ≈ E_L).
+- E_S evaluated at ν_S per mode (set ``approximate_es=True`` to evaluate
+  the selected detector field once at ν_L instead).
 - Forward scattering: set ``collection_side='substrate'`` to launch E_S from
   the substrate side using a reversed stack (GTMcore.System.reversed_system).
 - Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
@@ -807,8 +807,9 @@ class LayeredRamanCalculator:
 
        a. Compute E_S at the scattered frequency ν_S = ν_L − ν_m on the
           appropriate system (original for backscattering, reversed for
-          forward scattering).  When ``approximate_es=True`` the Phase 1
-          approximation E_S ≈ E_L is used instead (one field call total).
+          forward scattering).  When ``approximate_es=True`` the detector
+          field is evaluated once at ν_L instead.  It is reused from E_L only
+          when the incident and detector optical problems are identical.
        b. For each Raman-active layer ℓ, evaluate the integrand
 
               a_{ℓ,m}(z_j) = E_S(z_j)^T R_{ℓ,m}^lab E_L(z_j)
@@ -861,8 +862,9 @@ class LayeredRamanCalculator:
         squaring (coherent combination).  Default is ``False`` (incoherent:
         intensities are summed).
     approximate_es : bool, optional
-        If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at
-        the laser frequency).  Default is ``False``.
+        If ``True``, evaluate E_S once at the laser frequency rather than at
+        each mode's Stokes frequency.  E_S is reused from E_L only when both
+        fields have the same system and signed angle.  Default is ``False``.
     depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
         How to combine the source along the depth of each Raman-active layer.
         ``'Coherent amplitude'`` integrates the complex amplitude before
@@ -1083,6 +1085,15 @@ class LayeredRamanCalculator:
         zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
         _, E_out, _ = system.calculate_Efield(freq_hz, zeta, z_vect=z_arr)
         return E_out
+
+    def _incident_and_detector_optical_problems_match(self):
+        """Return whether the laser-frequency detector field can reuse E_L."""
+        return self.collection_side == "superstrate" and np.isclose(
+            self.collection_angle_rad,
+            self.incident_angle_rad,
+            rtol=0.0,
+            atol=1.0e-15,
+        )
 
     @staticmethod
     def _rotate_raman_tensor(R_crystal, G):
@@ -1919,7 +1930,8 @@ class LayeredRamanCalculator:
         When ``approximate_es=False`` (default), ``calculate_Efield`` is called
         once per active mode for E_S at ν_S = ν_L − ν_m, plus once for E_L.
         For systems with many modes this can be slow; set ``approximate_es=True``
-        to recover the single-field-call behaviour at the cost of accuracy.
+        to evaluate the selected detector field only once, at the laser
+        frequency, at the cost of neglecting Stokes-frequency dispersion.
 
         """
         if return_contributions and pool is not None:
@@ -1977,13 +1989,12 @@ class LayeredRamanCalculator:
         # If approximate_es, compute E_S once at the laser frequency
         E_S_out_fixed = None
         if self.approximate_es:
-            if self.collection_side == "substrate":
+            if self._incident_and_detector_optical_problems_match():
+                E_S_out_fixed = E_L_out
+            else:
                 E_S_out_fixed = self._get_field_at_gl_points(
                     self.laser_frequency_cm1, es_system, self.collection_angle_rad, z_s
                 )
-            else:
-                # Pure Phase-1 approximation: E_S = E_L (no extra call)
-                E_S_out_fixed = E_L_out
 
         active_freqs = []
         active_intensities = []
@@ -2161,14 +2172,13 @@ class LayeredRamanCalculator:
 
         # --- E_S_out_fixed: computed in parallel when approximate_es=True -------
         if self.approximate_es:
-            if self.collection_side == "substrate":
+            if self._incident_and_detector_optical_problems_match():
+                E_S_out_fixed = E_L_out
+            else:
                 E_S_out_fixed = self._get_field_parallel(
                     pool, self.laser_frequency_cm1, es_system, self.collection_angle_rad,
                     z_s,
                 )
-            else:
-                # Pure Phase-1 approximation: E_S = E_L
-                E_S_out_fixed = E_L_out
         else:
             E_S_out_fixed = None
 
