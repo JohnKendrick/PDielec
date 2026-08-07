@@ -385,6 +385,25 @@ alternatives for solving the optical propagation problem.
    This is the most complete treatment available and reduces to the dominant-mode
    result when only one q-channel is significant in each geometry.
 
+   For incoherent depth integration, *Group q channels* has two explicit
+   final-state models.  *Bulk phase matched* retains each internal
+   :math:`\mathbf{q}^{ij}_{ph}` and compares its direction with the externally
+   selected momentum transfer :math:`\mathbf{q}_{ext}`.  The default 90 degree
+   cutoff accepts the forward momentum hemisphere and rejects antiparallel
+   pairs; accepted amplitudes share the final-state key defined by
+   :math:`\mathbf{q}_{ext}`.  *Local incoherent* instead treats the internal Berreman products as
+   components of one local optical field and assigns them all to the external
+   final state before the local intensity is formed.  The q-angle cutoff is not
+   used in that model.  Coherent-depth calculations always retain the
+   pair-resolved q vectors and are unaffected by this choice.
+
+   The two momenta have distinct roles and must not be conflated:
+   :math:`\mathbf{q}^{ij}_{ph}` describes the phase of an internal optical-pair
+   contribution, while :math:`\mathbf{q}_{ext}` labels the externally selected
+   scattering channel.  A future finite-coherence implementation will replace
+   the hard angular cutoff by a continuous phase-mismatch weight depending on
+   :math:`\mathbf{q}^{ij}_{ph}-\mathbf{q}_{ext}` and the coherence length.
+
 For an infrared-inactive mode :math:`\tensorbf{Z}^{mw}` gives no macroscopic restoring-force
 correction, so all four levels reduce to the same transverse-optic frequency.  For polar
 modes the corrected frequencies and Raman tensors depend on the surface orientation and

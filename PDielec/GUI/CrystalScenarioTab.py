@@ -53,6 +53,9 @@ from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_COHERENT,
     DEPTH_INTEGRATION_INCOHERENT,
+    FINAL_STATE_BULK_PHASE_MATCHED,
+    FINAL_STATE_LOCAL_INCOHERENT,
+    FINAL_STATE_MODEL_OPTIONS,
     MODAL_PAIR_COHERENT_ALL,
     MODAL_PAIR_GROUP_Q,
     MODAL_PAIR_INCOHERENT,
@@ -648,8 +651,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Raman electro-optic term"] = True
         self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
+        self.settings["Modal pair final-state model"] = FINAL_STATE_BULK_PHASE_MATCHED
         self.settings["Modal pair include zero q"] = None
-        self.settings["Modal pair q-angle tolerance"] = 0.0
+        self.settings["Modal pair q-angle tolerance"] = 90.0
         self.settings["Azimuthal sweep points"] = 36
         self.settings["Porto notation"] = ""
         # store the notebook
@@ -2013,6 +2017,26 @@ class CrystalScenarioTab(ScenarioTab):
         self.modal_pair_combination_label.setToolTip(self.modal_pair_combination_cb.toolTip())
         self.form.addRow(self.modal_pair_combination_label, self.modal_pair_combination_cb)
 
+        # Final-state model — relevant to incoherent-depth modal-pair calculations.
+        self.modal_pair_final_state_cb = QComboBox(self)
+        self.modal_pair_final_state_cb.addItems(list(FINAL_STATE_MODEL_OPTIONS))
+        idx = self.modal_pair_final_state_cb.findText(
+            self.settings["Modal pair final-state model"], Qt.MatchFixedString
+        )
+        if idx >= 0:
+            self.modal_pair_final_state_cb.setCurrentIndex(idx)
+        self.modal_pair_final_state_cb.activated.connect(self.on_modal_pair_final_state_cb_activated)
+        self.modal_pair_final_state_cb.setToolTip(
+            "How internal Berreman pairs map to phonon final states when depth is incoherent:\n"
+            f"'{FINAL_STATE_BULK_PHASE_MATCHED}' compares each internal q_pair with q_ext; "
+            "the q-angle tolerance selects the accepted forward momentum hemisphere.\n"
+            f"'{FINAL_STATE_LOCAL_INCOHERENT}' assigns all local optical-field components to "
+            "the externally selected state; q-angle filtering is not used."
+        )
+        self.modal_pair_final_state_label = QLabel("Modal-pair final-state model")
+        self.modal_pair_final_state_label.setToolTip(self.modal_pair_final_state_cb.toolTip())
+        self.form.addRow(self.modal_pair_final_state_label, self.modal_pair_final_state_cb)
+
         # q-angle tolerance spin box (visible only when Layer NAC mode = modal_pairs)
         self.modal_pair_q_tol_sb = QDoubleSpinBox(self)
         self.modal_pair_q_tol_sb.setRange(0.0, 90.0)
@@ -2021,11 +2045,9 @@ class CrystalScenarioTab(ScenarioTab):
         self.modal_pair_q_tol_sb.setSuffix(" °")
         self.modal_pair_q_tol_sb.setValue(self.settings["Modal pair q-angle tolerance"])
         self.modal_pair_q_tol_sb.setToolTip(
-            "Angular tolerance (degrees) for grouping Berreman pairs into the same phonon\n"
-            "final-state channel when Layer NAC mode = modal_pairs.\n"
-            "Pairs whose q-hat directions differ by less than this angle are summed\n"
-            "coherently. 0° means exact direction matching (recommended default).\n"
-            "Increase if near-degenerate q channels should be treated as one final state."
+            "Maximum angle between an internal q_pair and the external momentum transfer q_ext\n"
+            "in the bulk phase-matched model. 90° accepts the forward momentum hemisphere\n"
+            "and rejects antiparallel pairs. This setting is inactive for local incoherent depth."
         )
         self.modal_pair_q_tol_sb.valueChanged.connect(self.on_modal_pair_q_tol_sb_changed)
         self.modal_pair_q_tol_label = QLabel("Modal pair q-angle tolerance")
@@ -2036,8 +2058,11 @@ class CrystalScenarioTab(ScenarioTab):
         _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
         self.modal_pair_combination_label.setVisible(_show_modal)
         self.modal_pair_combination_cb.setVisible(_show_modal)
+        self.modal_pair_final_state_label.setVisible(_show_modal)
+        self.modal_pair_final_state_cb.setVisible(_show_modal)
         self.modal_pair_q_tol_label.setVisible(_show_modal)
         self.modal_pair_q_tol_sb.setVisible(_show_modal)
+        self._update_modal_final_state_controls()
 
         # Separator: azimuthal sweep
         sweep_label = QLabel("Azimuthal sweep")
@@ -2395,14 +2420,23 @@ class CrystalScenarioTab(ScenarioTab):
             )
             if idx >= 0:
                 self.modal_pair_combination_cb.setCurrentIndex(idx)
+            idx = self.modal_pair_final_state_cb.findText(
+                self.settings.get("Modal pair final-state model", FINAL_STATE_BULK_PHASE_MATCHED),
+                Qt.MatchFixedString,
+            )
+            if idx >= 0:
+                self.modal_pair_final_state_cb.setCurrentIndex(idx)
             _show_modal = (self.settings.get("Layer NAC mode", "none") == "modal_pairs")
             self.modal_pair_combination_label.setVisible(_show_modal)
             self.modal_pair_combination_cb.setVisible(_show_modal)
+            self.modal_pair_final_state_label.setVisible(_show_modal)
+            self.modal_pair_final_state_cb.setVisible(_show_modal)
             self.modal_pair_q_tol_label.setVisible(_show_modal)
             self.modal_pair_q_tol_sb.blockSignals(True)
-            self.modal_pair_q_tol_sb.setValue(self.settings.get("Modal pair q-angle tolerance", 0.0))
+            self.modal_pair_q_tol_sb.setValue(self.settings.get("Modal pair q-angle tolerance", 90.0))
             self.modal_pair_q_tol_sb.blockSignals(False)
             self.modal_pair_q_tol_sb.setVisible(_show_modal)
+            self._update_modal_final_state_controls()
         #
         # Unblock signals after refresh
         #
@@ -2642,6 +2676,7 @@ class CrystalScenarioTab(ScenarioTab):
         _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
         self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
         self.layer_combination_label.setEnabled(not _depth_is_incoherent)
+        self._update_modal_final_state_controls()
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2705,8 +2740,11 @@ class CrystalScenarioTab(ScenarioTab):
         _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
         self.modal_pair_combination_label.setVisible(_show_modal)
         self.modal_pair_combination_cb.setVisible(_show_modal)
+        self.modal_pair_final_state_label.setVisible(_show_modal)
+        self.modal_pair_final_state_cb.setVisible(_show_modal)
         self.modal_pair_q_tol_label.setVisible(_show_modal)
         self.modal_pair_q_tol_sb.setVisible(_show_modal)
+        self._update_modal_final_state_controls()
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2715,6 +2753,33 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Modal pair combination"] = self.modal_pair_combination_cb.currentText()
         self.calculation_required = True
         self.refresh_required = True
+
+    def on_modal_pair_final_state_cb_activated(self, index):
+        """Handle a change in the modal-pair final-state model."""
+        self.settings["Modal pair final-state model"] = self.modal_pair_final_state_cb.currentText()
+        self._update_modal_final_state_controls()
+        self.calculation_required = True
+        self.refresh_required = True
+
+    def _update_modal_final_state_controls(self):
+        """Enable final-state controls only where they affect modal-pair results."""
+        if not hasattr(self, "modal_pair_final_state_cb"):
+            return
+        show_modal = self.settings.get("Layer NAC mode", "none") == "modal_pairs"
+        depth_is_incoherent = (
+            self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
+            == DEPTH_INTEGRATION_INCOHERENT
+        )
+        enable_model = show_modal and depth_is_incoherent
+        self.modal_pair_final_state_cb.setEnabled(enable_model)
+        self.modal_pair_final_state_label.setEnabled(enable_model)
+        bulk_model = (
+            self.settings.get("Modal pair final-state model", FINAL_STATE_BULK_PHASE_MATCHED)
+            == FINAL_STATE_BULK_PHASE_MATCHED
+        )
+        enable_tolerance = enable_model and bulk_model
+        self.modal_pair_q_tol_sb.setEnabled(enable_tolerance)
+        self.modal_pair_q_tol_label.setEnabled(enable_tolerance)
 
     def on_modal_pair_q_tol_sb_changed(self, value):
         """Handle a change in the modal-pair q-angle tolerance spin box."""
@@ -3503,7 +3568,10 @@ class CrystalScenarioTab(ScenarioTab):
         approximate_es           = self.settings.get("Approximate ES", False)
         depth_integration        = self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
         modal_pair_combination   = self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q)
-        q_tol_deg                = float(self.settings.get("Modal pair q-angle tolerance", 0.0))
+        final_state_model        = self.settings.get(
+            "Modal pair final-state model", FINAL_STATE_BULK_PHASE_MATCHED
+        )
+        q_tol_deg                = float(self.settings.get("Modal pair q-angle tolerance", 90.0))
         collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
@@ -3676,6 +3744,7 @@ class CrystalScenarioTab(ScenarioTab):
             modal_pair_combination=modal_pair_combination,
             modal_pair_use_nac=modal_pair_use_nac,
             q_tol_deg=q_tol_deg,
+            final_state_model=final_state_model,
             modes_selected=modes_selected,
         )
 

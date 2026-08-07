@@ -116,6 +116,7 @@ class PhononFinalStateResolver:
         coherence_regime: str = COHERENT_FILM,
         q_ext: Sequence[float] | None = None,
         angular_tolerance_deg: float = 5.0,
+        matching_tolerance_deg: float | None = None,
         q_zero_tol: float = 1.0e-3,
         eps_optical: float = 1.0e-4,
         eps_phonon: float = 1.0e-3,
@@ -131,6 +132,11 @@ class PhononFinalStateResolver:
         self.coherence_regime = coherence_regime
         self.q_ext = self._as_vector(q_ext) if q_ext is not None else np.zeros(3, dtype=float)
         self.angular_tolerance_deg = float(angular_tolerance_deg)
+        self.matching_tolerance_deg = (
+            self.angular_tolerance_deg
+            if matching_tolerance_deg is None
+            else float(matching_tolerance_deg)
+        )
         self.q_zero_tol = float(q_zero_tol)
         self.eps_optical = float(eps_optical)
         self.eps_phonon = float(eps_phonon)
@@ -363,8 +369,20 @@ class PhononFinalStateResolver:
                 reason="pair-resolved coherent finite-film contribution",
             )
 
-        if self.coherence_regime == BULK_PHASE_MATCHED and not self._matches_external_q(q_vec, q_external, reference_k):
-            return DiscardedInternalComponent("phonon q does not match external momentum transfer", q_vec)
+        if self.coherence_regime == BULK_PHASE_MATCHED:
+            if not self._matches_external_q(q_vec, q_external, reference_k):
+                return DiscardedInternalComponent("phonon q does not match external momentum transfer", q_vec)
+            return self._resolved(
+                mode_idx,
+                q_vec,
+                True,
+                frequency_cm1,
+                raman_tensor,
+                linewidth_cm1,
+                selected,
+                phase_weight,
+                final_state_q=q_external,
+            )
 
         return self._resolved(mode_idx, q_vec, True, frequency_cm1, raman_tensor, linewidth_cm1, selected, phase_weight)
 
@@ -378,9 +396,11 @@ class PhononFinalStateResolver:
         linewidth_cm1: float | None,
         selected: bool,
         phase_weight: complex,
+        final_state_q: np.ndarray | None = None,
     ) -> ResolvedFinalState:
         frequency_key = None if frequency_cm1 is None else round(float(frequency_cm1), 8)
-        key = self.final_state_key(mode_idx, q_vec, is_polar=is_polar, frequency_key=frequency_key)
+        key_q = q_vec if final_state_q is None else final_state_q
+        key = self.final_state_key(mode_idx, key_q, is_polar=is_polar, frequency_key=frequency_key)
         final_state = FinalState(key, frequency_cm1, raman_tensor, linewidth_cm1, selected)
         return ResolvedFinalState(final_state, q_vec, phase_weight=phase_weight)
 
@@ -403,7 +423,7 @@ class PhononFinalStateResolver:
             return False
         cos_angle = np.dot(q_ph, q_ext) / (q_norm * q_ext_norm)
         angle = np.degrees(np.arccos(np.clip(cos_angle, -1.0, 1.0)))
-        return angle <= self.angular_tolerance_deg
+        return angle <= self.matching_tolerance_deg
 
     def classify_optical_subspaces(
         self,

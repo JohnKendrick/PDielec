@@ -94,6 +94,10 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage["energy"]  = (re.compile(" TOTAL ENERGY\\(DFT\\)"), self._read_energy)
         self.manage["energy2"]  = (re.compile(" TOTAL ENERGY \\+ DISP"), self._read_energy2)
         self.manage["energy3"]  = (re.compile(" *CENTRAL POINT"), self._read_energy3)
+        self.manage["chi2"]  = (
+            re.compile(r" FIRST HYPERPOLARIZABILITY \(BETA\) AND SECOND ELECTRIC SUSCEPTIBILITY \(CHI\(2\)\)"),
+            self._read_chi2_output,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
         # TENS_RAMAN.DAT is an optional companion file; read it if present
@@ -248,6 +252,18 @@ class CrystalOutputReader(GenericOutputReader):
         None
 
         """
+        fd = pdielec_io(filename, "r")
+        self._read_chi2_block(fd, filename)
+        fd.close()
+        return
+
+    def _read_chi2_output(self, line):
+        """Read the second-order susceptibility block embedded in a CRYSTAL output file."""
+        self._read_chi2_block(self.file_descriptor, self.open_filename)
+        return
+
+    def _read_chi2_block(self, fd, source):
+        """Read a CRYSTAL second-order susceptibility table from an open file."""
         # All Kleinman-equivalent index triples for each 10-component label
         _component_perms = {
             "XXX": [(0, 0, 0)],
@@ -267,7 +283,6 @@ class CrystalOutputReader(GenericOutputReader):
         d = np.zeros((3, 3, 3))
         in_data = False
         found_any = False
-        fd = pdielec_io(filename, "r")
         while True:
             line = fd.readline()
             if not line:
@@ -303,14 +318,16 @@ class CrystalOutputReader(GenericOutputReader):
             for idx in _component_perms[label]:
                 d[idx] = d_mks
             found_any = True
-        fd.close()
 
         if found_any:
             # Store χ^(2) = 2d from pm/V, matching the internal reader convention.
             self._store_nonlinear_optical_susceptibility_pm_per_v(2.0 * d)
-            logger.info("  Nonlinear optical susceptibility tensor read from CHI2.DAT (χ^(2) = 2d, R_epsilon units)")
+            logger.info(
+                f"  Nonlinear optical susceptibility tensor read from {source} "
+                "(χ^(2) = 2d, R_epsilon units)"
+            )
         else:
-            logger.warning(f"  No χ^(2) data found in {filename}")
+            logger.warning(f"  No χ^(2) data found in {source}")
         return
 
     def _read_energy(self, line):

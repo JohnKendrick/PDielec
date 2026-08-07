@@ -15,11 +15,14 @@ import numpy.testing as npt
 
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_INCOHERENT,
+    FINAL_STATE_BULK_PHASE_MATCHED,
+    FINAL_STATE_LOCAL_INCOHERENT,
     MODAL_PAIR_COHERENT_ALL,
     MODAL_PAIR_GROUP_Q,
     MODAL_PAIR_INCOHERENT,
     LayeredRamanCalculator,
     RamanLayer,
+    _modal_pair_final_state_q,
     bose_factor,
 )
 from PDielec.Tests.Crystal_Raman.conftest import build_system
@@ -36,6 +39,8 @@ def _calculator(
     modal_pair_combination=MODAL_PAIR_GROUP_Q,
     modal_pair_use_nac=None,
     depth_integration=None,
+    final_state_model=FINAL_STATE_BULK_PHASE_MATCHED,
+    q_tol_deg=90.0,
     n_gauss=1,
 ):
     system = build_system([(THICKNESS_M, 2.0)], n_sup=1.0, n_sub=2.0)
@@ -69,6 +74,8 @@ def _calculator(
         modal_pairs=True,
         modal_pair_combination=modal_pair_combination,
         modal_pair_use_nac=modal_pair_use_nac,
+        final_state_model=final_state_model,
+        q_tol_deg=q_tol_deg,
         **kwargs,
     )
 
@@ -176,6 +183,7 @@ def test_phase4_incoherent_forward_cross_pairs_share_external_final_state():
         collection_side="substrate",
         modal_pair_combination=MODAL_PAIR_GROUP_Q,
         depth_integration=DEPTH_INTEGRATION_INCOHERENT,
+        final_state_model=FINAL_STATE_LOCAL_INCOHERENT,
         n_gauss=3,
     )
     modal_fields = np.zeros((4, 2, 3, 3), dtype=complex)
@@ -192,3 +200,69 @@ def test_phase4_incoherent_forward_cross_pairs_share_external_final_state():
     expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
     npt.assert_allclose(parallel_intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
+
+
+def test_bulk_phase_matched_retains_pair_q_for_external_matching():
+    """Bulk matching must compare the internal pair momentum with q_ext."""
+    q_pair = np.array([1.0, 0.0, 2.0])
+    q_ext = np.array([0.0, 0.0, 1.0])
+
+    q_final = _modal_pair_final_state_q(
+        q_pair,
+        q_ext,
+        DEPTH_INTEGRATION_INCOHERENT,
+        FINAL_STATE_BULK_PHASE_MATCHED,
+    )
+
+    npt.assert_allclose(q_final, q_pair)
+
+
+def test_local_incoherent_uses_external_final_state():
+    """Local incoherent depth assigns all optical components to q_ext."""
+    q_pair = np.array([1.0, 0.0, 2.0])
+    q_ext = np.array([0.0, 0.0, 1.0])
+
+    q_final = _modal_pair_final_state_q(
+        q_pair,
+        q_ext,
+        DEPTH_INTEGRATION_INCOHERENT,
+        FINAL_STATE_LOCAL_INCOHERENT,
+    )
+
+    npt.assert_allclose(q_final, q_ext)
+
+
+def test_coherent_depth_always_retains_pair_q():
+    """The local-incoherent selection must not alter coherent-film physics."""
+    q_pair = np.array([1.0, 0.0, 2.0])
+    q_ext = np.array([0.0, 0.0, 1.0])
+
+    q_final = _modal_pair_final_state_q(
+        q_pair,
+        q_ext,
+        "Coherent amplitude",
+        FINAL_STATE_LOCAL_INCOHERENT,
+    )
+
+    npt.assert_allclose(q_final, q_pair)
+
+
+def test_coherent_depth_is_independent_of_bulk_match_tolerance():
+    """The bulk acceptance angle must not regroup coherent-film components."""
+    intensities = []
+    for q_tol_deg in (0.0, 90.0):
+        calc = _calculator(
+            detected_pol="s",
+            modal_pair_combination=MODAL_PAIR_GROUP_Q,
+            q_tol_deg=q_tol_deg,
+            n_gauss=1,
+        )
+        modal_fields = np.zeros((4, 2, 3, 1), dtype=complex)
+        modal_fields[0, 0, 0, :] = 1.0
+        modal_fields[1, 0, 0, :] = 1.0
+        modal_fields[2, 1, 0, :] = 1.0
+        _install_fake_modal_fields(calc, modal_fields, [2.0, 1.0, 0.0, -10.0])
+        _freqs, result, _sigmas = calc.calculate_mode_intensities()
+        intensities.append(result)
+
+    npt.assert_allclose(intensities[0], intensities[1], rtol=1.0e-12, atol=1.0e-12)

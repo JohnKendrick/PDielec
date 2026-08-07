@@ -193,6 +193,39 @@ def test_bulk_phase_matched_keeps_only_q_matching_external_direction():
     assert mismatched.kind == DISCARDED_INTERNAL_COMPONENT
 
 
+def test_bulk_phase_matched_keys_accepted_pairs_by_external_final_state():
+    """Accepted internal pairs share the externally selected final-state key."""
+    resolver = PhononFinalStateResolver(
+        coherence_regime=BULK_PHASE_MATCHED,
+        q_ext=[0.0, 0.0, 2.0],
+        angular_tolerance_deg=90.0,
+    )
+
+    parallel = resolver.resolve_pair(0, [0.0, 0.0, 4.0], is_polar=True)
+    oblique = resolver.resolve_pair(0, [1.0, 0.0, 1.0], is_polar=True)
+
+    assert parallel.kind == RESOLVED_FINAL_STATE
+    assert oblique.kind == RESOLVED_FINAL_STATE
+    assert parallel.final_state.key == oblique.final_state.key
+    npt.assert_allclose(parallel.q_ph, [0.0, 0.0, 4.0])
+    npt.assert_allclose(oblique.q_ph, [1.0, 0.0, 1.0])
+
+
+def test_bulk_matching_angle_is_separate_from_q_grouping_angle():
+    """The 90 degree bulk acceptance must not coarsen q-direction bins."""
+    resolver = PhononFinalStateResolver(
+        coherence_regime=BULK_PHASE_MATCHED,
+        q_ext=[0.0, 0.0, 1.0],
+        angular_tolerance_deg=1.0,
+        matching_tolerance_deg=90.0,
+    )
+
+    perpendicular = resolver.resolve_pair(0, [1.0, 0.0, 0.0], is_polar=True)
+
+    assert perpendicular.kind == RESOLVED_FINAL_STATE
+    assert resolver.q_class_key([0.0, 0.0, 1.0]) != resolver.q_class_key([1.0, 0.0, 0.0])
+
+
 def test_phonon_subspace_sums_tensors_for_nearly_degenerate_branches():
     """Degenerate phonon branches are represented by a tensor-summed subspace."""
     resolver = PhononFinalStateResolver(eps_phonon=1e-3)

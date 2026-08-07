@@ -12,6 +12,7 @@ Covers:
   J9  QE reader parses χ^(2) from the electro-optic tensor block.
 """
 import os
+import shutil
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", ".."))
@@ -342,6 +343,24 @@ class TestJ3BCrystalParser:
         assert chi2[0, 0, 2] == pytest.approx(2.0 * 11.691 * factor)
         assert chi2[1, 1, 2] == pytest.approx(2.0 * 11.691 * factor)
         assert chi2[2, 2, 2] == pytest.approx(2.0 * -33.166 * factor)
+
+    def test_crystal_chi2_from_output_without_companion(self, tmp_path):
+        """The embedded CRYSTAL output block is sufficient when CHI2.DAT is absent."""
+        output_file = tmp_path / "opt_raman.out"
+        shutil.copyfile(_CRYSTAL23_FILE, output_file)
+
+        from PDielec.CrystalOutputReader import CrystalOutputReader
+
+        r = CrystalOutputReader([str(output_file)])
+        r.read_output()
+        chi2 = r.nonlinear_optical_susceptibility
+        factor = chi2_pm_per_v_to_repsilon(r.volume)
+
+        assert chi2 is not None
+        assert chi2.shape == (3, 3, 3)
+        assert chi2[0, 0, 2] == pytest.approx(2.0 * 9.7410 * factor)
+        assert chi2[1, 1, 2] == pytest.approx(2.0 * 9.7410 * factor)
+        assert chi2[2, 2, 2] == pytest.approx(2.0 * -25.982 * factor)
 
 
 # ---------------------------------------------------------------------------

@@ -67,6 +67,7 @@ from PDielec.PhononFinalStateResolver import (
     COHERENT_EXTERNAL_CHANNEL,
     COHERENT_FILM,
     DISCARDED_INTERNAL_COMPONENT,
+    INCOHERENT_DEPTH,
     RESOLVED_FINAL_STATE,
     PhononFinalStateResolver,
 )
@@ -77,6 +78,10 @@ logger = logging.getLogger(__name__)
 DEPTH_INTEGRATION_COHERENT = "Coherent amplitude"
 DEPTH_INTEGRATION_INCOHERENT = "Incoherent intensity"
 DEPTH_INTEGRATION_OPTIONS = (DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT)
+
+FINAL_STATE_BULK_PHASE_MATCHED = "Bulk phase matched"
+FINAL_STATE_LOCAL_INCOHERENT = "Local incoherent"
+FINAL_STATE_MODEL_OPTIONS = (FINAL_STATE_BULK_PHASE_MATCHED, FINAL_STATE_LOCAL_INCOHERENT)
 
 # Modal-pair summation policies (only relevant when modal_pairs=True).
 # GROUP_Q  : coherently sum amplitudes that share the same phonon q-vector and
@@ -386,6 +391,7 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
         modal_pair_combination,
         coherent_layers,
         depth_integration,
+        final_state_model,
         approximate_es,
         resolver,
         temperature_K,
@@ -444,7 +450,9 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
 
                     if modal_pair_combination == MODAL_PAIR_GROUP_Q:
                         q_pair = modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
-                        q_final = _modal_pair_final_state_q(q_pair, resolver.q_ext, depth_integration)
+                        q_final = _modal_pair_final_state_q(
+                            q_pair, resolver.q_ext, depth_integration, final_state_model
+                        )
                         classification = resolver.resolve_pair(
                             mode_idx,
                             q_final,
@@ -628,22 +636,28 @@ def _line_key(frequency_cm1, sigma_cm1):
     return (round(float(frequency_cm1), 10), round(float(sigma_cm1), 10))
 
 
-def _resolver_coherence_regime(depth_integration):
+def _resolver_coherence_regime(depth_integration, final_state_model):
     """Return the final-state resolver regime matching the depth treatment."""
     if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+        if final_state_model == FINAL_STATE_LOCAL_INCOHERENT:
+            return INCOHERENT_DEPTH
         return BULK_PHASE_MATCHED
     return COHERENT_FILM
 
 
-def _modal_pair_final_state_q(q_pair, q_ext, depth_integration):
+def _modal_pair_final_state_q(q_pair, q_ext, depth_integration, final_state_model):
     """Return the phonon q used to classify a modal-pair final state.
 
-    Under incoherent-depth integration, the external photon momentum transfer
-    selects the phonon branch.  Internal Berreman q differences remain coherent
-    local-field components of that external final state.  Coherent-depth
-    calculations retain the pair-resolved q from eq-layer-qph.
+    The bulk phase-matched model retains ``q_pair`` so it can be compared with
+    ``q_ext`` by the final-state resolver.  The local-incoherent model instead
+    assigns all internal Berreman components at a depth point to the externally
+    selected final state.  Coherent-depth calculations always retain the
+    pair-resolved q from eq-layer-qph.
     """
-    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+    if (
+        depth_integration == DEPTH_INTEGRATION_INCOHERENT
+        and final_state_model == FINAL_STATE_LOCAL_INCOHERENT
+    ):
         return np.asarray(q_ext, dtype=float)
     return np.asarray(q_pair, dtype=float)
 
@@ -852,6 +866,18 @@ class LayeredRamanCalculator:
         squaring and is appropriate for thin coherent films.  ``'Incoherent
         intensity'`` integrates the local intensity and is more stable for
         thick or bulk samples where long-range phase coherence is not physical.
+    final_state_model : {'Bulk phase matched', 'Local incoherent'}, optional
+        Interpretation of modal pairs when ``depth_integration`` is incoherent.
+        ``'Bulk phase matched'`` compares each internal ``q_pair`` with the
+        externally selected ``q_ext`` and is the default.  ``'Local
+        incoherent'`` assigns all internal field components at a depth point to
+        the same external final state before squaring the local amplitude.
+    q_tol_deg : float, optional
+        Maximum angle between ``q_pair`` and ``q_ext`` in the bulk
+        phase-matched model.  The default of 90 degrees accepts the forward
+        momentum hemisphere and rejects antiparallel pairs.  It is inactive in
+        the local-incoherent model.
+
     Notes
     -----
     The E-field returned by ``calculate_Efield`` has shape ``(6, N)`` where
@@ -891,7 +917,8 @@ class LayeredRamanCalculator:
         modal_pairs=False,
         modal_pair_combination=MODAL_PAIR_GROUP_Q,
         modal_pair_use_nac=None,
-        q_tol_deg=0.0,
+        q_tol_deg=90.0,
+        final_state_model=FINAL_STATE_BULK_PHASE_MATCHED,
         modes_selected=None,
     ):
         """Initialise LayeredRamanCalculator with system, layers and calculation parameters."""
@@ -906,6 +933,10 @@ class LayeredRamanCalculator:
         if modal_pair_combination not in MODAL_PAIR_OPTIONS:
             raise ValueError(
                 f"modal_pair_combination must be one of {MODAL_PAIR_OPTIONS}, got '{modal_pair_combination}'"
+            )
+        if final_state_model not in FINAL_STATE_MODEL_OPTIONS:
+            raise ValueError(
+                f"final_state_model must be one of {FINAL_STATE_MODEL_OPTIONS}, got '{final_state_model}'"
             )
 
         self.system = system
@@ -926,6 +957,7 @@ class LayeredRamanCalculator:
         self.modal_pair_combination = modal_pair_combination
         self.modal_pair_use_nac = None if modal_pair_use_nac is None else np.asarray(modal_pair_use_nac, dtype=bool)
         self.q_tol_deg = float(q_tol_deg)
+        self.final_state_model = final_state_model
         self.modes_selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
         self._nac_cache = {}
         self._modal_pair_q_vectors = {}
@@ -1351,9 +1383,10 @@ class LayeredRamanCalculator:
 
         modal_pair_use_nac = self.modal_pair_use_nac
         resolver = PhononFinalStateResolver(
-            coherence_regime=_resolver_coherence_regime(self.depth_integration),
+            coherence_regime=_resolver_coherence_regime(self.depth_integration, self.final_state_model),
             q_ext=q_ext,
-            angular_tolerance_deg=max(float(self.q_tol_deg), 1.0e-10),
+            angular_tolerance_deg=1.0e-10,
+            matching_tolerance_deg=max(float(self.q_tol_deg), 1.0e-10),
             q_zero_tol=1.0e-3,
         )
 
@@ -1431,6 +1464,7 @@ class LayeredRamanCalculator:
                 self.modal_pair_combination,
                 self.coherent_layers,
                 self.depth_integration,
+                self.final_state_model,
                 self.approximate_es,
                 resolver,
                 self.temperature_K,
@@ -1542,7 +1576,9 @@ class LayeredRamanCalculator:
 
                             if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
                                 q_pair = self._modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
-                                q_final = _modal_pair_final_state_q(q_pair, q_ext, self.depth_integration)
+                                q_final = _modal_pair_final_state_q(
+                                    q_pair, q_ext, self.depth_integration, self.final_state_model
+                                )
                                 classification = resolver.resolve_pair(
                                     mode_idx,
                                     q_final,

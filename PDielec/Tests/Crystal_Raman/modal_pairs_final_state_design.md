@@ -22,6 +22,39 @@ final states, and which are only components of the same external-channel Raman
 amplitude?
 ```
 
+## q_pair/q_ext Decision (2026-08-01)
+
+The internal pair momentum and the external-channel momentum have different
+roles and neither may replace the other:
+
+```text
+q_pair(i,j) = k_L(i) - k_S(j)       internal optical-pair phase
+q_ext       = k_incident - k_detected  externally selected channel
+```
+
+Commit `8f9206ca` replaced `q_pair` by `q_ext` before final-state
+classification for incoherent depth.  That made the angular match compare
+`q_ext` with itself, so every tolerance necessarily produced the same result.
+This was intended to preserve all components of the local optical field, but it
+also removed the distinct bulk phase-matching model.  CASTEP and CRYSTAL
+calculations therefore became tolerance-independent for a software reason, not
+because their DFT tensors implied different momentum physics.
+
+The implementation now exposes two models for incoherent depth:
+
+- `Bulk phase matched`: retain `q_pair`, use `q_ext` as the target direction,
+  and accept pairs in the forward momentum hemisphere.  A 90 degree cutoff is
+  the interim default; it includes off-specular forward changes while rejecting
+  antiparallel pairs.  Accepted contributions are keyed by `q_ext`, so the
+  internal decomposition does not create multiple external final states.
+- `Local incoherent`: assign every internal Berreman component at a depth point
+  to the externally selected state `q_ext`, combine those components locally,
+  square, and integrate intensity over depth.  Angular filtering is inactive.
+
+Coherent-depth calculations always retain `q_pair`.  The 90 degree cutoff is an
+interim bulk-limit approximation, not a fundamental material parameter.  The
+long-term formulation is the continuous phase-mismatch model specified below.
+
 The design should answer that question explicitly rather than hiding it behind
 geometry-dependent switches.
 
@@ -130,10 +163,10 @@ discarded depends on the coherence regime:
   Discarding the cross-pairs would change the result; their contribution is a
   genuine part of the Raman amplitude, not an artefact.
 
-- In the **incoherent depth** regime (thick layers integrated locally), phase
-  averaging causes cross-pair amplitudes to cancel when integrated over depth.
-  Only co-propagating pairs `(forward, forward)` and `(backward, backward)`
-  survive the average.  Cross-pairs may therefore be discarded after the average.
+- In the **local-incoherent depth** regime, the full local optical-field product
+  is formed before squaring and intensities are integrated over depth.  Internal
+  Berreman products are components of the same local external-channel event and
+  are not filtered independently by momentum direction.
 
 - In the **bulk / phase-matched** limit, only the pairs whose phonon wavevector
   matches the externally imposed momentum transfer contribute.  For
@@ -380,6 +413,36 @@ The external momentum transfer `q_ext` is computed by the `OpticalChannelResolve
 from the macroscopic scattering geometry and is passed to the resolver as an
 input alongside the per-pair `q_ph`.
 
+### Finite-Coherence Phase-Mismatch Implementation Plan
+
+The hard 90 degree bulk filter is an interim large-coherence approximation.
+Replace it with a continuous weight in four stages:
+
+1. **Carry the mismatch explicitly.**  Preserve `q_pair` and `q_ext` for every
+   contribution and define `delta_q = q_pair - q_ext` using one documented
+   physical-wavevector convention.  Record the mismatch parallel and normal to
+   the layers in diagnostics.
+2. **Add an explicit coherence scale.**  Introduce a phonon coherence length
+   `L_coh` (or an equivalent dephasing width) separately from optical layer
+   thickness.  Do not infer it silently from the Gauss--Legendre integration
+   grid or linewidth.  Permit mode-dependent values in the calculator API;
+   expose a single override in the GUI only after validation.
+3. **Weight amplitudes continuously.**  For a uniform coherent interval use
+   `F(delta_q,L) = exp(i delta_q L/2) sinc(delta_q L/2)` before summing pair
+   amplitudes.  For finite phonon coherence, average this kernel over coherence
+   domains or use the equivalent correlation-function Fourier transform.  The
+   local-incoherent and bulk phase-matched models must emerge as documented
+   limiting cases rather than as unrelated switches.
+4. **Validate limits before changing defaults.**  Add synthetic tests for
+   `delta_q=0`, large mismatch, `L->0`, `L->infinity`, basis invariance, layer
+   subdivision, forward/backward Porto limits, and convergence to the present
+   local-incoherent and 90 degree bulk results.  Then rerun the ZnO angle,
+   forward-scatter, depth, layer-division, modal-pair, and Kranert benchmarks.
+
+The first implementation should be calculator-only and opt-in.  The hard
+bulk/local choices remain available as regression limits until the continuous
+model has independent experimental or analytic validation.
+
 ### Determining the Regime in Practice
 
 The coherence regime should be selected by the user in the GUI or script,
@@ -430,7 +493,8 @@ include a q-direction class, not the q magnitude.
 q_class_key = discretised(q_hat_lab, angular_tolerance_deg)
 ```
 
-The angular tolerance should default to **5 degrees** and be stored as a
+For pair-resolved q-direction *grouping*, the angular tolerance should default
+to **5 degrees** and be stored as a
 named resolver parameter.  It should be specified as a physical angle, not as
 a rounding of vector components.  Two phonon wavevectors are placed in the same
 class when the angle between them is less than `angular_tolerance_deg`.
@@ -440,9 +504,10 @@ may be too coarse near strong anisotropy, avoided crossings, or rapidly varying
 NAC/EO tensors.  Tests should include a tolerance-convergence check and a
 diagnostic report of the maximum tensor/frequency spread within each q class.
 
-The current GUI parameter `q_lab_hat` (already present in `SettingsTab`) maps
-directly to this tolerance and should be renamed accordingly when the refactor
-is complete.
+This grouping tolerance is distinct from the interim 90 degree
+`q_pair`-versus-`q_ext` acceptance angle used by the bulk phase-matched model.
+They must use separate parameters when pair-resolved grouping becomes
+user-configurable.
 
 ### Polar q Near Zero
 
@@ -467,10 +532,12 @@ above, is:
   geometry), the calculator checks the depth-integration regime:
   - In `coherent_film`: classify as `CoherentExternalChannelContribution` — the
     cross-pair is a coherent interference term, not an independent TO final state.
-  - In `incoherent_depth`: resolve the phonon using `q_ext`, then add the
+  - In `local_incoherent`: resolve the phonon using `q_ext`, then add the
     pair's local intensity to that external final-state channel.  The internal
     `q_ph(i,j)` remains available for diagnostics and coherent phase matching,
     but must not suppress a valid external channel.
+  - In `bulk_phase_matched`: retain `q_ph(i,j)` and compare it with `q_ext`;
+    reject a near-zero cross-pair when the external transfer is finite.
 
 This rule replaces all current zero-q suppression switches.  The near-zero
 threshold for `|q_ph|` should be `1e-3` in units of the laser wavevector
