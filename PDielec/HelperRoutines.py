@@ -28,6 +28,7 @@ from PDielec.Constants import amu, average_masses, boltzmann_si, isotope_masses,
 from PDielec.GUI.CrystalScenarioTab import solve_single_crystal_equations
 from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer, lorentzian_broaden
 from PDielec.Materials import External, MaterialsDataBase
+from PDielec.RamanGeometry import resolve_collection_angle
 
 logger = logging.getLogger(__name__)
 gtm_methods = {"Coherent": GTM.CoherentLayer,
@@ -528,7 +529,12 @@ def calculate_crystal_raman_spectrum(frequencies_cm1, reader, layers, incident_a
     if not raman_layers:
         raise ValueError("No Raman-active dielectric layers were found in the crystal layer stack")
 
-    collection_angle_rad = incident_angle_rad if collection_angle < 0.0 else np.radians(collection_angle)
+    requested_collection_angle_rad = None if collection_angle == -1.0 else np.radians(collection_angle)
+    collection_angle_rad = resolve_collection_angle(
+        incident_angle_rad,
+        requested_collection_angle_rad,
+        collection_side,
+    )
     calculator = LayeredRamanCalculator(
         system=system,
         raman_layers=raman_layers,

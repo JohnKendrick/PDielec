@@ -36,7 +36,8 @@ Phase 2 features (all enabled by default):
 - Forward scattering: set ``collection_side='substrate'`` to launch E_S from
   the substrate side using a reversed stack (GTMcore.System.reversed_system).
 - Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
-  the incident angle for backscattering).
+  retro-backscattering on the superstrate side and collinear forward
+  scattering on the substrate side).
 - Layer combination: set ``coherent_layers=True`` to sum amplitudes
   across Raman-active layers before squaring (GUI setting: "Coherent amplitudes").
 
@@ -72,6 +73,7 @@ from PDielec.PhononFinalStateResolver import (
     PhononFinalStateResolver,
 )
 from PDielec.RamanAmplitudeAccumulator import RamanAmplitudeAccumulator
+from PDielec.RamanGeometry import resolve_collection_angle
 
 logger = logging.getLogger(__name__)
 
@@ -852,7 +854,8 @@ class LayeredRamanCalculator:
         causes E_S to be computed on the reversed stack.
     collection_angle_rad : float or None, optional
         Collection (detector) angle in radians from the surface normal.
-        Defaults to ``incident_angle_rad`` (appropriate for backscattering).
+        ``None`` selects retro-backscattering on the superstrate side or
+        collinear forward scattering on the substrate side.
     coherent_layers : bool, optional
         If ``True``, amplitudes are summed across Raman-active layers before
         squaring (coherent combination).  Default is ``False`` (incoherent:
@@ -949,7 +952,11 @@ class LayeredRamanCalculator:
         self.linewidths_cm1 = np.asarray(linewidths_cm1, dtype=float)
         self.n_gauss = max(1, int(n_gauss))
         self.collection_side = collection_side
-        self.collection_angle_rad = float(collection_angle_rad) if collection_angle_rad is not None else float(incident_angle_rad)
+        self.collection_angle_rad = resolve_collection_angle(
+            incident_angle_rad,
+            collection_angle_rad,
+            collection_side,
+        )
         self.coherent_layers = bool(coherent_layers)
         self.approximate_es = bool(approximate_es)
         self.depth_integration = depth_integration

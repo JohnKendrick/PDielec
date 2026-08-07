@@ -14,6 +14,7 @@ import pytest
 
 from PDielec.LayeredRamanCalculator import MODAL_PAIR_COHERENT_ALL, MODAL_PAIR_INCOHERENT, LayeredRamanCalculator
 from PDielec.OpticalChannelResolver import OpticalChannelResolver
+from PDielec.RamanGeometry import resolve_collection_angle
 from PDielec.Tests.Crystal_Raman.conftest import build_system, make_raman_layer
 
 
@@ -25,6 +26,7 @@ def _calculator(
     modal_pairs=False,
     modal_pair_combination=MODAL_PAIR_COHERENT_ALL,
     approximate_es=True,
+    collection_angle_rad=None,
 ):
     if layer_specs is None:
         layer_specs = [(1.0e-6, 1.5)]
@@ -42,10 +44,27 @@ def _calculator(
         n_gauss=8,
         approximate_es=approximate_es,
         collection_side=collection_side,
+        collection_angle_rad=collection_angle_rad,
         modal_pairs=modal_pairs,
         modal_pair_combination=modal_pair_combination,
         coherent_layers=True,
     )
+
+
+@pytest.mark.parametrize(
+    ("incident_angle", "collection_angle", "collection_side", "expected"),
+    [
+        (0.0, None, "superstrate", 0.0),
+        (0.0, None, "substrate", 0.0),
+        (0.4, None, "superstrate", -0.4),
+        (0.4, 0.4, "superstrate", 0.4),
+        (0.4, None, "substrate", 0.4),
+        (0.4, -0.2, "superstrate", -0.2),
+    ],
+)
+def test_collection_angle_resolver(incident_angle, collection_angle, collection_side, expected):
+    """Automatic and explicit collection geometries retain their signed conventions."""
+    assert resolve_collection_angle(incident_angle, collection_angle, collection_side) == pytest.approx(expected)
 
 
 def test_optical_resolver_modal_channels_reconstruct_total_field():
@@ -98,6 +117,26 @@ def test_optical_resolver_external_q_ext_backscatter_and_forward_limits():
     )
 
     npt.assert_allclose(q_back, [0.0, 0.0, 2.0], atol=1e-12)
+    npt.assert_allclose(q_forward, [0.0, 0.0, 0.0], atol=1e-12)
+
+
+def test_oblique_automatic_retro_specular_and_forward_q_ext():
+    """Oblique automatic collection is retro or forward while explicit reflection stays specular."""
+    angle = np.radians(30.0)
+    automatic_retro = _calculator(collection_side="superstrate", incident_angle_rad=angle)
+    explicit_specular = _calculator(
+        collection_side="superstrate",
+        incident_angle_rad=angle,
+        collection_angle_rad=angle,
+    )
+    automatic_forward = _calculator(collection_side="substrate", incident_angle_rad=angle)
+
+    q_retro = automatic_retro.resolve_optical_channels(19900.0)["q_ext"]
+    q_specular = explicit_specular.resolve_optical_channels(19900.0)["q_ext"]
+    q_forward = automatic_forward.resolve_optical_channels(19900.0)["q_ext"]
+
+    npt.assert_allclose(q_retro, [1.0, 0.0, np.sqrt(3.0)], atol=1e-12)
+    npt.assert_allclose(q_specular, [0.0, 0.0, np.sqrt(3.0)], atol=1e-12)
     npt.assert_allclose(q_forward, [0.0, 0.0, 0.0], atol=1e-12)
 
 

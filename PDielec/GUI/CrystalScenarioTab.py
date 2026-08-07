@@ -66,6 +66,7 @@ from PDielec.LayeredRamanCalculator import (
 )
 from PDielec.Materials import MaterialsDataBase
 from PDielec.NACDiagnostics import compute_nac_direction_diagnostics
+from PDielec.RamanGeometry import resolve_collection_angle
 
 logger = logging.getLogger(__name__)
 thickness_conversion_factors = {"ang":1.0E-10, "nm":1.0E-9, "um":1.0E-6, "mm":1.0E-3, "cm":1.0E-2}
@@ -643,7 +644,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Temperature K"] = 298.0
         self.settings["GL point density"] = 20.0  # Gauss-Legendre points per µm
         self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
-        self.settings["Collection angle"] = -1.0          # negative sentinel: default to angle of incidence
+        self.settings["Collection angle"] = -1.0          # sentinel: automatic collection geometry
         self.settings["Layer combination"] = "Incoherent intensities"
         self.settings["Depth coherence"] = DEPTH_INTEGRATION_COHERENT
         self.settings["Approximate ES"] = False
@@ -1895,7 +1896,12 @@ class CrystalScenarioTab(ScenarioTab):
         self.collection_angle_sb.setDecimals(1)
         self.collection_angle_sb.setValue(self.settings["Collection angle"])
         self.collection_angle_sb.valueChanged.connect(self.on_collection_angle_sb_changed)
-        self.collection_angle_sb.setToolTip("Collection (detector) angle in degrees.\n−1 = use the angle of incidence (default for backscattering)")
+        self.collection_angle_sb.setToolTip(
+            "Collection (detector) angle in degrees.\n"
+            "−1 = automatic: retro-backscattering from the superstrate side or collinear forward "
+            "scattering from the substrate side.\n"
+            "Set an explicit angle equal to the incidence angle for specular reflection."
+        )
         label = QLabel("Collection angle (°, −1 = auto)")
         label.setToolTip(self.collection_angle_sb.toolTip())
         self.form.addRow(label, self.collection_angle_sb)
@@ -3250,7 +3256,8 @@ class CrystalScenarioTab(ScenarioTab):
             # Forward scattering: scattered beam also propagates in +z
             k_S_hat = np.array([sin_scat_int, 0.0, cos_scat_int])
         else:
-            # Backscattering: scattered beam exits in −z (toward superstrate)
+            # Backscattering: scattered beam exits in −z (toward superstrate).
+            # The signed scatter angle independently determines its x component.
             k_S_hat = np.array([sin_scat_int, 0.0, -cos_scat_int])
 
         # Phonon momentum transfer q = k_L − k_S
@@ -3354,8 +3361,9 @@ class CrystalScenarioTab(ScenarioTab):
             # Forward: k_S also propagates in +z
             q_dir = np.array([zeta_L_re - zeta_S_re, 0.0, qs_L - qs_S])
         else:
-            # Backscattering: k_S travels in −z (sign flip on both kx and kz)
-            q_dir = np.array([zeta_L_re + zeta_S_re, 0.0, qs_L + qs_S])
+            # Backscattering: k_S travels in −z; its signed collection angle
+            # already carries the transverse direction.
+            q_dir = np.array([zeta_L_re - zeta_S_re, 0.0, qs_L + qs_S])
 
         q_norm = np.linalg.norm(q_dir)
         if q_norm < 1e-6:
@@ -3572,7 +3580,12 @@ class CrystalScenarioTab(ScenarioTab):
             "Modal pair final-state model", FINAL_STATE_BULK_PHASE_MATCHED
         )
         q_tol_deg                = float(self.settings.get("Modal pair q-angle tolerance", 90.0))
-        collection_angle_rad = angle_of_incidence if collection_angle < 0.0 else np.radians(collection_angle)
+        requested_collection_angle_rad = None if collection_angle == -1.0 else np.radians(collection_angle)
+        collection_angle_rad = resolve_collection_angle(
+            angle_of_incidence,
+            requested_collection_angle_rad,
+            collection_side,
+        )
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         layer_nac_mode = self.settings.get("Layer NAC mode", "none")

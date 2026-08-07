@@ -1,4 +1,10 @@
 version 10.0.0
+   Crystal Raman collection geometry:
+   - Automatic collection now uses retro-backscattering on the superstrate side and collinear forward scattering
+     on the substrate side. Explicitly setting the collection angle equal to the incidence angle retains specular
+     reflection.
+   - Migration note: saved scenarios with Collection angle = -1 change at nonzero incidence. Normal-incidence
+     scenarios are unchanged.
    Extensive code quality improvements across the entire codebase.
    NOTE: Scripts written before this version that call renamed methods will not be compatible.
 
