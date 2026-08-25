@@ -7,8 +7,10 @@ import os
 import numpy as np
 import pytest
 
+from PDielec import Calculator
 from PDielec.CastepOutputReader import CastepOutputReader
 from PDielec.Constants import angs2bohr
+from PDielec.GUI.SettingsTab import SettingsTab
 from PDielec.UnitCell import UnitCell
 
 _REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
@@ -155,3 +157,47 @@ def test_castep_25_official_atomic_polar_tensors_are_read_and_translationally_in
     # mode-7 susceptibility tensor to its six-decimal printed precision.
     expected_mode_7 = 4.0 * math.pi * np.diag([0.051242, 0.051259, 0.110664])
     np.testing.assert_allclose(np.diag(reader.raman_tensors[6]), np.diag(expected_mode_7), atol=7.0e-6)
+
+
+@pytest.mark.skipif(not os.path.exists(_CASTEP_25_FILE), reason="CASTEP 25.12 example not present")
+def test_castep_25_raman_tensors_follow_the_phonon_mode_order():
+    """The official tensors should remain aligned with CASTEP's ordered phonon modes."""
+    reader = CastepOutputReader([_CASTEP_25_FILE])
+    reader.read_output()
+
+    assert len(reader.frequencies) == 12
+    assert len(reader.raman_tensors) == len(reader.frequencies)
+    assert reader.frequencies[5:8] == pytest.approx(
+        [259.437429, 310.551568, 340.074893],
+        abs=1.0e-6,
+    )
+    expected_mode_7 = 4.0 * math.pi * np.array(
+        [
+            [0.051242, -0.000003, -0.000079],
+            [-0.000003, 0.051259, -0.000019],
+            [-0.000079, -0.000019, 0.110664],
+        ]
+    )
+    np.testing.assert_allclose(reader.raman_tensors[6], expected_mode_7, atol=7.0e-6)
+
+
+@pytest.mark.skipif(not os.path.exists(_CASTEP_25_FILE), reason="CASTEP 25.12 example not present")
+def test_castep_25_mode_7_activity_uses_pdgui_display_conversion():
+    """PDGui should display CASTEP's mode-7 activity in polarizability-volume units."""
+    reader = CastepOutputReader([_CASTEP_25_FILE])
+    reader.read_output()
+    activities = Calculator.raman_intensities(reader.get_raman_tensors(), reader.volume)
+
+    settings_tab = SettingsTab.__new__(SettingsTab)
+    settings_tab.reader = reader
+    settings_tab.settings = {"Raman activity units": "polarizability"}
+    display = settings_tab._raman_activity_display_metadata()
+
+    assert display["unit_label"] == "Å⁴/amu"
+    assert display["factor"] == pytest.approx(reader.volume / (16.0 * math.pi * math.pi))
+    assert activities[6, 0] * display["factor"] == pytest.approx(12.7504798, abs=2.0e-6)
+
+    settings_tab.settings["Raman activity units"] = "epsilon"
+    epsilon_display = settings_tab._raman_activity_display_metadata()
+    assert epsilon_display["unit_label"] == "Å/amu"
+    assert epsilon_display["factor"] == 1.0
