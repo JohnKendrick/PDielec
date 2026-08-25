@@ -206,10 +206,11 @@ class AbinitOutputReader(GenericOutputReader):
             return
 
         # Unit conversion factor for eq-ramantensor:
-        #   R_epsilon = sqrt(V [Å³]) × angs2bohr × R_Abinit
-        # where Abinit derivatives are per Bohr displacement and Q is in
+        #   R_epsilon = sqrt(V [Å³]) × angs2bohr × 4π × R_Abinit
+        # where Abinit prints derivatives of the susceptibility χ per Bohr
+        # displacement, epsilon = I + 4πχ, and Q is in
         # Bohr·sqrt(amu) before conversion to Å·sqrt(amu).
-        unit_factor = math.sqrt(self.volume) * angs2bohr
+        unit_factor = math.sqrt(self.volume) * angs2bohr * 4.0 * math.pi
         nmodes = self.nions * 3
         self.raman_tensors = []
         for n in range(nmodes):
