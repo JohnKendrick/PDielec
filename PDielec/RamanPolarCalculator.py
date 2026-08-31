@@ -327,7 +327,7 @@ def apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, e
     Implements the electro-optic term in ``eq-nonanalytic`` and ``eq-nac_ramantensor``.
     For each mode *p* the correction is::
 
-        ΔR_p = −2 · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
+        ΔR_p = −8π · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
 
     where ``f_ij(q̂) = Σ_l χ^(2)_ijl q̂_l`` and
     ``Z^mw(q̂)[n] = (Z_mat^T q̂)[n]``.
@@ -360,10 +360,10 @@ def apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, e
 
     Notes
     -----
-    Reader Raman tensors and reader χ^(2) tensors use the same Angstrom-based
+    Reader Raman tensors and reader χ^(2) tensors use the Angstrom-based
     ``R_epsilon`` convention used by
-    :func:`PDielec.Calculator.raman_intensities`, so no additional unit
-    conversion is applied here.
+    :func:`PDielec.Calculator.raman_intensities`.  The Gaussian-unit
+    nonanalytic electro-optic term contributes the explicit ``4π`` factor.
 
     """
     chi2_repsilon = np.asarray(chi2_repsilon, dtype=float)
@@ -383,7 +383,9 @@ def apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, e
     n_modes = len(tensors)
     for p_idx in range(n_modes):
         scalar_p = float(np.dot(Z_q, eigvecs[:, p_idx]))
-        corrected.append(tensors[p_idx] + (-2.0 * f_ij * scalar_p / eps_b_q))
+        corrected.append(
+            tensors[p_idx] + (-8.0 * np.pi * f_ij * scalar_p / eps_b_q)
+        )
     return corrected
 
 

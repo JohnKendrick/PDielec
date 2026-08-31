@@ -538,7 +538,7 @@ class TestJ10ReaderTensorConvention:
 
         corrected = apply_eo_correction(tensors, chi2, q_hat, Z_mat, eigvecs, eps_inf)
 
-        expected = -2.0 * chi2[0, 0, 2] * 2.0 / eps_inf[2, 2]
+        expected = -8.0 * np.pi * chi2[0, 0, 2] * 2.0 / eps_inf[2, 2]
         assert corrected[0][0, 0] == pytest.approx(expected)
 
     def test_eo_correction_operates_directly_on_reader_tensors(self):
