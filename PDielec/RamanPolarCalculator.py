@@ -396,12 +396,12 @@ def apply_particle_eo_correction(tensors, chi2_repsilon, K_particle, Z_mat, eigv
     kernel as the particle dynamical matrix.  For particle mode *m*::
 
         z_m = Z_mat @ eigvecs[:, m]
-        Delta R_m = -2 chi2_repsilon : (K_particle @ z_m)
+        Delta R_m = -8π chi2_repsilon : (K_particle @ z_m)
 
     ``chi2_repsilon`` is already converted by the output readers to the
-    internal ``R_epsilon`` convention, so no further volume or unit factor is
-    applied here.  Unlike :func:`apply_eo_correction`, this function has no
-    bulk propagation direction.
+    internal ``R_epsilon`` convention.  As in :func:`apply_eo_correction`, the
+    Gaussian-unit electrostatic term contributes the explicit ``4π`` factor.
+    Unlike the bulk correction, this function has no propagation direction.
 
     Parameters
     ----------
@@ -450,6 +450,6 @@ def apply_particle_eo_correction(tensors, chi2_repsilon, K_particle, Z_mat, eigv
             raise ValueError(f"tensor {mode} must have shape (3, 3), got {tensor.shape}")
         mode_charge = Z_mat @ eigvecs[:, mode]
         field_vector = K_particle @ mode_charge
-        delta_raman = -2.0 * np.einsum("ijl,l->ij", chi2_repsilon, field_vector)
+        delta_raman = -8.0 * np.pi * np.einsum("ijl,l->ij", chi2_repsilon, field_vector)
         corrected.append(tensor + delta_raman)
     return corrected

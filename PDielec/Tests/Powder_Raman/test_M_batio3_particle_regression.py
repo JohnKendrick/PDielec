@@ -66,7 +66,7 @@ def test_batio3_particle_eo_preserves_frequencies_and_high_surface_mode(particle
 
 
 def test_batio3_corrected_high_mode_modal_intensities(particle_case):
-    """Regress the two-factor local-field and finite-particle EO high-mode intensities."""
+    """Regress the 4π-normalised particle EO high-mode intensities."""
     tab, arguments, internal_field, chi2 = particle_case
     without_eo = tab._compute_particle_modes(*arguments)
     with_eo = tab._compute_particle_modes(
@@ -83,7 +83,7 @@ def test_batio3_corrected_high_mode_modal_intensities(particle_case):
     np.testing.assert_allclose(
         intensity_without_eo, [0.5285216048721, 0.01249086629222], rtol=2.0e-10)
     np.testing.assert_allclose(
-        intensity_with_eo, [0.2985764829650, 0.004745719012318], rtol=2.0e-10)
+        intensity_with_eo, [2.438721934862395, 0.1823290427508101], rtol=2.0e-10)
     assert intensity_with_eo[0] != pytest.approx(intensity_without_eo[0])
 
 

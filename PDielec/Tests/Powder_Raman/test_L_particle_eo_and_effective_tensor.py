@@ -70,7 +70,7 @@ def test_effective_tensor_is_rotation_covariant_with_distinct_optical_factors():
 
 
 def test_particle_eo_matches_direct_contraction_and_does_not_modify_input():
-    """Particle EO uses -2 chi2 contracted with K_particle Z_mw u_m."""
+    """Particle EO uses -8π chi2 contracted with K_particle Z_mw u_m."""
     tensors = [np.diag([1.0, 2.0, 3.0]), np.eye(3) * 0.5]
     original = [tensor.copy() for tensor in tensors]
     chi2 = np.arange(27.0).reshape(3, 3, 3) / 10.0
@@ -82,7 +82,7 @@ def test_particle_eo_matches_direct_contraction_and_does_not_modify_input():
 
     for mode in range(2):
         field_vector = kernel @ (z_mat @ eigvecs[:, mode])
-        expected = original[mode] - 2.0 * np.einsum("ijl,l->ij", chi2, field_vector)
+        expected = original[mode] - 8.0 * np.pi * np.einsum("ijl,l->ij", chi2, field_vector)
         np.testing.assert_allclose(corrected[mode], expected)
         np.testing.assert_array_equal(tensors[mode], original[mode])
 
@@ -155,6 +155,8 @@ def test_eo_corrected_sphere_analytic_and_sobol_averages_agree():
     """An EO-corrected sphere tensor gives the same analytic and sampled VV/VH averages."""
     tensor = np.array([[1.0, 0.2, 0.0], [0.2, 0.5, 0.1], [0.0, 0.1, 0.8]])
     chi2 = np.arange(27.0).reshape(3, 3, 3) / 50.0
+    # The analytic Placzek average assumes a reciprocal (symmetric) optical tensor.
+    chi2 = 0.5 * (chi2 + chi2.swapaxes(0, 1))
     corrected = apply_particle_eo_correction(
         [tensor], chi2, np.eye(3) / 9.0, np.array([[1.0], [0.3], [-0.2]]), np.ones((1, 1))
     )[0]
