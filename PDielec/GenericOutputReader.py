@@ -234,6 +234,8 @@ class GenericOutputReader:
         self.oscillator_strengths       = None
         self.edited_masses              = None
         self.primitive_transformation   = None
+        self._mode_reference_masses = None
+        self._raman_reference = None
         self.raman_tensors              = None
         self.nonlinear_optical_susceptibility = None   # 3×3×3 ndarray (χ^(2)) in R_epsilon units, or None
         self._nonlinear_optical_susceptibility_pm_per_v = None
@@ -263,6 +265,7 @@ class GenericOutputReader:
                 * chi2_pm_per_v_to_repsilon(self.volume)
             )
         self._symmetrise_nonlinear_optical_susceptibility()
+        self._capture_mode_reference()
         return
 
     def _symmetrise_nonlinear_optical_susceptibility(self):
@@ -510,6 +513,7 @@ class GenericOutputReader:
           Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
 
         """        
+        self._capture_mode_reference()
         if self.edited_masses:
             # This is pretty crude!  If the reader has this variable set then we
             # only use the masses stored in the edit_masses list
@@ -671,52 +675,100 @@ class GenericOutputReader:
             return None
         return matrix / norms[:, np.newaxis]
 
-    @classmethod
-    def _transform_raman_tensors_between_mode_bases(cls, old_modes, new_modes, old_tensors):
-        """Transform per-mode Raman tensors from an old normal-mode basis to a new one.
+    def _native_masses_for_mode_reference(self, masses=None):
+        """Resolve native per-atom masses before active mass edits.
 
-        This is a fallback for readers that only provide already-projected
-        per-mode Raman tensors.  If a reader has raw Cartesian displacement
-        derivatives it should override
-        :meth:`_update_raman_tensors_after_mode_recalculation` and reproject
-        exactly instead.
+        Some readers publish per-atom masses in _old_masses (Phonopy/Aims),
+        others in masses, and legacy paths expose only species masses plus
+        atom_type_list. Explicit masses are supplied by the finite-field reader.
+        Never infer a missing reference from average periodic-table masses.
+        """
+        try:
+            if masses is None:
+                if len(self._old_masses):
+                    masses = self._old_masses
+                elif len(self.masses):
+                    masses = self.masses
+                elif self.program_mass_dictionary:
+                    masses = [self.program_mass_dictionary[cleanup_symbol(self.species[index])]
+                              for index in self.atom_type_list]
+                else:
+                    masses = [self.masses_per_type[index] for index in self.atom_type_list]
+            reference = np.array(masses, dtype=float, copy=True)
+        except (IndexError, KeyError, TypeError, ValueError) as error:
+            raise ValueError("Cannot capture native mode masses: missing or invalid per-atom mass data") from error
+        if (reference.shape != (self.nions,) or not np.all(np.isfinite(reference))
+                or np.any(reference <= 0)):
+            raise ValueError(f"Cannot capture native mode masses: expected {self.nions} finite positive masses")
+        return reference
+
+    def _capture_mode_reference(self, masses=None):
+        """Retain the native mass coordinate before any mass or mode changes.
+
+        Raw-derivative readers still reproject directly. This fixed reference
+        supplies the per-mode fallback and avoids repeated projection drift.
+        """
+        if np.asarray(self.mass_weighted_normal_modes).size == 0:
+            return
+        if self._mode_reference_masses is None:
+            self._mode_reference_masses = self._native_masses_for_mode_reference(masses)
+        if len(self.masses) == 0:
+            # Preserve the existing reader layouts while exposing usable active
+            # native masses, including for preader -masses program.
+            self.masses = self._mode_reference_masses.tolist()
+        if self._raman_reference is None and self.raman_tensors is not None:
+            self._raman_reference = (
+                np.array(self.mass_weighted_normal_modes, dtype=float, copy=True),
+                np.array(self.raman_tensors, copy=True),
+                self._mode_reference_masses.copy(),
+            )
+
+    @classmethod
+    def _transform_raman_tensors_between_mode_bases(
+        cls, old_modes, new_modes, old_tensors, old_masses=None, new_masses=None,
+    ):
+        """Reproject a complete mode response, including its mass coordinate.
+
+        For row eigenvectors, C = U_old sqrt(M_old/M_new) U_new.T.
+        Omitting masses denotes a change of basis at fixed masses only.
         """
         if old_tensors is None:
             return None
         old_matrix = cls._normal_modes_to_matrix(old_modes)
         new_matrix = cls._normal_modes_to_matrix(new_modes)
-        if old_matrix is None or new_matrix is None:
-            return old_tensors
-        if old_matrix.shape != new_matrix.shape:
-            return old_tensors
-        if old_matrix.shape[0] != len(old_tensors):
-            return old_tensors
-
+        if (old_matrix is None or new_matrix is None
+                or old_matrix.shape[1] != new_matrix.shape[1]
+                or old_matrix.shape[0] != len(old_tensors)):
+            raise ValueError("Raman reprojection requires a complete reference mode basis and matching tensors")
+        # Printed eigenvectors may be rounded; reject genuinely missing directions.
+        if not np.allclose(old_matrix @ old_matrix.T, np.eye(len(old_matrix)), atol=1e-3):
+            raise ValueError("Raman reprojection requires a complete orthonormal reference mode basis")
+        if (old_matrix.shape[0] != old_matrix.shape[1]
+                and (old_masses is not None or new_masses is not None
+                     or not np.allclose((new_matrix @ old_matrix.T) @ old_matrix, new_matrix, atol=1e-3))):
+            raise ValueError("Mass reprojection requires a complete reference mode basis")
+        if old_masses is not None or new_masses is not None:
+            old_masses = np.asarray(old_masses, dtype=float)
+            new_masses = np.asarray(new_masses, dtype=float)
+            expected_shape = (old_matrix.shape[1] // 3,)
+            if (old_masses.shape != expected_shape or new_masses.shape != expected_shape
+                    or not np.all(np.isfinite(old_masses)) or not np.all(np.isfinite(new_masses))
+                    or np.any(old_masses <= 0) or np.any(new_masses <= 0)):
+                raise ValueError("Raman reprojection requires finite positive reference and active atomic masses")
+            old_matrix = old_matrix * np.repeat(np.sqrt(old_masses / new_masses), 3)
         overlap = old_matrix @ new_matrix.T
-        transformed = []
-        old_tensors = [np.asarray(tensor, dtype=complex) for tensor in old_tensors]
-        for new_idx in range(overlap.shape[1]):
-            tensor = np.zeros_like(old_tensors[0], dtype=complex)
-            for old_idx, weight in enumerate(overlap[:, new_idx]):
-                tensor += weight * old_tensors[old_idx]
-            transformed.append(np.real_if_close(tensor))
-        return transformed
+        return list(np.real_if_close(np.einsum("nm,nij->mij", overlap, np.asarray(old_tensors))))
 
     def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
-        """Keep Raman tensors consistent with recalculated normal modes.
-
-        The generic fallback applies the old→new normal-mode overlap matrix to
-        already-projected Raman tensors.  This fixes arbitrary sign flips and
-        rotations inside degenerate subspaces caused by Hessian
-        re-diagonalisation.  Readers with raw displacement derivatives should
-        override this method and rebuild tensors from those derivatives.
-        """
+        """Reproject from the fixed native response; derivative readers override this."""
         if old_raman_tensors is None:
             return
+        if self._raman_reference is None:
+            raise ValueError("Raman reprojection is missing the reference mode/mass provenance")
+        reference_modes, reference_tensors, reference_masses = self._raman_reference
         self.raman_tensors = self._transform_raman_tensors_between_mode_bases(
-            old_modes,
-            self.mass_weighted_normal_modes,
-            old_raman_tensors,
+            reference_modes, self.mass_weighted_normal_modes, reference_tensors,
+            reference_masses, self.masses,
         )
         return
 
@@ -864,6 +916,7 @@ class GenericOutputReader:
             logger.debug("calculate mass weighted normal modes")
         if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
             return self.mass_weighted_normal_modes
+        self._capture_mode_reference()
         old_modes = np.array(self.mass_weighted_normal_modes, dtype=float, copy=True)
         old_raman_tensors = None
         if self.raman_tensors is not None:
@@ -913,12 +966,10 @@ class GenericOutputReader:
                 self.program_mass_dictionary = current_mass_dictionary
             if self.debug:
                 logger.debug(f"program mass dictionary {self.program_mass_dictionary}")
-            self.change_masses(self.program_mass_dictionary, {})
-            masses = np.array(self.masses)*amu
-            # remove the mass weighting from the hessian and store
-            self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
-            # finally replace the masses with those set before we did this
-            self.change_masses(current_mass_dictionary, {})
+            # Use native per-atom masses directly: edited_masses overrides
+            # change_masses and must not alter the reconstructed force constants.
+            masses = self._mode_reference_masses * amu
+            self.nomass_hessian = self._remove_mass_weighting(hessian, masses)
             if self.debug:
                 logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         # If the masses have been changed then alter the mass weighted hessian here

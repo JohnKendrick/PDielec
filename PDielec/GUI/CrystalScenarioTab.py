@@ -3550,7 +3550,7 @@ class CrystalScenarioTab(ScenarioTab):
             [ 0.0,              0.0,              1.0],
         ])
 
-        raman_tensors_physical = [np.asarray(R, dtype=float) for R in raman_tensors]
+        raman_tensors_physical = [np.asarray(R, dtype=complex) for R in raman_tensors]
 
         # Phonon frequencies and linewidths from SettingsTab
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1

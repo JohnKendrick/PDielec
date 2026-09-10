@@ -204,12 +204,12 @@ coherence is not physical.  When *Incoherent intensity* is selected, PDielec als
 forces separate Raman-active layers to be combined as incoherent intensities,
 because there is then no well-defined layer amplitude to add coherently.
 
-The mode intensity is then multiplied by the Stokes thermal factor,
+The mode intensity is then multiplied by the Stokes radiation and thermal factor,
 
 .. math::
    :label: eq-crystal-raman-bose-factor
 
-   \frac{n(\nu_m)+1}{\nu_m}
+   (\nu_L-\nu_m)^4\frac{n(\nu_m)+1}{\nu_m}
 
 where :math:`n(\nu_m)` is the Bose-Einstein occupation factor.  The final spectrum is
 formed by applying Lorentzian broadening to each active mode,
@@ -224,14 +224,18 @@ formed by applying Lorentzian broadening to each active mode,
 
 where :math:`\sigma_m` is the Lorentzian half-width at half maximum.
 
-The current crystal implementation returns the thermal-weighted optical
-overlap above.  It omits the :math:`\nu_S^4` radiation factor retained in the
-powder spectrum.  Treating this factor as constant is an approximation when
-:math:`\nu_m\ll\nu_L`; arbitrary intensity units do not remove its variation
-between different Raman shifts or laser wavelengths.  Thus these crystal
-outputs are reduced relative intensities, not fully frequency-weighted
-Stokes scattering strengths.  The 2026-09-10 physics review records this
-implementation limitation.
+Crystal and powder calculations use the same scattered-frequency fourth-power
+weight. It is applied once per final phonon state, using its corrected frequency,
+including modal-pair, worker and contribution outputs. Raw optical amplitudes
+remain unweighted. This changes both the overall scale and relative line heights
+from the reduced crystal intensities produced before the September 2026 repair.
+Absolute experimental collection and cross-section constants are still omitted.
+
+Only finite frequencies satisfying :math:`0<\nu_m<\nu_L` and the acoustic
+cutoff contribute, independently of the scattered-field approximation. Negative
+frequencies remain available in phonon diagnostics as evidence of instability.
+Complex mechanical Raman tensors retain their phase through NAC mixing and EO
+addition; the EO susceptibility model remains the static electronic response.
 
 Layer Phonon Frequencies
 ------------------------

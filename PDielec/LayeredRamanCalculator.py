@@ -61,7 +61,7 @@ from functools import partial
 
 import numpy as np
 
-from PDielec.Constants import boltzmann_si, planck_si, speed_light_si
+from PDielec.Constants import speed_light_si
 from PDielec.OpticalChannelResolver import OpticalChannelResolver, compute_modal_fields_at_points
 from PDielec.PhononFinalStateResolver import (
     BULK_PHASE_MATCHED,
@@ -74,6 +74,8 @@ from PDielec.PhononFinalStateResolver import (
 )
 from PDielec.RamanAmplitudeAccumulator import RamanAmplitudeAccumulator
 from PDielec.RamanGeometry import resolve_collection_angle
+from PDielec.RamanSpectrum import bose_factor as bose_factor
+from PDielec.RamanSpectrum import stokes_prefactor, valid_stokes_mode, validate_laser_frequency
 
 logger = logging.getLogger(__name__)
 
@@ -124,11 +126,11 @@ class RamanContribution:
         Zero for the incoherent-depth path (use ``local_intensity`` instead).
     intensity : float
         This group's contribution to the final mode intensity ``I_m``
-        (Bose-Einstein factor already applied).
+        (Stokes radiation and thermal factors already applied).
     local_intensity : float
         Non-zero only for the incoherent-depth integration path, where
         ``amplitude`` is not meaningful.  Equal to the raw depth-integrated
-        local intensity before the Bose factor.
+        local intensity before the Stokes spectral prefactor.
     """
     mode_idx: int
     frequency: float
@@ -263,8 +265,8 @@ def _compute_raman_mode_worker(shared, mode_args):
     mode_args : tuple
         ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors, mode_selected)``
 
-        ``nu_S`` is the scattered frequency in cm⁻¹ (ignored when ``E_S_fixed``
-        is not ``None``).  ``mode_raman_tensors`` is a list of (3, 3) complex
+        ``nu_S`` is the scattered frequency in cm⁻¹, needed for validity and
+        radiation weighting even when ``E_S_fixed`` is supplied.  ``mode_raman_tensors`` is a list of (3, 3) complex
         arrays, one per Raman-active layer, for this mode.
 
     Returns
@@ -286,7 +288,9 @@ def _compute_raman_mode_worker(shared, mode_args):
 
     if not mode_selected:
         return None
-    if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+    if not np.isfinite(nu_m) or not np.isfinite(nu_S):
+        return None
+    if not valid_stokes_mode(nu_m, nu_m + nu_S, _ACOUSTIC_THRESHOLD_CM1):
         return None
 
     # Obtain E_S: either precomputed or freshly evaluated at nu_S
@@ -350,7 +354,7 @@ def _compute_raman_mode_worker(shared, mode_args):
                 E_S = cp_S * E_S_out[0:3, sl] + cs_S * E_S_out[3:6, sl]
                 I_m += abs(np.dot(w, np.einsum("ij,ij->j", E_S, R_E_L))) ** 2
 
-    I_m *= bose_factor(nu_m, temperature_K)
+    I_m *= stokes_prefactor(nu_m, nu_m + nu_S, temperature_K)
     return (mode_idx, nu_m, I_m, sigma)
 
 
@@ -397,6 +401,7 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
         approximate_es,
         resolver,
         temperature_K,
+        laser_frequency_cm1,
     ) = shared
 
     _ref_layer_index, ref_freqs, _ref_tensors, _ref_rotation, _ref_selected = raman_layer_data[0]
@@ -424,7 +429,7 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                     nu_m, nac_tensors, line_sigma, mode_selected = _modal_pair_phonon_data(
                         mode_idx, fallback_nu_m, raman_tensors, sigma, fallback_selected, cache_val
                     )
-                    if not mode_selected or abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                    if not mode_selected or not valid_stokes_mode(nu_m, laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1):
                         continue
                     if mode_idx >= len(nac_tensors):
                         continue
@@ -513,7 +518,7 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
     line_accumulator = {}
     for final_state_key, raw_intensity in accumulator.intensities().items():
         nu_m, sigma = line_metadata[final_state_key]
-        intensity = raw_intensity * bose_factor(nu_m, temperature_K)
+        intensity = raw_intensity * stokes_prefactor(nu_m, laser_frequency_cm1, temperature_K)
         lkey = _line_key(nu_m, sigma)
         if lkey not in line_accumulator:
             line_accumulator[lkey] = [nu_m, intensity, sigma]
@@ -714,33 +719,6 @@ class RamanLayer:
 # Helper functions
 # ---------------------------------------------------------------------------
 
-def bose_factor(nu_cm1, temperature_K):
-    """Return the Stokes Bose-Einstein thermal prefactor (n+1)/ν.
-
-    Parameters
-    ----------
-    nu_cm1 : float
-        Phonon frequency in cm⁻¹.  Must be positive.
-    temperature_K : float
-        Temperature in Kelvin.
-
-    Returns
-    -------
-    float
-        ``(n(ν) + 1) / ν`` where ``n(ν) = 1 / (exp(hcν / kT) - 1)``.
-        At T = 0 the limit ``1/ν`` is returned.
-
-    """
-    if temperature_K <= 0.0:
-        return 1.0 / nu_cm1
-    hcnu_over_kT = (planck_si * speed_light_si * 100.0 * nu_cm1) / (boltzmann_si * temperature_K)
-    if hcnu_over_kT > 100.0:
-        # Effectively zero-temperature limit: n ≈ 0
-        return 1.0 / nu_cm1
-    n = 1.0 / (np.exp(hcnu_over_kT) - 1.0)
-    return (n + 1.0) / nu_cm1
-
-
 def lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, freq_axis_cm1):
     """Broaden a set of delta-function Raman intensities with Lorentzian lineshapes.
 
@@ -818,7 +796,7 @@ class LayeredRamanCalculator:
        c. Combine layer contributions:
           - ``coherent_layers=False`` (default): I_m ∝ Σ_ℓ \|A_{ℓ,m}\|²
           - ``coherent_layers=True``:            I_m ∝ \|Σ_ℓ A_{ℓ,m}\|²
-       d. Apply the Bose-Einstein prefactor: I_m ← (n(ν_m)+1)/ν_m × I_m.
+       d. Apply the Stokes prefactor: I_m ← ν_S⁴ (n(ν_m)+1)/ν_m × I_m.
 
     4. Broaden all mode intensities with Lorentzian lineshapes and sum.
 
@@ -947,6 +925,7 @@ class LayeredRamanCalculator:
         self.system = system
         self.raman_layers = list(raman_layers)
         self.laser_frequency_cm1 = float(laser_frequency_cm1)
+        validate_laser_frequency(self.laser_frequency_cm1)
         self.incident_angle_rad = float(incident_angle_rad)
         self.incident_pol = incident_pol
         self.detected_pol = detected_pol
@@ -1445,7 +1424,7 @@ class LayeredRamanCalculator:
                                         fallback_selected,
                                         cache_val,
                                     )
-                                    if not mode_selected or abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                                    if not mode_selected or not valid_stokes_mode(nu_m, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1):
                                         continue
                                     if mode_idx >= len(nac_tensors):
                                         continue
@@ -1486,6 +1465,7 @@ class LayeredRamanCalculator:
                 self.approximate_es,
                 resolver,
                 self.temperature_K,
+                self.laser_frequency_cm1,
             )
             worker_fn = partial(_compute_modal_pair_mode_worker, shared)
             for _mode_idx, rows in pool.imap(worker_fn, range(n_modes), chunksize=1):
@@ -1533,7 +1513,7 @@ class LayeredRamanCalculator:
                             if not mode_selected:
                                 continue
 
-                            if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+                            if not valid_stokes_mode(nu_m, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1):
                                 continue
 
                             if mode_idx >= len(nac_tensors):
@@ -1656,7 +1636,7 @@ class LayeredRamanCalculator:
             line_accumulator = {}
             for final_state_key, raw_intensity in accumulator.intensities().items():
                 nu_m, sigma = line_metadata[final_state_key]
-                intensity = raw_intensity * bose_factor(nu_m, self.temperature_K)
+                intensity = raw_intensity * stokes_prefactor(nu_m, self.laser_frequency_cm1, self.temperature_K)
                 lkey = _line_key(nu_m, sigma)
                 if lkey not in line_accumulator:
                     line_accumulator[lkey] = [nu_m, intensity, sigma]
@@ -1666,7 +1646,7 @@ class LayeredRamanCalculator:
             if return_contributions:
                 for (final_state_key, group_key), amplitude in accumulator.grouped_amplitudes().items():
                     nu_m, sigma = group_metadata[(final_state_key, group_key)]
-                    intensity = abs(amplitude) ** 2 * bose_factor(nu_m, self.temperature_K)
+                    intensity = abs(amplitude) ** 2 * stokes_prefactor(nu_m, self.laser_frequency_cm1, self.temperature_K)
                     contributions.append(RamanContribution(
                         mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
                         group_key=group_key, amplitude=amplitude, intensity=intensity,
@@ -1677,7 +1657,7 @@ class LayeredRamanCalculator:
                     contributions.append(RamanContribution(
                         mode_idx=mode_idx, frequency=nu_m, sigma=sigma,
                         group_key=group_key, amplitude=0.0 + 0.0j,
-                        intensity=local_intensity * bose_factor(nu_m, self.temperature_K),
+                        intensity=local_intensity * stokes_prefactor(nu_m, self.laser_frequency_cm1, self.temperature_K),
                         local_intensity=local_intensity,
                     ))
 
@@ -1794,7 +1774,7 @@ class LayeredRamanCalculator:
 
         for mode_idx in range(n_modes):
             nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
-            if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1 or not self._any_layer_mode_is_selected(mode_idx):
+            if not valid_stokes_mode(nu_m, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1) or not self._any_layer_mode_is_selected(mode_idx):
                 continue
             sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
             accumulator = RamanAmplitudeAccumulator()
@@ -1843,7 +1823,7 @@ class LayeredRamanCalculator:
                             group = (rl.layer_index, det_pol_idx)
                         accumulator.add_classified(classification, amplitude, coherence_group=group)
 
-            intensity = accumulator.total_intensity() * bose_factor(nu_m, self.temperature_K)
+            intensity = accumulator.total_intensity() * stokes_prefactor(nu_m, self.laser_frequency_cm1, self.temperature_K)
             if intensity > 0.0:
                 active_freqs.append(nu_m)
                 active_intensities.append(intensity)
@@ -2011,7 +1991,7 @@ class LayeredRamanCalculator:
             nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
 
             # Skip acoustic modes
-            if abs(nu_m) < _ACOUSTIC_THRESHOLD_CM1:
+            if not valid_stokes_mode(nu_m, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1):
                 continue
 
             sigma = self.linewidths_cm1[mode_idx] if mode_idx < len(self.linewidths_cm1) else 5.0
@@ -2061,8 +2041,8 @@ class LayeredRamanCalculator:
                         group_amps[(lkey, 1)] = group_amps.get((lkey, 1), 0.0 + 0.0j) + amp_s
                 I_m = sum(abs(amp) ** 2 for amp in group_amps.values())
 
-            # Apply Bose-Einstein thermal prefactor
-            bose = bose_factor(nu_m, self.temperature_K)
+            # Apply Stokes radiation and thermal prefactor
+            bose = stokes_prefactor(nu_m, self.laser_frequency_cm1, self.temperature_K)
             I_m *= bose
 
             active_freqs.append(nu_m)
@@ -2207,7 +2187,7 @@ class LayeredRamanCalculator:
         for mode_idx in range(n_modes):
             nu_m = float(ref_layer.phonon_frequencies_cm1[mode_idx])
             sigma = float(self.linewidths_cm1[mode_idx]) if mode_idx < len(self.linewidths_cm1) else 5.0
-            nu_S = self.laser_frequency_cm1 - nu_m if E_S_out_fixed is None else 0.0
+            nu_S = self.laser_frequency_cm1 - nu_m
             # Raman tensors for this mode across all layers
             mode_raman_tensors = [
                 rl.raman_tensors[mode_idx]

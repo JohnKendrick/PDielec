@@ -37,10 +37,11 @@ from qtpy.QtWidgets import (
 )
 
 from PDielec import Calculator, DielectricFunction, Materials
-from PDielec.Constants import amu, angs2bohr, boltzmann_si, planck_si, speed_light_si, wavenumber
+from PDielec.Constants import amu, angs2bohr, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
 from PDielec.RamanPolarCalculator import apply_particle_eo_correction
+from PDielec.RamanSpectrum import stokes_prefactor, valid_stokes_mode, validate_laser_frequency
 
 logger = logging.getLogger(__name__)
 class PowderScenarioTab(ScenarioTab):
@@ -1505,6 +1506,7 @@ class PowderScenarioTab(ScenarioTab):
 
         # Raman experiment parameters
         laser_nm = self.settings["Raman laser frequency"]
+        validate_laser_frequency(laser_nm)
         nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
         polarisation = self.settings["Raman laser polarisation"]
         temperature = self.settings["Raman temperature"]
@@ -1583,51 +1585,39 @@ class PowderScenarioTab(ScenarioTab):
 
         spectrum = np.zeros(len(vs_cm1))
 
-        # Bose-Einstein prefactor: hc/k in units of cm·K
-        hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
-
-        # Analytical rotational invariants from eq-invariants1 and eq-Intensities; exact for spheres.
+        # Fixed shape/crystal axes in an isotropic host rotate as one rank-two
+        # effective tensor: eq-invariants1 and eq-Intensities also cover ellipsoids.
         if not is_sphere:
-            logger.warning(f"{self.settings['Legend']} _calculate_raman: non-sphere but correction data unavailable, falling back to analytical invariants")
-        else:
-            logger.debug(f"{self.settings['Legend']} _calculate_raman: sphere — analytical invariants")
-            for freq, sigma, selected, R_eps in zip(loop_freqs, loop_sigmas, loop_selected, loop_raman):
-                if not selected or abs(freq) < 1.0:
-                    continue
+            logger.warning("%s _calculate_raman: polar response data unavailable; using TO tensors "
+                           "with ellipsoid optical fields and analytic orientation invariants. "
+                           "Particle frequency and EO corrections are omitted.", self.settings["Legend"])
+        for freq, sigma, selected, R_eps in zip(loop_freqs, loop_sigmas, loop_selected, loop_raman):
+            if not selected or not valid_stokes_mode(freq, nu_L, 1.0):
+                continue
 
-                # Effective particle Raman tensor.
-                if is_none_matrix:
-                    R_eff = np.array(R_eps, dtype=complex)
-                else:
-                    R_eff = Calculator.compute_effective_raman_tensor(R_eps, N, N)
+            # Effective particle Raman tensor.
+            if is_none_matrix:
+                R_eff = np.array(R_eps, dtype=complex)
+            else:
+                R_eff = Calculator.compute_effective_raman_tensor(R_eps, N, N)
 
-                # Powder-averaged scattering intensity for the chosen polarisation.
-                if polarisation in ("VV", "VH", "HV"):
-                    vv, vh = Calculator.compute_powder_raman_intensities(R_eff)
-                    intensity_factor = vv if polarisation == "VV" else vh
-                else:  # Unpolarised: 45α² + 7γ² + 5κ² (≠ VV+VH for antisymmetric tensors)
-                    alpha = np.trace(R_eff) / 3.0
-                    gamma_t = 0.5 * (R_eff + R_eff.T) - alpha * I3
-                    kappa_t = 0.5 * (R_eff - R_eff.T)
-                    alpha2 = float(np.real(alpha * np.conj(alpha)))
-                    gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
-                    kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
-                    intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
+            # Powder-averaged scattering intensity for the chosen polarisation.
+            if polarisation in ("VV", "VH", "HV"):
+                vv, vh = Calculator.compute_powder_raman_intensities(R_eff)
+                intensity_factor = vv if polarisation == "VV" else vh
+            else:  # Unpolarised: 45α² + 7γ² + 5κ² (≠ VV+VH for antisymmetric tensors)
+                alpha = np.trace(R_eff) / 3.0
+                gamma_t = 0.5 * (R_eff + R_eff.T) - alpha * I3
+                kappa_t = 0.5 * (R_eff - R_eff.T)
+                alpha2 = float(np.real(alpha * np.conj(alpha)))
+                gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
+                kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
+                intensity_factor = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
 
-                # Bose-Einstein occupation factor n(ν_m) from eq-bose.
-                x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
-                n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
+            S_m = stokes_prefactor(freq, nu_L, temperature) * intensity_factor
 
-                # Scattered frequency (Stokes shift)
-                nu_s = nu_L - freq
-                if nu_s <= 0.0:
-                    continue
-
-                # Scattering strength from eq-ramanefficiency_depolarised.
-                S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
-
-                # Add Lorentzian contribution to the spectrum from eq-raman-intensity.
-                spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
+            # Add Lorentzian contribution to the spectrum from eq-raman-intensity.
+            spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
         self.notebook.progressbars_update(increment=len(vs_cm1))
         self.raman_spectrum = (spectrum * volume_fraction).tolist()
@@ -1893,9 +1883,6 @@ class PowderScenarioTab(ScenarioTab):
         TO component of each particle mode (same heuristic as ``_compute_particle_modes``).
 
         """
-        # Bose-Einstein prefactor: hc/k in units of cm·K
-        hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
-
         # Build all orientation-independent particle-mode data through the same
         # path used by the analytical sphere calculation.
         if no_matrix:
@@ -1912,25 +1899,19 @@ class PowderScenarioTab(ScenarioTab):
                 include_eo=include_eo, chi2_repsilon=chi2_repsilon)
         n_modes = len(part_freqs)
 
-        # Per-mode orientation-independent scalars: (freq, sigma, n_bose, nu_s)
+        # Per-mode orientation-independent scalars: (freq, sigma, spectral_weight)
         # None marks modes that should be skipped entirely.
         mode_data = []
         for p_idx in range(n_modes):
             freq = part_freqs[p_idx]
-            if abs(freq) < 1.0:
+            if not valid_stokes_mode(freq, nu_L, 1.0):
                 mode_data.append(None)
                 continue
             if not part_selected[p_idx]:
                 mode_data.append(None)
                 continue
             sigma = part_sigmas[p_idx]
-            x = hc_over_k * freq / temperature if temperature > 0 else 1.0e18
-            n_bose = 1.0 / (np.expm1(x)) if x > 1.0e-6 else 1.0 / x
-            nu_s = nu_L - freq
-            if nu_s <= 0.0:
-                mode_data.append(None)
-                continue
-            mode_data.append((freq, sigma, n_bose, nu_s))
+            mode_data.append((freq, sigma, stokes_prefactor(freq, nu_L, temperature)))
 
         # ── Orientation loop ──────────────────────────────────────────────────────────
         # Lab-frame polarisation vectors (backscattering, laser along Z)
@@ -1956,7 +1937,7 @@ class PowderScenarioTab(ScenarioTab):
             for p_idx in range(n_modes):
                 if mode_data[p_idx] is None:
                     continue
-                freq, sigma, n_bose, nu_s = mode_data[p_idx]
+                freq, sigma, spectral_weight = mode_data[p_idx]
 
                 # Rotate crystal-frame Raman tensor to the lab frame
                 R_eps_lab = R @ R_eps_cryst_list[p_idx] @ R.T
@@ -1980,7 +1961,7 @@ class PowderScenarioTab(ScenarioTab):
                     )
 
                 # Scattering strength accumulated as a Lorentzian line contribution.
-                S_m = (nu_s ** 4) * (n_bose + 1.0) / freq * intensity_factor
+                S_m = spectral_weight * intensity_factor
                 spectrum += S_m * sigma / ((vs_cm1 - freq) ** 2 + sigma ** 2)
 
             if progress_callback is not None:

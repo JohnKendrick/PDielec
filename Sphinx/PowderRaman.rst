@@ -212,6 +212,17 @@ For spherical particles this average reduces to the invariant expressions above.
 general particle tensors, PDielec samples the rotation group and averages the fixed
 laboratory polarisation geometry over many crystallite orientations.
 
+If Born-charge or Hessian data are unavailable, PDielec retains the supplied TO
+frequencies and Raman tensors and omits the particle frequency/EO correction.
+Optical local fields still apply. For fixed relative shape/crystal axes in an
+isotropic host, the effective tensor rotates as one rank-two tensor, so the
+analytic invariants also supply the nonspherical fallback. Missing polar data
+therefore do not imply zero Raman scattering.
+
+Both analytic and sampled paths exclude nonfinite, nonpositive and above-laser
+mode frequencies before evaluating the Stokes weight, as well as modes below
+the acoustic cutoff. This does not remove unstable frequencies from the reader.
+
 The broadened Raman spectrum is formed as a sum over active modes,
 
 .. math::

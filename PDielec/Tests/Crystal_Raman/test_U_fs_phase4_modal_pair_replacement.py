@@ -101,7 +101,7 @@ def test_phase4_group_q_sums_same_final_state_coherently():
     _freqs, intensities, _sigmas = calc.calculate_mode_intensities()
 
     weight = calc._gl_phys_weights[0]
-    expected = 4.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+    expected = 4.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
 
 
@@ -128,7 +128,7 @@ def test_phase4_incoherent_nonpolar_mode_groups_coherently():
 
     weight = calc._gl_phys_weights[0]
     # Coherent sum of both pairs: amplitude = weight*(1+1)*(1+1) → squared = 16*weight²
-    expected_coherent_grouping = 16.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+    expected_coherent_grouping = 16.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected_coherent_grouping, rtol=1.0e-12, atol=1.0e-12)
 
 
@@ -148,7 +148,7 @@ def test_phase4_coherent_all_nonpolar_mode_matches_total_field_integral():
 
     weight = calc._gl_phys_weights[0]
     total_field_amplitude = weight * (1.0 + 2.0) * (1.0 + 2.0)
-    expected = abs(total_field_amplitude) ** 2 * bose_factor(NU_MODE, 0.0)
+    expected = abs(total_field_amplitude) ** 2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
 
 
@@ -171,7 +171,7 @@ def test_phase4_incoherent_depth_squares_local_final_state_integrand():
         _parallel_freqs, parallel_intensities, _parallel_sigmas = calc.calculate_mode_intensities(pool=pool)
 
     expected_local_integrand = np.array([5.0, 7.0, 9.0])
-    expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * bose_factor(NU_MODE, 0.0)
+    expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
     npt.assert_allclose(parallel_intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
 
@@ -197,7 +197,7 @@ def test_phase4_incoherent_forward_cross_pairs_share_external_final_state():
         _parallel_freqs, parallel_intensities, _parallel_sigmas = calc.calculate_mode_intensities(pool=pool)
 
     expected_local_integrand = np.array([5.0, 7.0, 9.0])
-    expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * bose_factor(NU_MODE, 0.0)
+    expected = np.dot(calc._gl_phys_weights, expected_local_integrand**2) * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
     npt.assert_allclose(intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
     npt.assert_allclose(parallel_intensities[0], expected, rtol=1.0e-12, atol=1.0e-12)
 

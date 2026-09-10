@@ -49,6 +49,8 @@ class FiniteFieldOutputReader(GenericOutputReader):
         GenericOutputReader.__init__(self, names)
         self.type = "Finite field Raman JSON"
         self._deps_dr = None
+        self._unproven_raman_masses = None
+        self._input_mode_masses = None
         return
 
     def _read_output_files(self):
@@ -73,12 +75,15 @@ class FiniteFieldOutputReader(GenericOutputReader):
 
         self._deps_dr = self._read_deps_dr(data)
         self._read_modes(data)
+        self._capture_mode_reference(self._program_masses(data, self.species_list))
         self._read_force_constants(data)
 
-        if self.nomass_hessian_has_been_set:
+        if self.nomass_hessian_has_been_set or np.asarray(self.mass_weighted_normal_modes).size:
             self.calculate_mass_weighted_normal_modes()
         elif self._deps_dr is not None:
             self._recalculate_raman_tensors_from_deps_dr()
+        elif self.raman_tensors is not None:
+            self._update_raman_tensors_after_mode_recalculation([], self.raman_tensors)
         return
 
     @staticmethod
@@ -139,6 +144,7 @@ class FiniteFieldOutputReader(GenericOutputReader):
         program_masses = self._program_masses(data, symbols)
         if program_masses is None:
             program_masses = [active_mass_by_species[symbol] for symbol in symbols]
+        self._input_mode_masses = np.asarray(program_masses, dtype=float)
         self.program_mass_dictionary = {}
         for symbol, mass in zip(symbols, program_masses):
             self.program_mass_dictionary.setdefault(symbol, float(mass))
@@ -307,12 +313,22 @@ class FiniteFieldOutputReader(GenericOutputReader):
         if self._deps_dr is not None:
             self._recalculate_raman_tensors_from_deps_dr()
             return
+        if old_raman_tensors is not None and (np.asarray(old_modes).size == 0
+                                              or self._unproven_raman_masses is not None):
+            if self._unproven_raman_masses is None:
+                self._unproven_raman_masses = self._input_mode_masses.copy()
+            if not np.array_equal(self.masses, self._unproven_raman_masses) or self.eckart:
+                raise ValueError("Cannot reproject Raman tensors without reference eigenvectors or deps_dr")
+            logger.warning("Finite-field Raman tensors have no reference eigenvectors; retaining supplied "
+                           "tensors with unverified mode phases. Mass/Eckart reprojection is unavailable.")
+            return
         super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
         return
 
     def calculate_mass_weighted_normal_modes(self):
         """Regenerate modes from finite-field force constants using active masses."""
         if self.nomass_hessian_has_been_set:
+            self._capture_mode_reference()
             old_modes = np.array(self.mass_weighted_normal_modes, dtype=float, copy=True)
             old_raman_tensors = None
             if self.raman_tensors is not None:
@@ -322,14 +338,7 @@ class FiniteFieldOutputReader(GenericOutputReader):
             if self.eckart:
                 self.hessian = self.project(self.hessian)
             self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(self.hessian)
-            if self._deps_dr is not None:
-                self._recalculate_raman_tensors_from_deps_dr()
-            elif old_raman_tensors is not None and old_modes.size != 0:
-                self.raman_tensors = self._transform_raman_tensors_between_mode_bases(
-                    old_modes,
-                    self.mass_weighted_normal_modes,
-                    old_raman_tensors,
-                )
+            self._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
             return self.mass_weighted_normal_modes
         return super().calculate_mass_weighted_normal_modes()
 

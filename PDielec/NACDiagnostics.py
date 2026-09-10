@@ -107,9 +107,10 @@ def compute_nac_direction_diagnostics(
 
     tensors_without_eo = []
     linewidths = np.zeros(n_modes)
-    tensors = [np.asarray(tensor, dtype=float) for tensor in raman_tensors]
+    tensors = np.asarray(raman_tensors)
+    tensor_dtype = np.result_type(tensors.dtype, float)
     for nac_index in range(n_modes):
-        tensor = np.zeros((3, 3), dtype=float)
+        tensor = np.zeros((3, 3), dtype=tensor_dtype)
         for to_index, weight in enumerate(overlaps[:, nac_index]):
             if to_index < len(tensors):
                 tensor += weight * tensors[to_index]

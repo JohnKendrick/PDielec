@@ -263,7 +263,7 @@ class TestI1BModalPairQGrouping:
         _, intensities, _ = calc.calculate_mode_intensities()
 
         weight = calc._gl_phys_weights[0]
-        expected = 6.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+        expected = 6.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
         np.testing.assert_allclose(intensities[0], expected, rtol=1e-12, atol=1e-12)
 
     def test_same_qhat_different_q_magnitude_modal_pairs_are_coherent(self):
@@ -309,8 +309,8 @@ class TestI1BModalPairQGrouping:
         _, intensities, _ = calc.calculate_mode_intensities()
 
         weight = calc._gl_phys_weights[0]
-        coherent_same_qhat = 4.0 * weight**2 * bose_factor(NU_MODE, 0.0)
-        old_q_magnitude_grouping = 2.0 * weight**2 * bose_factor(NU_MODE, 0.0)
+        coherent_same_qhat = 4.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
+        old_q_magnitude_grouping = 2.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
         np.testing.assert_allclose(intensities[0], coherent_same_qhat, rtol=1e-12, atol=1e-12)
         assert intensities[0] != pytest.approx(old_q_magnitude_grouping)
 

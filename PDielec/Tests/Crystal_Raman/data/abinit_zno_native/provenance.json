@@ -1,0 +1,17 @@
+{
+  "description": "Native ABINIT/ANADDB ZnO outputs, preserved byte-for-byte after decompression. No PDielec expected tensors.",
+  "source_directory": "/home/john/Leeds/ZnO/Validation_Protocols/ABINIT/LDA_package_equilibrium/M4_raman_eo_pead",
+  "abinit_source_version_checked": "10.6.5",
+  "native_raman_units": "Gaussian susceptibility, Bohr and electron-mass normal coordinates",
+  "to_repsilon_factor": "4*pi*sqrt(amu_in_electron_masses/angs2bohr)",
+  "files": {
+    "raman.abo": {
+      "sha256_uncompressed": "126f8ab6f0cd6455dd5baabba2adf25fc58de0b859204fe617af53ae39266464",
+      "bytes_uncompressed": 283567
+    },
+    "anaddb_lo.abo": {
+      "sha256_uncompressed": "a47e51520211f556b1a182b3ee43d586c2e280c5ff78e4f384ac397399b33c3d",
+      "bytes_uncompressed": 44231
+    }
+  }
+}
