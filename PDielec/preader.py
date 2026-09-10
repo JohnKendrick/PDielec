@@ -19,7 +19,7 @@
 
     preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
       "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
-               "phonopy", "qe", "vasp", "experiment", "auto"
+               "phonopy", "qe", "vasp", "experiment", "finite_field", "auto"
                The default is auto, so the program tries to guess the package from
                the contents of the directory.  However this is not fool-proof!
       -masses [average|isotope|program]  chooses the atomic mass definition average
@@ -318,7 +318,7 @@ def print_help():
     """    
     print("preader -program program [-spectroscopy infrared|raman] [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....", file=sys.stderr)
     print('  "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"       ', file=sys.stderr)
-    print('           "phonopy", "qe", "vasp", "experiment", "auto"               ', file=sys.stderr)
+    print('           "phonopy", "qe", "vasp", "experiment", "finite_field", "auto"', file=sys.stderr)
     print("           The default is auto, so the program tries to guess the package from   ", file=sys.stderr)
     print("           the contents of the directory.  However this is not fool-proof!       ", file=sys.stderr)
     print("  -masses [average|isotope|program]  chooses the atomic mass definition average  ", file=sys.stderr)
@@ -350,7 +350,7 @@ def main():
 
         preader -program program [-spectroscopy infrared|raman] [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
           "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
-                   "phonopy", "qe", "vasp", "experiment", "auto"
+                   "phonopy", "qe", "vasp", "experiment", "finite_field", "auto"
                    The default is auto, so the program tries to guess the package from
                    the contents of the directory.  However this is not fool-proof!
           -spectroscopy [infrared|raman]  selects which intensities are calculated
@@ -449,7 +449,10 @@ def main():
     if program == "qe":
         program = "quantum espresso"
 
-    if program not in ["auto","abinit","aims", "castep","crystal","gulp","quantum espresso","vasp","phonopy","experiment"]:
+    if program not in [
+        "auto", "abinit", "aims", "castep", "crystal", "gulp", "quantum espresso",
+        "vasp", "phonopy", "experiment", "finite_field",
+    ]:
         print("Program is not recognised: ",program,file=sys.stderr)
         sys.exit()
 

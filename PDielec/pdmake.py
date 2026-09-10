@@ -57,6 +57,7 @@ import contextlib
 import functools
 import logging
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -90,6 +91,8 @@ test_preader = [
 	"Crystal/preader",
 	"AbInit/preader",
 	"QE/preader",
+	"Finite_difference/preader",
+	"Finite_difference/preader_raman",
     ]
 
 test_p2cif = [
@@ -97,6 +100,7 @@ test_p2cif = [
     ]
 
 test_pdgui = [
+	"Powder_Raman/Finite_difference",
 	"ATR/AlAs",
 	"ATR/Na2SO42",
 	"ATR/Na2SO42_fit",
@@ -163,6 +167,7 @@ test_powder_atr = [
     ]
 
 test_powder_raman = [
+	"Powder_Raman/Finite_difference",
 	"Powder_Raman/AbInit",
 	"Powder_Raman/Castep",
 	"Powder_Raman/Crystal",
@@ -993,6 +998,8 @@ def read_pd_makefile(directory,filename):
 
     - The function removes line continuation characters and treats the continued lines as a single line.
 
+    - Shell-style quotes preserve arguments containing spaces, such as ``"ZnO data/finite_difference.json"``.
+
     - Lines starting with `#` are treated as comments and ignored.
 
     - It's assumed that `os` module has been imported for `os.getcwd()` to work, though it is not explicitly
@@ -1019,7 +1026,7 @@ def read_pd_makefile(directory,filename):
                 while line.endswith("\\"):
                     line = fd.readline()[:-1]
                     full_line += line.replace("\\","")
-                splits = full_line.split()
+                splits = shlex.split(full_line)
                 key = splits[0]
                 value = splits[1:]
                 instructions[key] = value

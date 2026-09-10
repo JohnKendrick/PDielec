@@ -29,9 +29,9 @@ _FINITE_FIELD_JSON = os.path.join(
 
 @pytest.mark.skipif(not os.path.exists(_RAMAN_JSON), reason="BaTiO3 finite-field Raman JSON example not present")
 def test_finite_field_reader_detects_json_schema():
-    """Finite-field JSON files are detected as finite field datasets."""
-    assert find_program_from_name(_RAMAN_JSON) == "finite field"
-    assert isinstance(get_reader(_RAMAN_JSON, "finite field"), FiniteFieldOutputReader)
+    """Finite-field JSON files are detected as finite_field datasets."""
+    assert find_program_from_name(_RAMAN_JSON) == "finite_field"
+    assert isinstance(get_reader(_RAMAN_JSON, "finite_field"), FiniteFieldOutputReader)
 
 
 @pytest.mark.skipif(not os.path.exists(_RAMAN_JSON), reason="BaTiO3 finite-field Raman JSON example not present")

@@ -133,7 +133,7 @@ def find_program_from_name( filename ):
             with open(filename) as fd:
                 schema = json.load(fd).get("schema", "")
             if schema.startswith("pdielect-") and ("raman" in schema or "r_epsilon" in schema):
-                return "finite field"
+                return "finite_field"
         except Exception:
             pass
     if ext ==  ".out":
@@ -324,7 +324,7 @@ def get_reader( name, program):
     elif program == "experiment":
         names = [ name ]
         reader = ExperimentOutputReader(names)
-    elif program == "finite field":
+    elif program == "finite_field":
         names = [ name ]
         reader = FiniteFieldOutputReader(names)
     else:
