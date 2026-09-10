@@ -429,16 +429,17 @@ def infrared_intensities(oscillator_strengths):
 def raman_intensities(raman_tensors, volume):
     """Calculate Raman activities from per-mode Raman tensors.
 
-    For each mode the powder-averaged isotropic Raman activity is computed
-    from the three rotational invariants of the Raman tensor:
+    For each mode the total, parallel (VV), and perpendicular (VH)
+    powder-averaged Raman activities are computed from the three rotational
+    invariants of the Raman tensor:
 
     .. math::
 
         R_m^{\\rm total} = 45|\\alpha|^2 + 7G^{(2)} + 5G^{(1)}
 
-        R_m^{\\parallel}  = 30|\\alpha|^2 + 4G^{(2)}
+        R_m^{\\parallel}  = 45|\\alpha|^2 + 4G^{(2)}
 
-        R_m^{\\perp}      = 15|\\alpha|^2 + 3G^{(2)}
+        R_m^{\\perp}      = 3G^{(2)} + 5G^{(1)}
 
     where :math:`\\alpha = \\operatorname{Tr}(R)/3` is the isotropic invariant,
     :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squared
@@ -448,10 +449,10 @@ def raman_intensities(raman_tensors, volume):
     convention :math:`R_\\epsilon` from ``eq-ramantensor`` and
     ``eq-dft_raman_tensor``.
 
-    The parallel and perpendicular components follow the legacy activity split
-    (:math:`R^{\\parallel} = 10G^{(0)} + 4G^{(2)}`,
-    :math:`R^{\\perp} = 5G^{(0)} + 3G^{(2)}` with :math:`G^{(0)} = 3\\alpha^2`),
-    and their sum equals :math:`R^{\\rm total}` when :math:`G^{(1)} = 0`.
+    The parallel and perpendicular components are the conventional Placzek
+    VV and VH powder strengths.  Their sum equals :math:`R^{\\rm total}` for
+    both symmetric and nonsymmetric Raman tensors.  In the non-resonant
+    approximation the tensor is normally symmetric and :math:`G^{(1)} = 0`.
 
     Parameters
     ----------
@@ -469,7 +470,8 @@ def raman_intensities(raman_tensors, volume):
         Per-mode Raman activities in the ``R_epsilon`` convention.  Since
         ``R_epsilon`` has units ``(Å/amu)^0.5``, these activities have units
         ``Å/amu`` rather than polarizability-volume ``Å⁴/amu`` units.  Columns are
-        ``[:, 0]`` total, ``[:, 1]`` parallel, ``[:, 2]`` perpendicular.
+        ``[:, 0]`` total, ``[:, 1]`` parallel (VV), and ``[:, 2]``
+        perpendicular (VH).
 
     Notes
     -----
@@ -493,8 +495,8 @@ def raman_intensities(raman_tensors, volume):
         gamma2 = 3.0 / 2.0 * float(np.real(np.sum(R_traceless * np.conj(R_traceless))))
         kappa2 = 3.0 / 2.0 * float(np.real(np.sum(R_anti * np.conj(R_anti))))
         activities[i, 0] = 45.0 * alpha2 + 7.0 * gamma2 + 5.0 * kappa2
-        activities[i, 1] = 30.0 * alpha2 + 4.0 * gamma2
-        activities[i, 2] = 15.0 * alpha2 + 3.0 * gamma2
+        activities[i, 1] = 45.0 * alpha2 + 4.0 * gamma2
+        activities[i, 2] = 3.0 * gamma2 + 5.0 * kappa2
     return activities
 
 
@@ -617,7 +619,7 @@ def compute_powder_raman_intensities(R):
     Returns
     -------
     vv : float
-        VV (parallel) powder intensity: 45α² + 4γ² + 5κ²
+        VV (parallel) powder intensity: 45α² + 4γ²
     vh : float
         VH (crossed) powder intensity: 3γ² + 5κ²
 
@@ -630,7 +632,7 @@ def compute_powder_raman_intensities(R):
     alpha2 = float(np.real(alpha * np.conj(alpha)))
     gamma2 = 3.0 / 2.0 * float(np.real(np.sum(gamma_t * np.conj(gamma_t))))
     kappa2 = 3.0 / 2.0 * float(np.real(np.sum(kappa_t * np.conj(kappa_t))))
-    vv = 45.0 * alpha2 + 4.0 * gamma2 + 5.0 * kappa2
+    vv = 45.0 * alpha2 + 4.0 * gamma2
     vh = 3.0 * gamma2 + 5.0 * kappa2
     return vv, vh
 
