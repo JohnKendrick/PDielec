@@ -19,6 +19,7 @@ import math
 import numpy as np
 import pytest
 from PDielec.Calculator import (
+    compute_powder_raman_intensities,
     oscillator_strengths,
     normal_modes,
     infrared_intensities,
@@ -154,17 +155,25 @@ class TestF4RamanIntensities:
         assert np.all(result >= 0.0)
 
     def test_total_equals_parallel_plus_perp(self):
-        """Total = parallel + perpendicular for symmetric tensors (kappa=0)."""
-        R = np.diag([1.0, 2.0, 3.0])  # symmetric, traceless antisymmetric part = 0
+        """Total equals VV plus VH, including for a nonsymmetric tensor."""
+        R = np.array([[1.0, 2.0, 0.0], [-0.5, 2.0, 0.0], [0.0, 0.0, 3.0]])
         result = raman_intensities([R], volume=1.0)
-        # total == parallel + perpendicular only when kappa^2 = 0 (symmetric tensor)
         assert result[0, 0] == pytest.approx(result[0, 1] + result[0, 2], rel=1e-10)
 
     def test_isotropic_tensor_no_depolarisation(self):
-        """Isotropic tensor: parallel >> perpendicular."""
+        """An isotropic tensor has VV equal to total and zero VH strength."""
         R = np.eye(3) * 5.0
         result = raman_intensities([R], volume=1.0)
-        assert result[0, 1] > result[0, 2]  # parallel > perp for isotropic
+        assert result[0, 1] == pytest.approx(result[0, 0])
+        assert result[0, 2] == pytest.approx(0.0, abs=1e-12)
+
+    def test_parallel_and_perpendicular_match_powder_placzek_channels(self):
+        """The table-facing parallel/perpendicular columns are Placzek VV/VH."""
+        R = np.diag([2.0, 1.0, 0.5])
+        result = raman_intensities([R], volume=1.0)
+        vv, vh = compute_powder_raman_intensities(R)
+        assert result[0, 1] == pytest.approx(vv)
+        assert result[0, 2] == pytest.approx(vh)
 
     def test_reader_tensors_already_include_volume_scaling(self):
         """Changing the API volume argument does not rescale R_epsilon activities."""

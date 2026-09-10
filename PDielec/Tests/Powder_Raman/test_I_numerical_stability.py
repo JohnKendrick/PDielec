@@ -347,27 +347,17 @@ def test_raman_intensities_isotropic_zero_perp():
     R = a * np.eye(3)
     volume = 10.0
     act = raman_intensities([R], volume)
-    # perpendicular = volume * 15 * alpha^2 + 3 * gamma2
-    # For isotropic: gamma2 = 0, alpha = a, perpendicular = volume * 15 * a^2
-    # Wait: parallel = volume * (30*a^2 + 0), perpendicular = volume * (15*a^2 + 0)
-    # Actually: for isotropic, gamma2 = 0 and kappa2 = 0
-    # perpendicular = volume * 15 * a^2 (NOT zero)
-    # Only the anisotropic component is zero
-    assert act[0, 2] >= 0.0, "Perpendicular activity must be non-negative"
-    # Check ratio: parallel / perpendicular = 2 for isotropic R
-    ratio = act[0, 1] / act[0, 2]
-    assert abs(ratio - 2.0) < 1e-10, f"Parallel/perp ratio={ratio}, expected 2.0"
+    assert act[0, 1] == pytest.approx(act[0, 0])
+    assert act[0, 2] == pytest.approx(0.0, abs=1e-12)
 
 
 def test_raman_intensities_sum_parallel_perp():
-    """Calculator.raman_intensities: Total ≠ parallel + perpendicular only if kappa != 0."""
-    R_sym = np.diag([2.0, 1.0, 0.5])
+    """Calculator.raman_intensities: total equals VV plus VH for a general tensor."""
+    R = np.array([[2.0, 1.0, 0.0], [-0.25, 1.0, 0.0], [0.0, 0.0, 0.5]])
     volume = 1.0
-    act = raman_intensities([R_sym], volume)
-    # For symmetric R (kappa2 = 0):
-    # total = volume*(45*a^2 + 7*g^2) = parallel + perpendicular
+    act = raman_intensities([R], volume)
     assert abs(act[0, 0] - act[0, 1] - act[0, 2]) < 1e-10, \
-        "total != parallel + perpendicular for symmetric R"
+        "total != parallel + perpendicular"
 
 
 if __name__ == "__main__":

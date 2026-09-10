@@ -17,7 +17,7 @@ BATIO3_FIXTURE = (
 
 @pytest.fixture(scope="module")
 def particle_case():
-    """Build the air-embedded spherical BaTiO3 case from the compact PEAD fixture."""
+    """Build the air-embedded sphere from the consistently normalised PEAD fixture."""
     fixture = json.loads(BATIO3_FIXTURE.read_text(encoding="utf-8"))
     inputs = fixture["inputs"]
 
@@ -66,7 +66,7 @@ def test_batio3_particle_eo_preserves_frequencies_and_high_surface_mode(particle
 
 
 def test_batio3_corrected_high_mode_modal_intensities(particle_case):
-    """Regress the 4π-normalised particle EO high-mode intensities."""
+    """Regress particle intensities with consistent mechanical and EO normalisation."""
     tab, arguments, internal_field, chi2 = particle_case
     without_eo = tab._compute_particle_modes(*arguments)
     with_eo = tab._compute_particle_modes(
@@ -81,9 +81,9 @@ def test_batio3_corrected_high_mode_modal_intensities(particle_case):
     intensity_with_eo = Calculator.compute_powder_raman_intensities(effective_with_eo)
 
     np.testing.assert_allclose(
-        intensity_without_eo, [0.5285216048721, 0.01249086629222], rtol=2.0e-10)
+        intensity_without_eo, [83.46078652026732, 1.9724785428971348], rtol=2.0e-10)
     np.testing.assert_allclose(
-        intensity_with_eo, [2.438721934862395, 0.1823290427508101], rtol=2.0e-10)
+        intensity_with_eo, [47.14930832533347, 0.7494139080048632], rtol=2.0e-10)
     assert intensity_with_eo[0] != pytest.approx(intensity_without_eo[0])
 
 

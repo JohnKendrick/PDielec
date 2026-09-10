@@ -210,13 +210,13 @@ def test_a3_depolarisation_ratio_all_off_diagonal():
 # ---------------------------------------------------------------------------
 
 def test_a4_antisymmetric_vh_nonzero():
-    """A4: Antisymmetric R_xy tensor contributes to both VV and VH via kappa^2 term."""
+    """A4: An antisymmetric R_xy tensor contributes to VH but not VV."""
     d = 1.0
     R = np.array([[ 0.0, d,  0.0],
                   [-d,  0.0, 0.0],
                   [ 0.0, 0.0, 0.0]])
     vv, vh = compute_powder_raman_intensities(R)
-    assert vv > 0.0, "VV should be non-zero for antisymmetric R"
+    assert abs(vv) < 1e-12, "VV should be zero for antisymmetric R"
     assert vh > 0.0, "VH should be non-zero for antisymmetric R"
 
 
@@ -241,9 +241,9 @@ def test_a4_antisymmetric_kappa_contribution():
                        [0.0, 0.0, 0.0]])
     vv_anti, vh_anti = compute_powder_raman_intensities(R_anti)
     vv_sym, vh_sym   = compute_powder_raman_intensities(R_sym)
-    # Antisymmetric: gamma2=0, kappa2=(3/2)*2=3 => VV=VH=5*kappa2=15*d^2
+    # Antisymmetric: gamma2=0, kappa2=(3/2)*2=3 => VV=0 and VH=5*kappa2=15*d^2
     # Symmetric off-diagonal: kappa2=0, gamma2=(3/2)*2=3 => VV=4*gamma2=12*d^2, VH=3*gamma2=9*d^2
-    assert abs(vv_anti - 15.0 * d**2) < 1e-12, f"antisymmetric VV={vv_anti}"
+    assert abs(vv_anti) < 1e-12, f"antisymmetric VV={vv_anti}"
     assert abs(vh_anti - 15.0 * d**2) < 1e-12, f"antisymmetric VH={vh_anti}"
     assert abs(vv_sym - 12.0 * d**2) < 1e-12, f"symmetric VV={vv_sym}"
     assert abs(vh_sym - 9.0 * d**2) < 1e-12, f"symmetric VH={vh_sym}"

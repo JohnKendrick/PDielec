@@ -110,6 +110,13 @@ case the p- and s-detected intensities are summed incoherently.
 Raman Tensor Orientation
 ------------------------
 
+Reader tensors use :math:`R_\epsilon=\sqrt{V_{cell}}\partial\varepsilon_\infty/\partial Q_m`,
+with volume in Angstrom cubed and :math:`Q_m` in Angstrom times the square root
+of amu.  They already contain the cell-volume normalization and enter
+``RamanLayer`` directly.  Raw Gaussian susceptibility derivatives require
+:math:`\partial\varepsilon=4\pi\partial\chi`; SI dimensionless susceptibility
+instead obeys :math:`\partial\varepsilon=\partial\chi_{SI}`.
+
 The Raman tensor from the quantum mechanical calculation is defined in the crystal
 coordinate frame.  If :math:`\tensorbf{G}` maps vectors from the crystal frame to the
 laboratory frame,
@@ -165,7 +172,8 @@ from those layers is expected to retain a fixed phase relationship and interfere
 The *Depth coherence* option is a third, more local coherence choice.  It controls
 how Raman sources are combined through the thickness of each individual
 Raman-active layer.  *Coherent amplitude* integrates the complex source amplitude
-before squaring, which is appropriate for thin coherent films:
+before squaring.  This assumes a common phonon final state with a specified
+spatial phase; small film thickness alone does not establish that assumption:
 
 .. math::
    :label: eq-crystal-raman-depth-coherent
@@ -215,6 +223,15 @@ formed by applying Lorentzian broadening to each active mode,
    \frac{\sigma_m}{(\Delta\nu-\nu_m)^2+\sigma_m^2}
 
 where :math:`\sigma_m` is the Lorentzian half-width at half maximum.
+
+The current crystal implementation returns the thermal-weighted optical
+overlap above.  It omits the :math:`\nu_S^4` radiation factor retained in the
+powder spectrum.  Treating this factor as constant is an approximation when
+:math:`\nu_m\ll\nu_L`; arbitrary intensity units do not remove its variation
+between different Raman shifts or laser wavelengths.  Thus these crystal
+outputs are reduced relative intensities, not fully frequency-weighted
+Stokes scattering strengths.  The 2026-09-10 physics review records this
+implementation limitation.
 
 Layer Phonon Frequencies
 ------------------------
@@ -427,7 +444,7 @@ The EO contribution to the Raman tensor of mode :math:`p` is
    :label: eq-crystal-raman-eo-correction
 
    \Delta\tensorbf{R}^{(p)}_{ij} =
-   -\frac{2\,f_{ij}\,s_p}
+   -\frac{8\pi\,f_{ij}\,s_p}
          {\hat{\mathbf{q}}^T\tensorbs{\varepsilon}^b\hat{\mathbf{q}}}
 
 where the electro-optic factor :math:`\tensorbf{f}` is the contraction of
@@ -437,6 +454,29 @@ where the electro-optic factor :math:`\tensorbf{f}` is the contraction of
    :label: eq-crystal-raman-eo-f
 
    f_{ij} = \sum_l \chi^{(2)}_{ijl}\,\hat{q}_l
+
+In these implementation equations :math:`\chi^{(2)}` denotes the internal
+cell-dependent quantity :math:`\widetilde\chi^{(2)}`.  For a physical
+susceptibility expressed numerically in pm/V, the reader conversion is
+
+.. math::
+
+   \widetilde\chi^{(2)}_{ijl} =
+   \chi^{(2)}_{ijl}[\mathrm{pm/V}]
+   \frac{\sqrt{\mathrm{amu}/m_e}\,e\,10^8}
+        {4\pi\epsilon_0\sqrt{V_{cell}[\mathrm{Angstrom}^3]}} .
+
+The numerical :math:`10^8` combines pm/V and Angstrom displacement/volume
+units.  :math:`Z^{mw}` uses masses in electron-mass units.  This conversion
+is not merely a change from picometres to Angstrom or Bohr.
+
+The explicit :math:`4\pi` in the correction is the Gaussian-unit electrostatic
+factor.  PDielec's conversion of physical :math:`\chi^{(2)}` values from pm/V to
+the internal :math:`R_\epsilon` convention contains the reciprocal
+:math:`1/(4\pi\epsilon_0)` factor, so this is not an additional conversion of the
+reader Raman tensor.  In particular, the separate :math:`4\pi` used by the
+Abinit reader converts its printed :math:`d\chi/dQ` transverse Raman tensor to
+:math:`d\epsilon/dQ` and is not applied again here.
 
 and :math:`s_p` is the projection of the Born-charge weighted polarisation onto the
 phonon eigenvector,
@@ -470,7 +510,7 @@ The EO correction vanishes identically when:
 **Availability of** :math:`\tensorbs{\chi}^{(2)}` **from DFT codes**
 
 PDielec reads :math:`\tensorbs{\chi}^{(2)}` automatically from the DFT output file when
-it is present.  Both supported codes report the *d*-tensor
+it is present.  ABINIT, CASTEP and CRYSTAL report the *d*-tensor
 (:math:`\tensorbf{d} = \tfrac{1}{2}\tensorbs{\chi}^{(2)}`); PDielec stores
 :math:`\tensorbs{\chi}^{(2)} = 2\tensorbf{d}` internally after converting the
 reported pm/V values to the same Angstrom-based convention used by the reader
@@ -486,7 +526,23 @@ Voigt column order is :math:`(11, 22, 33, 23, 13, 12)`, giving the full
 in the ``.abo`` output file, listing all index combinations :math:`(i_1, i_2, i_3)` in
 Cartesian coordinates with 1-based integer indices.
 
-When :math:`\tensorbs{\chi}^{(2)}` data are present and any level other than *TO* is
+*CRYSTAL* supplies ``d(MKS)`` in ``CHI2.DAT`` or its output table; the reader
+uses :math:`\chi^{(2)}=2d` and expands the ten static components using
+Kleinman symmetry.  *Quantum ESPRESSO* supplies :math:`\partial\varepsilon/\partial E`
+in Rydberg atomic units, from which the physical susceptibility in pm/V is
+:math:`\chi^{(2)}=0.5\times2.7502\times\mathrm{ELOP}`.  XML values take
+precedence over the log.  Each path then applies the common conversion above.
+The readers also average the tensor over the final unit-cell point group.
+
+The required response is the electronic mixed optical/static susceptibility.
+Using a static or second-harmonic susceptibility assumes negligible relevant
+dispersion.  A relaxed-ion Pockels tensor, the derivative of inverse
+permittivity, is a different quantity and must not be substituted directly.
+There is no universal requirement that the EO increment be small compared
+with the mechanical Raman tensor.
+
+When the electro-optic option is enabled, :math:`\tensorbs{\chi}^{(2)}` data are present,
+and any level other than *TO* is
 selected, PDielec applies the EO correction to every NAC-rotated Raman tensor before
 computing the Raman spectrum.  The GUI labels for the three NAC levels then show an
 *(EO)* suffix (*Snell's law (EO)*, *Dominant mode (EO)*, *All modes (EO)*) to make

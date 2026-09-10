@@ -12,7 +12,6 @@ from PDielec.NACDiagnostics import compute_nac_direction_diagnostics
 FIXTURE = Path(__file__).with_name("data") / "batio3_stage8.json"
 SPECTRUM_GRID_CM1 = np.linspace(100.0, 750.0, 651)
 LINEWIDTH_CM1 = 4.0
-EO_CONVENTION_FACTOR = 4.0 * math.pi
 
 
 @pytest.fixture(scope="module")
@@ -108,12 +107,12 @@ def test_batio3_every_endpoint_mode_is_accounted_for_once(batio3, inputs, chi2):
 
 
 def test_batio3_to_and_nac_tensors_agree_with_anaddb(batio3, inputs, chi2):
-    """Reproduce TO/NAC tensors after correcting the legacy fixture's EO scale.
+    """Reproduce native ANADDB TO and EO-corrected NAC tensors.
 
-    The compact Stage-8 ANADDB endpoint tensors were originally converted with
-    the same missing-4pi convention as the former production kernel.  Preserve
-    the independently parsed mechanical tensor and rescale only its stored EO
-    increment to the convention now confirmed against raw ZnO ANADDB output.
+    Both the mechanical and EO terms use
+    ``R_epsilon = 4*pi*sqrt(Vcell)*dchi/dQ``.  The q||x and q||z endpoint
+    tensors come from a fresh ANADDB 10.6.5 analysis of the merged DDB and are
+    compared directly, without a fixture-only scale correction.
     """
     tolerance = batio3["metadata"]["tensor_tolerance_R_epsilon"]
     anaddb_to = batio3["anaddb"]["to"]
@@ -135,16 +134,13 @@ def test_batio3_to_and_nac_tensors_agree_with_anaddb(batio3, inputs, chi2):
 
         anaddb_nac_vectors = np.asarray(endpoint["eigenvectors_mass_weighted"])
         anaddb_nac_tensors = np.asarray(endpoint["raman_tensors_R_epsilon"])
-        legacy_expected_with_eo = np.einsum(
+        expected_with_eo = np.einsum(
             "ij,iab->jab", anaddb_nac_vectors @ pdielec_nac_vectors.T, anaddb_nac_tensors
-        )
-        expected_with_eo = expected_without_eo + EO_CONVENTION_FACTOR * (
-            legacy_expected_with_eo - expected_without_eo
         )
         np.testing.assert_allclose(
             expected_with_eo,
             result["raman_tensors_with_eo"],
-            atol=EO_CONVENTION_FACTOR * tolerance,
+            atol=tolerance,
             rtol=0.0,
         )
 
@@ -196,7 +192,7 @@ def test_batio3_eo_changes_powder_intensity_and_retains_700_cm1_feature(inputs, 
     """EO produces a benchmarked nonzero change while retaining the high longitudinal feature."""
     without_eo = _powder_spectrum(inputs, chi2, 256, eo_enabled=False)
     with_eo = _powder_spectrum(inputs, chi2, 256, eo_enabled=True)
-    assert np.max(np.abs(with_eo - without_eo)) == pytest.approx(0.6490, abs=2.0e-3)
+    assert np.max(np.abs(with_eo - without_eo)) == pytest.approx(0.4260, abs=2.0e-3)
     high_frequency = SPECTRUM_GRID_CM1 > 650.0
     high_peak = SPECTRUM_GRID_CM1[high_frequency][np.argmax(with_eo[high_frequency])]
     assert high_peak == pytest.approx(696.0, abs=2.0)

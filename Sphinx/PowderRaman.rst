@@ -40,26 +40,23 @@ and linewidth.
 Raman Tensor
 ------------
 
-For a particle of volume :math:`V`, the dipole polarisability tensor
-:math:`\tensorbf{\alpha}` relates the electric field to the induced dipole moment.  The Raman
-tensor of mode :math:`m` is
+Every Raman output reader returns the bulk dielectric-derivative tensor
 
 .. math::
    :label: eq-powder-raman-tensor
 
-   \tensorbf{R}^{(m)} =
-   \frac{\partial \tensorbf{\alpha}}{\partial Q_m}
-   =
-   \epsilon_0 V
-   \frac{\partial \tensorbs{\chi}}{\partial Q_m}
-   =
-   \epsilon_0 V
-   \frac{\partial \tensorbs{\varepsilon}}{\partial Q_m}
+   \tensorbf{R}^{(m)}_\epsilon = \sqrt{V_{cell}}
+   \frac{\partial \tensorbs{\varepsilon}_\infty}{\partial Q_m}
 
-where :math:`Q_m` is the mass-weighted normal-mode coordinate.  The final equality follows
-because the electric susceptibility and relative permittivity differ only by the identity
-tensor.  Output readers may store a volume-normalised tensor; where required PDielec
-rescales it before calculating activities.
+where :math:`V_{cell}` is in Angstrom cubed and :math:`Q_m` is in
+Angstrom times the square root of amu.  The tensor units are
+:math:`(\mathrm{Angstrom}/\mathrm{amu})^{1/2}`.  The reader already includes
+:math:`\sqrt{V_{cell}}`; the powder and crystal calculations apply no additional
+cell-volume factor.  A source polarizability-volume derivative
+:math:`R_\alpha=\partial[V_{cell}(\varepsilon-I)/(4\pi)]/\partial Q_m`
+is converted on read using :math:`R_\epsilon=4\pi R_\alpha/\sqrt{V_{cell}}`.
+Activities in :math:`\mathrm{Angstrom}^4/\mathrm{amu}` are display quantities,
+obtained by multiplying the internal activities by :math:`V_{cell}/(16\pi^2)`.
 
 For particles whose Raman tensor does not depend on shape, the powder average can be
 written in terms of rotational invariants of :math:`\tensorbf{R}`.  For one mode,
@@ -86,7 +83,7 @@ The usual parallel (VV), crossed (VH), and unpolarised powder strengths are then
 .. math::
    :label: eq-powder-raman-vv-vh
 
-   I_{VV}     &\propto 45\alpha^2 + 4\gamma^2 + 5\kappa^2 \\
+   I_{VV}     &\propto 45\alpha^2 + 4\gamma^2 \\
    I_{VH}     &\propto 3\gamma^2 + 5\kappa^2 \\
    I_{total}  &\propto 45\alpha^2 + 7\gamma^2 + 5\kappa^2
 
@@ -123,29 +120,22 @@ with
 For a sphere :math:`\tensorbf{L}` has diagonal elements of :math:`1/3`.  Other ellipsoidal
 shapes use the same depolarisation tensor as the powder infrared effective-medium theory.
 
-The particle Raman tensor connects the external incident field to the external scattered
-field.  Assuming that the optical permittivities are constant across the laser and scattered
-frequencies, the effective particle tensor is
+For a reciprocal dielectric, the effective bulk Raman tensor includes one
+incident and one scattered optical local-field factor:
 
 .. math::
    :label: eq-powder-raman-particle-tensor
 
-   \tensorbf{R}^{(m)}_{particle} =
-   \tensorbf{N}
-   \left[
-   \tensorbf{R}^{(m)}_{\varepsilon}
-   -
-   \frac{1}{\varepsilon_e}
-   \left(\tensorbs{\varepsilon}_i-\varepsilon_e\tensorbf{1}\right)
-   \tensorbf{N}\tensorbf{L}\tensorbf{R}^{(m)}_{\varepsilon}
-   \right]
-   \tensorbf{N}
+   \tensorbf{R}^{(m)}_{eff} =
+   \tensorbf{N}(\nu_S)^T
+   \left[\tensorbf{R}^{(m)}_{\epsilon,0}+\Delta\tensorbf{R}^{(m)}_{\epsilon,EO}\right]
+   \tensorbf{N}(\nu_L)
 
-where :math:`\tensorbf{R}^{(m)}_{\varepsilon}` is the Raman tensor derived from
-:math:`\partial\tensorbs{\varepsilon}/\partial Q_m`.  The first and last
-:math:`\tensorbf{N}` factors account for the field entering and leaving the particle.  The
-middle correction accounts for the dependence of the particle polarisability on dielectric
-contrast.
+The transpose is ordinary, including for complex reciprocal permittivities.
+The current powder implementation uses the same optical permittivity at both
+frequencies.  :math:`R_{eff}` retains the bulk :math:`R_\epsilon` normalization;
+it is not an extensive particle dipole-polarizability derivative.  The former
+three-factor expression double-counted the scattered-field response.
 
 Particle Frequencies
 --------------------
@@ -177,6 +167,26 @@ where :math:`\tensorbf{D}^{TO}` is the transverse-optic dynamical matrix and
 permittivities.  Diagonalising :math:`\tensorbf{D}^{particle}` gives particle-mode
 frequencies and eigenvectors appropriate to the selected crystallite shape.
 
+In the SI expression above Born charges carry coulombs and masses carry kilograms.
+The implementation uses charges in electrons, masses in electron-mass units,
+volume in Bohr cubed, and the prefactor :math:`4\pi/(\varepsilon_e V)`.
+The same electrostatic kernel
+:math:`K=N_{bg}L/\varepsilon_e` determines the particle EO correction:
+
+.. math::
+
+   \Delta R^{(m)}_{\epsilon,EO,ij}
+   =-8\pi\sum_l\widetilde\chi^{(2)}_{ijl}(K Z^{mw}u_m)_l .
+
+Here :math:`\widetilde\chi^{(2)}` is the cell-dependent internal reader value,
+not the raw susceptibility in pm/V.  Its conversion is specified in
+:ref:`Crystal-Raman-Theory`.  Both the mechanical Raman tensor and the mode
+charge must use the same particle eigenvector.  No bulk propagation direction
+is needed for this ellipsoid boundary-value model.  It describes a quasistatic
+particle in a lossless scalar host; it is not a bulk directional LO/TO powder
+average.  ``Matrix=none`` bypasses particle and optical-field corrections;
+use a host with permittivity one to describe an isolated particle in vacuum.
+
 Orientation Averaging
 ---------------------
 
@@ -187,7 +197,7 @@ is
    :label: eq-powder-raman-rotation
 
    \tensorbf{R}^{(m)}_{lab}(g) =
-   g\tensorbf{R}^{(m)}_{particle}g^T
+   g\tensorbf{R}^{(m)}_{eff}g^T
 
 The powder strength is the orientational average over all rotations,
 
