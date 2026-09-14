@@ -3,9 +3,9 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
-<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE" name="keywords" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Other Software Components" href="software.html"><link rel="prev" title="Installation" href="installation.html">
+<meta content="PDGui guide to infrared, ATR and Raman calculations, scenarios and visualisation" name="description" />
+<meta content="PDielec, PDGui, Infrared, ATR, Raman, Electro-optic, NAC, GUI" name="keywords" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Viewer and Fitter Settings Views" href="gui_options.html"><link rel="prev" title="Installation" href="installation.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDGui - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -199,7 +199,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">PDGui</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">PDGui</a><input aria-label="Toggle navigation of PDGui" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
@@ -218,8 +222,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
@@ -228,8 +232,9 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
@@ -255,14 +260,20 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
@@ -271,9 +282,10 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
@@ -285,11 +297,32 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
@@ -297,6 +330,11 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
 </li>
 </ul>
@@ -391,468 +429,854 @@
         <article role="main" id="furo-main-content">
           <section id="pdgui">
 <h1>PDGui<a class="headerlink" href="#pdgui" title="Link to this heading">¶</a></h1>
-<p>PDGui provides a graphical front end to the capabilities of PDielec.
-PDGui can be run from the command line without any parameters or followed by the file to be read in.  PDGui makes a best guess at the DFT/MM program used to create the output.
-It can also be used as a command line tool without having to use the GUI, this needs a script file to be available.</p>
-<p>For example;</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pdgui
+<p>PDGui provides a graphical front end to PDielec. It reads a material’s structure
+and response from a QM/MM calculation or a user-supplied input file, and
+calculates infrared, ATR or Raman spectra. The interface is a notebook with
+<em>Main</em>, <em>Settings</em>, <em>Scenario</em>, <em>Plotting</em>, <em>Analysis</em>, <em>3D Viewer</em> and <em>Fitter</em>
+tabs. Additional scenarios appear as additional tabs.</p>
+<section id="starting-pdgui">
+<h2>Starting PDGui<a class="headerlink" href="#starting-pdgui" title="Link to this heading">¶</a></h2>
+<p>PDGui can be run without arguments, or with an output file. It makes a best
+guess at the program from the filename and associated files. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span>
+<span class="n">pdgui</span> <span class="n">OUTCAR</span>
+<span class="n">pdgui</span> <span class="n">raman</span><span class="o">.</span><span class="n">castep</span> <span class="o">-</span><span class="n">spectroscopy</span> <span class="n">crystal_raman</span>
+<span class="n">pdgui</span> <span class="n">raman</span><span class="o">.</span><span class="n">castep</span> <span class="o">-</span><span class="n">spectroscopy</span> <span class="n">powder_raman</span>
+<span class="n">pdgui</span> <span class="n">experiment</span> <span class="n">material</span><span class="o">.</span><span class="n">exp</span>
+<span class="n">pdgui</span> <span class="n">finite_field</span> <span class="n">zno</span><span class="o">-</span><span class="n">raman</span><span class="o">.</span><span class="n">json</span> <span class="o">-</span><span class="n">spectroscopy</span> <span class="n">crystal_raman</span>
+<span class="n">pdgui</span> <span class="n">qe</span> <span class="n">run1</span><span class="o">.</span><span class="n">dynG</span>
 </pre></div>
 </div>
-<p>or</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pdgui<span class="w"> </span>OUTCAR<span class="w">                                                </span><span class="c1"># A Vasp calculation, only OUTCAR is parsed for information</span>
-pdgui<span class="w"> </span>vasprun.xml<span class="w">                                           </span><span class="c1"># A Vasp calculation, only vasprun.xml is parsed for information</span>
-pdgui<span class="w"> </span>LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out<span class="w">    </span><span class="c1"># A Crystal calculation</span>
-pdgui<span class="w"> </span>run1.dynG<span class="w">                                             </span><span class="c1"># A QE calculation, pwscf.xml is also read</span>
-pdgui<span class="w"> </span>run1.log<span class="w">                                              </span><span class="c1"># A QE calculation, run1.dynG is also read</span>
-pdgui<span class="w"> </span>run2.abo<span class="w">                                              </span><span class="c1"># An Abinit calculation</span>
-pdgui<span class="w"> </span>run3.gout<span class="w">                                             </span><span class="c1"># An Gulp calculation</span>
-pdgui<span class="w"> </span>phonopy.yaml<span class="w">                                          </span><span class="c1"># A Phonopy calculation</span>
-pdgui<span class="w"> </span>control.in<span class="w">                                            </span><span class="c1"># An FHI-Aims calculation</span>
+<p>Use <code class="docutils literal notranslate"><span class="pre">qe</span></code> as the program name when explicitly selecting that reader.
+A program name can also be supplied with <code class="docutils literal notranslate"><span class="pre">-program</span></code>. For a saved session use
+<code class="docutils literal notranslate"><span class="pre">pdgui</span> <span class="pre">-script</span> <span class="pre">script.py</span></code>. To calculate and write a spreadsheet without
+remaining in the GUI, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">spreadsheet</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span> <span class="o">-</span><span class="n">nosplash</span> <span class="o">-</span><span class="n">exit</span>
 </pre></div>
 </div>
-<p>Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
-It is possible to specifiy the DFT program as in the examples below;</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pdgui<span class="w"> </span>-program<span class="w"> </span>aims<span class="w"> </span>geometry.in<span class="w">                              </span><span class="c1"># An FHI-Aims calculation</span>
-pdgui<span class="w"> </span>-program<span class="w"> </span>vasp<span class="w"> </span>OUTCAR<span class="w">                                   </span><span class="c1"># A Vasp calculation, only OUTCAR is parsed for information</span>
-pdgui<span class="w"> </span>-program<span class="w"> </span>phonopy<span class="w"> </span>phonopy.yaml<span class="w">                          </span><span class="c1"># A Phonopy calculation</span>
-</pre></div>
-</div>
-<p>If running a script that contains program and output file information, then:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span>
-</pre></div>
-</div>
-<p>If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">spreadsheet</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span>
-</pre></div>
-</div>
-<p>The spreadsheet name must have an .xlsx extension.
-To use as a command line tool an example would be;</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">spreadsheet</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">nosplash</span> <span class="o">-</span><span class="n">exit</span>
-</pre></div>
-</div>
-<p>Several command line options may be useful in running the package.
-Options are specified using ‘-’ or ‘–’ before a keyword.  In addition, up to 3 none-option keywords can be specfied.</p>
-<p>If only one is specified it is taken to be a file name and the dft program is guessed from the file name extension.</p>
-<p>If two none option keywords are given, the first is assumed to be the dft program designation ( one of abinit, aims, crystal, vasp, qe, gulp, phonopy), and the second is the output file to be read.</p>
-<p>If three non option keywords are given, the first is the program designation, the second is the output file and the third is a spreadsheet name ending in .xlsx.</p>
-<div class="table-wrapper colwidths-given styled-table docutils container" id="command-line-options">
-<table class="styled-table docutils align-default" id="command-line-options">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">PDGui command line options</span><a class="headerlink" href="#command-line-options" title="Link to this table">¶</a></caption>
+<div class="table-wrapper colwidths-given docutils container" id="id6">
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Common command-line options</span><a class="headerlink" href="#id6" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 75.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head left-align single-left-divider single-right-divider"><p>Command line option</p></th>
-<th class="head left-align single-left-divider single-right-divider"><p>Description</p></th>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-script filename</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Specify a Python script to run</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-spectroscopy</span> <span class="pre">type</span></code></p></td>
+<td><p>Initial spectroscopy: <code class="docutils literal notranslate"><span class="pre">powder_infrared</span></code> (default), <code class="docutils literal notranslate"><span class="pre">crystal_infrared</span></code>,
+<code class="docutils literal notranslate"><span class="pre">powder_raman</span></code> or <code class="docutils literal notranslate"><span class="pre">crystal_raman</span></code>. Select <em>Powder ATR</em> in the
+Settings Tab or a script.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-scenario type</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Changes the initial scenario type,
-type can be <em>powder</em> or <em>crystal</em>,
-the default is <em>powder</em></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-program</span> <span class="pre">name</span></code></p></td>
+<td><p>Explicit input program, for example <code class="docutils literal notranslate"><span class="pre">castep</span></code>, <code class="docutils literal notranslate"><span class="pre">experiment</span></code> or <code class="docutils literal notranslate"><span class="pre">finite_field</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-spreadsheet file</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>An alternative way of defining the
-spreadsheet</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-script</span> <span class="pre">filename</span></code></p></td>
+<td><p>Read a Python settings script.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-program name</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>An alternative way of defining the
-program used to create the output</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-spreadsheet</span> <span class="pre">filename</span></code></p></td>
+<td><p>Write results to an Excel file with an <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> extension.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-version</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Give information of the version no.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-cpus</span> <span class="pre">N</span></code></p></td>
+<td><p>Number of workers; zero selects the available physical cores.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-debug</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Debugging mode, only for developers</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-threading</span></code></p></td>
+<td><p>Use threads instead of the default worker processes.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-exit</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Exit the program after running the
-script</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-nosplash</span></code></p></td>
+<td><p>Suppress the splash window.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-nosplash</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Do not show the splash screen</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-exit</span></code></p></td>
+<td><p>Exit after the script and requested spreadsheet output.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-cpus 2</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Sets the number of cpus or threads to 2</p></td>
-</tr>
-<tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-threads</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Using threading, instead of
-multiprocessing</p></td>
-</tr>
-<tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-h</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Print out help information</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-debug</span></code></p></td>
+<td><p>Enable diagnostic logging.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>After running the program the user sees a notebook interface with seven tabs.</p>
-<ul class="simple">
-<li><p><em>Main Tab</em> allows the user to specify the program and filename that are to be analysed.  It is also possible to specify here the spreadsheet name to which results are saved.</p></li>
-<li><p><em>Settings Tab</em> is used for changing the settings within the package</p></li>
-<li><p><em>Scenario Tab</em> can be a powder scenario or a single-crystal scenario.  In the case of a powder scenario, the tab specifies the material properties used to define the effective medium from which the  absorption characteristics are calculated.  In the case of a single crystal, the orientation of the crystal and the angle of incidence of the radiation can be defined.</p></li>
-<li><p><em>Plotting Tab</em> shows the results of all the scenario tabs in one place.</p></li>
-<li><p><em>Analysis Tab</em> shows the decomposition of the normal modes into molecular components.</p></li>
-<li><p><em>Visualisation Tab</em> displays the normal modes as either arrows showing the atomic displacement or as an animation.</p></li>
-<li><p><em>Fitter Tab</em> allows a user to display an experimental spectrum and compare it with the calculated spectrum.</p></li>
-</ul>
+<p>The figures below use the CASTEP wurtzite ZnO calculation in
+<code class="docutils literal notranslate"><span class="pre">Examples/Crystal_Raman/Castep</span></code>. Its output includes Raman tensors and a
+non-zero nonlinear optical susceptibility, allowing the electro-optic (EO)
+correction to be demonstrated. The Raman examples use 532 nm excitation,
+298 K and a Lorentzian half-width of 5 cm<sup>-1</sup>. These are example settings;
+individual control defaults are described below. The Fitter uses the existing
+sodium-sulphate ATR example with an experimental spectrum.</p>
+</section>
 <section id="main-tab">
 <h2>Main Tab<a class="headerlink" href="#main-tab" title="Link to this heading">¶</a></h2>
-<p>The <em>Main Tab</em> is used to pick the MM/QM package and the output file that will be analysed.</p>
-<figure class="align-default" id="id4">
-<span id="fig-maintab"></span><a class="reference internal image-reference" href="_images/MainTab.png"><img alt="_images/MainTab.png" src="_images/MainTab.png" style="width: 545.6px; height: 774.4000000000001px;" />
+<p>The <em>Main Tab</em> selects the calculation to analyse and the files used for saving
+results and settings.</p>
+<figure class="align-default" id="id7">
+<span id="fig-maintab"></span><a class="reference internal image-reference" href="_images/main.png"><img alt="Main Tab with the CASTEP ZnO output loaded." src="_images/main.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">The Main Tab</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">The Main Tab for the ZnO calculation.</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported is Abinit, Castep, Crystal, Experiment, Gulp, FHI-Aims, Phonopy, Quantum Espresso, Vasp, and PDGui.
-The output file name can be provided in the text box below it, or it can be specified using the <cite>File manager</cite> button.  In addition to input files from QM/MM programs, the program can read a Python script files written by PDGui.  This should have a ‘.py’ extension.
-The <em>Experimental</em> file format allows the user to provide their specification of a dielectric medium, where a code other than that catered for by the program has been used.
-The file format is described in full in the section: <a class="reference internal" href="software.html#experimental-file-format"><span class="std std-ref">Experimental File Format</span></a>
-The <em>PDGui</em> option allows the user to select a scripting file from the interface.</p>
-<p>If an Excel spreadsheet file name is given, it must have the extensions .xlsx.  The spreadsheet is written when the <cite>Save results</cite> button is pressed.</p>
-<p>If the current program settings need to be stored they can be stored as a Python script file by pressing the <cite>Save settings</cite> button.  Any settings saved in this way can be re-instated by reading the script using the <cite>File manager</cite> and selecting the <cite>PDGui (*.py)</cite> option in the file types selection.</p>
-<p>Once the file has been specified and read, the unit cell is shown and the frequencies found in the calculation file are reported in the output text boxes.</p>
+<p>Choose the <em>QM/MM Program</em> from Abinit, Aims, Castep, Crystal, Experiment,
+Finite field, Gulp, Phonopy, Quantum Espresso, Vasp or PDGui. Enter the output
+filename in <em>Analyse this output file</em>, or select it with <em>File manager</em>.
+The <em>PDGui</em> choice reads a saved Python session. Some readers also use files
+beside the selected output, so keep the calculation’s companion files together.</p>
+<p><em>Experiment</em> reads material descriptions in the <a class="reference internal" href="software.html#experimental-file-format"><span class="std std-ref">Experimental File Format</span></a>.
+<em>Finite field</em> reads the consolidated <a class="reference internal" href="software.html#finite-field-json-format"><span class="std std-ref">Finite-Difference and Finite-Field JSON Format</span></a>, including
+results from finite-difference workflows. These are material inputs; the
+experimental spectrum used for fitting is selected in the Fitter Tab.</p>
+<p><em>Excel spread sheet</em> sets the <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> destination. <em>Save results</em> writes the
+calculated results and settings. <em>Script filename</em> sets the Python file written
+by <em>Save settings</em>. Reload that file to reproduce the session; the calculation
+input and any materials database referenced by it must still be available.</p>
+<p>The lower text areas report the unit-cell vectors in Angstrom and the
+frequencies read from the input. They are outputs, not editable model
+parameters. Frequencies after mass changes and other corrections are shown in
+the Settings Tab.</p>
 </section>
 <section id="settings-tab">
 <h2>Settings Tab<a class="headerlink" href="#settings-tab" title="Link to this heading">¶</a></h2>
-<p>The <em>Settings Tab</em> controls the calculation of the frequencies and their intensities.</p>
-<figure class="align-default" id="id5">
-<span id="fig-settingstab"></span><a class="reference internal image-reference" href="_images/SettingsTab.png"><img alt="_images/SettingsTab.png" src="_images/SettingsTab.png" style="width: 545.6px; height: 774.4000000000001px;" />
+<p>The <em>Settings Tab</em> controls the spectroscopy and the common vibrational data
+used by every scenario.</p>
+<figure class="align-default" id="id8">
+<span id="fig-settingstab"></span><a class="reference internal image-reference" href="_images/settings-raman-eo.png"><img alt="Settings Tab with Raman activities, NAC direction and EO enabled." src="_images/settings-raman-eo.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">The Settings Tab</span><a class="headerlink" href="#id5" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">The Settings Tab with NAC and EO diagnostics enabled for ZnO.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default, the Eckart conditions are applied and the 3 modes are projected out.</p>
-<p>There is an option to set the sum of the Born charge matrices to zero.  By default, this is not applied.</p>
-<dl class="simple">
-<dt>The atomic masses can be specified in a variety of ways.  They can be chosen from;</dt><dd><ul class="simple">
-<li><p>The average natural abundance</p></li>
-<li><p>The masses used by the QM/MM program</p></li>
-<li><p>The isotopic mass of the most abundant isotope</p></li>
-</ul>
-</dd>
-</dl>
-<p>If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.</p>
-<p>The width (<span class="math notranslate nohighlight">\(\sigma\)</span>) of all the absorptions can be set using the <em>Lorentzian width (sigma)</em>  spin box.</p>
-<p>Finally, the optical permittivity at zero frequency is given in the <em>Optical permittivity</em> table.  In some cases, it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table that needs changing and typing the new matrix element.</p>
-<p>When a new output file is read the atomic masses and the optical permittivity matrix are reset.</p>
-<p>The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions that do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.</p>
+<p><em>Spectroscopy type</em> selects <em>Powder Infrared</em>, <em>Powder ATR</em>, <em>Powder Raman</em>,
+<em>Crystal Infrared</em> or <em>Crystal Raman</em>. Changing it replaces the scenarios with
+one scenario of the selected type. Save a session before changing spectroscopy
+if the existing scenarios will be needed again.</p>
+<p><em>Apply Eckart conditions?</em> projects out the three translational modes of the
+dynamical matrix and is on by default. <em>Apply Born charge neutrality?</em> removes
+the sum of the Born-charge tensors and is off by default. These controls
+require the corresponding data from the reader.</p>
+<p><em>Atomic mass definition</em> offers average natural-abundance masses (the default),
+program masses, most-common-isotope masses or individually entered masses.
+The <em>Atomic masses</em> table is editable and uses amu. With a dynamical matrix,
+changing masses recalculates modes and frequencies. The input-format reference
+explains the limitations when only precomputed modes or Raman tensors are
+supplied.</p>
+<p><em>Lorentzian width (σ)</em> sets the common half-width at half maximum in cm<sup>-1</sup>,
+initially 5. Individual mode widths can be changed in the lower table. The
+<em>Optical permittivity</em> table contains the dimensionless electronic background
+tensor. Edit its elements when a value must be supplied or replaced.
+<em>Symmetrise optical permittivity?</em>, on by default for electronic-structure readers, averages it over the crystal
+point group. Experimental input leaves this off by default. Reading a new input resets input-dependent masses and permittivity.</p>
+<p>For Raman calculations, <em>Raman activity units</em> chooses polarizability-volume
+activities in Angstrom⁴/amu or activities in the internal
+<span class="math notranslate nohighlight">\(R_\epsilon\)</span> convention in Angstrom/amu. This changes the displayed
+activities, not the physical normalisation of the tensors used by scenarios.</p>
+<p>The <em>NAC Options</em> row controls the mode-table diagnostics. <em>Apply NAC</em> fills
+the LO-frequency column using the direction specified by x, y and z in the
+crystal Cartesian frame; initially it is off and the direction is (0, 0, 1).
+Use a non-zero direction. <em>Include EO correction</em> adds the nonlinear response
+to the diagnostic Raman tensors when the required data are present. It is
+initially off. These controls are separate from <em>Layer NAC mode</em> and <em>Include
+electro-optic term</em> in a Crystal Raman scenario. <em>Raman polar plot</em> opens the
+<a class="reference internal" href="#raman-polar-window"><span class="std std-ref">Raman Polar Window</span></a>.</p>
+<p>The lower table has one row per mode. The checkbox beside <em>Sigma</em> determines
+whether the mode contributes to subsequent spectra; greyed values indicate
+unselected modes. The columns show TO frequency, optional LO frequency, IR
+intensity in Debye²/Angstrom²/amu, integrated molar absorption, absorption
+maximum, and total, parallel and perpendicular Raman activities where present.
+The headers give the units. The IR quantities and the Raman activities are
+different measures of response; a Raman-active mode can have zero IR intensity.</p>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="_images/settings-infrared.png"><img alt="Settings Tab in Powder Infrared mode." src="_images/settings-infrared.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">The same input with Powder Infrared selected. Raman-specific controls are hidden.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="scenario-tabs">
-<h2>Scenario Tabs<a class="headerlink" href="#scenario-tabs" title="Link to this heading">¶</a></h2>
-<p>There are two sorts of scenario tab, one for powder calculations and one for single-crystal calculations.  By default, it is assumed that powder calculations are being performed.  There is a button (<cite>Switch to crystal scenario</cite> or <cite>Switch to powder scenario</cite>) at the bottom of the tabs which allows the user to switch between the two.</p>
-<p>Scenarios can be added or removed using the push buttons at the bottom of each <em>Scenario Tab</em>.  When a new scenario is created the settings are copied from the current scenario.</p>
-<p>There can be more than one <em>Scenario Tab</em>.  Each one specifies a particular material, method, or particle shape which will be used for the calculation of the effective medium or single crystal.  The results of the calculations will be shown in the <em>Plotting Tab</em>.</p>
-<section id="powder-scenarios">
-<h3>Powder Scenarios<a class="headerlink" href="#powder-scenarios" title="Link to this heading">¶</a></h3>
-<p>For each powder scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.</p>
-<figure class="align-default" id="id6">
-<span id="fig-scenariotab-powder"></span><a class="reference internal image-reference" href="_images/ScenarioTab-Powder.png"><img alt="_images/ScenarioTab-Powder.png" src="_images/ScenarioTab-Powder.png" style="width: 550.4px; height: 784.8000000000001px;" />
+<span id="id1"></span><h2>Scenario Tabs<a class="headerlink" href="#scenario-tabs" title="Link to this heading">¶</a></h2>
+<p>A scenario defines the sample and measurement conditions. <em>Add another
+scenario</em> copies the current scenario, allowing one variable to be changed for
+comparison. <em>Delete this scenario</em> removes it. The <em>legend</em> field names its
+curve in plots. All scenarios in a session use the spectroscopy selected in
+the Settings Tab; use that tab to change the spectroscopy.</p>
+<p><strong>Scenario types:</strong> <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared</span></a> ·
+<a class="reference internal" href="#powder-atr-gui"><span class="std std-ref">Powder ATR</span></a> ·
+<a class="reference internal" href="#crystal-infrared-gui"><span class="std std-ref">Crystal Infrared</span></a> ·
+<a class="reference internal" href="#powder-raman-gui"><span class="std std-ref">Powder Raman</span></a> ·
+<a class="reference internal" href="#crystal-raman-gui"><span class="std std-ref">Crystal Raman</span></a>.</p>
+<section id="powder-infrared-scenarios">
+<span id="powder-infrared-and-atr-scenarios"></span><span id="powder-infrared-gui"></span><h3>Powder Infrared Scenarios<a class="headerlink" href="#powder-infrared-scenarios" title="Link to this heading">¶</a></h3>
+<p>A powder scenario describes crystallites dispersed in a supporting material.
+The particle shape and the permittivities determine the effective optical
+response.</p>
+<figure class="align-default" id="id10">
+<span id="fig-scenariotab-powder"></span><a class="reference internal image-reference" href="_images/powder-infrared.png"><img alt="Powder Infrared scenario for ZnO in PTFE." src="_images/powder-infrared.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">The Scenario Tab for a Powder</span><a class="headerlink" href="#id6" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The Powder Infrared scenario, using the default PTFE support.</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>A database of material properties is opened at the start of the program.
-The default database (<em>PDielec/MaterialsDataBase.xlsx</em>) is opened although other databases can be loaded by pressing the <em>Open materials’ database</em> button.
-The open database is shown in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.</p>
-<p>Materials can have either a constant or frequency-dependent permittivity.
-In the case of frequency-dependent entries the range of frequencies which the entry covers is displayed.
-A warning is appropriate here as all of the frequency-dependent materials have been extrapolated to be valid at 0 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> and above.
-The extrapolated values are indicated in the database itself.</p>
-<p>The support matrix into which the active dielectric material is dispersed can be selected from the <em>Support matrix</em> drop-down menu.
-The selected supporting material will change the density and permittivity shown in the respective text boxes.
-For frequency-dependent entries the value of the permittivity at 0 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> is used.
-The user can edit these values independently if necessary.
-But if this is done the program assumes that the changes result in a frequency-independent permittivity.
-The <em>Support permittivity</em> consists of two inputs for the real and imaginary components of the permittivity.
-For any Mie calculation the imaginary component is ignored.</p>
-<p>The supporting medium may have bubbles of air trapped in the matrix.
-For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and the size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id71" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">18</a>]</span>.</p>
-<div class="table-wrapper colwidths-given styled-table docutils container" id="tab-air-bubbles">
-<table class="styled-table docutils align-default" id="tab-air-bubbles">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Size of air inclusion (bubbles) in polyethylene</span><a class="headerlink" href="#tab-air-bubbles" title="Link to this table">¶</a></caption>
+<p><em>Open materials’ database</em> selects an Excel materials database; the following
+line reports the current file. <em>Support matrix</em> selects an entry. Its adjacent
+read-only description reports the kind of dielectric model and, for tabulated
+entries, the frequency range. <em>Support density</em> is in g/cm³. <em>Support
+permittivity</em> shows real and imaginary parts. Editing supported matrix values
+creates a manual description; frequency-dependent database entries should be
+used within their stated range.</p>
+<p>The mass and volume fractions are displayed as percentages. Editing one
+recalculates the other using the material densities. They describe the amount
+of dielectric crystallite in the mixture. <em>% Air void volume fraction</em> and
+<em>Air void radius</em> describe additional air inclusions; the radius is in µm.
+The air-void fraction defaults to zero.</p>
+<p><em>Method</em> selects Maxwell-Garnett (default), Bruggeman, Averaged Permittivity
+or Mie. The first two are effective-medium treatments, Averaged Permittivity
+averages the response, and Mie includes finite-size spherical scattering.
+<em>Particle radius</em> and <em>Particle sigma</em> are in µm; the latter describes the
+size-distribution parameter, not the Lorentzian mode width. Their availability
+depends on the method. Use a small-particle effective-medium treatment only
+where its assumptions apply; see <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a>.</p>
+<p><em>Particle shape</em> offers Sphere, Needle, Plate and Ellipsoid. A sphere needs no
+orientation. A needle or ellipsoid uses <em>Unique direction [abc]</em> for its axis;
+a plate uses the corresponding (hkl) surface normal. <em>Ellipsoid a/b</em> is the
+axial aspect ratio, with one giving a sphere. Direction and ratio controls
+are enabled only for the relevant shape.</p>
+<p><strong>Scenario types:</strong> <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared</span></a> ·
+<a class="reference internal" href="#powder-atr-gui"><span class="std std-ref">Powder ATR</span></a> ·
+<a class="reference internal" href="#crystal-infrared-gui"><span class="std std-ref">Crystal Infrared</span></a> ·
+<a class="reference internal" href="#powder-raman-gui"><span class="std std-ref">Powder Raman</span></a> ·
+<a class="reference internal" href="#crystal-raman-gui"><span class="std std-ref">Crystal Raman</span></a>.</p>
+</section>
+<section id="powder-atr-scenarios">
+<span id="powder-atr-gui"></span><h3>Powder ATR Scenarios<a class="headerlink" href="#powder-atr-scenarios" title="Link to this heading">¶</a></h3>
+<p>Powder ATR uses the particle, support-matrix and effective-medium controls
+described under <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared Scenarios</span></a>, with additional controls for the
+ATR measurement geometry.</p>
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="_images/powder-atr.png"><img alt="Powder ATR scenario including refractive index, incidence angle and s fraction." src="_images/powder-atr.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The Powder ATR scenario adds the measurement geometry.</span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The <em>Powder ATR</em> choice adds the ATR-material refractive index, the incident
+angle in degrees, and the s-polarisation fraction. A fraction of zero is pure
+p polarisation, one is pure s, and 0.5 is an equal mixture. These controls
+specify the ATR optical geometry; they do not change the particle orientation.
+See <a class="reference internal" href="theory_powder.html#atr-theory"><span class="std std-ref">Calculation of ATR Extinction Spectra</span></a> for the calculation.</p>
+<p><strong>Scenario types:</strong> <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared</span></a> ·
+<a class="reference internal" href="#powder-atr-gui"><span class="std std-ref">Powder ATR</span></a> ·
+<a class="reference internal" href="#crystal-infrared-gui"><span class="std std-ref">Crystal Infrared</span></a> ·
+<a class="reference internal" href="#powder-raman-gui"><span class="std std-ref">Powder Raman</span></a> ·
+<a class="reference internal" href="#crystal-raman-gui"><span class="std std-ref">Crystal Raman</span></a>.</p>
+</section>
+<section id="crystal-infrared-scenarios">
+<span id="crystal-infrared-gui"></span><h3>Crystal Infrared Scenarios<a class="headerlink" href="#crystal-infrared-scenarios" title="Link to this heading">¶</a></h3>
+<p>A crystal scenario describes a stack of planar layers between a superstrate
+and substrate. The <em>Dielectric layer</em> uses the calculation loaded in Main;
+other materials are selected from the database.</p>
+<figure class="align-default" id="id12">
+<span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/crystal-infrared.png"><img alt="Crystal Infrared scenario with air, ZnO and air layers." src="_images/crystal-infrared.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The Crystal Infrared scenario for air / ZnO / air.</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><em>Single crystal methodology</em> selects Transfer matrix or Scattering matrix.
+The default Scattering matrix is useful for avoiding numerical problems with
+strongly absorbing or thick layers. <em>Global azimuthal angle</em> rotates the stack
+about its surface normal; <em>Angle of incidence</em> measures the incoming beam
+from that normal. Both angles are in degrees and initially zero.</p>
+<p>Under <em>Layer information</em>, each row represents a layer. <em>Material</em> opens the
+layer editor. <em>Thickness</em> and <em>Units</em> set the finite-layer thickness; the
+semi-infinite superstrate and substrate do not have an editable optical
+thickness. H, K and L specify the crystalline surface normal, and <em>Azimuthal</em>
+rotates that layer about the normal. These orientation fields do not apply to
+isotropic materials.</p>
+<p><em>Options</em> selects the layer’s optical coherence treatment. <em>Coherent</em> retains
+phase interference; <em>Incoherent (intensity)</em> combines intensities,
+<em>Incoherent (phase averaging)</em> averages optical phases, and
+<em>Incoherent (non-reflective)</em> describes a thick non-reflective medium. These optical options are distinct from Raman depth and layer coherence.
+The up/down arrows move a layer within the stack; the cross deletes it.
+<em>New layer…</em> adds a material selected from the database. Check the layer
+order after making changes.</p>
+<section id="the-layer-editor">
+<span id="id2"></span><h4>The Layer Editor<a class="headerlink" href="#the-layer-editor" title="Link to this heading">¶</a></h4>
+<p>Press a <em>Material</em> button to edit the corresponding layer.</p>
+<figure class="align-default" id="id13">
+<span id="fig-layer-editor-window"></span><a class="reference internal image-reference" href="_images/layer-crystal.png"><img alt="Layer editor showing ZnO thickness, hkl, azimuth and laboratory coordinates." src="_images/layer-crystal.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">The layer editor for crystalline ZnO.</span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><em>Layer type</em> and <em>Material</em> identify the layer being edited. <em>Thickness</em> and
+its unit selector describe the finite layer. For a crystal, hkl and
+<em>Azimuthal</em> set the surface and rotation. The <em>Lab frame information</em> output
+shows the lattice vectors in laboratory coordinates and their relation to
+the surface. It is not a second set of editable lattice parameters.</p>
+<p>The laboratory Z-axis is normal to the surface and the incidence plane is XZ.
+p-polarised light lies in this plane; s-polarised light is perpendicular to it.
+The relationship is described in <a class="reference internal" href="theory_single_crystal.html#crystal-and-laboratory-coordinates"><span class="std std-ref">Crystal &amp; Laboratory Coordinate Frames</span></a>.
+<em>OK</em> accepts the layer changes and <em>Cancel</em> discards them.</p>
+<figure class="align-default" id="id14">
+<a class="reference internal image-reference" href="_images/layer-isotropic.png"><img alt="Isotropic layer editor without crystallographic orientation controls." src="_images/layer-isotropic.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">An isotropic material does not require crystallographic orientation controls.</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>Scenario types:</strong> <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared</span></a> ·
+<a class="reference internal" href="#powder-atr-gui"><span class="std std-ref">Powder ATR</span></a> ·
+<a class="reference internal" href="#crystal-infrared-gui"><span class="std std-ref">Crystal Infrared</span></a> ·
+<a class="reference internal" href="#powder-raman-gui"><span class="std std-ref">Powder Raman</span></a> ·
+<a class="reference internal" href="#crystal-raman-gui"><span class="std std-ref">Crystal Raman</span></a>.</p>
+</section>
+</section>
+<section id="powder-raman-scenarios">
+<span id="powder-raman-gui"></span><h3>Powder Raman Scenarios<a class="headerlink" href="#powder-raman-scenarios" title="Link to this heading">¶</a></h3>
+<p>The <em>Powder Raman</em> scenario averages scattering over crystallite orientations
+and includes the particle’s local optical fields. It requires Raman tensors
+from the loaded calculation. The theory is described in
+<a class="reference internal" href="PowderRaman.html#powder-raman-theory"><span class="std std-ref">Theory for Powder Raman</span></a>.</p>
+<figure class="align-default" id="id15">
+<a class="reference internal image-reference" href="_images/powder-raman.png"><img alt="Powder Raman scenario with VV polarisation and electro-optic correction enabled." src="_images/powder-raman.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">ZnO spheres in air with the EO correction enabled.</span><a class="headerlink" href="#id15" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The database, support material, density, complex permittivity, mass/volume
+fractions and particle-shape controls have the meanings given for powder
+infrared scenarios. The example uses 10% volume fraction. <em>Laser wavelength</em>
+is in nm, initially 785; the figures use 532. <em>Raman laser polarisation</em>
+selects VV (parallel, the default), VH or HV (crossed), or Unpolarised.
+<em>Temperature</em> is in K, initially 298, and determines the thermal population
+factor.</p>
+<p><em>Include electro-optic term</em> adds the finite-particle EO contribution to the
+Raman tensors using the particle’s depolarisation field. It is off by default
+and explicitly enabled here. The input must contain nonlinear susceptibility
+as well as the response needed for the particle phonon correction. Enabling
+the checkbox cannot supply missing data. The CASTEP ZnO example contains this
+response, and switching EO off gives a different spectrum.</p>
+<p><em>Orientation samples</em> selects the number of numerical orientations for
+non-spherical particles, from 4 to 4096, initially 512. Increase it to check
+convergence of an anisotropic particle average. Spheres do not need this
+numerical sampling. Particle shape can affect both the mode frequencies and
+the Raman response, so a change in shape is not simply a rescaling of peaks.</p>
+<figure class="align-default" id="id16">
+<a class="reference internal image-reference" href="_images/powder-raman-ellipsoid.png"><img alt="Powder Raman ellipsoid controls with direction and aspect ratio enabled." src="_images/powder-raman-ellipsoid.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Selecting Ellipsoid enables the unique-axis and aspect-ratio controls.</span><a class="headerlink" href="#id16" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>Scenario types:</strong> <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared</span></a> ·
+<a class="reference internal" href="#powder-atr-gui"><span class="std std-ref">Powder ATR</span></a> ·
+<a class="reference internal" href="#crystal-infrared-gui"><span class="std std-ref">Crystal Infrared</span></a> ·
+<a class="reference internal" href="#powder-raman-gui"><span class="std std-ref">Powder Raman</span></a> ·
+<a class="reference internal" href="#crystal-raman-gui"><span class="std std-ref">Crystal Raman</span></a>.</p>
+</section>
+<section id="crystal-raman-scenarios">
+<span id="crystal-raman-gui"></span><h3>Crystal Raman Scenarios<a class="headerlink" href="#crystal-raman-scenarios" title="Link to this heading">¶</a></h3>
+<p>The <em>Crystal Raman</em> scenario calculates laser and reciprocal scattered fields
+in a layered sample and combines them with the Raman tensors. The common
+optical method and incidence controls are followed by Raman controls, the
+layer table, and the azimuthal sweep controls at the bottom.</p>
+<figure class="align-default" id="id17">
+<a class="reference internal image-reference" href="_images/crystal-raman.png"><img alt="Crystal Raman scenario showing Snell's law EO, p/p polarisation, layers and sweep controls." src="_images/crystal-raman.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">A 1 µm ZnO layer with p/p backscattering and Snell’s law (EO).</span><a class="headerlink" href="#id17" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><em>Laser wavelength</em> is in nm (default 532) and <em>Temperature</em> is in K (default
+298). <em>Integration density</em> sets the depth quadrature density in points/µm.
+The default is 20 and the example uses 40; doubling it to 80 changes this spectrum negligibly.
+Convergence depends on the layer thickness and optical fields, so check it
+for a different sample.</p>
+<p><em>Polarisation</em> contains the incident (<em>in</em>) and detected (<em>out</em>) choices.
+The defaults are p/p; s is perpendicular to the incidence plane and
+Unpolarised detection sums the two detector channels as intensities.
+Alternatively enter <em>Porto</em> notation and press <em>Apply</em>. This sets a
+normal-incidence geometry, surface direction and polarisations; the selectors
+then show <em>porto</em>. For example, <code class="docutils literal notranslate"><span class="pre">x(yy)-x</span></code> denotes backscattering with y-in/y-out.
+The common shorthand <code class="docutils literal notranslate"><span class="pre">x(yy)x</span></code> is also interpreted as backscattering;
+<code class="docutils literal notranslate"><span class="pre">x(yy)+x</span></code> explicitly requests forward scattering. Compound polarisations use
+comma-separated expressions, for example <code class="docutils literal notranslate"><span class="pre">z(x+y,x+y)z</span></code>.</p>
+<p><em>Collection side</em> chooses superstrate (backscattering, default) or substrate
+(forward scattering). <em>Collection angle</em> is in degrees. The default −1 is
+automatic: retro-backscattering on the superstrate side or collinear forward
+scattering on the substrate side. An explicit angle equal to the incidence
+angle specifies specular reflection. The distinction matters at oblique
+incidence.</p>
+<p><em>Depth coherence</em> selects Coherent amplitude or Incoherent intensity. The
+former adds amplitudes through a layer before squaring; it requires an
+appropriate phase-coherent phonon model. The latter integrates local
+intensities. <em>Layer combination</em> separately specifies Incoherent intensities
+or Coherent amplitudes between active layers. Incoherent depth forces
+incoherent layer combination and disables that selector. The default depth choice is Coherent amplitude and the default layer
+combination is Incoherent intensities. The introductory example uses
+incoherent intensity at both levels. Thin optical layers alone
+do not establish coherent spontaneous Raman emission.</p>
+<p><em>Include electro-optic term</em> is on by default for crystal Raman. It uses the
+input nonlinear susceptibility to correct the Raman tensor of a polar mode.
+The <em>Layer NAC mode</em> chooses the phonon-frequency treatment:</p>
+<div class="table-wrapper colwidths-given docutils container" id="id18">
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Layer NAC choices</span><a class="headerlink" href="#id18" title="Link to this table">¶</a></caption>
 <colgroup>
-<col style="width: 33.3%" />
-<col style="width: 33.3%" />
-<col style="width: 33.3%" />
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head right-align no-left-divider no-right-divider"><p>PE Sphere Diameter (μ)</p></th>
-<th class="head right-align no-left-divider no-right-divider"><p>Porosity (%)</p></th>
-<th class="head right-align no-left-divider"><p>Void radius (μ)</p></th>
+<tr class="row-odd"><th class="head"><p>Choice</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="right-align no-left-divider no-right-divider"><p>60</p></td>
-<td class="right-align no-left-divider no-right-divider"><p>24</p></td>
-<td class="right-align no-left-divider"><p>24.0</p></td>
+<tr class="row-even"><td><p>TO</p></td>
+<td><p>Use bulk transverse-optic frequencies without the polar correction.
+The EO term is not applied in this mode.</p></td>
 </tr>
-<tr class="row-odd"><td class="right-align no-left-divider no-right-divider"><p>72</p></td>
-<td class="right-align no-left-divider no-right-divider"><p>25</p></td>
-<td class="right-align no-left-divider"><p>28.0</p></td>
+<tr class="row-odd"><td><p>Snell’s law</p></td>
+<td><p>Use the macroscopic scattering geometry to determine the phonon
+wavevector for the non-analytic correction. This is the default.</p></td>
 </tr>
-<tr class="row-even"><td class="right-align no-left-divider no-right-divider"><p>360</p></td>
-<td class="right-align no-left-divider no-right-divider"><p>44.5</p></td>
-<td class="right-align no-left-divider"><p>90.0</p></td>
+<tr class="row-even"><td><p>Dominant mode</p></td>
+<td><p>Use the dominant internal optical eigenmode to determine that direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>All modes</p></td>
+<td><p>Resolve incident/scattered internal propagation-channel pairs, allowing
+more than one corrected frequency for an original TO mode.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The size of the air inclusions (bubbles) can be specified in the <em>Scenario Tab</em> along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given, the scattering due to the air inclusions is calculated before the effective medium calculation is performed.
-The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculate the scattering using the Waterman-Truell approximation.</p>
-<p>The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).
-If the matrix support density is changed the calculated mass fraction will be updated.
-It is assumed that the volume fraction has precedence.
-If an air void volume fraction is supplied then this is taken account of in the calculation of the volume and mass fractions.</p>
-<p>The calculation of the effective medium can be performed using a variety of methods which can be chosen from the <em>Method</em> drop-down menu.
-If the <em>Mie</em> method is chosen the user can enter the particles’ radius (μ).
-<em>Particle sigma</em> specifies the width of a log-normal distribution.
-If the width is 0.0 no sampling of the distribution is performed.</p>
-<p>For effective medium theories, the particle shape can be specified using the <em>Shape</em> pull-down menu.
-Possible shapes are <em>Sphere</em>, <em>Needle</em>, <em>Plate</em> and <em>Ellipsoid</em>.
-For the cases of <em>Needle</em> and <em>Ellipsoid</em> the unique direction is specified by a direction [abc] in lattice units.
-In the case of <em>Plate</em> the unique direction is specified as the normal to a plane (hkl) in recipricol lattice units.
-If an <em>Ellipsoid</em> shape is used the eccentricity factor can be specified in the <em>Ellipsoid a/b eccentricity</em> text box.</p>
-<p>The plot in the <em>Plotting Tab</em> has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the <em>Scenario legend</em>.</p>
-</section>
-<section id="single-crystal-scenarios">
-<h3>Single-Crystal Scenarios<a class="headerlink" href="#single-crystal-scenarios" title="Link to this heading">¶</a></h3>
-<p>As in the powder scenario, a single-crystal scenario has an option to open a new database of materials.
-By default, the program opens the default database distributed with the program.</p>
-<p>The mode of calculation is determined by the <em>Single crystal methodology</em> option.  Possible options are; <em>Transfer matrix</em> and <em>Scattering matrix</em>.
-Details of the theory underlying each method are given in the theory section: <a class="reference internal" href="theory_single_crystal.html#single-crystal-theory"><span class="std std-ref">Theory for Single Crystal Infrared Optics</span></a>.
-The transfer matrix is faster and all the available methods for treating incoherence are available.  The scattering matrix method is slower and the option to treat incoherence by using intensities is not available, but it is much more stable when treating thick films.
-Single-crystal films are defined by a surface determined by the (hkl) settings.</p>
-<figure class="align-default" id="id7">
-<span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/ScenarioTab-SingleCrystal.png"><img alt="_images/ScenarioTab-SingleCrystal.png" src="_images/ScenarioTab-SingleCrystal.png" style="width: 726.4000000000001px; height: 784.8000000000001px;" />
+<p>The last three choices acquire an <em>(EO)</em> suffix when the nonlinear response
+is available and the EO option is enabled. The selected example therefore
+shows <em>Snell’s law (EO)</em>. These phonon corrections are separate from solving
+optical propagation with the transfer/scattering matrix. See
+<a class="reference internal" href="CrystalRaman.html#crystal-raman-theory"><span class="std std-ref">Theory for Crystal Layer Raman</span></a> for the assumptions and equations.</p>
+<figure class="align-default" id="id19">
+<a class="reference internal image-reference" href="_images/crystal-raman-all-modes.png"><img alt="All modes EO selection exposing modal-pair combination, final-state model and q-angle tolerance." src="_images/crystal-raman-all-modes.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The Scenario Tab for a Single Crystal</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">The additional controls shown for All modes (EO).</span><a class="headerlink" href="#id19" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The method of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
-The global azimuthal angle controls the rotation of all the layers around the laboratory Z-axis, although each layer also has its own azimuthal angle as will be described later.</p>
-<p>The layer information is provided as a spread-sheet of materials, with the specification of the thickness of the layer, the (hkl) parameters of the surface, the azimuthal angle of the layer and an option to treat the layer coherently or incoherently.
-The material at the top of the list is the superstrate, which should be isotropic and non-absorbing.  It is treated as a semi-infinite material.
-The material at the bottom of the list is the substrate, which is also semi-infinite.  Although, if only reflectance information is needed, this can be an anisotropic, absorbing material.
-The layer in-between is initially set to the DFT dielectric material.
-New layers can be added by pressing the <em>New layer…</em> button and choosing from what is available in the database.
-The position of the layers can be adjusted by pressing the up and down buttons and a layer can be removed by pressing the <em>delete</em> button.
-There are options to treat the layer, coherently or incoherently available from the <em>Options</em> pull down.</p>
-<p>Pressing the button which shows the name of the material, brings up the layer editor window for that material, which is described in more detail below.</p>
-<p>Finally, there is a legend that can be provided for the Plotting Tab.</p>
-<section id="the-layer-editor">
-<span id="id2"></span><h4>The Layer Editor<a class="headerlink" href="#the-layer-editor" title="Link to this heading">¶</a></h4>
-<p>To see more details of a crystalline layer in the system press the <em>Material</em> button of the material of interest.
-This brings up a new window, which shows more information about the layer.
-A useful feature of the <em>layer editor</em> is that it shows the connection between the crystal and laboratory coordinate systems.
-The laboratory axes are defined with Z- being normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane.
-The incident radiation is assumed to be at an angle <span class="math notranslate nohighlight">\(\theta\)</span> to the normal.
-p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle <span class="math notranslate nohighlight">\(\phi\)</span> defines the rotation of the crystal around the Z-axis.
-To help understand the relationship between the crystal and laboratory coordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
-A more complete description of the relationship between the coordinate systems is given in <a class="reference internal" href="theory_single_crystal.html#crystal-and-laboratory-coordinates"><span class="std std-ref">Crystal &amp; Laboratory Coordinate Frames</span></a></p>
-<figure class="align-default" id="id8">
-<span id="fig-layer-editor-window"></span><a class="reference internal image-reference" href="_images/layer-editor-window.png"><img alt="_images/layer-editor-window.png" src="_images/layer-editor-window.png" style="width: 448.0px; height: 325.6px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The layer editor</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
+<p><em>Modal pair combination</em> offers Group q channels (default), Incoherent pairs
+and Coherent all pairs. Group q channels combines amplitudes for the same
+phonon final state before summing intensities over different states. The other
+two choices are diagnostic alternatives. <em>Modal-pair final-state model</em>
+distinguishes Bulk phase matched from Local incoherent for incoherent-depth,
+grouped-q calculations. In the bulk model <em>Modal pair q-angle tolerance</em>,
+initially 90°, controls the accepted directions relative to the external
+momentum transfer. It is inactive for Local incoherent. Controls are enabled
+only where their combination is meaningful; a hidden All modes control does
+not change the Snell’s-law calculation.</p>
+<p>The layer-table columns and editor are shared with Crystal Infrared. Raman
+response comes from the active dielectric layer; a database optical material
+does not acquire Raman tensors merely by being inserted into the stack.</p>
+<p>Under <em>Azimuthal sweep</em>, <em>Sweep points</em> specifies equally spaced angles over
+0–360°, excluding the repeated endpoint, initially 36. <em>Plot azimuthal sweep</em>
+calculates the selected geometry at those angles and opens the
+<a class="reference internal" href="#azimuthal-sweep-window"><span class="std std-ref">Azimuthal Sweep Window</span></a>. Run a spectrum first to define the frequency
+axis. Each new sweep opens a separate result window.</p>
+<p><strong>Scenario types:</strong> <a class="reference internal" href="#powder-infrared-gui"><span class="std std-ref">Powder Infrared</span></a> ·
+<a class="reference internal" href="#powder-atr-gui"><span class="std std-ref">Powder ATR</span></a> ·
+<a class="reference internal" href="#crystal-infrared-gui"><span class="std std-ref">Crystal Infrared</span></a> ·
+<a class="reference internal" href="#powder-raman-gui"><span class="std std-ref">Powder Raman</span></a> ·
+<a class="reference internal" href="#crystal-raman-gui"><span class="std std-ref">Crystal Raman</span></a>.</p>
 </section>
 </section>
 <section id="plotting-tab">
 <h2>Plotting Tab<a class="headerlink" href="#plotting-tab" title="Link to this heading">¶</a></h2>
-<p>The <em>Plotting Tab</em> controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
-The plots available depend on the availability of powder and single-crystal scenarios.</p>
-<figure class="align-default" id="id9">
-<span id="fig-plottingtab-powder"></span><a class="reference internal image-reference" href="_images/PlottingTab-Powder.png"><img alt="_images/PlottingTab-Powder.png" src="_images/PlottingTab-Powder.png" style="width: 545.6px; height: 774.4000000000001px;" />
+<p>The <em>Plotting Tab</em> displays the calculated scenarios together.</p>
+<figure class="align-default" id="id20">
+<span id="fig-plottingtab-powder"></span><a class="reference internal image-reference" href="_images/plotting-powder-infrared.png"><img alt="Plotting Tab showing a ZnO powder infrared spectrum." src="_images/plotting-powder-infrared.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The Plotting Tab Showing Powder Absorption</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">The Plotting Tab for Powder Infrared.</span><a class="headerlink" href="#id20" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maximum frequencies at the interval specified.</p>
-<p>By default, the calculation uses moles of unit cells for the molar absorption coefficient.  This can be altered using the the <em>Molar definition</em> pull-down menu.  Options include <em>Unit cells</em>, <em>Atoms</em> and <em>Molecules</em>.  In the case of <em>Molecules</em>, it is necessary to supply the number of atoms in a formula unit of the compound in the <em>Number of atoms per molecule</em> text box.</p>
-<p>The title of the plot can be supplied by entering it into the <em>Plot title</em> text box and the frequency units used for the plot can also be changed from <em>wavenumber</em> to <em>THz</em>.</p>
-<p>For powder scenarios, the molar absorption, the absorption, and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.</p>
-<p>For single-crystal plots, the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as <span class="math notranslate nohighlight">\(1-R-T\)</span>.
-For thick slabs, only the reflactance is of any relevance.  For thin films, absorptance is useful as it removes some of the oscillations that occur in the transmittance or reflectance due to the film thickness.</p>
-<figure class="align-default" id="id10">
-<span id="fig-plottingtab-singlecrystal"></span><a class="reference internal image-reference" href="_images/PlottingTab-SingleCrystal.png"><img alt="_images/PlottingTab-SingleCrystal.png" src="_images/PlottingTab-SingleCrystal.png" style="width: 545.6px; height: 774.4000000000001px;" />
+<p><em>Frequency min, max and increment</em> set the calculation grid. The adjacent
+unit selector offers wavenumber, THz, GHz and wavelength units from Angstrom
+to metres. Zero is not a valid wavelength. For Raman, use wavenumber to show
+Raman shifts unambiguously. A sufficiently small increment is needed to
+resolve narrow peaks.</p>
+<p><em>Molar definition</em> chooses Unit cells, Atoms or Molecules for molar absorption;
+<em>Number of atoms per molecule</em> supplies the molecular conversion. These
+controls do not set the normalisation of a Raman tensor. <em>Choose plot type</em>
+offers quantities appropriate to the spectroscopy: powder absorption or
+permittivity, ATR response, crystal reflectance/transmittance/absorptance,
+or Raman intensity.</p>
+<p><em>Spectrum renormalisation</em> offers none, max=1 and area=1. Crystal Raman also
+offers layer depth to divide by active-layer depth. Use none when comparing
+absolute calculated scales between scenarios; independently normalising curves
+can obscure an EO or thickness effect. Raman intensities are reported in
+arbitrary units, not calibrated experimental cross sections.</p>
+<figure class="align-default" id="id21">
+<span id="fig-plottingtab-singlecrystal"></span><a class="reference internal image-reference" href="_images/plotting-crystal-infrared.png"><img alt="Crystal Infrared plot with its available optical response selection." src="_images/plotting-crystal-infrared.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">The Plotting Tab showing Single-Crystal results</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">The Plotting Tab for Crystal Infrared.</span><a class="headerlink" href="#id21" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The title of the plot can be supplied by entering it into the <em>Plot title</em> text box and the frequency units used for the plot can also be changed other units including <em>wavenumber</em>, <em>THz</em> or a wavelength such as <em>cm</em>, <em>mm</em> or <em>um</em>.  A default plot title is generated giving information about the type of plot being viewed.</p>
+<figure class="align-default" id="id22">
+<a class="reference internal image-reference" href="_images/plotting-crystal-raman.png"><img alt="Crystal Raman spectrum calculated with the EO correction." src="_images/plotting-crystal-raman.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">The ZnO Crystal Raman spectrum with EO enabled.</span><a class="headerlink" href="#id22" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id23">
+<a class="reference internal image-reference" href="_images/plotting-powder-raman.png"><img alt="Powder Raman spectrum calculated with VV polarisation and EO correction." src="_images/plotting-powder-raman.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">The corresponding Powder Raman spectrum.</span><a class="headerlink" href="#id23" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><em>Select scenarios…</em> opens a table with a <em>Plot</em> checkbox, scenario number
+and legend for each scenario. <em>OK</em> applies the selection; <em>Cancel</em> keeps it.
+The text beside the button reports how many are selected. <em>Update plot</em>
+refreshes the calculations and figure, with <em>Calculation progress</em> reporting
+completion. The Matplotlib toolbar provides Home, back/forward view history,
+pan, zoom, subplot/curve configuration and image saving; these are display
+operations and do not change the scenario physics.</p>
+<figure class="align-default" id="id24">
+<a class="reference internal image-reference" href="_images/select-scenarios.png"><img alt="Select scenarios dialog with Plot checkbox, scenario number and legend." src="_images/select-scenarios.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Choosing which scenarios appear in the plot.</span><a class="headerlink" href="#id24" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="analysis-tab">
 <h2>Analysis Tab<a class="headerlink" href="#analysis-tab" title="Link to this heading">¶</a></h2>
-<p>The <em>Analysis Tab</em> shows a breakdown of the phonon modes into molecular components or internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be specified individually if needed.  The <em>Analysis Tab</em> shows the number of molecules that have been found in the analysis.</p>
-<figure class="align-default" id="id11">
-<span id="fig-analysistab"></span><a class="reference internal image-reference" href="_images/AnalysisTab.png"><img alt="_images/AnalysisTab.png" src="_images/AnalysisTab.png" style="width: 545.6px; height: 774.4000000000001px;" />
+<p>The <em>Analysis Tab</em> decomposes normal-mode motion into internal and external
+components or molecular contributions. It needs atomic positions and normal
+modes, rather than a permittivity-only input.</p>
+<figure class="align-default" id="id25">
+<span id="fig-analysistab"></span><a class="reference internal image-reference" href="_images/analysis.png"><img alt="Analysis Tab showing frequency range, bonding criteria and mode decomposition." src="_images/analysis.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">The Analysis Tab</span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">The Analysis Tab for ZnO.</span><a class="headerlink" href="#id25" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The bar graph shows a breakdown of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell are displayed in the <em>3D Viewer Tab</em></p>
+<p><em>Minimum frequency</em> and <em>Maximum frequency</em> select modes in cm<sup>-1</sup>.
+<em>Bonding scale and tolerance</em> identify connected atoms using a distance cutoff
+of scale × (radius i + radius j) + tolerance; tolerance and <em>Atomic radii</em>
+are in Angstrom. The defaults are scale 1.1 and tolerance 0.1. Edit the
+individual radii in the table where a different bonding description is needed.
+<em>Number of molecules found</em> is an output of that connectivity analysis. In an
+extended crystal a connected group should not automatically be interpreted
+as an isolated molecule.</p>
+<p><em>Bar width</em> (default 0.5) controls the appearance of the bars and <em>Plot title</em>
+sets the heading. <em>Choose the plot type</em> switches between Internal vs External
+and Molecular Composition. Neither option changes the phonon frequencies.
+The figure toolbar has the same navigation and saving actions as Plotting.
+See <a class="reference internal" href="analysis.html"><span class="doc">Phonon Analysis</span></a> for the interpretation of the decomposition.</p>
 </section>
 <section id="d-viewer-tab">
 <h2>3D Viewer Tab<a class="headerlink" href="#d-viewer-tab" title="Link to this heading">¶</a></h2>
-<p>The <em>3D Viewer Tab</em> shows the unit cell of the system using the molecular information and atomic sizes from the <em>Analysis Tab</em>.</p>
-<p>The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.  A series of CIF files can also be generated which follows the motion of the mode being studied.</p>
-<figure class="align-default" id="id12">
-<span id="fig-viewertab"></span><a class="reference internal image-reference" href="_images/ViewerTab.png"><img alt="_images/ViewerTab.png" src="_images/ViewerTab.png" style="width: 545.6px; height: 774.4000000000001px;" />
+<p>The <em>3D Viewer</em> displays atomic structure and phonon displacements using the
+bonding information from Analysis.</p>
+<figure class="align-default" id="id26">
+<span id="fig-viewertab"></span><a class="reference internal image-reference" href="_images/viewer.png"><img alt="ZnO unit cell and displacement arrows in the OpenGL viewer." src="_images/viewer.png" style="width: 100%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">The 3D Viewer Tab</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">The 3D Viewer showing a ZnO phonon.</span><a class="headerlink" href="#id26" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.  The unit cell can be shown as a supercell by altering the a, b, c parameters in the settings tab.  Other parameters affecting the display can also be modified.</p>
-</section>
-<section id="fitter-tab">
-<h2>Fitter Tab<a class="headerlink" href="#fitter-tab" title="Link to this heading">¶</a></h2>
-<p>The <em>Fitter Tab</em> imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm<sup>-1</sup> and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single-crystal properties.
-Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the <em>plotting tab</em>.
-Indeed the calculated signal used for fitting is the same as that being shown in the <em>plotting tab</em>.
-At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition, there are options to change the <em>Plot type</em>, include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use independent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specify the spectral difference threshold.
-The spectrum is shown at the bottom of the tab and is recalculated when the <em>Replot</em> or <em>Replot with frequency shift</em> buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the <em>Plot and data type</em> setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
-If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the <em>HP filter lambda</em> tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.</p>
-<figure class="align-default" id="id13">
-<span id="fig-fitter"></span><a class="reference internal image-reference" href="_images/FitterTab.png"><img alt="_images/FitterTab.png" src="_images/FitterTab.png" style="width: 545.6px; height: 774.4000000000001px;" />
-</a>
-<figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">The Fitter Tab</span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
-</figcaption>
-</figure>
-<p>After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The <em>Replot with frequency shift</em> shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.</p>
-<p>It is also possible to automatically adjust the Lorentzian width factors with the <em>Perform fitting</em> button.
-However, experience with this option shows that it may be better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjusted too.</p>
-<p>Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).</p>
-<p>A summary of the optional settings available in the <em>Fitter Tab</em> is shown below;</p>
-<div class="table-wrapper colwidths-given styled-table docutils container" id="fitter-tab-options">
-<table class="styled-table docutils align-default" id="fitter-tab-options">
-<caption><span class="caption-number">Table 4 </span><span class="caption-text">Fitter Tab options</span><a class="headerlink" href="#fitter-tab-options" title="Link to this table">¶</a></caption>
+<p><em>Select phonon mode</em> selects a numbered mode; the disabled <em>Frequency</em> box
+reports its frequency in cm<sup>-1</sup>. <em>Choose the plot type</em> selects Animation,
+Arrows or No arrows or animation. Mouse movement and the wheel
+rotate and magnify the view. The <em>Settings</em> strip contains the following tabs;
+use its arrows to reach those outside the available width.</p>
+<div class="table-wrapper colwidths-given docutils container" id="id27">
+<table class="docutils align-default" id="id27">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Viewer settings</span><a class="headerlink" href="#id27" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 75.0%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head left-align no-left-divider no-right-divider"><p>Fitter options</p></th>
-<th class="head left-align no-left-divider no-right-divider"><p>Description</p></th>
+<tr class="row-odd"><th class="head"><p>Tab</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Experimental spectrum</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Provide a file with the experimental
-data. A return brings up a file manager</p></td>
+<tr class="row-even"><td><p>Elements</p></td>
+<td><p>Element buttons open colour selectors for the atomic spheres.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>Scenario</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Allows the user to choose which
-will be used in the fitting</p></td>
+<tr class="row-odd"><td><p>Colours</p></td>
+<td><p>Separate colours for background, cell outline, bonds and displacement arrows.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Frequency scaling factor</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>The calculated frequencies are scaled</p></td>
+<tr class="row-even"><td><p>Atom Size</p></td>
+<td><p>Scale factor multiplying the covalent radii for displayed sphere sizes.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>No. of iterations</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Number of iterations for automatic
-fitting</p></td>
+<tr class="row-odd"><td><p>Super Cell</p></td>
+<td><p>Integer repetitions along a, b and c of the original DFT cell.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Independent y-axes</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>The calculated spectrum uses the left
-axis and the experimental the right</p></td>
+<tr class="row-even"><td><p>Transform</p></td>
+<td><p>Open the cell-transformation matrix editor described below.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>Fitting type</p></td>
-<td class="left-align no-left-divider no-right-divider"><dl class="simple">
-<dt>Refers to the method used for automatically fitting</dt><dd><ul class="simple">
-<li><p>minimise x-correlation</p></li>
-<li><p>minimise spectral difference</p></li>
-</ul>
-</dd>
-</dl>
-</td>
+<tr class="row-odd"><td><p>Surface</p></td>
+<td><p>hkl chooses a surface normal and uvw an in-plane direction for the view.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Optimise scaling</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Tick if frequency scaling is to be included in the
-automatic optimisation</p></td>
+<tr class="row-even"><td><p>Lighting</p></td>
+<td><p>Switch light sources 0–7 on or off.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>Spectral difference
-threshold</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Used if fitting type is minimise spectral difference</p></td>
+<tr class="row-odd"><td><p>Toggles</p></td>
+<td><p>Turn cell labels, the cell outline, the orientation indicator, bonds
+and atoms on or off using the selector.</p></td>
 </tr>
-<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Baseline removal?</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Tick to request that the Hodrick-Prescott (HP)
-method is used to remove a sloping baseline
-in the experimental data</p></td>
+<tr class="row-even"><td><p>Displacement</p></td>
+<td><p>Maximum displayed phonon displacement; controls visual scale, not a
+thermal displacement amplitude.</p></td>
 </tr>
-<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>HP filter Lambda</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>Provide the lambda value in the HP method</p></td>
+<tr class="row-odd"><td><p>Bond Radius</p></td>
+<td><p>Radius of displayed bond cylinders in Angstrom.</p></td>
+</tr>
+<tr class="row-even"><td><p>Cell Radius</p></td>
+<td><p>Radius of the cell-outline cylinders in Angstrom.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Arrow Radius</p></td>
+<td><p>Radius of displacement arrows in Angstrom.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<section id="scripting">
-<h3>Scripting<a class="headerlink" href="#scripting" title="Link to this heading">¶</a></h3>
-<p>Nearly all aspects of the program can be accessed through scripting.
-The script is provided by the <em>-script</em> command line option or by choosing the PDGui (*.py) file type from the file manager on the <em>Main tab</em>.
-A very useful feature is the ability to save a script that reflects the current state of the program.  This is available from the <em>Main tab</em>.</p>
-<p>There are several things to be aware of when using this option to read in settings from one calculation into another.
-The file will contain parameters that have been calculated whilst reading the input file.
-For example, the optical permittivities are calculated and stored in this file.
-If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in one calculation but they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed.</p>
-</section>
-</section>
-<section id="parallelisation-and-threads">
-<h2>Parallelisation and threads<a class="headerlink" href="#parallelisation-and-threads" title="Link to this heading">¶</a></h2>
-<p>To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default, this parallelisation spawns additional Python executables, depending on the number of cores available.</p>
-<p>In addition to this form of parallelisation the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimised BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
-<p>In the case of Phonopy, the dynamical matrix is read from a yaml file. This is very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts to the Python parser.</p>
-<p>Finally, the use of non-standard BLAS libraries seems to cause problems with the affinity settings for multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. To prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
-<blockquote>
-<div><p>export OPENBLAS_MAIN_FREE=1</p>
-</div></blockquote>
-<p>For some reason, this also works if the MKL library is being used.</p>
-<p>There have been issues in running PDielec on Catalina, MacOS.
-This appears to be due to the multiprocessing features of Python not working as expected on this operating system.
-A workaround is to use;</p>
-<blockquote>
-<div><p>pdgui -threads -cpu 1</p>
-</div></blockquote>
-<p>This runs the program on a single processor using the threading library for multiprocessing.
-Sometimes it is more convenient to set these using the environment.  Two environment variables are read before any command line options are processed;</p>
-<blockquote>
-<div><p>export PDIELEC_NUM_PROCESSORS=4</p>
-</div></blockquote>
-<p>will run <cite>pdgui</cite> on 4 processors.  By default, the number of processors is determined by interrogating the computer.  This is achieved, by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
-<blockquote>
-<div><p>export PDIELEC_THREADING=TRUE</p>
-</div></blockquote>
-<p>will run <cite>pdgui</cite> using the threading multiprocessing options.</p>
-</section>
-<section id="performance">
-<span id="id3"></span><h2>Performance<a class="headerlink" href="#performance" title="Link to this heading">¶</a></h2>
-<p>PDielec has been written to make use of multiprocessor computers. On an 8-processor (16 thread) machine using multiprocessing, the speed-up soon slows down after three processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running <cite>PDielec</cite> and it is only recommended if the default multiprocessing options is failing for some reason.
-The speedup is calculated by running the benchmark suite (pdmake benchmarks), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.</p>
-<figure class="align-default" id="id14">
-<span id="fig-speedup"></span><a class="reference internal image-reference" href="_images/SpeedUp.png"><img alt="_images/SpeedUp.png" src="_images/SpeedUp.png" style="width: 414.0px; height: 329.40000000000003px;" />
+<p><em>Image file name</em> supplies the output path. <em>Save as png</em> writes a still image;
+<em>Save as mp4</em> and <em>Save as gif</em> write animation; <em>Save as cif or mcif</em> exports
+the structure or mode information according to the extension. These are
+outputs of the viewer, not replacements for the calculation input.</p>
+<section id="the-transformation-window">
+<span id="viewer-transform-window"></span><h3>The Transformation Window<a class="headerlink" href="#the-transformation-window" title="Link to this heading">¶</a></h3>
+<figure class="align-default" id="id28">
+<a class="reference internal image-reference" href="_images/transform.png"><img alt="Three by three cell transformation matrix with OK and Cancel buttons." src="_images/transform.png" style="width: 65%;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Speed-up on a 8-processor workstation</span><a class="headerlink" href="#id14" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">The cell-transformation editor.</span><a class="headerlink" href="#id28" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>Using the same suite of benchmarks on an 8-processor Intel core i9-9900K running at 3.6GHz took 92.6s.</p>
-<p>On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 432s seconds.  On the same machine but running the Linux operating system the benchmark suite took 358s, making the impact of Windows on performance a factor of 1.2 times slower.</p>
+<p>Each row of the 3 by 3 table gives a new lattice vector as a linear
+combination of the old lattice vectors. The identity matrix leaves the cell
+unchanged. Entries accept numerical expressions such as fractions. <em>OK</em>
+accepts the transformation and <em>Cancel</em> discards it. The viewer transformation
+changes the displayed cell, not the DFT calculation that supplied the modes.</p>
+</section>
+</section>
+<section id="fitter-tab">
+<h2>Fitter Tab<a class="headerlink" href="#fitter-tab" title="Link to this heading">¶</a></h2>
+<p>The <em>Fitter Tab</em> compares a calculated scenario with an experimental spectrum
+and can adjust selected linewidths and an optional frequency scale.</p>
+<figure class="align-default" id="id29">
+<span id="fig-fitter"></span><a class="reference internal image-reference" href="_images/fitter.png"><img alt="Fitter comparing sodium-sulphate calculated ATR and experimental spectra." src="_images/fitter.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">The existing sodium-sulphate ATR fitting example.</span><a class="headerlink" href="#id29" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The <em>Options</em> tabs provide the controls below. The experimental file is an
+<code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> spreadsheet or <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file with frequency in cm<sup>-1</sup> in the first
+column and measured signal in the second, with at most one heading row.
+This is distinct from an <em>Experiment</em> material file. The example uses
+<code class="docutils literal notranslate"><span class="pre">Examples/ATR/Na2SO42_fit/ATR_Spectra_for_fitting.xlsx</span></code> and its matching
+calculation; it does not use an invented ZnO experimental spectrum.</p>
+<div class="table-wrapper colwidths-given docutils container" id="id30">
+<table class="docutils align-default" id="id30">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Fitter options</span><a class="headerlink" href="#id30" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Tab</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Experimental spectrum</p></td>
+<td><p>Path of the measured data. Press Return after entering it to read it.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scenario</p></td>
+<td><p>Select the calculated scenario to compare. Its plotted quantity must
+match the experimental signal.</p></td>
+</tr>
+<tr class="row-even"><td><p>Frequency scaling factor</p></td>
+<td><p>Multiplier for calculated frequencies, initially 1.0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>No. of iterations</p></td>
+<td><p>Optimisation iteration limit, initially 20.</p></td>
+</tr>
+<tr class="row-even"><td><p>Independent y-axes</p></td>
+<td><p>Use separate scales for calculated and experimental signals; initially
+on. Inspect the scales before comparing peak heights.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fitting type</p></td>
+<td><p>Minimise x-correlation maximises the correlation through its objective;
+Minimise spectral difference minimises the spectral error.</p></td>
+</tr>
+<tr class="row-even"><td><p>Optimise scaling</p></td>
+<td><p>Include the frequency scaling factor in optimisation; initially off.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Spectral difference threshold</p></td>
+<td><p>Signal threshold for the spectral-difference objective, initially 0.05.</p></td>
+</tr>
+<tr class="row-even"><td><p>Baseline removal?</p></td>
+<td><p>Apply baseline correction to the experimental data; initially off.</p></td>
+</tr>
+<tr class="row-odd"><td><p>HP Filter Lambda</p></td>
+<td><p>Base-10 logarithm of the Hodrick-Prescott filter parameter, initially 7.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In <em>Lorentzian widths</em>, edit sigma values in cm<sup>-1</sup> and check those to include
+in the fit. Frequency and intensity columns identify the transitions; they
+are not independent fitted parameters. <em>Replot</em> recalculates the comparison.
+<em>Replot with frequency shift</em> additionally applies the lag that maximises the
+cross-correlation. <em>Perform fitting</em> starts optimisation and changes to an
+interrupt control while running. The progress bar reports calculation progress.</p>
+<p>The four read-only diagnostics are cross-correlation, shift/lag in cm<sup>-1</sup>,
+frequency scale and root-mean-square error. Inspect the resulting spectrum
+as well as these numbers. The fitting uses the frequency range from Plotting;
+its toolbar controls the view and exports images.</p>
+</section>
+<section id="raman-polar-window">
+<span id="id3"></span><h2>Raman Polar Window<a class="headerlink" href="#raman-polar-window" title="Link to this heading">¶</a></h2>
+<p>The <em>Raman polar plot</em> button in Settings opens a tensor-level polarisation
+simulator. It is useful for examining selection rules without constructing
+an optical layer stack.</p>
+<figure class="align-default" id="id31">
+<a class="reference internal image-reference" href="_images/raman-polar.png"><img alt="Raman polar simulator with TO and LO frequencies, vectors and EO control." src="_images/raman-polar.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">The ZnO Raman polar simulator with the nonlinear response available.</span><a class="headerlink" href="#id31" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The <em>Raman-active modes</em> table contains an Include checkbox, mode number, TO
+frequency, LO frequency when NAC data are available, and total Raman activity
+in the units chosen in Settings. <em>Select all active modes</em> and <em>Clear selection</em>
+change the plotted set.</p>
+<p><em>Light direction Rz</em> gives the propagation/rotation axis and <em>Zero-angle pol.
+Pza</em> the initial incident polarisation, both as Cartesian vectors. Pza should
+be perpendicular to Rz; changing Rz adjusts Pza accordingly. The read-only
+<em>Orthogonality</em> value is their dot product and should be zero.
+<em>Phonon q̂ direction</em> independently sets the crystal-frame direction for the
+LO and EO corrections. <em>Sync q̂ to Rz</em> copies the light axis, appropriate to
+the backscattering approximation.</p>
+<p><em>Include EO correction (χ² available)</em> is shown when nonlinear response is
+available and is initially checked. It is this window’s own control, not the
+scenario checkbox. The LO column likewise uses this window’s phonon direction.
+The three curves show parallel VV, crossed HV and a fixed-incident,
+rotating-analyser geometry. They show tensor-level angular response, without
+the scenario’s layer interference or depth integration. The toolbar saves and
+navigates the plot. <em>Description</em> explains the axes and geometries.</p>
+<figure class="align-default" id="id32">
+<a class="reference internal image-reference" href="_images/raman-polar-description.png"><img alt="Raman polar simulator description of coordinates and polarisation geometries." src="_images/raman-polar-description.png" style="width: 85%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The description window; close it to return to the simulator.</span><a class="headerlink" href="#id32" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="azimuthal-sweep-window">
+<span id="id4"></span><h2>Azimuthal Sweep Window<a class="headerlink" href="#azimuthal-sweep-window" title="Link to this heading">¶</a></h2>
+<p>The Crystal Raman <em>Plot azimuthal sweep</em> button opens a result window using
+the scenario’s layer stack, optical fields, NAC and EO settings. This is a
+different calculation from the tensor-level polar simulator.</p>
+<figure class="align-default" id="id33">
+<a class="reference internal image-reference" href="_images/sweep-grouped.png"><img alt="Azimuthal sweep showing near-degenerate mode grouping and tolerance." src="_images/sweep-grouped.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">A ZnO (100) azimuthal sweep with mode grouping enabled. This surface was
+chosen to show the variation under rotation, unlike the (001) main example.</span><a class="headerlink" href="#id33" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><em>Plot type</em> offers Polar, Colour map, Waterfall and Line. <em>Mode</em> chooses an
+individual mode or All modes (integrated). <em>Mode display</em> selects Individual
+eigenmodes or Group near-degenerate. Grouping reveals <em>Tol (cm⁻¹)</em>, initially
+2.0, which sets the frequency tolerance. Grouping sums the intensities of
+nearly degenerate modes, avoiding an interpretation that depends on an
+arbitrary choice of eigenvectors within a degenerate subspace.</p>
+<p>Polar and Line show angular intensities. Colour map and Waterfall show the
+spectral dependence across angles. Switching the plot presentation does not
+rerun the scenario; to change physical settings, return to the scenario and
+run a new sweep. The toolbar navigates and saves the figure.</p>
+<figure class="align-default" id="id34">
+<a class="reference internal image-reference" href="_images/sweep-colour-map.png"><img alt="Colour map of ZnO Raman shift versus azimuthal angle." src="_images/sweep-colour-map.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">The spectral colour-map view of the same sweep.</span><a class="headerlink" href="#id34" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id35">
+<a class="reference internal image-reference" href="_images/sweep-waterfall.png"><img alt="Waterfall spectra for the ZnO azimuthal sweep." src="_images/sweep-waterfall.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text">The waterfall view.</span><a class="headerlink" href="#id35" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id36">
+<a class="reference internal image-reference" href="_images/sweep-line.png"><img alt="Line presentation of integrated Raman intensity against azimuthal angle." src="_images/sweep-line.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">The line view.</span><a class="headerlink" href="#id36" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="saving-settings-and-scripting">
+<span id="pdgui-scripting"></span><h2>Saving Settings and Scripting<a class="headerlink" href="#saving-settings-and-scripting" title="Link to this heading">¶</a></h2>
+<p><em>Save settings</em> on Main writes a Python session file. The script accesses the
+notebook as <code class="docutils literal notranslate"><span class="pre">self.notebook</span></code> and the setting dictionaries of its tabs. A
+saved session records the chosen data and options; the display-only controls
+of auxiliary windows should be set in those windows when required.</p>
+<p>The <a class="reference internal" href="settings_reference.html"><span class="doc">PDGui Settings Reference</span></a> lists every tab’s dictionary keys, accepted
+values and their effects, including settings available only through scripts.</p>
+<p>Two advanced Crystal Raman settings are available through scripts while being
+absent from the scenario GUI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Coalesce equivalent layers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Approximate ES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p><em>Coalesce equivalent layers</em>, default True, merges adjacent equivalent
+coherent layers before Raman field integration. Disabling it is useful for
+diagnosing artificial internal-boundary effects. <em>Approximate ES</em>, default
+False, uses the laser field in place of separately evaluating the scattered
+field when set True. It changes the optical approximation and should be
+recorded when reporting results.</p>
+<p>The powder Raman wavelength in nm is stored as <code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">laser</span> <span class="pre">wavelength</span></code>.
+The crystal NAC selector uses
+<code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">NAC</span> <span class="pre">mode</span></code> values <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">geometry</span></code>, <code class="docutils literal notranslate"><span class="pre">dominant_mode</span></code> and
+<code class="docutils literal notranslate"><span class="pre">modal_pairs</span></code> for TO, Snell’s law, Dominant mode and All modes respectively.
+Use the saved script as the starting point rather than guessing visible-label
+spellings. In an interactive script, request a refresh after changing settings.</p>
+</section>
+<section id="performance">
+<span id="id5"></span><h2>Performance<a class="headerlink" href="#performance" title="Link to this heading">¶</a></h2>
+<p>PDGui can distribute calculations over worker processes. Use <code class="docutils literal notranslate"><span class="pre">-cpus</span> <span class="pre">N</span></code> to
+limit the number of workers, and <code class="docutils literal notranslate"><span class="pre">-threading</span></code> where a thread-based worker
+pool is needed. The environment variables <code class="docutils literal notranslate"><span class="pre">PDIELEC_NUM_PROCESSORS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">PDIELEC_THREADING</span></code> and <code class="docutils literal notranslate"><span class="pre">PDIELEC_NUM_THREADS</span></code> also configure parallelism.
+Choose settings appropriate to the available memory and calculation size;
+more workers need not make a small calculation faster.</p>
+</section>
+<section id="additional-settings-references">
+<span id="additional-settings-views"></span><h2>Additional settings references<a class="headerlink" href="#additional-settings-references" title="Link to this heading">¶</a></h2>
+<p>The settings views show each viewer and fitter settings tab separately, so
+controls hidden by the tab strip in an overview remain visible. The settings
+reference documents the dictionary keys used in Python session scripts.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</div>
 </section>
 </section>
 
@@ -861,12 +1285,12 @@ The speedup is calculated by running the benchmark suite (pdmake benchmarks), wh
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="software.html">
+          <a class="next-page" href="gui_options.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Other Software Components</div>
+                <div class="title">Viewer and Fitter Settings Views</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -912,25 +1336,32 @@ The speedup is calculated by running the benchmark suite (pdmake benchmarks), wh
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDGui</a><ul>
+<li><a class="reference internal" href="#starting-pdgui">Starting PDGui</a></li>
 <li><a class="reference internal" href="#main-tab">Main Tab</a></li>
 <li><a class="reference internal" href="#settings-tab">Settings Tab</a></li>
 <li><a class="reference internal" href="#scenario-tabs">Scenario Tabs</a><ul>
-<li><a class="reference internal" href="#powder-scenarios">Powder Scenarios</a></li>
-<li><a class="reference internal" href="#single-crystal-scenarios">Single-Crystal Scenarios</a><ul>
+<li><a class="reference internal" href="#powder-infrared-scenarios">Powder Infrared Scenarios</a></li>
+<li><a class="reference internal" href="#powder-atr-scenarios">Powder ATR Scenarios</a></li>
+<li><a class="reference internal" href="#crystal-infrared-scenarios">Crystal Infrared Scenarios</a><ul>
 <li><a class="reference internal" href="#the-layer-editor">The Layer Editor</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#powder-raman-scenarios">Powder Raman Scenarios</a></li>
+<li><a class="reference internal" href="#crystal-raman-scenarios">Crystal Raman Scenarios</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#plotting-tab">Plotting Tab</a></li>
 <li><a class="reference internal" href="#analysis-tab">Analysis Tab</a></li>
-<li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li>
-<li><a class="reference internal" href="#fitter-tab">Fitter Tab</a><ul>
-<li><a class="reference internal" href="#scripting">Scripting</a></li>
+<li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a><ul>
+<li><a class="reference internal" href="#the-transformation-window">The Transformation Window</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#parallelisation-and-threads">Parallelisation and threads</a></li>
+<li><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
+<li><a class="reference internal" href="#raman-polar-window">Raman Polar Window</a></li>
+<li><a class="reference internal" href="#azimuthal-sweep-window">Azimuthal Sweep Window</a></li>
+<li><a class="reference internal" href="#saving-settings-and-scripting">Saving Settings and Scripting</a></li>
 <li><a class="reference internal" href="#performance">Performance</a></li>
+<li><a class="reference internal" href="#additional-settings-references">Additional settings references</a></li>
 </ul>
 </li>
 </ul>

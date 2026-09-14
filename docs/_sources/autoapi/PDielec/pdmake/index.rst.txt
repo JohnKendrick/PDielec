@@ -376,6 +376,8 @@ Module Contents
 
    - The function removes line continuation characters and treats the continued lines as a single line.
 
+   - Shell-style quotes preserve arguments containing spaces, such as ``"ZnO data/finite_difference.json"``.
+
    - Lines starting with `#` are treated as comments and ignored.
 
    - It's assumed that `os` module has been imported for `os.getcwd()` to work, though it is not explicitly
@@ -611,7 +613,7 @@ Module Contents
 
 
 .. py:data:: test_crystal_raman
-   :value: []
+   :value: ['Crystal_Raman/Castep']
 
 
 .. py:data:: test_p2cif
@@ -619,7 +621,7 @@ Module Contents
 
 
 .. py:data:: test_pdgui
-   :value: ['ATR/AlAs', 'ATR/Na2SO42', 'ATR/Na2SO42_fit', 'AbInit/AlAs', 'AbInit/BaTiO3', 'AbInit/Na2SO42',...
+   :value: ['Powder_Raman/Finite_difference', 'ATR/AlAs', 'ATR/Na2SO42', 'ATR/Na2SO42_fit', 'AbInit/AlAs',...
 
 
 .. py:data:: test_powder_atr
@@ -631,7 +633,7 @@ Module Contents
 
 
 .. py:data:: test_powder_raman
-   :value: ['Powder_Raman/AbInit', 'Powder_Raman/Castep', 'Powder_Raman/Crystal', 'Powder_Raman/QE',...
+   :value: ['Powder_Raman/Finite_difference', 'Powder_Raman/AbInit', 'Powder_Raman/Castep',...
 
 
 .. py:data:: test_preader

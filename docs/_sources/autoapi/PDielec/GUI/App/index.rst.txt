@@ -141,7 +141,7 @@ Module Contents
       The usage information includes:
 
       - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy',
-        'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified. - `filename`:
+        'gulp', 'castep', 'abinit', 'qe', and 'finite_field'. The program is guessed from the filename if not specified. - `filename`:
         The name of the output file. - `spreadsheet file`: An optional name of a spreadsheet file (must end with
         .xlsx). If provided, both program and filename must be specified. - `-scenario type`: Changes the default
         scenario to "type", which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or

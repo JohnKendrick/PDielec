@@ -26,6 +26,22 @@ Submodules
    /autoapi/PDielec/Tests/Crystal_Raman/test_H_depth_integration/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_J_electro_optic_correction/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_L_electro_optic_toggle/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_M_finite_field_reader/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_M_porto_notation/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_O_fs3_basis_invariance/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index
 
 

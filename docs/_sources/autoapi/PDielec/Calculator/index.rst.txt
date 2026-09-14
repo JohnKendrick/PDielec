@@ -46,6 +46,7 @@ Functions
    PDielec.Calculator.cleanup_symbol
    PDielec.Calculator.coherent
    PDielec.Calculator.compute_all_sg_permutations
+   PDielec.Calculator.compute_effective_raman_tensor
    PDielec.Calculator.compute_internal_field_tensor
    PDielec.Calculator.compute_particle_raman_tensor
    PDielec.Calculator.compute_powder_raman_intensities
@@ -658,6 +659,37 @@ Module Contents
 
 
 
+.. py:function:: compute_effective_raman_tensor(R_internal, N_laser, N_scattered=None)
+
+   Apply the incident and scattered optical local-field factors.
+
+   Implements ``eq:effective-raman-tensor`` and
+   ``eq-particle-effective-raman-eo`` for a reciprocal dielectric::
+
+       R_eff(nu_L, nu_S) = N(nu_S).T @ R_internal @ N(nu_L)
+
+   The transpose is an ordinary transpose, not a Hermitian conjugate.  The
+   returned tensor has the same bulk ``R_epsilon`` normalisation as
+   ``R_internal``.
+
+   Parameters
+   ----------
+   R_internal : array_like, shape (3, 3)
+       Internal particle-mode Raman tensor, including any particle EO
+       correction but excluding optical local-field factors.
+   N_laser : array_like, shape (3, 3)
+       Internal-field tensor at the laser frequency.
+   N_scattered : array_like, shape (3, 3), optional
+       Internal-field tensor at the scattered frequency.  If omitted, the
+       same tensor is used at both optical frequencies.
+
+   Returns
+   -------
+   R_eff : ndarray, shape (3, 3), complex
+       Local-field-corrected effective bulk Raman tensor.
+
+
+
 .. py:function:: compute_internal_field_tensor(L, epsilon_i, epsilon_e)
 
    Compute the internal field tensor N from ``eq-internal_external_fields3``.
@@ -679,11 +711,19 @@ Module Contents
        Internal field tensor.
 
 
+
 .. py:function:: compute_particle_raman_tensor(R_eps, N, L, epsilon_i, epsilon_e)
 
-   Compute the effective particle Raman tensor from the Raman-Theory local-field expression.
+   Compatibility wrapper for the effective bulk particle Raman tensor.
 
-   R_particle = N [R_eps - (1/ε_e)(ε_i - ε_e I) N L R_eps] N
+   This historical API accepted the depolarisation tensor and permittivities
+   needed by the former three-factor expression.  The corrected expression
+   contains one scattered and one incident local-field factor, both ``N`` in
+   the present non-dispersive optical approximation::
+
+       R_eff = N.T @ R_eps @ N
+
+   New code should call :func:`compute_effective_raman_tensor` directly.
 
    Parameters
    ----------
@@ -700,8 +740,9 @@ Module Contents
 
    Returns
    -------
-   R_particle : ndarray, shape (3, 3), complex
-       Effective particle Raman tensor.
+   R_eff : ndarray, shape (3, 3), complex
+       Effective bulk Raman tensor in the same normalisation as ``R_eps``.
+
 
 
 .. py:function:: compute_powder_raman_intensities(R)
@@ -720,9 +761,10 @@ Module Contents
    Returns
    -------
    vv : float
-       VV (parallel) powder intensity: 45α² + 4γ² + 5κ²
+       VV (parallel) powder intensity: 45α² + 4γ²
    vh : float
        VH (crossed) powder intensity: 3γ² + 5κ²
+
 
 
 .. py:function:: construct_projection_operator(atoms, xyzs, masses, nats)
@@ -1234,16 +1276,17 @@ Module Contents
 
    Calculate Raman activities from per-mode Raman tensors.
 
-   For each mode the powder-averaged isotropic Raman activity is computed
-   from the three rotational invariants of the Raman tensor:
+   For each mode the total, parallel (VV), and perpendicular (VH)
+   powder-averaged Raman activities are computed from the three rotational
+   invariants of the Raman tensor:
 
    .. math::
 
        R_m^{\rm total} = 45|\alpha|^2 + 7G^{(2)} + 5G^{(1)}
 
-       R_m^{\parallel}  = 30|\alpha|^2 + 4G^{(2)}
+       R_m^{\parallel}  = 45|\alpha|^2 + 4G^{(2)}
 
-       R_m^{\perp}      = 15|\alpha|^2 + 3G^{(2)}
+       R_m^{\perp}      = 3G^{(2)} + 5G^{(1)}
 
    where :math:`\alpha = \operatorname{Tr}(R)/3` is the isotropic invariant,
    :math:`G^{(2)}` is the symmetric anisotropy invariant (sum of squared
@@ -1253,10 +1296,10 @@ Module Contents
    convention :math:`R_\epsilon` from ``eq-ramantensor`` and
    ``eq-dft_raman_tensor``.
 
-   The parallel and perpendicular components follow the legacy activity split
-   (:math:`R^{\parallel} = 10G^{(0)} + 4G^{(2)}`,
-   :math:`R^{\perp} = 5G^{(0)} + 3G^{(2)}` with :math:`G^{(0)} = 3\alpha^2`),
-   and their sum equals :math:`R^{\rm total}` when :math:`G^{(1)} = 0`.
+   The parallel and perpendicular components are the conventional Placzek
+   VV and VH powder strengths.  Their sum equals :math:`R^{\rm total}` for
+   both symmetric and nonsymmetric Raman tensors.  In the non-resonant
+   approximation the tensor is normally symmetric and :math:`G^{(1)} = 0`.
 
    Parameters
    ----------
@@ -1274,7 +1317,8 @@ Module Contents
        Per-mode Raman activities in the ``R_epsilon`` convention.  Since
        ``R_epsilon`` has units ``(Å/amu)^0.5``, these activities have units
        ``Å/amu`` rather than polarizability-volume ``Å⁴/amu`` units.  Columns are
-       ``[:, 0]`` total, ``[:, 1]`` parallel, ``[:, 2]`` perpendicular.
+       ``[:, 0]`` total, ``[:, 1]`` parallel (VV), and ``[:, 2]``
+       perpendicular (VH).
 
    Notes
    -----
@@ -1394,6 +1438,7 @@ Module Contents
    -------
    list of ndarray, each shape (3, 3)
        Orthogonal rotation matrices (det = +1).
+
 
 
 .. py:function:: solve_effective_medium_equations(method, vf, size_mu, size_distribution_sigma, matrix_permittivity_function, shape, L, concentration, bubble_vf, bubble_radius, previous_solution_shared, atuple)

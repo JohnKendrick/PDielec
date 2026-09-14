@@ -36,7 +36,7 @@ Module Contents
    Non-modal Raman polar plot simulator window.
 
 
-   .. py:method:: _add_vector_controls(grid, row, values, prefix_label=None, tooltip=None)
+   .. py:method:: _add_vector_controls(grid, row, values, prefix_label=None, tooltip=None, spin_type='double')
 
       Add x/y/z spin boxes into one row of a shared QGridLayout.
 
@@ -55,10 +55,12 @@ Module Contents
           Text for the label placed in column 0.
       tooltip : str, optional
           Tooltip applied to every widget in the row.
+      spin_type : {"double", "int"}, optional
+          Numeric spin-box type to use for the row.
 
       Returns
       -------
-      tuple[list[QDoubleSpinBox], list[QWidget]]
+      tuple[list[QDoubleSpinBox | QSpinBox], list[QWidget]]
           The three spin boxes and all widgets in the row (prefix label first
           if present, then alternating axis-label / spin-box for x, y, z).
 

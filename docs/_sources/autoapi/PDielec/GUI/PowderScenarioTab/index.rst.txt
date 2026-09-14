@@ -144,8 +144,8 @@ Module Contents
        Handle changes to the ATR incident angle spinbox.
    on_atr_spolfrac_sb_changed(value)
        Handle changes to the ATR s-polarisation fraction spinbox.
-   on_laser_frequency_sb_changed(value)
-       Handle changes to the laser frequency spin box
+   on_laser_wavelength_sb_changed(value)
+       Handle changes to the laser wavelength spin box
    on_polarisation_cb_activated(index)
        Handle changes to polarisation setting for the experiment
    on_temperature_sb_changed(value)
@@ -245,13 +245,13 @@ Module Contents
       Two code paths are used depending on particle shape:
 
       * **Sphere** — the depolarisation tensor L = I/3 is rotationally invariant, so
-        R_particle(Ω) = R @ R_particle_crystal @ R.T is a pure rank-2 tensor rotation
+        R_eff(Ω) = R @ R_eff_crystal @ R.T is a pure rank-2 tensor rotation
         and the analytical rotational invariants (``eq-invariants1`` and
         ``eq-Intensities``) are exact.
       * **Non-sphere** — D^{particle} is diagonalised once in the crystal frame
         (ΔD is orientation-invariant); for each of ``n_samples`` SO(3) orientations
-        the orientation-dependent N_bg_lab(Ω) is recomputed and used to evaluate the
-        effective particle Raman tensor R_particle(Ω), whose contribution is
+        the optical internal-field tensor is recomputed and used to evaluate the
+        effective bulk Raman tensor R_eff(Ω), whose contribution is
         accumulated into the spectrum.
 
       Parameters
@@ -271,16 +271,17 @@ Module Contents
 
 
 
-   .. py:method:: _compute_orientation_sampled_spectrum(L, epsilon_e, epsilon_inf_i, I3, raman_tensors, sigmas_cm1, modes_selected, polarisation, nu_L, temperature, n_samples, vs_cm1, progress_callback=None)
+   .. py:method:: _compute_orientation_sampled_spectrum(L, epsilon_e, epsilon_inf_i, I3, raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected, polarisation, nu_L, temperature, n_samples, vs_cm1, no_matrix=False, include_eo=False, chi2_repsilon=None, progress_callback=None)
 
       Compute the powder Raman spectrum for non-spherical particles by numerical SO(3) averaging.
 
       The particle dynamical matrix correction ΔD is orientation-invariant (proof: rotating
       L, ε_inf, and Z to the lab frame and back always recovers ΔD_crystal), so D^{particle}
-      is diagonalised **once** before the orientation loop.  For each sampled orientation
-      Ω ∈ SO(3) only the orientation-dependent internal field tensor N_bg_lab(Ω) is
-      recomputed; this is used to apply the local-field correction to the
-      pre-rotated Raman tensors.  Scattering strengths from
+      is diagonalised **once** before the orientation loop.  The finite-particle EO
+      correction is also constructed once in the particle frame using the same
+      electrostatic kernel as ΔD.  For each sampled orientation Ω ∈ SO(3), the
+      optical internal-field tensor is recomputed and supplies exactly one incident
+      and one scattered local-field factor.  Scattering strengths from
       ``eq-ramanefficiency_depolarised`` are accumulated as Lorentzian
       contributions from ``eq-raman-intensity`` and normalised by ``n_samples``.
 
@@ -296,6 +297,8 @@ Module Contents
           3×3 identity matrix.
       raman_tensors : list of ndarray
           Bulk TO Raman tensors (crystal frame), one 3×3 array per mode.
+      frequencies_cm1 : list of float
+          Bulk TO frequencies in cm⁻¹.
       sigmas_cm1 : list of float
           Lorentzian half-widths in cm⁻¹ (one per TO mode).
       modes_selected : list of bool
@@ -310,6 +313,12 @@ Module Contents
           Number of SO(3) orientations to sample.
       vs_cm1 : ndarray, shape (n_freqs,)
           Frequency axis for the spectrum in cm⁻¹.
+      no_matrix : bool, optional
+          If True, skip particle frequency and local-field corrections.
+      include_eo : bool, optional
+          If True, include the finite-particle electro-optic χ² correction.
+      chi2_repsilon : ndarray or None, optional
+          Reader χ² tensor in the internal R_epsilon convention.
       progress_callback : callable or None, optional
           If provided, called once after each orientation sample to allow the
           caller to update a progress bar.  The callable takes no arguments.
@@ -335,7 +344,7 @@ Module Contents
 
 
 
-   .. py:method:: _compute_particle_modes(N_bg, L, epsilon_e, epsilon_inf_i, I3, raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected)
+   .. py:method:: _compute_particle_modes(N_bg, L, epsilon_e, epsilon_inf_i, I3, raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected, include_eo=False, chi2_repsilon=None)
 
       Compute particle phonon frequencies and Raman tensors in the particle normal-mode basis.
 
@@ -375,6 +384,10 @@ Module Contents
           Lorentzian half-widths in cm^{-1} (one per TO mode).
       modes_selected : list of bool
           Mode selection flags (one per TO mode).
+      include_eo : bool, optional
+          Apply the finite-particle electro-optic correction in the particle-mode basis.
+      chi2_repsilon : ndarray, shape (3, 3, 3), optional
+          Electro-optic susceptibility in the internal ``R_epsilon`` convention.
 
       Returns
       -------
@@ -418,6 +431,18 @@ Module Contents
       -------
       list of ndarray, each shape (3, 3)
           Orthogonal rotation matrices (det = +1).
+
+
+
+
+   .. py:method:: _matrix_display_permittivity()
+
+      Return the support-matrix permittivity shown in the Powder GUI.
+
+      Powder Raman uses the matrix optical permittivity for particle local-field
+      corrections.  Powder IR/ATR uses the matrix dielectric function at each
+      IR frequency, so the editable support-matrix value should show the
+      zero-frequency dielectric value instead.
 
 
 
@@ -569,7 +594,7 @@ Module Contents
 
 
 
-   .. py:method:: initialise_infrared_gui(vbox, form)
+   .. py:method:: initialise_infrared_gui(vbox, form, include_infrared_only=True)
 
       Initialise the GUI for atr calculations.
 
@@ -579,6 +604,8 @@ Module Contents
           vbox is defined by the PowderScenarioTab initialised
       form : QFormLayout
           form is defined by the PowderScenarioTab initialised
+      include_infrared_only : bool
+          If True, include controls used only by the infrared/ATR effective-medium calculation.
 
       Returns
       -------
@@ -759,6 +786,12 @@ Module Contents
 
 
 
+   .. py:method:: on_eo_term_cb_toggled(checked)
+
+      Handle a toggle of the Raman electro-optic tensor contribution.
+
+
+
    .. py:method:: on_h_sb_changed(value)
 
       Handle a change to the h parameter of the (hkl) surface.
@@ -795,9 +828,9 @@ Module Contents
 
 
 
-   .. py:method:: on_laser_frequency_sb_changed(value)
+   .. py:method:: on_laser_wavelength_sb_changed(value)
 
-      Handle a change to the Raman laser frequency.
+      Handle a change to the Raman laser wavelength.
 
       Parameters
       ----------

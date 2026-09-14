@@ -1,0 +1,486 @@
+PDielec.PhononFinalStateResolver
+================================
+
+.. py:module:: PDielec.PhononFinalStateResolver
+
+.. autoapi-nested-parse::
+
+   Final-state classification helpers for modal-pair Raman calculations.
+
+   This module is intentionally independent of GTM, the GUI, and DFT readers.  It
+   contains only the phonon-side decisions needed by the modal-pairs final-state
+   refactor: optical subspace grouping, near-zero-q classification, q-direction
+   keys, and finite-thickness phase-matching weights.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.PhononFinalStateResolver.BULK_PHASE_MATCHED
+   PDielec.PhononFinalStateResolver.COHERENCE_REGIMES
+   PDielec.PhononFinalStateResolver.COHERENT_EXTERNAL_CHANNEL
+   PDielec.PhononFinalStateResolver.COHERENT_FILM
+   PDielec.PhononFinalStateResolver.DISCARDED_INTERNAL_COMPONENT
+   PDielec.PhononFinalStateResolver.INCOHERENT_DEPTH
+   PDielec.PhononFinalStateResolver.RESOLVED_FINAL_STATE
+   PDielec.PhononFinalStateResolver.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.PhononFinalStateResolver.CoherentExternalChannelContribution
+   PDielec.PhononFinalStateResolver.DiscardedInternalComponent
+   PDielec.PhononFinalStateResolver.FinalState
+   PDielec.PhononFinalStateResolver.NacBranchData
+   PDielec.PhononFinalStateResolver.OpticalSubspace
+   PDielec.PhononFinalStateResolver.PhononFinalStateResolver
+   PDielec.PhononFinalStateResolver.PhononSubspace
+   PDielec.PhononFinalStateResolver.ResolvedFinalState
+
+
+Module Contents
+---------------
+
+.. py:class:: CoherentExternalChannelContribution
+
+   Classification for a coherent component of one external-channel amplitude.
+
+
+   .. py:attribute:: key
+      :type:  collections.abc.Hashable
+
+
+   .. py:attribute:: kind
+      :type:  str
+      :value: 'coherent_external_channel'
+
+
+
+   .. py:attribute:: phase_weight
+      :type:  complex
+      :value: (1+0j)
+
+
+
+   .. py:attribute:: q_ph
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: raman_tensor
+      :type:  numpy.ndarray | None
+      :value: None
+
+
+
+   .. py:attribute:: reason
+      :type:  str
+      :value: ''
+
+
+
+.. py:class:: DiscardedInternalComponent
+
+   Classification for an internal component that is not retained.
+
+
+   .. py:attribute:: kind
+      :type:  str
+      :value: 'discarded_internal_component'
+
+
+
+   .. py:attribute:: phase_weight
+      :type:  complex
+      :value: 0j
+
+
+
+   .. py:attribute:: q_ph
+      :type:  numpy.ndarray | None
+      :value: None
+
+
+
+   .. py:attribute:: reason
+      :type:  str
+
+
+.. py:class:: FinalState
+
+   Resolved phonon final-state data.
+
+
+   .. py:attribute:: frequency_cm1
+      :type:  float | None
+      :value: None
+
+
+
+   .. py:attribute:: key
+      :type:  collections.abc.Hashable
+
+
+   .. py:attribute:: linewidth_cm1
+      :type:  float | None
+      :value: None
+
+
+
+   .. py:attribute:: raman_tensor
+      :type:  numpy.ndarray | None
+      :value: None
+
+
+
+   .. py:attribute:: selected
+      :type:  bool
+      :value: True
+
+
+
+.. py:class:: NacBranchData
+
+   NAC branch data mapped back to one original TO mode.
+
+
+   .. py:attribute:: branch_index
+      :type:  int
+
+
+   .. py:attribute:: frequency_cm1
+      :type:  float
+
+
+   .. py:attribute:: linewidth_cm1
+      :type:  float | None
+      :value: None
+
+
+
+   .. py:attribute:: overlap
+      :type:  float | None
+      :value: None
+
+
+
+   .. py:attribute:: raman_tensor
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: selected
+      :type:  bool
+      :value: True
+
+
+
+.. py:class:: OpticalSubspace
+
+   A numerically degenerate optical propagation subspace.
+
+
+   .. py:attribute:: indices
+      :type:  tuple[int, Ellipsis]
+
+
+   .. py:attribute:: kz_reference
+      :type:  complex
+
+
+   .. py:attribute:: projector
+      :type:  numpy.ndarray | None
+      :value: None
+
+
+
+.. py:class:: PhononFinalStateResolver(coherence_regime: str = COHERENT_FILM, q_ext: collections.abc.Sequence[float] | None = None, angular_tolerance_deg: float = 5.0, matching_tolerance_deg: float | None = None, q_zero_tol: float = 0.001, eps_optical: float = 0.0001, eps_phonon: float = 0.001, min_nac_overlap: float = 0.5, nonpolar_strength_threshold: float = 0.0001, layer_coherence_group: collections.abc.Hashable = 'layer', detected_channel_key: collections.abc.Hashable = 'detected')
+
+   Classify modal-pair phonon final states without optical-solver dependencies.
+
+
+   .. py:method:: _as_vector(vector: collections.abc.Sequence[float] | numpy.ndarray) -> numpy.ndarray
+      :staticmethod:
+
+
+
+   .. py:method:: _coherent_key(mode_idx: int) -> tuple[collections.abc.Hashable, collections.abc.Hashable, int, str]
+
+
+   .. py:method:: _connected_components(neighbours: dict[int, set[int]]) -> list[list[int]]
+      :staticmethod:
+
+
+
+   .. py:method:: _connected_neighbours(size: int) -> dict[int, set[int]]
+      :staticmethod:
+
+
+
+   .. py:method:: _dominant_map_branch(mode_idx: int, dominant_to_by_nac: collections.abc.Sequence[int] | None) -> int | None
+      :staticmethod:
+
+
+
+   .. py:method:: _fallback_nac_branch(mode_idx: int, branch_index: int, overlap: float, nac_frequencies_cm1: collections.abc.Sequence[float] | None, fallback_frequency_cm1: float | None) -> int
+
+
+   .. py:method:: _kz_degenerate(kz_a: complex, kz_b: complex) -> bool
+
+
+   .. py:method:: _matches_external_q(q_ph: numpy.ndarray, q_ext: numpy.ndarray, reference_k: float | None = None) -> bool
+
+
+   .. py:method:: _modes_as_columns(modes: numpy.ndarray) -> numpy.ndarray
+      :staticmethod:
+
+
+
+   .. py:method:: _phonon_degenerate(frequency_a: float, frequency_b: float) -> bool
+
+
+   .. py:method:: _resolved(mode_idx: int, q_vec: numpy.ndarray, is_polar: bool, frequency_cm1: float | None, raman_tensor: numpy.ndarray | None, linewidth_cm1: float | None, selected: bool, phase_weight: complex, final_state_q: numpy.ndarray | None = None) -> ResolvedFinalState
+
+
+   .. py:method:: classify_optical_subspaces(kz_values: collections.abc.Sequence[complex], modes: numpy.ndarray | None = None) -> list[OpticalSubspace]
+
+      Group nearly degenerate optical kz values and optionally attach projectors.
+
+
+
+   .. py:method:: classify_phonon_subspaces(frequencies_cm1: collections.abc.Sequence[float], raman_tensors: collections.abc.Sequence[numpy.ndarray]) -> list[PhononSubspace]
+
+      Group nearly degenerate phonon branches and sum their Raman tensors.
+
+
+
+   .. py:method:: coherent_amplitude(raman_tensor: numpy.ndarray, incident_amplitudes: collections.abc.Sequence[complex], incident_modes: numpy.ndarray, detector_amplitudes: collections.abc.Sequence[complex], detector_modes: numpy.ndarray) -> complex
+      :staticmethod:
+
+
+      Return the full external-channel bilinear amplitude from modal components.
+
+
+
+   .. py:method:: coherent_pair_amplitude(pairs: collections.abc.Iterable[tuple[float, complex]], thickness: float) -> complex
+      :staticmethod:
+
+
+      Return ``sum a_ij F_ij(L)`` for synthetic finite-thickness pair tests.
+
+
+
+   .. py:method:: final_state_key(mode_idx: int, q_ph: collections.abc.Sequence[float], is_polar: bool = True, frequency_key: collections.abc.Hashable | None = None) -> tuple[collections.abc.Hashable, collections.abc.Hashable, int, collections.abc.Hashable, collections.abc.Hashable | tuple[str]]
+
+      Return the physical final-state key for a mode and q-vector.
+
+
+
+   .. py:method:: is_near_zero_q(q_ph: collections.abc.Sequence[float], reference_k: float | None = None) -> bool
+
+      Return whether ``q_ph`` is below the near-zero threshold.
+
+
+
+   .. py:method:: is_polar_mode(oscillator_strength: float, max_oscillator_strength: float) -> bool
+
+      Return whether a mode is polar according to the configured strength threshold.
+
+
+
+   .. py:method:: map_nac_branch(mode_idx: int, to_eigenvectors: numpy.ndarray, nac_eigenvectors: numpy.ndarray, nac_frequencies_cm1: collections.abc.Sequence[float], nac_raman_tensors: collections.abc.Sequence[numpy.ndarray], to_frequencies_cm1: collections.abc.Sequence[float] | None = None, nac_linewidths_cm1: collections.abc.Sequence[float] | None = None, nac_selected: collections.abc.Sequence[bool] | None = None, dominant_to_by_nac: collections.abc.Sequence[int] | None = None) -> NacBranchData
+
+      Map an original TO mode to the matching NAC branch by subspace overlap.
+
+
+
+   .. py:method:: nac_branch_index(mode_idx: int, to_eigenvectors: numpy.ndarray, nac_eigenvectors: numpy.ndarray, nac_frequencies_cm1: collections.abc.Sequence[float] | None = None, fallback_frequency_cm1: float | None = None, dominant_to_by_nac: collections.abc.Sequence[int] | None = None) -> tuple[int, float]
+
+      Return the NAC branch index associated with an original TO mode.
+
+
+
+   .. py:method:: normalised_phase_matching_factor(delta_k: float, thickness: float) -> complex
+      :classmethod:
+
+
+      Return the finite-thickness factor divided by layer thickness.
+
+
+
+   .. py:method:: phase_matching_factor(delta_k: float, thickness: float) -> complex
+      :classmethod:
+
+
+      Return ``integral_0^L exp(i delta_k z) dz`` for one pair.
+
+
+
+   .. py:method:: phonon_wavevector(k_l_physical: collections.abc.Sequence[float], k_s_physical: collections.abc.Sequence[float]) -> numpy.ndarray
+      :staticmethod:
+
+
+      Return the physical phonon wavevector ``q_ph = k_L - k_S``.
+
+
+
+   .. py:method:: project_field_onto_subspace(modes: numpy.ndarray, field: collections.abc.Sequence[complex]) -> numpy.ndarray
+      :classmethod:
+
+
+      Project an electric field onto the span of an optical subspace.
+
+
+
+   .. py:method:: q_class_key(q_ph: collections.abc.Sequence[float]) -> tuple[str, int, int] | tuple[str]
+
+      Return an angular q-direction key.
+
+      The key stores rounded spherical angles using bins no finer than
+      ``angular_tolerance_deg``.  The vector magnitude is deliberately absent.
+
+
+
+   .. py:method:: resolve_pair(mode_idx: int, q_ph: collections.abc.Sequence[float], *, is_polar: bool = True, frequency_cm1: float | None = None, raman_tensor: numpy.ndarray | None = None, linewidth_cm1: float | None = None, selected: bool = True, q_ext: collections.abc.Sequence[float] | None = None, reference_k: float | None = None, delta_k: float | None = None, thickness: float | None = None) -> ResolvedFinalState | CoherentExternalChannelContribution | DiscardedInternalComponent
+
+      Classify one optical pair's phonon contribution.
+
+
+
+   .. py:method:: sinc(x: float | complex) -> complex
+      :staticmethod:
+
+
+      Return unnormalised sinc, ``sin(x) / x`` with a continuous zero limit.
+
+
+
+   .. py:method:: subspace_amplitude(raman_tensor: numpy.ndarray, incident_modes: numpy.ndarray, incident_field: collections.abc.Sequence[complex], detector_field: collections.abc.Sequence[complex], detector_amplitude: complex = 1.0 + 0j, detector_modes: numpy.ndarray | None = None) -> complex
+      :classmethod:
+
+
+      Return ``d * (P_S E_S)^T R P_L E_L`` for optical subspaces.
+
+
+
+   .. py:method:: subspace_projector(modes: numpy.ndarray) -> numpy.ndarray
+      :staticmethod:
+
+
+      Return the Euclidean projector onto the column span of ``modes``.
+
+
+
+   .. py:attribute:: angular_tolerance_deg
+
+
+   .. py:attribute:: coherence_regime
+      :value: 'coherent_film'
+
+
+
+   .. py:attribute:: detected_channel_key
+      :value: 'detected'
+
+
+
+   .. py:attribute:: eps_optical
+
+
+   .. py:attribute:: eps_phonon
+
+
+   .. py:attribute:: layer_coherence_group
+      :value: 'layer'
+
+
+
+   .. py:attribute:: matching_tolerance_deg
+
+
+   .. py:attribute:: min_nac_overlap
+
+
+   .. py:attribute:: nonpolar_strength_threshold
+
+
+   .. py:attribute:: q_ext
+
+
+   .. py:attribute:: q_zero_tol
+
+
+.. py:class:: PhononSubspace
+
+   A nearly degenerate phonon branch subspace.
+
+
+   .. py:attribute:: frequency_cm1
+      :type:  float
+
+
+   .. py:attribute:: indices
+      :type:  tuple[int, Ellipsis]
+
+
+   .. py:attribute:: raman_tensor
+      :type:  numpy.ndarray
+
+
+.. py:class:: ResolvedFinalState
+
+   Classification for a physically resolved phonon final state.
+
+
+   .. py:attribute:: final_state
+      :type:  FinalState
+
+
+   .. py:attribute:: kind
+      :type:  str
+      :value: 'resolved_final_state'
+
+
+
+   .. py:attribute:: phase_weight
+      :type:  complex
+      :value: (1+0j)
+
+
+
+   .. py:attribute:: q_ph
+      :type:  numpy.ndarray
+
+
+.. py:data:: BULK_PHASE_MATCHED
+   :value: 'bulk_phase_matched'
+
+
+.. py:data:: COHERENCE_REGIMES
+
+.. py:data:: COHERENT_EXTERNAL_CHANNEL
+   :value: 'coherent_external_channel'
+
+
+.. py:data:: COHERENT_FILM
+   :value: 'coherent_film'
+
+
+.. py:data:: DISCARDED_INTERNAL_COMPONENT
+   :value: 'discarded_internal_component'
+
+
+.. py:data:: INCOHERENT_DEPTH
+   :value: 'incoherent_depth'
+
+
+.. py:data:: RESOLVED_FINAL_STATE
+   :value: 'resolved_final_state'
+
+
+.. py:data:: logger
+

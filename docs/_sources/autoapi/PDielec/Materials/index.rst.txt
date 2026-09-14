@@ -33,6 +33,7 @@ Classes
    PDielec.Materials.NoMatrix
    PDielec.Materials.Sellmeier
    PDielec.Materials.Tabulated
+   PDielec.Materials._ClampedPermittivity
 
 
 Module Contents
@@ -158,7 +159,7 @@ Module Contents
 
 
 
-.. py:class:: Material(name, density=None, permittivity_object=None, cell=None)
+.. py:class:: Material(name, density=None, permittivity_object=None, cell=None, optical_permittivity=None)
 
    A class for representing materials with properties like name, density, permittivity, and unit cell.
 
@@ -196,6 +197,8 @@ Module Contents
    ----------
    name : str
        The name of the material. 
+   optical_permittivity : float, optional 
+       The optical permittivity of the material
    density : float, optional 
        The density of the material. If not provided and a cell is given, it will be calculated based on the cell. 
    permittivity_object : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional 
@@ -205,8 +208,10 @@ Module Contents
 
    Attributes
    ----------
-   density : float
+   density : float or None
        The density of the material, which may be calculated based on the cell if not provided initially.
+   optical_permittivity : float or None
+       The scalar optical permittivity of the material
    cell : Cell or None
        The unit cell of the material if provided.
    name : str
@@ -341,7 +346,8 @@ Module Contents
 
       Return the optical (high-frequency) permittivity of this material.
 
-      Delegates to the underlying permittivity object's
+      If the material has an optical permittivity specified it is returned.
+      Otherwise it delegates to the underlying permittivity object's
       :meth:`~PDielec.DielectricFunction.DielectricFunction.optical_permittivity`
       method.  For tensor materials this returns a 3×3 real tensor; for
       scalar materials it returns a float.
@@ -383,7 +389,12 @@ Module Contents
       Returns
       -------
       permittivityObjectFunction
-          Return the permittivity object function
+          Return the permittivity object function.  If the material has an
+          ``optical_permittivity`` and the underlying permittivity object has
+          a finite tabulated frequency range, the returned function clamps to
+          the ``optical_permittivity`` value for frequencies above the highest
+          tabulated frequency.  This prevents unphysical extrapolation of IR
+          dielectric models to optical (laser) frequencies.
 
 
 
@@ -574,6 +585,11 @@ Module Contents
 
 
    .. py:attribute:: name
+
+
+   .. py:attribute:: optical_permittivity
+      :value: None
+
 
 
    .. py:attribute:: permittivity_object
@@ -1021,6 +1037,29 @@ Module Contents
    .. py:attribute:: type
       :value: 'Tabulated permittivity'
 
+
+
+.. py:class:: _ClampedPermittivity(inner, freq_max_cm1, optical, is_scalar)
+
+   Picklable wrapper that clamps a permittivity function above a frequency threshold.
+
+   Used by :meth:`Material.get_permittivity_function` so the returned callable
+   can be sent to multiprocessing pool workers via pickle.
+
+
+   .. py:method:: __call__(v)
+
+
+   .. py:attribute:: freq_max_cm1
+
+
+   .. py:attribute:: inner
+
+
+   .. py:attribute:: is_scalar
+
+
+   .. py:attribute:: optical
 
 
 .. py:data:: logger

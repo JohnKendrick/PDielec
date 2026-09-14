@@ -9,3 +9,14 @@ PDielec.Tests.General
 
 
 
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index
+   /autoapi/PDielec/Tests/General/test_gui_program_names/index
+   /autoapi/PDielec/Tests/General/test_pdmake_arguments/index
+
+

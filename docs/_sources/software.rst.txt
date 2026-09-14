@@ -264,8 +264,11 @@ The name on the command line is a file ending in .gout, containing the output of
 
 Experimental File Format
 ========================
-There is a way of reading in experimental or calculated permittivities and calculating the infrared optical behaviour of the material.  The uses the *experimental* file format which by default is assumed to be associated with files with *.exp* extension. 
-There are some significant limitations in providing the information in this manner.  Specifically, as there is no Dynamical Matrix the normal modes are not known, so they will not be visible in the *Viewer tab*.   There may be little information about specific modes for the *Settings tab*.
+There is a way of reading in experimental or calculated permittivities and calculating the infrared optical behaviour of the material.  This uses the *experimental* file format which by default is assumed to be associated with files with *.exp* extension.
+The available GUI features depend on the data supplied. Dielectric models support
+optical spectra; the additional vibrational blocks described below supply normal
+modes and Raman tensors for analysis, visualisation and Raman calculations.
+Select *Experiment* in the Main Tab or use ``pdgui experiment material.exp``.
 
 The general format of an experimental file is best shown by an example;::
 
@@ -410,6 +413,9 @@ The model only allows for a diagonal permittivity tensor and each component of t
 
 Where :math:`S_j` is the strength of the phonon mode, :math:`\Omega_j` its frequency and :math:`\sigma_j` the width of the mode.
 
+
+
+.. include:: input_formats.inc
 
 
 The Format of the Materials' Database

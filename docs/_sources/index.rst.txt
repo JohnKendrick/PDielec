@@ -14,7 +14,7 @@
 PDielec
 =======
 
-This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material's infrared and terahertz response.  
+This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material's infrared, terahertz and Raman response.
 For single crystals (thin films or slabs), a generalized transfer matrix or a scattering matrix method is used.  For powdered material in a support matrix, an effective medium theory is used which can take into account the effect of shape and particle size.
 
 .. toctree::

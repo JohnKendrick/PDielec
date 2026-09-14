@@ -1,0 +1,1106 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Other Software Components" href="software.html"><link rel="prev" title="Viewer and Fitter Settings Views" href="gui_options.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>PDGui Settings Reference - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current"><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">PDGui Settings Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/aims_pdielec_born/index.html">PDielec.aims_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/phonopy_pdielec_born/index.html">PDielec.phonopy_pdielec_born</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/settings_reference.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="pdgui-settings-reference">
+<span id="id1"></span><h1>PDGui Settings Reference<a class="headerlink" href="#pdgui-settings-reference" title="Link to this heading">¶</a></h1>
+<p>This reference describes the keys in each tab’s <code class="docutils literal notranslate"><span class="pre">settings</span></code> dictionary. Use
+these exact names, including spaces and capitalisation, in a saved PDGui
+Python script. The <a class="reference internal" href="pdgui.html"><span class="doc">PDGui</span></a> guide describes the corresponding windows.</p>
+<p><em>Save settings</em> on the Main Tab provides a working starting point. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">settingsTab</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Sigma value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+<span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ZnO, parallel polarisations&#39;</span>
+
+<span class="n">tab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">plottingTab</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Minimum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.0</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Maximum frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">800.0</span>
+<span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Frequency increment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>Run the saved script with <code class="docutils literal notranslate"><span class="pre">pdgui</span> <span class="pre">-script</span> <span class="pre">script.py</span></code>. Scenario indices start
+at zero. Set up the required spectroscopy and scenario type before editing
+its settings; changing a type string alone does not reconstruct a tab.</p>
+<p>Values below are Python values: use <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> for switches,
+quoted strings for choices, and lists for arrays. Defaults refer to a newly
+created tab and can be replaced by the input file or a restored session.
+Entries marked <em>derived</em>, <em>legacy</em> or <em>reserved</em> are included because they
+can occur in the dictionary, but are not independent calculation controls.</p>
+<section id="main-tab">
+<h2>Main Tab<a class="headerlink" href="#main-tab" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.mainTab.settings</span></code>.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">Program</span></code></dt><dd><p>Input reader: <code class="docutils literal notranslate"><span class="pre">'Abinit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Aims'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Castep'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Crystal'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Experiment'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Finite_field'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Gulp'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Phonopy'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Quantum</span> <span class="pre">espresso'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Vasp'</span></code> or <code class="docutils literal notranslate"><span class="pre">'PDGui'</span></code>. The last choice reads
+a saved session. See <a class="reference internal" href="software.html"><span class="doc">Other Software Components</span></a> for supported inputs, including
+<a class="reference internal" href="software.html#experimental-file-format"><span class="std std-ref">Experimental File Format</span></a> and <a class="reference internal" href="software.html#finite-field-json-format"><span class="std std-ref">Finite-Difference and Finite-Field JSON Format</span></a>.</p>
+<p>Menu labels, saved reader names and CLI options are distinct:</p>
+<div class="table-wrapper docutils container" id="id2">
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">Reader names</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Menu label</p></th>
+<th class="head"><p>Saved <code class="docutils literal notranslate"><span class="pre">settings['Program']</span></code></p></th>
+<th class="head"><p>CLI <code class="docutils literal notranslate"><span class="pre">-program</span></code> value (pdgui and preader)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Quantum Espresso</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Quantum</span> <span class="pre">espresso'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qe</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Finite field</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Finite_field'</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">finite_field</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Output</span> <span class="pre">file</span> <span class="pre">name</span></code></dt><dd><p>Name of the calculation output to read. Saved sessions use the notebook’s
+working directory for associated files; retain companion input files
+required by the reader.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Excel</span> <span class="pre">file</span> <span class="pre">name</span></code></dt><dd><p>Destination spreadsheet name, ending in <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code>. An empty string means
+no spreadsheet has been selected.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Script</span> <span class="pre">file</span> <span class="pre">name</span></code></dt><dd><p>Filename used by <em>Save settings</em> for the Python session script.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Compatibility</span> <span class="pre">mode</span></code></dt><dd><p>Platform metadata, normally <code class="docutils literal notranslate"><span class="pre">'Linux'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Window'</span></code>. The current tab
+records this value but does not use it to select a calculation method.</p>
+</dd>
+</dl>
+</section>
+<section id="settings-tab">
+<h2>Settings Tab<a class="headerlink" href="#settings-tab" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.settingsTab.settings</span></code>. These settings are common to all
+scenarios. See <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a> for the dielectric response from normal
+modes and <a class="reference internal" href="PowderRaman.html"><span class="doc">Theory for Powder Raman</span></a> for Raman tensors and activities.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Spectroscopy</span> <span class="pre">type</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Infrared'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">ATR'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Infrared'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Raman'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Raman'</span></code>. Selects the family of calculations
+and available scenario controls. Use a saved session of the required type
+or the Settings Tab spectroscopy selector to establish matching scenarios.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Eckart</span> <span class="pre">flag</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">True</span></code>. Projects out translational motion when
+rebuilding the dynamical matrix, helping to enforce the acoustic modes.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Neutral</span> <span class="pre">Born</span> <span class="pre">charges</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">False</span></code>. Enforces charge neutrality on the Born
+effective charges before calculating the dielectric response.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Sigma</span> <span class="pre">value</span></code></dt><dd><p>Common Lorentzian half-width in cm⁻¹, default <code class="docutils literal notranslate"><span class="pre">5</span></code>. Supplies the mode
+broadening; individual linewidths are held in <code class="docutils literal notranslate"><span class="pre">tab.sigmas_cm1</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Mass</span> <span class="pre">definition</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'average'</span></code> uses average atomic masses; <code class="docutils literal notranslate"><span class="pre">'program'</span></code> uses masses from
+the calculation; <code class="docutils literal notranslate"><span class="pre">'isotope'</span></code> uses the isotope mass table; <code class="docutils literal notranslate"><span class="pre">'gui'</span></code> uses
+user-entered masses from <code class="docutils literal notranslate"><span class="pre">tab.masses_dictionary</span></code>. Default <code class="docutils literal notranslate"><span class="pre">'average'</span></code>.
+Mass changes affect the normal modes and their response.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Optical</span> <span class="pre">permittivity</span></code></dt><dd><p>The dimensionless high-frequency dielectric tensor as a 3 × 3 nested
+list. Initially <code class="docutils literal notranslate"><span class="pre">None</span></code>; normally obtained from the reader. Used for the
+dielectric background, local fields and NAC calculations. See
+<a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a> and <a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Optical</span> <span class="pre">permittivity</span> <span class="pre">edited</span></code></dt><dd><p>Boolean recording a manual tensor override. Set <code class="docutils literal notranslate"><span class="pre">True</span></code> when supplying
+<code class="docutils literal notranslate"><span class="pre">Optical</span> <span class="pre">permittivity</span></code> explicitly so that refresh and session saving
+preserve the edited tensor.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Symmetrise</span> <span class="pre">optical</span> <span class="pre">permittivity</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">True</span></code>. Applies the available crystal symmetry to the
+optical tensor; <code class="docutils literal notranslate"><span class="pre">False</span></code> retains the unsymmetrised reader tensor.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">activity</span> <span class="pre">units</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'polarizability'</span></code> displays activities in Å⁴/amu; <code class="docutils literal notranslate"><span class="pre">'epsilon'</span></code> uses
+the internal <code class="docutils literal notranslate"><span class="pre">R_epsilon</span></code> activity convention in Å/amu. This changes
+the Settings table and Raman polar display, not the physical scenario
+spectrum. See <a class="reference internal" href="PowderRaman.html"><span class="doc">Theory for Powder Raman</span></a> for the tensor conventions.</p>
+</dd>
+</dl>
+<p>The selected-mode mask, individual linewidths, masses and NAC diagnostic
+controls are not additional <code class="docutils literal notranslate"><span class="pre">settings[]</span></code> keys. Saved scripts may also
+contain assignments to tab attributes such as <code class="docutils literal notranslate"><span class="pre">modes_selected</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sigmas_cm1</span></code> and <code class="docutils literal notranslate"><span class="pre">masses_dictionary</span></code>; retain those assignments when
+reproducing a session.</p>
+</section>
+<section id="scenario-tabs-common-settings">
+<h2>Scenario Tabs: Common Settings<a class="headerlink" href="#scenario-tabs-common-settings" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.scenarios[index].settings</span></code>. The following keys are
+inherited by powder and crystal scenarios.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Legend</span></code></dt><dd><p>Text used to identify the scenario in plot legends and output.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Scenario</span> <span class="pre">type</span></code></dt><dd><p>Records the scenario family. This is session metadata; use the notebook’s
+scenario creation and spectroscopy controls to change the type.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Materials</span> <span class="pre">database</span></code></dt><dd><p>Path to the Excel materials database, normally <code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.xlsx</span></code>.
+Provides support matrices and optical layer materials. See the materials
+database description in <a class="reference internal" href="software.html"><span class="doc">Other Software Components</span></a>.</p>
+</dd>
+</dl>
+</section>
+<section id="powder-infrared-and-powder-atr">
+<h2>Powder Infrared and Powder ATR<a class="headerlink" href="#powder-infrared-and-powder-atr" title="Link to this heading">¶</a></h2>
+<p>Use a powder scenario’s <code class="docutils literal notranslate"><span class="pre">settings</span></code> dictionary. Most particle and support
+settings are also present in Powder Raman, with the qualifications below.
+See <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a> for effective-medium and particle-shape theory.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Matrix</span></code></dt><dd><p>Support-material name in the materials database, initially <code class="docutils literal notranslate"><span class="pre">'ptfe'</span></code>.
+<code class="docutils literal notranslate"><span class="pre">'Material</span> <span class="pre">defined</span> <span class="pre">manually'</span></code> selects a user-defined constant support.
+Powder Raman also accepts <code class="docutils literal notranslate"><span class="pre">'none'</span></code>: this uses the bulk TO Raman response
+without support local-field or particle NAC/EO corrections.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">density</span></code></dt><dd><p>Support density in g/cm³. Normally supplied by the database; a positive
+manual value is used to convert between mass and volume fractions.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">permittivity</span></code></dt><dd><p>Dimensionless constant support permittivity for a manually defined
+material; may be complex. Database materials can instead provide a
+frequency-dependent response.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Mass</span> <span class="pre">fraction</span></code></dt><dd><p>Crystallite mass fraction between zero and one, not a percentage.
+The corresponding volume fraction is calculated using the densities.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Volume</span> <span class="pre">fraction</span></code></dt><dd><p>Crystallite volume fraction between zero and one, not a percentage.
+Controls the effective-medium mixture and scales the powder Raman
+response. Default <code class="docutils literal notranslate"><span class="pre">0.1</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Mass</span> <span class="pre">or</span> <span class="pre">volume</span> <span class="pre">fraction</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'mass'</span></code> or <code class="docutils literal notranslate"><span class="pre">'volume'</span></code> identifies which fraction is the independent
+input when converting the other; default <code class="docutils literal notranslate"><span class="pre">'volume'</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Bubble</span> <span class="pre">volume</span> <span class="pre">fraction</span></code></dt><dd><p>Fraction of additional air voids, between zero and one; default <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+Used in the powder infrared mixture calculation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Bubble</span> <span class="pre">radius</span></code></dt><dd><p>Air-void radius in µm, default <code class="docutils literal notranslate"><span class="pre">30</span></code>. Used by the infrared bubble
+correction when the bubble fraction is non-zero.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Effective</span> <span class="pre">medium</span> <span class="pre">method</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Maxwell-Garnett'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Bruggeman'</span></code> selects an effective-medium
+model; <code class="docutils literal notranslate"><span class="pre">'Averaged</span> <span class="pre">Permittivity'</span></code> averages the crystallite response;
+<code class="docutils literal notranslate"><span class="pre">'Mie'</span></code> includes finite-size spherical scattering. These choices govern
+powder infrared/ATR, not the separate Raman tensor calculation.
+See <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Particle</span> <span class="pre">shape</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Sphere'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Needle'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Plate'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Ellipsoid'</span></code>. Determines
+the depolarisation tensor and hence local fields and particle response.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Particle</span> <span class="pre">size(mu)</span></code></dt><dd><p>Particle radius in µm, default <code class="docutils literal notranslate"><span class="pre">0.0001</span></code>. Relevant to finite-size
+infrared scattering, particularly Mie; not a Raman mode linewidth.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Particle</span> <span class="pre">size</span> <span class="pre">distribution</span> <span class="pre">sigma(mu)</span></code></dt><dd><p>Width parameter for the infrared particle-size distribution, default
+<code class="docutils literal notranslate"><span class="pre">0</span></code> for a single size. This is the lognormal distribution parameter,
+not a Lorentzian frequency width.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Ellipsoid</span> <span class="pre">a/b</span></code></dt><dd><p>Axial aspect ratio for an ellipsoid; default <code class="docutils literal notranslate"><span class="pre">1</span></code> gives a sphere.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Unique</span> <span class="pre">direction</span> <span class="pre">-</span> <span class="pre">h</span></code></dt><dd><p>First component of the particle’s unique direction.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Unique</span> <span class="pre">direction</span> <span class="pre">-</span> <span class="pre">k</span></code></dt><dd><p>Second component of the particle’s unique direction.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Unique</span> <span class="pre">direction</span> <span class="pre">-</span> <span class="pre">l</span></code></dt><dd><p>Third component of the particle’s unique direction. Together the three
+keys specify a direct-lattice [abc] axis for a needle/ellipsoid or an
+(hkl) surface normal for a plate. The default is <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">1]</span></code>;
+spheres do not use this direction. See <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ATR</span> <span class="pre">material</span> <span class="pre">refractive</span> <span class="pre">index</span></code></dt><dd><p>Real refractive index of the ATR prism, default <code class="docutils literal notranslate"><span class="pre">4</span></code>. Powder ATR only;
+see <a class="reference internal" href="theory_powder.html#atr-theory"><span class="std std-ref">Calculation of ATR Extinction Spectra</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ATR</span> <span class="pre">theta</span></code></dt><dd><p>ATR incidence angle in degrees, default <code class="docutils literal notranslate"><span class="pre">45</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ATR</span> <span class="pre">S</span> <span class="pre">polarisation</span> <span class="pre">fraction</span></code></dt><dd><p>Fraction of s-polarised illumination: <code class="docutils literal notranslate"><span class="pre">0</span></code> is pure p, <code class="docutils literal notranslate"><span class="pre">1</span></code> is pure s,
+and <code class="docutils literal notranslate"><span class="pre">0.5</span></code> is an equal mixture. Used to combine ATR responses.</p>
+</dd>
+</dl>
+</section>
+<section id="powder-raman">
+<h2>Powder Raman<a class="headerlink" href="#powder-raman" title="Link to this heading">¶</a></h2>
+<p>These keys supplement the common scenario and powder particle settings.
+See <a class="reference internal" href="PowderRaman.html"><span class="doc">Theory for Powder Raman</span></a> for orientation averaging, internal fields,
+particle-corrected phonons and the electro-optic contribution.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">laser</span> <span class="pre">wavelength</span></code></dt><dd><p>Laser wavelength in nm. A positive
+number, default <code class="docutils literal notranslate"><span class="pre">785</span></code>; determines the excitation and Stokes frequency
+factors. Do not supply a frequency in Hz or cm⁻¹.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">laser</span> <span class="pre">polarisation</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'VV'</span></code> selects parallel polarisations, <code class="docutils literal notranslate"><span class="pre">'VH'</span></code> and <code class="docutils literal notranslate"><span class="pre">'HV'</span></code> select
+crossed polarisations, and <code class="docutils literal notranslate"><span class="pre">'Unpolarised'</span></code> selects the unpolarised
+response. Default <code class="docutils literal notranslate"><span class="pre">'VV'</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">temperature</span></code></dt><dd><p>Temperature in kelvin, default <code class="docutils literal notranslate"><span class="pre">298</span></code>. Controls the Stokes thermal
+population factor.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">orientation</span> <span class="pre">samples</span></code></dt><dd><p>Number of numerical orientations for non-spherical particles. The GUI
+offers <code class="docutils literal notranslate"><span class="pre">4,</span> <span class="pre">8,</span> <span class="pre">16,</span> <span class="pre">32,</span> <span class="pre">64,</span> <span class="pre">128,</span> <span class="pre">256,</span> <span class="pre">512,</span> <span class="pre">1024,</span> <span class="pre">2048,</span> <span class="pre">4096</span></code>; default
+<code class="docutils literal notranslate"><span class="pre">512</span></code>. Increase to check convergence. Spheres use an analytic average.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">electro-optic</span> <span class="pre">term</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">False</span></code> for a new powder scenario. Includes the
+electro-optic contribution when particle correction data and χ⁽²⁾ are
+available. Has no effect for <code class="docutils literal notranslate"><span class="pre">Matrix</span> <span class="pre">=</span> <span class="pre">'none'</span></code>. See <a class="reference internal" href="PowderRaman.html"><span class="doc">Theory for Powder Raman</span></a>.</p>
+</dd>
+</dl>
+</section>
+<section id="crystal-infrared-and-crystal-raman-layers">
+<h2>Crystal Infrared and Crystal Raman: Layers<a class="headerlink" href="#crystal-infrared-and-crystal-raman-layers" title="Link to this heading">¶</a></h2>
+<p>Use a crystal scenario’s <code class="docutils literal notranslate"><span class="pre">settings</span></code> dictionary. See
+<a class="reference internal" href="theory_single_crystal.html"><span class="doc">Theory for Single Crystal Infrared Optics</span></a> for the optical stack, orientation conventions
+and coherent/incoherent propagation, and <a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a> for Raman fields.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Global</span> <span class="pre">azimuthal</span> <span class="pre">angle</span></code></dt><dd><p>Rotation of the stack about its surface normal, in degrees; default <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Angle</span> <span class="pre">of</span> <span class="pre">incidence</span></code></dt><dd><p>Incident angle from the surface normal in the superstrate, in degrees;
+default <code class="docutils literal notranslate"><span class="pre">0</span></code>. See <a class="reference internal" href="theory_single_crystal.html#crystal-and-laboratory-coordinates"><span class="std std-ref">Crystal &amp; Laboratory Coordinate Frames</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Mode</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Scattering</span> <span class="pre">matrix'</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">'Transfer</span> <span class="pre">matrix'</span></code> for the
+infrared optical solver. Scattering matrices avoid numerical problems
+that transfer matrices can encounter in strongly absorbing thick layers.
+See <a class="reference internal" href="theory_single_crystal.html"><span class="doc">Theory for Single Crystal Infrared Optics</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">material</span> <span class="pre">names</span></code></dt><dd><p>List of database material names, in order from superstrate to substrate.
+<code class="docutils literal notranslate"><span class="pre">'Dielectric</span> <span class="pre">layer'</span></code> denotes the material read from the calculation.
+The initial stack is <code class="docutils literal notranslate"><span class="pre">['air',</span> <span class="pre">'Dielectric</span> <span class="pre">layer',</span> <span class="pre">'air']</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">hkls</span></code></dt><dd><p>One three-component (hkl) surface normal per layer. Used for anisotropic
+layers; isotropic layers do not need a crystal orientation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">azimuthals</span></code></dt><dd><p>One in-plane rotation in degrees per layer, applied with its surface
+orientation and the global azimuthal angle.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">thicknesses</span></code></dt><dd><p>One thickness per layer, in the corresponding <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">thickness</span> <span class="pre">units</span></code>.
+The first and last layers are semi-infinite ports, so their stored
+thicknesses do not represent finite films.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">thickness</span> <span class="pre">units</span></code></dt><dd><p>List of length-unit strings: <code class="docutils literal notranslate"><span class="pre">'ang'</span></code> (Å), <code class="docutils literal notranslate"><span class="pre">'nm'</span></code>, <code class="docutils literal notranslate"><span class="pre">'um'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mm'</span></code>
+or <code class="docutils literal notranslate"><span class="pre">'cm'</span></code>. The GUI offers the latter four; scripts can also use
+<code class="docutils literal notranslate"><span class="pre">'ang'</span></code>. Keep the list aligned with the thicknesses.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">incoherent</span> <span class="pre">options</span></code></dt><dd><p>One optical propagation choice per layer: <code class="docutils literal notranslate"><span class="pre">'Coherent'</span></code> retains phase;
+<code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">(intensity)'</span></code> propagates intensities;
+<code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">(phase</span> <span class="pre">averaging)'</span></code> averages sampled phases;
+<code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">(phase</span> <span class="pre">cancelling)'</span></code> removes propagation phase; and
+<code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">(non-reflective)'</span></code> treats a non-reflecting thick layer.
+See <a class="reference internal" href="theory_single_crystal.html"><span class="doc">Theory for Single Crystal Infrared Optics</span></a>. These are optical layer choices,
+distinct from the Raman <code class="docutils literal notranslate"><span class="pre">Depth</span> <span class="pre">coherence</span></code> and <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">combination</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">dielectric</span> <span class="pre">flags</span></code></dt><dd><p>Boolean list marking layers that use the loaded dielectric material.
+Keep these flags consistent with <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">material</span> <span class="pre">names</span></code>; the initial
+three-layer stack uses <code class="docutils literal notranslate"><span class="pre">[False,</span> <span class="pre">True,</span> <span class="pre">False]</span></code>.</p>
+</dd>
+</dl>
+<p>All seven layer lists must have the same length. Saved sessions restore the
+layer objects from these lists; live layer edits should use the layer editor
+so that both the objects and their serialised settings remain consistent.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Percentage</span> <span class="pre">average</span> <span class="pre">incoherence</span></code></dt><dd><p>Phase range as a percentage of a full 2π cycle, default <code class="docutils literal notranslate"><span class="pre">100</span></code>.
+Used for layers with phase averaging.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">average</span> <span class="pre">incoherence</span> <span class="pre">samples</span></code></dt><dd><p>Number of phase samples per phase-averaged layer, default <code class="docutils literal notranslate"><span class="pre">10</span></code>.
+Multiple such layers require combinations of their sampled phases.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Percentage</span> <span class="pre">partial</span> <span class="pre">incoherence</span></code></dt><dd><p>Strength of the infrared partial-incoherence sampling, default <code class="docutils literal notranslate"><span class="pre">0</span></code>
+(disabled). Randomly perturbs the active crystal thickness, orientation
+and incidence angle; this is separate from phase averaging.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Partially</span> <span class="pre">incoherent</span> <span class="pre">samples</span></code></dt><dd><p>Number of random samples for that infrared average, default <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Filter</span> <span class="pre">kernel</span> <span class="pre">size</span></code></dt><dd><p>Savitzky–Golay smoothing window for the partially incoherent infrared
+spectrum. Default <code class="docutils literal notranslate"><span class="pre">1</span></code> disables smoothing; an enabled window must be
+odd, exceed the polynomial order, and fit within the spectrum length.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Filter</span> <span class="pre">polynomial</span> <span class="pre">size</span></code></dt><dd><p>Polynomial order for that smoothing filter, default <code class="docutils literal notranslate"><span class="pre">3</span></code>. Relevant only
+when the kernel size is greater than two.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Frequency</span> <span class="pre">units</span></code></dt><dd><p>Legacy stored value, initially <code class="docutils literal notranslate"><span class="pre">'wavenumber'</span></code>. The current crystal tab
+does not consume it; select display units with Plotting’s singular
+<code class="docutils literal notranslate"><span class="pre">Frequency</span> <span class="pre">unit</span></code> key.</p>
+</dd>
+</dl>
+</section>
+<section id="crystal-raman-scattering-and-coherence">
+<h2>Crystal Raman: Scattering and Coherence<a class="headerlink" href="#crystal-raman-scattering-and-coherence" title="Link to this heading">¶</a></h2>
+<p>These settings supplement the crystal layer settings. See
+<a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a> for the scattering geometry, reciprocal fields,
+NAC/EO corrections and the different coherence choices.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Laser</span> <span class="pre">wavelength</span> <span class="pre">nm</span></code></dt><dd><p>Positive laser wavelength in nm, default <code class="docutils literal notranslate"><span class="pre">532</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Incident</span> <span class="pre">polarisation</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'p'</span></code> or <code class="docutils literal notranslate"><span class="pre">'s'</span></code> selects the incident channel; default <code class="docutils literal notranslate"><span class="pre">'p'</span></code>.
+Mixed coherent polarisations can be represented by a two-component
+complex Jones vector in p/s order, as produced by a saved Porto setup.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Detected</span> <span class="pre">polarisation</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'p'</span></code> or <code class="docutils literal notranslate"><span class="pre">'s'</span></code> selects an analyser, while <code class="docutils literal notranslate"><span class="pre">'unpolarised'</span></code> sums the
+two detected intensities. Default <code class="docutils literal notranslate"><span class="pre">'p'</span></code>. A two-component complex
+p/s Jones vector specifies a coherent analyser combination. Summing
+unpolarised intensities is different from summing field amplitudes.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Temperature</span> <span class="pre">K</span></code></dt><dd><p>Temperature in kelvin, default <code class="docutils literal notranslate"><span class="pre">298</span></code>, used in the Stokes population factor.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">GL</span> <span class="pre">point</span> <span class="pre">density</span></code></dt><dd><p>Gauss–Legendre integration-point density per µm of active material,
+default <code class="docutils literal notranslate"><span class="pre">20</span></code>. Increase to check depth-integration convergence.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Collection</span> <span class="pre">side</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'superstrate'</span></code> collects backscattered light on the incident side;
+<code class="docutils literal notranslate"><span class="pre">'substrate'</span></code> collects forward-scattered light. Default <code class="docutils literal notranslate"><span class="pre">'superstrate'</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Collection</span> <span class="pre">angle</span></code></dt><dd><p>Collection angle in degrees. <code class="docutils literal notranslate"><span class="pre">-1</span></code> (default) requests automatic geometry;
+other values specify a signed angle explicitly. Automatic collection uses
+minus the incidence angle on the superstrate side (retro-backscattering)
+and plus the incidence angle on the substrate side (forward collection).
+An explicit positive angle equal to incidence selects the historical
+specular-reflection geometry on the superstrate side.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">combination</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">intensities'</span></code> (default) sums the layer intensities;
+<code class="docutils literal notranslate"><span class="pre">'Coherent</span> <span class="pre">amplitudes'</span></code> sums complex layer amplitudes before squaring.
+Coherent layer combination is unavailable with incoherent depth integration.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Depth</span> <span class="pre">coherence</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Coherent</span> <span class="pre">amplitude'</span></code> (default) integrates amplitudes over depth before
+squaring. <code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">intensity'</span></code> integrates local intensities. This is
+a Raman emission choice, not the optical layer’s propagation coherence.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Approximate</span> <span class="pre">ES</span></code></dt><dd><p>Script-only boolean, default <code class="docutils literal notranslate"><span class="pre">False</span></code>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, substitutes the laser
+field for the separately calculated scattered field. This changes the
+optical approximation; see <a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Coalesce</span> <span class="pre">equivalent</span> <span class="pre">layers</span></code></dt><dd><p>Script-only boolean, default <code class="docutils literal notranslate"><span class="pre">True</span></code>. Merges adjacent equivalent coherent
+layers before Raman integration. <code class="docutils literal notranslate"><span class="pre">False</span></code> retains the original layer
+boundaries and is useful for subdivision checks.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">electro-optic</span> <span class="pre">term</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">True</span></code> for crystal scenarios. Includes χ⁽²⁾ in the
+NAC-corrected Raman tensors when those data are available. Disabling it
+retains the NAC frequency correction without the EO tensor contribution.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">NAC</span> <span class="pre">mode</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'none'</span></code> uses bulk TO modes; <code class="docutils literal notranslate"><span class="pre">'geometry'</span></code> (default, displayed as
+<em>Snell’s law</em>) obtains phonon momentum from the macroscopic geometry;
+<code class="docutils literal notranslate"><span class="pre">'dominant_mode'</span></code> uses the dominant internal Berreman mode;
+<code class="docutils literal notranslate"><span class="pre">'modal_pairs'</span></code> (<em>All modes</em>) resolves the internal optical mode pairs.
+GUI labels may append <em>(EO)</em>; that suffix is not part of the stored value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Modal</span> <span class="pre">pair</span> <span class="pre">combination</span></code></dt><dd><p>Used with <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">NAC</span> <span class="pre">mode</span> <span class="pre">=</span> <span class="pre">'modal_pairs'</span></code>. <code class="docutils literal notranslate"><span class="pre">'Group</span> <span class="pre">q</span> <span class="pre">channels'</span></code>
+(default) combines amplitudes sharing a phonon momentum and detector
+channel. <code class="docutils literal notranslate"><span class="pre">'Incoherent</span> <span class="pre">pairs'</span></code> squares pairs separately for comparison
+with older calculations. <code class="docutils literal notranslate"><span class="pre">'Coherent</span> <span class="pre">all</span> <span class="pre">pairs'</span></code> is a diagnostic option
+that mixes distinct phonon final states. See <a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Modal</span> <span class="pre">pair</span> <span class="pre">final-state</span> <span class="pre">model</span></code></dt><dd><p>For incoherent-depth modal-pair calculations, <code class="docutils literal notranslate"><span class="pre">'Bulk</span> <span class="pre">phase</span> <span class="pre">matched'</span></code>
+(default) selects internal momenta relative to the external transfer.
+<code class="docutils literal notranslate"><span class="pre">'Local</span> <span class="pre">incoherent'</span></code> assigns local field components to the externally
+selected phonon state without the q-angle filter.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Modal</span> <span class="pre">pair</span> <span class="pre">q-angle</span> <span class="pre">tolerance</span></code></dt><dd><p>Maximum angle in degrees between internal and external momentum transfer,
+from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">90</span></code>. Default <code class="docutils literal notranslate"><span class="pre">90</span></code> accepts the forward hemisphere in
+the bulk phase-matched model. Inactive for local incoherent depth.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Modal</span> <span class="pre">pair</span> <span class="pre">include</span> <span class="pre">zero</span> <span class="pre">q</span></code></dt><dd><p>Reserved/legacy entry, initially <code class="docutils literal notranslate"><span class="pre">None</span></code>. It is retained in the dictionary
+but is not read by the current scenario calculation; it does not control
+zero-momentum channel selection.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Azimuthal</span> <span class="pre">sweep</span> <span class="pre">points</span></code></dt><dd><p>Positive integer number of angles over 0–360°, excluding the repeated
+endpoint; default <code class="docutils literal notranslate"><span class="pre">36</span></code>. Used when opening an azimuthal sweep.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Porto</span> <span class="pre">notation</span></code></dt><dd><p>Stored normal-incidence geometry text, initially empty. For example,
+<code class="docutils literal notranslate"><span class="pre">'x(yy)x'</span></code> denotes the backscattering shorthand and <code class="docutils literal notranslate"><span class="pre">'x(yz)+x'</span></code>
+explicit forward scattering. Applying the Porto entry in the GUI sets
+the layer normal, angles, collection side and polarisations. Preserve
+these accompanying values in a script; assigning the text alone is not
+a replacement for applying the geometry. See <a class="reference internal" href="pdgui.html#crystal-raman-gui"><span class="std std-ref">Crystal Raman Scenarios</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Phonon</span> <span class="pre">boundary</span> <span class="pre">correction</span></code></dt><dd><p>Legacy key from older sessions. With <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">NAC</span> <span class="pre">mode</span> <span class="pre">=</span> <span class="pre">'none'</span></code>, the
+old values <code class="docutils literal notranslate"><span class="pre">'NAC'</span></code>, <code class="docutils literal notranslate"><span class="pre">'slab-environment'</span></code> and <code class="docutils literal notranslate"><span class="pre">'slab'</span></code> map to
+<code class="docutils literal notranslate"><span class="pre">'geometry'</span></code>. Use <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">NAC</span> <span class="pre">mode</span></code> in new scripts.</p>
+</dd>
+</dl>
+</section>
+<section id="plotting-tab">
+<h2>Plotting Tab<a class="headerlink" href="#plotting-tab" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.plottingTab.settings</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Minimum</span> <span class="pre">frequency</span></code></dt><dd><p>Lower calculation limit in cm⁻¹, default <code class="docutils literal notranslate"><span class="pre">1</span></code>. Stored in wavenumbers
+regardless of the chosen display unit.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">frequency</span></code></dt><dd><p>Upper calculation limit in cm⁻¹, default <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Frequency</span> <span class="pre">increment</span></code></dt><dd><p>Calculation-grid spacing in cm⁻¹, default <code class="docutils literal notranslate"><span class="pre">0.2</span></code>. Use sufficiently small
+spacing to resolve the selected mode linewidths.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Frequency</span> <span class="pre">unit</span></code></dt><dd><p>Display unit: <code class="docutils literal notranslate"><span class="pre">'wavenumber'</span></code> (cm⁻¹), <code class="docutils literal notranslate"><span class="pre">'THz'</span></code>, <code class="docutils literal notranslate"><span class="pre">'GHz'</span></code>, or the
+wavelength units <code class="docutils literal notranslate"><span class="pre">'ang'</span></code>, <code class="docutils literal notranslate"><span class="pre">'nm'</span></code>, <code class="docutils literal notranslate"><span class="pre">'um'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mm'</span></code>, <code class="docutils literal notranslate"><span class="pre">'cm'</span></code>, <code class="docutils literal notranslate"><span class="pre">'m'</span></code>.
+Wavelength is reciprocal to frequency; the calculation-grid settings
+above remain in cm⁻¹.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Molar</span> <span class="pre">definition</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Unit</span> <span class="pre">cells'</span></code> (default), <code class="docutils literal notranslate"><span class="pre">'Atoms'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Molecules'</span></code> sets the amount
+used to normalise powder molar absorption. See <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">atoms</span></code></dt><dd><p>Number of atoms per molecule for <code class="docutils literal notranslate"><span class="pre">Molar</span> <span class="pre">definition</span> <span class="pre">=</span> <span class="pre">'Molecules'</span></code>;
+default <code class="docutils literal notranslate"><span class="pre">1</span></code>. Used with the unit-cell atom count and volume to calculate
+the molecular concentration.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">type</span></code></dt><dd><p>Exact curve name. Powder infrared offers <code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Molar</span> <span class="pre">Absorption'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Absorption'</span></code>, <code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Real</span> <span class="pre">Permittivity'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Imaginary</span> <span class="pre">Permittivity'</span></code>. Powder ATR additionally offers
+<code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">ATR'</span></code>. Raman uses <code class="docutils literal notranslate"><span class="pre">'Powder</span> <span class="pre">Raman'</span></code> or <code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Raman'</span></code>.
+Crystal infrared offers <code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Reflectance</span> <span class="pre">(P</span> <span class="pre">polarisation)'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Reflectance</span> <span class="pre">(S</span> <span class="pre">polarisation)'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Transmittance</span> <span class="pre">(P</span> <span class="pre">polarisation)'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Transmittance</span> <span class="pre">(S</span> <span class="pre">polarisation)'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Absorbtance</span> <span class="pre">(P</span> <span class="pre">polarisation)'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'Crystal</span> <span class="pre">Absorbtance</span> <span class="pre">(S</span> <span class="pre">polarisation)'</span></code>. Preserve the historical
+spelling <em>Absorbtance</em> in scripts. See <a class="reference internal" href="theory_powder.html"><span class="doc">Theory for Infrared Absorption in Powders</span></a>,
+<a class="reference internal" href="theory_powder.html#atr-theory"><span class="std std-ref">Calculation of ATR Extinction Spectra</span></a>, <a class="reference internal" href="theory_single_crystal.html"><span class="doc">Theory for Single Crystal Infrared Optics</span></a>, <a class="reference internal" href="PowderRaman.html"><span class="doc">Theory for Powder Raman</span></a>
+and <a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a> for the corresponding observables.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Spectrum</span> <span class="pre">renormalisation</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'none'</span></code> retains the spectrum’s units; <code class="docutils literal notranslate"><span class="pre">'max=1'</span></code> divides each curve
+by its peak; <code class="docutils literal notranslate"><span class="pre">'area=1'</span></code> divides by its integrated area.
+<code class="docutils literal notranslate"><span class="pre">'layer</span> <span class="pre">depth'</span></code> is available for Crystal Raman and divides by the
+total active-layer depth. These are plotting normalisations.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Scenarios</span> <span class="pre">to</span> <span class="pre">plot</span></code></dt><dd><p>List of booleans, one per scenario in notebook order, for example
+<code class="docutils literal notranslate"><span class="pre">[True,</span> <span class="pre">False,</span> <span class="pre">True]</span></code>. Controls visibility. An initially empty list is
+expanded by the tab to match the scenarios.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">concentration</span></code></dt><dd><p>Derived molar concentration in mol/L for the selected molar definition.
+Recalculated from the cell volume, atom count and molar definition;
+set those inputs rather than this value directly.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cell</span> <span class="pre">concentration</span></code></dt><dd><p>Derived unit-cell concentration in mol/L, used in molar normalisation.</p>
+</dd>
+</dl>
+</section>
+<section id="analysis-tab">
+<h2>Analysis Tab<a class="headerlink" href="#analysis-tab" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.analysisTab.settings</span></code>. See <a class="reference internal" href="analysis.html"><span class="doc">Phonon Analysis</span></a> for the
+internal/external and molecular decomposition of modes.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Radii</span></code></dt><dd><p>List of covalent radii in Å, in the tab’s element order. Initially
+<code class="docutils literal notranslate"><span class="pre">None</span></code>; populated from the element table and editable thereafter.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Minimum</span> <span class="pre">frequency</span></code></dt><dd><p>Lower frequency shown in the analysis plot, in cm⁻¹; default <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">frequency</span></code></dt><dd><p>Upper frequency shown in the analysis plot, in cm⁻¹; default <code class="docutils literal notranslate"><span class="pre">400</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code></dt><dd><p>Analysis plot title, default <code class="docutils literal notranslate"><span class="pre">'Analysis'</span></code>. This key is lower case.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Covalent</span> <span class="pre">radius</span> <span class="pre">scaling</span></code></dt><dd><p>Multiplier on the sum of the atomic covalent radii when deciding bonds;
+default <code class="docutils literal notranslate"><span class="pre">1.1</span></code>. Changes molecular grouping and therefore mode analysis.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Bonding</span> <span class="pre">tolerance</span></code></dt><dd><p>Additional distance in Å added to the scaled sum of radii when deciding
+bonds; default <code class="docutils literal notranslate"><span class="pre">0.1</span></code>. Bonding information is also used by the Viewer.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Bar</span> <span class="pre">width</span></code></dt><dd><p>Width of the mode bars in the analysis plot, default <code class="docutils literal notranslate"><span class="pre">0.5</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="d-viewer-tab">
+<h2>3D Viewer Tab<a class="headerlink" href="#d-viewer-tab" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.viewerTab.settings</span></code>. These are display settings; they do
+not change the calculated spectrum. Colours use <code class="docutils literal notranslate"><span class="pre">[red,</span> <span class="pre">green,</span> <span class="pre">blue,</span> <span class="pre">alpha]</span></code>
+with integer components from zero to 255.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Selected</span> <span class="pre">mode</span></code></dt><dd><p>One-based phonon number to display/animate; initially <code class="docutils literal notranslate"><span class="pre">4</span></code>. This differs
+from zero-based Python array and scenario indices.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Atom</span> <span class="pre">scaling</span></code></dt><dd><p>Multiplier on covalent radii for atom spheres, default <code class="docutils literal notranslate"><span class="pre">0.5</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">displacement</span></code></dt><dd><p>Maximum displayed displacement in Å, default <code class="docutils literal notranslate"><span class="pre">1</span></code>. Scales the vibration
+for viewing rather than changing the normal-mode eigenvector.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Bond</span> <span class="pre">colour</span></code></dt><dd><p>Bond-cylinder RGBA colour, default <code class="docutils literal notranslate"><span class="pre">[80,</span> <span class="pre">80,</span> <span class="pre">80,</span> <span class="pre">255]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Bond</span> <span class="pre">radius</span></code></dt><dd><p>Bond-cylinder radius in Å, default <code class="docutils literal notranslate"><span class="pre">0.1</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Cell</span> <span class="pre">colour</span></code></dt><dd><p>Unit-cell edge RGBA colour, default <code class="docutils literal notranslate"><span class="pre">[255,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">255]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Cell</span> <span class="pre">radius</span></code></dt><dd><p>Radius of the cell-edge cylinders in Å, default <code class="docutils literal notranslate"><span class="pre">0.1</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">colour</span></code></dt><dd><p>Cell-label RGBA colour, default <code class="docutils literal notranslate"><span class="pre">[255,</span> <span class="pre">255,</span> <span class="pre">0,</span> <span class="pre">255]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">size</span></code></dt><dd><p>Cell-label font size, stored as a string; default <code class="docutils literal notranslate"><span class="pre">'24'</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Background</span> <span class="pre">colour</span></code></dt><dd><p>Viewport background RGBA colour, default <code class="docutils literal notranslate"><span class="pre">[120,</span> <span class="pre">120,</span> <span class="pre">120,</span> <span class="pre">255]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Arrow</span> <span class="pre">colour</span></code></dt><dd><p>Displacement-arrow RGBA colour, default <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">255,</span> <span class="pre">0,</span> <span class="pre">255]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Arrow</span> <span class="pre">radius</span></code></dt><dd><p>Displacement-arrow radius in Å, default <code class="docutils literal notranslate"><span class="pre">0.07</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">phase</span> <span class="pre">steps</span></code></dt><dd><p>Number of displacement steps for the animation, default <code class="docutils literal notranslate"><span class="pre">41</span></code>. Must be
+odd; the Viewer increases an even value by one.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Super</span> <span class="pre">Cell</span></code></dt><dd><p>Three positive integer repetitions along the cell vectors, for example
+<code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">2,</span> <span class="pre">1]</span></code>. Default <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Transform</span></code></dt><dd><p>3 × 3 lattice transformation, normally stored as nested lists of strings.
+Default identity. Changes the displayed cell; see
+<a class="reference internal" href="pdgui.html#viewer-transform-window"><span class="std std-ref">The Transformation Window</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Primitive</span> <span class="pre">transform</span></code></dt><dd><p>Derived transformation obtained from the reader when the primitive-cell
+action is used. Normally preserve the value saved by that action.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">hkl</span></code></dt><dd><p>Three-component surface normal used to orient the view, default
+<code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">1)</span></code>. See <a class="reference internal" href="theory_single_crystal.html#crystal-and-laboratory-coordinates"><span class="std std-ref">Crystal &amp; Laboratory Coordinate Frames</span></a>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uvw</span></code></dt><dd><p>Three-component direct-lattice direction used to orient the view,
+default <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Element</span> <span class="pre">palette</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Jmol'</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">'Vesta'</span></code> selects the element colour table;
+other names fall back to the built-in elemental palette.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Element</span> <span class="pre">colours</span></code></dt><dd><p>Optional list of RGBA colours in the Viewer species order, overriding
+the palette for those species. Initially <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Toggle</span> <span class="pre">states</span></code></dt><dd><p>Five booleans in this order: cell labels, cell edges, orientation axes,
+bonds, atoms. Default <code class="docutils literal notranslate"><span class="pre">[True,</span> <span class="pre">True,</span> <span class="pre">True,</span> <span class="pre">True,</span> <span class="pre">True]</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="fitter-tab">
+<h2>Fitter Tab<a class="headerlink" href="#fitter-tab" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">self.notebook.fitterTab.settings</span></code>. The Fitter compares an experimental
+spectrum with the selected calculated spectrum; see the Fitter section in
+<a class="reference internal" href="pdgui.html"><span class="doc">PDGui</span></a> for the fitting workflow and experimental spectrum columns.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Experimental</span> <span class="pre">file</span> <span class="pre">name</span></code></dt><dd><p>Filename of the measured spectrum to compare, initially empty. This is
+a frequency/intensity spectrum, distinct from an <code class="docutils literal notranslate"><span class="pre">.exp</span></code> material input.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">title</span></code></dt><dd><p>Comparison plot title, initially
+<code class="docutils literal notranslate"><span class="pre">'Experimental</span> <span class="pre">and</span> <span class="pre">Calculated</span> <span class="pre">Spectral</span> <span class="pre">Comparison'</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Fitting</span> <span class="pre">type</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">'Minimise</span> <span class="pre">x-correlation'</span></code> selects the correlation-based objective;
+<code class="docutils literal notranslate"><span class="pre">'Minimise</span> <span class="pre">spectral</span> <span class="pre">difference'</span></code> selects the spectral RMSE objective.
+The optimisation adjusts selected linewidths and, optionally, frequency scale.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">iterations</span></code></dt><dd><p>Optimisation iteration control, default <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Frequency</span> <span class="pre">scaling</span> <span class="pre">factor</span></code></dt><dd><p>Multiplier on calculated frequencies in the comparison, default <code class="docutils literal notranslate"><span class="pre">1</span></code>.
+Does not rescale the underlying normal modes in the input reader.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Optimise</span> <span class="pre">frequency</span> <span class="pre">scaling</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">False</span></code>. Includes the frequency scaling factor among
+the variables adjusted during fitting.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Independent</span> <span class="pre">y-axes</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">True</span></code>. Plots experimental and calculated spectra on
+independent y axes; <code class="docutils literal notranslate"><span class="pre">False</span></code> uses a shared intensity axis.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Spectral</span> <span class="pre">difference</span> <span class="pre">threshold</span></code></dt><dd><p>Threshold applied after intensity normalisation when calculating the
+spectral difference, default <code class="docutils literal notranslate"><span class="pre">0.05</span></code>. Values below it are set to zero
+in the comparison objective.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Baseline</span> <span class="pre">removal</span></code></dt><dd><p>Boolean, default <code class="docutils literal notranslate"><span class="pre">False</span></code>. Applies a Hodrick–Prescott background removal
+to the resampled experimental spectrum.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HPFilter</span> <span class="pre">lambda</span></code></dt><dd><p>Base-10 logarithm of the Hodrick–Prescott smoothing parameter, default
+<code class="docutils literal notranslate"><span class="pre">7</span></code> (a coefficient of 10⁷). Used when baseline removal is enabled.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Scenario</span> <span class="pre">index</span></code></dt><dd><p>Zero-based index of the scenario being fitted; initially the last
+scenario in the notebook.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Spectrum</span> <span class="pre">scaling</span></code></dt><dd><p>Legacy boolean, initially <code class="docutils literal notranslate"><span class="pre">False</span></code>. The current Fitter stores this
+value but does not apply it in the plotting or fitting calculation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">Spectrum</span> <span class="pre">scaling</span> <span class="pre">factor</span></code></dt><dd><p>Legacy multiplier, initially <code class="docutils literal notranslate"><span class="pre">1</span></code>. Retained with <code class="docutils literal notranslate"><span class="pre">Spectrum</span> <span class="pre">scaling</span></code>;
+it is not an active intensity-scaling control in the current Fitter.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="software.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Other Software Components</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="gui_options.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Viewer and Fitter Settings Views</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">PDGui Settings Reference</a><ul>
+<li><a class="reference internal" href="#main-tab">Main Tab</a></li>
+<li><a class="reference internal" href="#settings-tab">Settings Tab</a></li>
+<li><a class="reference internal" href="#scenario-tabs-common-settings">Scenario Tabs: Common Settings</a></li>
+<li><a class="reference internal" href="#powder-infrared-and-powder-atr">Powder Infrared and Powder ATR</a></li>
+<li><a class="reference internal" href="#powder-raman">Powder Raman</a></li>
+<li><a class="reference internal" href="#crystal-infrared-and-crystal-raman-layers">Crystal Infrared and Crystal Raman: Layers</a></li>
+<li><a class="reference internal" href="#crystal-raman-scattering-and-coherence">Crystal Raman: Scattering and Coherence</a></li>
+<li><a class="reference internal" href="#plotting-tab">Plotting Tab</a></li>
+<li><a class="reference internal" href="#analysis-tab">Analysis Tab</a></li>
+<li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li>
+<li><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=335988e4"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

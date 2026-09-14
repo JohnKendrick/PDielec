@@ -19,12 +19,13 @@ PDielec.LayeredRamanCalculator
 
    Phase 2 features (all enabled by default):
 
-   - E_S evaluated at ν_S per mode (set ``approximate_es=True`` for the Phase 1
-     approximation E_S ≈ E_L).
+   - E_S evaluated at ν_S per mode (set ``approximate_es=True`` to evaluate
+     the selected detector field once at ν_L instead).
    - Forward scattering: set ``collection_side='substrate'`` to launch E_S from
      the substrate side using a reversed stack (GTMcore.System.reversed_system).
    - Independent collection angle: ``collection_angle_rad`` for E_S (defaults to
-     the incident angle for backscattering).
+     retro-backscattering on the superstrate side and collinear forward
+     scattering on the substrate side).
    - Layer combination: set ``coherent_layers=True`` to sum amplitudes
      across Raman-active layers before squaring (GUI setting: "Coherent amplitudes").
 
@@ -50,6 +51,9 @@ Attributes
    PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT
    PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT
    PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_OPTIONS
+   PDielec.LayeredRamanCalculator.FINAL_STATE_BULK_PHASE_MATCHED
+   PDielec.LayeredRamanCalculator.FINAL_STATE_LOCAL_INCOHERENT
+   PDielec.LayeredRamanCalculator.FINAL_STATE_MODEL_OPTIONS
    PDielec.LayeredRamanCalculator.MODAL_PAIR_COHERENT_ALL
    PDielec.LayeredRamanCalculator.MODAL_PAIR_GROUP_Q
    PDielec.LayeredRamanCalculator.MODAL_PAIR_INCOHERENT
@@ -77,21 +81,25 @@ Functions
 .. autoapisummary::
 
    PDielec.LayeredRamanCalculator._compute_efield_chunk_worker
-   PDielec.LayeredRamanCalculator._compute_modal_fields_and_channels
    PDielec.LayeredRamanCalculator._compute_modal_pair_mode_worker
    PDielec.LayeredRamanCalculator._compute_raman_mode_worker
    PDielec.LayeredRamanCalculator._gauss_legendre_nodes_weights
    PDielec.LayeredRamanCalculator._line_key
-   PDielec.LayeredRamanCalculator._modal_pair_frequency_and_tensors
+   PDielec.LayeredRamanCalculator._modal_pair_final_state_q
+   PDielec.LayeredRamanCalculator._modal_pair_layer_worker_data
+   PDielec.LayeredRamanCalculator._modal_pair_phonon_data
+   PDielec.LayeredRamanCalculator._modal_pair_stokes_channels
    PDielec.LayeredRamanCalculator._modal_q_channels_from_fields
-   PDielec.LayeredRamanCalculator.bose_factor
+   PDielec.LayeredRamanCalculator._polarisation_to_jones
+   PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected
+   PDielec.LayeredRamanCalculator._resolver_coherence_regime
    PDielec.LayeredRamanCalculator.lorentzian_broaden
 
 
 Module Contents
 ---------------
 
-.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=21, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False, depth_integration=DEPTH_INTEGRATION_COHERENT, modal_pairs=False, modal_pair_combination=MODAL_PAIR_GROUP_Q)
+.. py:class:: LayeredRamanCalculator(system, raman_layers, laser_frequency_cm1, incident_angle_rad, incident_pol, detected_pol, temperature_K, linewidths_cm1, n_gauss=21, collection_side='superstrate', collection_angle_rad=None, coherent_layers=False, approximate_es=False, depth_integration=DEPTH_INTEGRATION_COHERENT, modal_pairs=False, modal_pair_combination=MODAL_PAIR_GROUP_Q, modal_pair_use_nac=None, q_tol_deg=90.0, final_state_model=FINAL_STATE_BULK_PHASE_MATCHED, modes_selected=None)
 
    Calculate the Raman spectrum of a multilayer system via depth integration.
 
@@ -104,8 +112,9 @@ Module Contents
 
       a. Compute E_S at the scattered frequency ν_S = ν_L − ν_m on the
          appropriate system (original for backscattering, reversed for
-         forward scattering).  When ``approximate_es=True`` the Phase 1
-         approximation E_S ≈ E_L is used instead (one field call total).
+         forward scattering).  When ``approximate_es=True`` the detector
+         field is evaluated once at ν_L instead.  It is reused from E_L only
+         when the incident and detector optical problems are identical.
       b. For each Raman-active layer ℓ, evaluate the integrand
 
              a_{ℓ,m}(z_j) = E_S(z_j)^T R_{ℓ,m}^lab E_L(z_j)
@@ -114,7 +123,7 @@ Module Contents
       c. Combine layer contributions:
          - ``coherent_layers=False`` (default): I_m ∝ Σ_ℓ \|A_{ℓ,m}\|²
          - ``coherent_layers=True``:            I_m ∝ \|Σ_ℓ A_{ℓ,m}\|²
-      d. Apply the Bose-Einstein prefactor: I_m ← (n(ν_m)+1)/ν_m × I_m.
+      d. Apply the Stokes prefactor: I_m ← ν_S⁴ (n(ν_m)+1)/ν_m × I_m.
 
    4. Broaden all mode intensities with Lorentzian lineshapes and sum.
 
@@ -131,11 +140,12 @@ Module Contents
        Laser frequency in cm⁻¹.
    incident_angle_rad : float
        Angle of incidence in radians, measured from the surface normal.
-   incident_pol : {'p', 's'}
-       Incident polarisation channel.
-   detected_pol : {'p', 's', 'unpolarised'}
+   incident_pol : {'p', 's'} or array_like, shape (2,)
+       Incident polarisation channel, or a Jones vector ``[cp, cs]``.
+   detected_pol : {'p', 's', 'unpolarised'} or array_like, shape (2,)
        Detected polarisation channel.  'unpolarised' sums the p and s
-       intensities incoherently (no analyser on the detector side).
+       intensities incoherently (no analyser on the detector side).  A Jones
+       vector ``[cp, cs]`` describes a linear analyser channel.
    temperature_K : float
        Sample temperature in Kelvin for the Bose-Einstein factor.
    linewidths_cm1 : array_like, shape (n_modes,)
@@ -150,20 +160,33 @@ Module Contents
        causes E_S to be computed on the reversed stack.
    collection_angle_rad : float or None, optional
        Collection (detector) angle in radians from the surface normal.
-       Defaults to ``incident_angle_rad`` (appropriate for backscattering).
+       ``None`` selects retro-backscattering on the superstrate side or
+       collinear forward scattering on the substrate side.
    coherent_layers : bool, optional
        If ``True``, amplitudes are summed across Raman-active layers before
        squaring (coherent combination).  Default is ``False`` (incoherent:
        intensities are summed).
    approximate_es : bool, optional
-       If ``True``, use the Phase 1 approximation E_S ≈ E_L (both fields at
-       the laser frequency).  Default is ``False``.
+       If ``True``, evaluate E_S once at the laser frequency rather than at
+       each mode's Stokes frequency.  E_S is reused from E_L only when both
+       fields have the same system and signed angle.  Default is ``False``.
    depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
        How to combine the source along the depth of each Raman-active layer.
        ``'Coherent amplitude'`` integrates the complex amplitude before
        squaring and is appropriate for thin coherent films.  ``'Incoherent
        intensity'`` integrates the local intensity and is more stable for
        thick or bulk samples where long-range phase coherence is not physical.
+   final_state_model : {'Bulk phase matched', 'Local incoherent'}, optional
+       Interpretation of modal pairs when ``depth_integration`` is incoherent.
+       ``'Bulk phase matched'`` compares each internal ``q_pair`` with the
+       externally selected ``q_ext`` and is the default.  ``'Local
+       incoherent'`` assigns all internal field components at a depth point to
+       the same external final state before squaring the local amplitude.
+   q_tol_deg : float, optional
+       Maximum angle between ``q_pair`` and ``q_ext`` in the bulk
+       phase-matched model.  The default of 90 degrees accepts the forward
+       momentum hemisphere and rejects antiparallel pairs.  It is inactive in
+       the local-incoherent model.
 
    Notes
    -----
@@ -182,6 +205,12 @@ Module Contents
    for E_S are remapped as ``z_rev = total_thickness − z_orig`` before being
    passed to ``calculate_Efield`` on the reversed system; the quadrature
    weights are unchanged.
+
+
+
+   .. py:method:: _any_layer_mode_is_selected(mode_idx)
+
+      Return True when at least one Raman-active layer enables this mode.
 
 
 
@@ -218,13 +247,12 @@ Module Contents
       are degenerate or nearly degenerate, as at normal incidence in a
       uniaxial layer.
 
-      The phonon wavevector for each channel pair is q_ph = k_L − k_S,
-      giving a distinct NAC-corrected phonon frequency and Raman tensor per
-      pair.  NAC results are cached per layer/channel pair and reused across
-      all phonon modes.  The returned arrays are q-resolved: one input
-      ``mode_idx`` can produce multiple spectral rows when different q-groups
-      have different NAC frequencies.  Groups with numerically identical
-      frequencies and linewidths are merged as incoherent intensities.
+      For coherent depth, the phonon wavevector for each channel pair is
+      q_ph = k_L − k_S, giving pair-resolved NAC tensors and finite-film
+      contributions.  For incoherent depth, the external photon momentum
+      transfer selects one phonon final state; internal Berreman q differences
+      remain coherent local-field components of that state.  NAC results are
+      cached per layer/channel pair and reused across all phonon modes.
 
       NAC closures are evaluated only while building the serial cache.  When a
       worker pool is supplied, the per-mode field and intensity calculations
@@ -273,36 +301,9 @@ Module Contents
 
 
 
-   .. py:method:: _get_active_modal_pairs()
+   .. py:method:: _call_get_modal_fields_at_gl_points(freq_cm1, system, angle_rad, z_arr, system_layer_indices=None)
 
-      Return the list of (i_L, j_S) Berreman mode-index pairs.
-
-      Each Berreman eigenmode has both a forward (kz > 0) and a backward
-      (kz < 0) variant per polarisation:
-
-        Mode 0: forward p-pol  (kz > 0)
-        Mode 1: forward s-pol  (kz > 0)
-        Mode 2: backward p-pol (kz < 0)
-        Mode 3: backward s-pol (kz < 0)
-
-      Both propagation directions contribute to the total field, so the
-      physically complete Level-3 sum includes all forward/backward pairs
-      for the appropriate polarisation.
-
-      For p-pol incidence: i_modes = {0, 2}  (both p modes, fwd and bwd).
-      For s-pol incidence: i_modes = {1, 3}.
-      Detected modes follow the same convention.
-
-      In backscattering the dominant amplitude comes from pair (0, 2) because
-      ``qs_L[0] + qs_S[2] ≈ 0`` gives a non-oscillating integrand.  Pairs
-      with both modes forward or both backward produce rapidly oscillating
-      integrands that are suppressed for thick layers, so the incoherent sum
-      ``Σ|A^{ij}|²`` is still dominated by the correct backscattering terms.
-
-      Returns
-      -------
-      list of (int, int)
-          Cartesian product of incident × detected mode sets.
+      Call the modal-field helper while tolerating legacy test doubles.
 
 
 
@@ -362,7 +363,7 @@ Module Contents
 
 
 
-   .. py:method:: _get_modal_fields_at_gl_points(freq_cm1, system, angle_rad, z_arr)
+   .. py:method:: _get_modal_fields_at_gl_points(freq_cm1, system, angle_rad, z_arr, system_layer_indices=None)
 
       Compute per-Berreman-mode electric field contributions at GL quadrature points.
 
@@ -381,6 +382,10 @@ Module Contents
           Angle of incidence on ``system``'s superstrate, in radians.
       z_arr : ndarray
           GL z-coordinates in metres (in system's coordinate frame).
+      system_layer_indices : list of int or None
+          Optional mapping from Raman-layer physical indices to indices in
+          ``system.layers``.  This is required for reversed systems used by
+          forward-scattering reciprocal fields.
 
       Returns
       -------
@@ -390,11 +395,8 @@ Module Contents
           pol_idx: 0 = p-pol incidence on system, 1 = s-pol incidence.
           xyz: Ex, Ey, Ez components.
       qs_by_layer : dict of {int: ndarray(4,)}
-          Maps rl.layer_index → layer.qs (4 kz eigenvalues) from ``system``.
-          Note: for forward scatter (reversed system), rl.layer_index is
-          used directly as an index into system.layers, which is an
-          approximation; the physical-layer correspondence is exact only
-          for backscattering (es_system == self.system).
+          Maps physical ``rl.layer_index`` to layer.qs (4 kz eigenvalues)
+          from the corresponding optical-system layer.
       zeta : complex
           In-plane wavevector used for this system/frequency/angle.
 
@@ -410,6 +412,12 @@ Module Contents
       may rotate within that subspace as the crystal azimuth changes.  The
       physical p/s field contribution is the coherent sum over the whole qz
       subspace, not an individual eigenvector selected by its modal index.
+
+
+
+   .. py:method:: _incident_and_detector_optical_problems_match()
+
+      Return whether the laser-frequency detector field can reuse E_L.
 
 
 
@@ -448,6 +456,24 @@ Module Contents
    .. py:method:: _layer_depth_intensity(E_L_out, E_S_out, R_lab, sl)
 
       Compute the incoherent depth-integrated Raman intensity for one layer.
+
+
+
+   .. py:method:: _layer_mode_is_selected(raman_layer, mode_idx)
+
+      Return True when a mode is enabled for a specific Raman layer.
+
+
+
+   .. py:method:: _mode_is_selected(mode_idx)
+
+      Return True when a phonon mode is enabled in the caller's mode mask.
+
+
+
+   .. py:method:: _raise_if_phase3_incoherent_has_degenerate_channels(incident, detected, incident_pol_indices, detected_pol_indices)
+
+      Reject incoherent diagnostics when q-channels contain modal subspaces.
 
 
 
@@ -493,13 +519,6 @@ Module Contents
           process and broadcast to all workers via ``functools.partial``.
           When ``None`` (default), the calculation runs sequentially.
 
-      Parameters
-      ----------
-      progress_callback : callable, optional
-          Called once per phonon-mode iteration.
-      pool : multiprocessing.Pool or compatible, optional
-          Worker pool for parallel execution.  Incompatible with
-          ``return_contributions=True``.
       return_contributions : bool, optional
           When True, return a fourth element — a list of
           :class:`RamanContribution` objects exposing the per-group complex
@@ -508,7 +527,7 @@ Module Contents
 
       Returns
       -------
-          active_frequencies : ndarray, shape (M,)
+      active_frequencies : ndarray, shape (M,)
           Frequencies of the active (non-acoustic) spectral contributions in
           cm⁻¹.  In ``modal_pairs`` mode, one original phonon index may
           produce multiple q-resolved entries.
@@ -529,8 +548,20 @@ Module Contents
       When ``approximate_es=False`` (default), ``calculate_Efield`` is called
       once per active mode for E_S at ν_S = ν_L − ν_m, plus once for E_L.
       For systems with many modes this can be slow; set ``approximate_es=True``
-      to recover the single-field-call behaviour at the cost of accuracy.
+      to evaluate the selected detector field only once, at the laser
+      frequency, at the cost of neglecting Stokes-frequency dispersion.
 
+
+
+
+   .. py:method:: calculate_phase3_modal_pair_diagnostic_intensities()
+
+      Run a Phase-3 q-independent modal diagnostic path.
+
+      This uses ``OpticalChannelResolver``, ``PhononFinalStateResolver`` and
+      ``RamanAmplitudeAccumulator`` together.  It is intentionally diagnostic:
+      it covers q-independent/TO tensor accumulation and is meant to compare
+      against simple existing modal-pairs cases before Phase 4 replacement.
 
 
 
@@ -554,9 +585,18 @@ Module Contents
 
 
 
-   .. py:attribute:: _detected_jones
-      :value: None
+   .. py:method:: resolve_optical_channels(scattered_frequency_cm1=None)
 
+      Return Phase-3 optical channel diagnostics for the configured stack.
+
+      This parallel diagnostic path exposes the incident laser field,
+      reciprocal detector field, q-resolved Berreman channel groups, and
+      external momentum transfer used by the final-state refactor.  It does
+      not alter the existing standard or modal-pairs Raman calculations.
+
+
+
+   .. py:attribute:: _detected_jones
 
 
    .. py:attribute:: _gl_layer_slices
@@ -577,7 +617,7 @@ Module Contents
    .. py:attribute:: _incident_jones
 
 
-   .. py:attribute:: _modal_pair_q_keys
+   .. py:attribute:: _modal_pair_q_vectors
 
 
    .. py:attribute:: _nac_cache
@@ -609,6 +649,11 @@ Module Contents
    .. py:attribute:: detected_pol
 
 
+   .. py:attribute:: final_state_model
+      :value: 'Bulk phase matched'
+
+
+
    .. py:attribute:: incident_angle_rad
 
 
@@ -626,12 +671,25 @@ Module Contents
 
 
 
+   .. py:attribute:: modal_pair_use_nac
+      :value: None
+
+
+
    .. py:attribute:: modal_pairs
       :value: False
 
 
 
+   .. py:attribute:: modes_selected
+      :value: None
+
+
+
    .. py:attribute:: n_gauss
+
+
+   .. py:attribute:: q_tol_deg
 
 
    .. py:attribute:: raman_layers
@@ -675,11 +733,11 @@ Module Contents
        Zero for the incoherent-depth path (use ``local_intensity`` instead).
    intensity : float
        This group's contribution to the final mode intensity ``I_m``
-       (Bose-Einstein factor already applied).
+       (Stokes radiation and thermal factors already applied).
    local_intensity : float
        Non-zero only for the incoherent-depth integration path, where
        ``amplitude`` is not meaningful.  Equal to the raw depth-integrated
-       local intensity before the Bose factor.
+       local intensity before the Stokes spectral prefactor.
 
 
    .. py:attribute:: amplitude
@@ -712,7 +770,7 @@ Module Contents
       :type:  float
 
 
-.. py:class:: RamanLayer(layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix, nac_function=None)
+.. py:class:: RamanLayer(layer_index, phonon_frequencies_cm1, raman_tensors, rotation_matrix, nac_function=None, modes_selected=None)
 
    A Raman-active layer descriptor for LayeredRamanCalculator.
 
@@ -742,6 +800,11 @@ Module Contents
 
 
    .. py:attribute:: layer_index
+
+
+   .. py:attribute:: modes_selected
+      :value: None
+
 
 
    .. py:attribute:: nac_function
@@ -782,14 +845,9 @@ Module Contents
 
 
 
-.. py:function:: _compute_modal_fields_and_channels(freq_cm1, system, angle_rad, z_arr, layer_indices, layer_slices, pol_indices)
+.. py:function:: _compute_modal_pair_mode_worker(shared, mode_idx)
 
-   Compute modal fields and qz channels for a set of polarisations.
-
-
-.. py:function:: _compute_modal_pair_mode_worker(shared, mode_args)
-
-   Compute one modal-pair Raman mode using picklable cached NAC data.
+   Compute modal-pair spectral rows for one phonon mode.
 
 
 .. py:function:: _compute_raman_mode_worker(shared, mode_args)
@@ -812,10 +870,10 @@ Module Contents
        or pre-computed forward-scatter field).  ``E_S_fixed`` is ``None`` when
        ``es_system`` should be used to compute E_S fresh at ``nu_S``.
    mode_args : tuple
-       ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors)``
+       ``(mode_idx, nu_m, sigma, nu_S, mode_raman_tensors, mode_selected)``
 
-       ``nu_S`` is the scattered frequency in cm⁻¹ (ignored when ``E_S_fixed``
-       is not ``None``).  ``mode_raman_tensors`` is a list of (3, 3) complex
+       ``nu_S`` is the scattered frequency in cm⁻¹, needed for validity and
+       radiation weighting even when ``E_S_fixed`` is supplied.  ``mode_raman_tensors`` is a list of (3, 3) complex
        arrays, one per Raman-active layer, for this mode.
 
    Returns
@@ -856,9 +914,30 @@ Module Contents
    Hashable key for merging numerically identical spectral lines.
 
 
-.. py:function:: _modal_pair_frequency_and_tensors(mode_idx, fallback_frequency, fallback_tensors, cache_val)
+.. py:function:: _modal_pair_final_state_q(q_pair, q_ext, depth_integration, final_state_model)
 
-   Return the q-resolved phonon frequency and Raman tensors for one pair.
+   Return the phonon q used to classify a modal-pair final state.
+
+   The bulk phase-matched model retains ``q_pair`` so it can be compared with
+   ``q_ext`` by the final-state resolver.  The local-incoherent model instead
+   assigns all internal Berreman components at a depth point to the externally
+   selected final state.  Coherent-depth calculations always retain the
+   pair-resolved q from eq-layer-qph.
+
+
+.. py:function:: _modal_pair_layer_worker_data(raman_layers)
+
+   Return pickle-friendly Raman layer data for modal-pair workers.
+
+
+.. py:function:: _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors, fallback_sigma, fallback_selected, cache_val)
+
+   Return q-resolved phonon data and the selection flag for one pair.
+
+
+.. py:function:: _modal_pair_stokes_channels(es_system, collection_angle_rad, z_s, layer_indices, gl_layer_slices, detected_system_layer_indices, detected_pol_indices, detected_jones, laser_frequency_cm1, mode_frequency_cm1)
+
+   Return scattered modal channels for a Stokes-shifted phonon frequency.
 
 
 .. py:function:: _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx)
@@ -866,23 +945,19 @@ Module Contents
    Group modal field contributions into qz subspace channels.
 
 
-.. py:function:: bose_factor(nu_cm1, temperature_K)
+.. py:function:: _polarisation_to_jones(pol, name, allow_unpolarised=False)
 
-   Return the Stokes Bose-Einstein thermal prefactor (n+1)/ν.
+   Return a normalised p/s Jones vector, or None for unpolarised detection.
 
-   Parameters
-   ----------
-   nu_cm1 : float
-       Phonon frequency in cm⁻¹.  Must be positive.
-   temperature_K : float
-       Temperature in Kelvin.
 
-   Returns
-   -------
-   float
-       ``(n(ν) + 1) / ν`` where ``n(ν) = 1 / (exp(hcν / kT) - 1)``.
-       At T = 0 the limit ``1/ν`` is returned.
+.. py:function:: _raman_layer_mode_is_selected(modes_selected, mode_idx)
 
+   Return whether a mode is selected for a RamanLayer in worker code.
+
+
+.. py:function:: _resolver_coherence_regime(depth_integration, final_state_model)
+
+   Return the final-state resolver regime matching the depth treatment.
 
 
 .. py:function:: lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, freq_axis_cm1)
@@ -917,6 +992,16 @@ Module Contents
 
 .. py:data:: DEPTH_INTEGRATION_OPTIONS
 
+.. py:data:: FINAL_STATE_BULK_PHASE_MATCHED
+   :value: 'Bulk phase matched'
+
+
+.. py:data:: FINAL_STATE_LOCAL_INCOHERENT
+   :value: 'Local incoherent'
+
+
+.. py:data:: FINAL_STATE_MODEL_OPTIONS
+
 .. py:data:: MODAL_PAIR_COHERENT_ALL
    :value: 'Coherent all pairs'
 
@@ -944,7 +1029,7 @@ Module Contents
 
 
 .. py:data:: _MODAL_Q_GROUP_TOL
-   :value: 1e-08
+   :value: 0.0001
 
 
 .. py:data:: logger

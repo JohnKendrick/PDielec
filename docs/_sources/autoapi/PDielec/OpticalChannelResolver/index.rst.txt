@@ -1,0 +1,142 @@
+PDielec.OpticalChannelResolver
+==============================
+
+.. py:module:: PDielec.OpticalChannelResolver
+
+.. autoapi-nested-parse::
+
+   Optical channel decomposition helpers for layered Raman calculations.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.OpticalChannelResolver.OpticalChannel
+   PDielec.OpticalChannelResolver.OpticalChannelResolver
+   PDielec.OpticalChannelResolver.OpticalChannelSolution
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.OpticalChannelResolver.compute_modal_fields_at_points
+
+
+Module Contents
+---------------
+
+.. py:class:: OpticalChannel
+
+   One qz-resolved optical field component inside a finite layer.
+
+
+   .. py:attribute:: field
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: layer_index
+      :type:  int
+
+
+   .. py:attribute:: mode_indices
+      :type:  tuple[int, Ellipsis]
+
+
+   .. py:attribute:: qz
+      :type:  complex
+
+
+.. py:class:: OpticalChannelResolver(optical_subspace_tolerance: float = 0.0001)
+
+   Resolve full fields and Berreman q-channel components using GTM.
+
+
+   .. py:method:: _channels_for_pol(modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx)
+
+
+   .. py:method:: _external_wavevector(system, frequency_cm1, angle_rad, z_sign)
+      :staticmethod:
+
+
+
+   .. py:method:: external_momentum_transfer(incident_system, incident_frequency_cm1: float, incident_angle_rad: float, detected_system, detected_frequency_cm1: float, detected_angle_rad: float, collection_side: str) -> numpy.ndarray
+
+      Return the macroscopic external momentum transfer ``q_ext = k_inc - k_det``.
+
+      The returned vector uses GTM's normalised wavevector units.  For normal
+      incidence this gives zero in forward scattering and finite ``2qz`` in
+      backscattering, which is the distinction needed by the phonon resolver.
+
+      This helper follows the current GTM boundary convention and assumes the
+      external half-space wavevector is determined by ``epsilon[0, 0]``.  It is
+      therefore exact for isotropic superstrate/substrate media and a
+      documented approximation for anisotropic external media.
+
+
+
+   .. py:method:: solve(system, frequency_cm1: float, angle_rad: float, z_points: collections.abc.Sequence[float], layer_indices: collections.abc.Sequence[int], layer_slices: collections.abc.Sequence[slice], pol_indices: collections.abc.Sequence[int] = (0, 1), system_layer_indices: collections.abc.Sequence[int] | None = None) -> OpticalChannelSolution
+
+      Compute total fields, modal fields, and q-channel groups.
+
+      ``layer_indices`` are physical layer ids used in the returned channel
+      dictionaries.  ``system_layer_indices`` can be supplied when solving on
+      a transformed optical system, such as the reversed stack used for
+      forward-scattering reciprocal fields.
+
+
+
+   .. py:attribute:: _subspace_resolver
+
+
+.. py:class:: OpticalChannelSolution
+
+   Optical fields and modal channels for one external optical problem.
+
+   ``channels_by_pol`` is nested as
+   ``channels_by_pol[pol_idx][physical_layer_index] -> list[OpticalChannel]``.
+   The physical layer index is the index in the original, unreversed stack.
+
+
+   .. py:attribute:: channels_by_pol
+      :type:  dict[int, dict[int, list[OpticalChannel]]]
+
+
+   .. py:attribute:: frequency_cm1
+      :type:  float
+
+
+   .. py:attribute:: modal_fields
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: qs_by_layer
+      :type:  dict[int, numpy.ndarray]
+
+
+   .. py:attribute:: total_fields
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: z_points
+      :type:  numpy.ndarray
+
+
+   .. py:attribute:: zeta
+      :type:  complex
+
+
+.. py:function:: compute_modal_fields_at_points(system, freq_hz: float, zeta: complex, z_array: numpy.ndarray, layer_indices: collections.abc.Sequence[int], layer_slices: collections.abc.Sequence[slice], system_layer_indices: collections.abc.Sequence[int] | None = None) -> tuple[numpy.ndarray, dict[int, numpy.ndarray]]
+
+   Compute per-Berreman-mode electric fields at selected z-points.
+
+   ``layer_indices`` are the physical layer ids used in returned dictionaries.
+   ``system_layer_indices`` are the corresponding indices in ``system.layers``.
+   Passing distinct values is required for reversed systems so physical layer
+   ids remain stable while the optical stack order changes.
+
+

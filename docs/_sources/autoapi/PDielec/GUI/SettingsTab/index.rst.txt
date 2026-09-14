@@ -198,9 +198,73 @@ Module Contents
 
 
 
+   .. py:method:: _classify_modal_pair_nac_modes(strengths)
+
+      Classify modes that should retain q-resolved modal-pair NAC treatment.
+
+      Modes with negligible oscillator-strength tensor are treated as
+      q-independent/non-polar and use the standard coherent total-field path
+      in modal-pair calculations.  Modes with finite oscillator strength are
+      polar/NAC-active and keep q-resolved modal-pair treatment.  This
+      intrinsic classification is stable with respect to layer geometry,
+      incidence angle, and polarisation.
+
+      Parameters
+      ----------
+      strengths : list of array-like, each shape (3, 3)
+          Oscillator strength tensors for all phonon modes.
+
+      Returns
+      -------
+      list of bool
+          ``True`` for polar/NAC-active modes; ``False`` for non-polar modes.
+
+
+
+
    .. py:method:: _collect_raman_polar_data()
 
       Collect Raman tensor and SettingsTab mode data for the polar plot window.
+
+
+
+   .. py:method:: _get_cartesian_rotations()
+
+      Return the list of Cartesian rotation matrices for the current unit cell.
+
+      Fetches symmetry operations from spglib for the final unit cell in the reader,
+      converts the integer fractional-coordinate rotation matrices to Cartesian
+      rotation matrices, and returns them.  Returns an empty list if the reader has
+      no unit-cell data or if spglib is unavailable.
+
+      Returns
+      -------
+      list of ndarray, each shape (3, 3)
+          Cartesian rotation matrices, or ``[]`` on failure.
+
+
+
+
+   .. py:method:: _project_rank2_tensor(tensor, cart_rotations)
+
+      Project a real rank-2 tensor onto the invariant subspace of a point group.
+
+      Computes ``T_sym[i,j] = (1/N) Σ_R  R[i,a] R[j,b] T[a,b]`` over the
+      supplied Cartesian rotation matrices.  If the list is empty the raw tensor
+      is returned unchanged.
+
+      Parameters
+      ----------
+      tensor : array-like, shape (3, 3)
+          Input tensor to symmetrise.
+      cart_rotations : list of ndarray, each shape (3, 3)
+          Cartesian rotation matrices from :meth:`_get_cartesian_rotations`.
+
+      Returns
+      -------
+      ndarray, shape (3, 3)
+          Symmetrised tensor.
+
 
 
 
@@ -230,6 +294,69 @@ Module Contents
       * NAC off, EO on   → TO frequencies, TO IR intensities, EO-corrected Raman strengths.
       * NAC on,  EO off  → LO frequencies, LO IR intensities, LO Raman strengths.
       * NAC on,  EO on   → LO frequencies, LO IR intensities, EO-corrected LO Raman strengths.
+
+
+
+   .. py:method:: _symmetrise_optical_permittivity(tensor)
+
+      Return the optical permittivity averaged over the crystal point group.
+
+      Each symmetry operation R (a Cartesian rotation matrix derived from the
+      space-group rotations of the final unit cell) is applied as a rank-2 tensor
+      transformation and the results are averaged:
+
+          ε_sym[i,j] = (1/N) Σ_R  R[i,a] R[j,b] ε[a,b]
+
+      This projects the raw DFT tensor onto the invariant subspace of the crystal
+      point group, removing numerical noise that violates the lattice symmetry
+      (e.g. spurious in-plane birefringence in a uniaxial crystal).
+
+      Falls back to the raw tensor if the reader has no unit-cell information or
+      if spglib is unavailable.
+
+      Parameters
+      ----------
+      tensor : array-like, shape (3, 3)
+          Raw optical permittivity tensor from the DFT reader.
+
+      Returns
+      -------
+      list of list of float
+          Point-group-symmetrised 3×3 tensor as a nested list (same format as
+          stored in ``settings["Optical permittivity"]``).
+
+
+
+
+   .. py:method:: _symmetrise_oscillator_strengths(strengths)
+
+      Apply point-group symmetrisation to all oscillator strength tensors.
+
+      Each oscillator strength ``S_mode`` is a real 3×3 tensor.  The same
+      rank-2 point-group projection used for ε_∞ is applied to every mode:
+
+          S_sym[mode, i, j] = (1/N) Σ_R  R[i,a] R[j,b] S[mode, a, b]
+
+      For degenerate mode pairs (e.g. E₁ partners), individual mode tensors
+      are modified but their sum is correctly symmetrised:
+      ``S₇_sym + S₈_sym = (S₇ + S₈)_sym``.  This ensures that the full
+      ionic contribution ``Σ S_mode/(ω_mode² − ω²)`` transforms correctly
+      under the crystal point group at every frequency, including the laser
+      wavelength where the Berreman propagation matrix is evaluated.
+
+      Falls back to the raw list if no unit-cell data or spglib is unavailable.
+
+      Parameters
+      ----------
+      strengths : list of array-like, each shape (3, 3)
+          Oscillator strength tensors, one per normal mode, in the same units
+          as returned by ``Calculator.oscillator_strengths``.
+
+      Returns
+      -------
+      list of ndarray, each shape (3, 3)
+          Point-group-symmetrised oscillator strength tensors.
+
 
 
 
@@ -571,6 +698,25 @@ Module Contents
 
 
 
+   .. py:method:: on_symmetrise_optical_changed()
+
+      Handle a change in the 'Symmetrise optical permittivity' checkbox.
+
+      Updates the setting, re-applies (or removes) symmetrisation to the currently
+      loaded tensor, and triggers a full refresh so that all scenario tabs pick up
+      the change.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
    .. py:method:: redraw_output_tw()
 
       Redraws the output table widget with updated values.
@@ -730,9 +876,9 @@ Module Contents
       Set the optical permittivity in the current settings.
 
       This method sets the 'Optical permittivity' value in the settings to the value of `zerof_optical_dielectric`
-      from the reader, triggers a refresh for the optical permittivity widget, and marks the selected modes for
-      recalculation. It also signals that a refresh is required in the application and ensures the GUI events are
-      processed to keep the application responsive.
+      from the reader (optionally Hermitian-symmetrised), triggers a refresh for the optical permittivity widget,
+      and marks the selected modes for recalculation. It also signals that a refresh is required in the application
+      and ensures the GUI events are processed to keep the application responsive.
 
       Parameters
       ----------
@@ -846,6 +992,11 @@ Module Contents
    .. py:attribute:: masses_dictionary
 
 
+   .. py:attribute:: modal_pair_use_nac
+      :value: []
+
+
+
    .. py:attribute:: modes_selected
       :value: []
 
@@ -927,6 +1078,9 @@ Module Contents
    .. py:attribute:: spectroscopy_types
       :value: ['Powder Infrared', 'Powder ATR', 'Powder Raman', 'Crystal Infrared', 'Crystal Raman']
 
+
+
+   .. py:attribute:: symmetrise_optical_cb
 
 
    .. py:attribute:: vs_cm1

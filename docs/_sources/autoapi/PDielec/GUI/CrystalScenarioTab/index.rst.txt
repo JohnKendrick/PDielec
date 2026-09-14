@@ -14,6 +14,8 @@ Attributes
 
 .. autoapisummary::
 
+   PDielec.GUI.CrystalScenarioTab._PORTO_HKL_BY_AXIS
+   PDielec.GUI.CrystalScenarioTab._PORTO_POL_BY_AXIS
    PDielec.GUI.CrystalScenarioTab.gtm_methods
    PDielec.GUI.CrystalScenarioTab.incoherent_options
    PDielec.GUI.CrystalScenarioTab.logger
@@ -35,6 +37,15 @@ Functions
 .. autoapisummary::
 
    PDielec.GUI.CrystalScenarioTab._compute_nac_dynamical_matrix_standalone
+   PDielec.GUI.CrystalScenarioTab._disable_combo_item
+   PDielec.GUI.CrystalScenarioTab._dominant_pol_label
+   PDielec.GUI.CrystalScenarioTab._parse_porto_notation
+   PDielec.GUI.CrystalScenarioTab._parse_porto_polarisation
+   PDielec.GUI.CrystalScenarioTab._selection_for_nac_modes
+   PDielec.GUI.CrystalScenarioTab._set_combo_to_porto
+   PDielec.GUI.CrystalScenarioTab._set_combo_to_setting
+   PDielec.GUI.CrystalScenarioTab._split_porto_axis
+   PDielec.GUI.CrystalScenarioTab._split_porto_polarisations
    PDielec.GUI.CrystalScenarioTab.solve_single_crystal_equations
 
 
@@ -190,6 +201,12 @@ Module Contents
 
 
 
+   .. py:method:: _build_azimuthal_sweep_widgets()
+
+      Create the azimuthal sweep controls below the layer information.
+
+
+
    .. py:method:: _build_raman_calculator(psi_rad)
 
       Build and return a configured LayeredRamanCalculator for the given azimuthal angle.
@@ -280,7 +297,23 @@ Module Contents
 
 
 
-   .. py:method:: _compute_nac_dynamical_matrix(raman_tensors_physical, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf)
+   .. py:method:: _can_merge_equivalent_layers(layer_a, layer_b)
+      :staticmethod:
+
+
+      Return True for adjacent coherent layers with identical optical/Raman properties.
+
+
+
+   .. py:method:: _coalesce_equivalent_layers(layers)
+      :classmethod:
+
+
+      Merge adjacent equivalent coherent layers to avoid artificial optical interfaces.
+
+
+
+   .. py:method:: _compute_nac_dynamical_matrix(raman_tensors_physical, frequencies_cm1, sigmas_cm1, q_hat_crystal, eps_inf, return_mode_map=False)
 
       Build NAC dynamical matrix for a given phonon wavevector direction and diagonalize.
 
@@ -303,12 +336,19 @@ Module Contents
       Returns
       -------
       nac_freqs : ndarray, shape (3N,)
+          Sorted NAC-corrected phonon frequencies in cm⁻¹.
       nac_tensors : list of ndarray, each (3, 3)
+          Raman tensors for the sorted NAC modes, including the electro-optic
+          correction when enabled and available.
       nac_sigmas : ndarray, shape (3N,)
+          Linewidths in cm⁻¹ for the sorted NAC modes.
+      dominant_to_by_nac : ndarray, shape (3N,), optional
+          Dominant original TO-mode index for each sorted NAC branch.
+          Only returned when ``return_mode_map=True``.
 
 
 
-   .. py:method:: _compute_nac_modes_dominant(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, system, layer_idx, incident_angle_rad, scatter_angle_rad, collection_side, laser_freq_cm1, incident_pol)
+   .. py:method:: _compute_nac_modes_dominant(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, system, layer_idx, incident_angle_rad, scatter_angle_rad, collection_side, laser_freq_cm1, incident_pol, modes_selected=None)
 
       Level 2: Compute NAC-corrected phonon modes using the dominant Berreman eigenmode.
 
@@ -350,11 +390,12 @@ Module Contents
       nac_freqs : ndarray or None
       nac_tensors : list or None
       nac_sigmas : ndarray or None
+      nac_selected : ndarray or None
 
 
 
 
-   .. py:method:: _compute_nac_modes_geometry(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, incident_angle_rad, scatter_angle_rad, collection_side)
+   .. py:method:: _compute_nac_modes_geometry(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, incident_angle_rad, scatter_angle_rad, collection_side, modes_selected=None)
 
       Level 1: Compute NAC-corrected phonon modes using q from macroscopic scattering geometry.
 
@@ -389,11 +430,14 @@ Module Contents
           NAC-corrected Raman tensors, or None.
       nac_sigmas : ndarray or None
           NAC-corrected linewidths in cm⁻¹, or None.
+      nac_selected : ndarray or None
+          Settings-tab selection mask mapped from original TO modes onto the
+          sorted NAC branches, or None.
 
 
 
 
-   .. py:method:: _make_nac_function(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1)
+   .. py:method:: _make_nac_function(G_total, raman_tensors_physical, frequencies_cm1, sigmas_cm1, modes_selected=None)
 
       Build a closure for on-demand NAC computation for any phonon wavevector direction.
 
@@ -416,8 +460,8 @@ Module Contents
       Returns
       -------
       callable
-          ``f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas)``
-          or ``(None, None, None)`` when ``|q_ph|`` is negligible.
+          ``f(q_hat_lab: ndarray[3]) -> (nac_freqs, nac_tensors, nac_sigmas, nac_selected)``
+          or ``(None, None, None, None)`` when ``|q_ph|`` is negligible.
 
 
 
@@ -433,6 +477,35 @@ Module Contents
       ----------
       has_eo : bool
           Whether χ^(2) is available from the DFT reader.
+
+
+
+   .. py:method:: _raman_intensities(psi_rad, progress_callback=None, pool=None)
+
+      Build a Raman calculator and return mode intensities, averaging over phase shifts if needed.
+
+      When no layers use ``"Incoherent (phase averaging)"``, builds the calculator once and
+      returns its mode intensities directly.  When one or more layers use phase averaging,
+      loops over ``n = settings["Number of average incoherence samples"]`` equally-spaced
+      phase shifts (same grid as ``average_incoherent_calculator``), sets each averaging
+      layer's phase shift for every sample, accumulates mode intensities, and returns the
+      average.  Phase shifts are reset to 0.0 after the loop.
+
+      Parameters
+      ----------
+      psi_rad : float
+          Global azimuthal rotation angle in radians.
+      progress_callback : callable or None
+          Optional progress callback forwarded to ``calculate_mode_intensities``.
+      pool : multiprocessing.Pool or None
+          Optional worker pool forwarded to ``calculate_mode_intensities``.
+
+      Returns
+      -------
+      tuple or None
+          ``(active_freqs, active_ints, active_sigmas)`` on success, or ``None`` if the
+          calculator could not be built.
+
 
 
 
@@ -456,6 +529,20 @@ Module Contents
 
 
 
+   .. py:method:: _select_finite_raman_layers(layers, coalesce_equivalent=True)
+      :classmethod:
+
+
+      Return finite layers for Crystal Raman optical-field construction.
+
+
+
+   .. py:method:: _update_modal_final_state_controls()
+
+      Enable final-state controls only where they affect modal-pair results.
+
+
+
    .. py:method:: angle_of_incidence_widget()
 
       Create an angle of incidence widget.
@@ -470,6 +557,18 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: apply_porto_notation(porto, show_warnings=False, update_widgets=False)
+
+      Apply a Porto notation string to the Crystal Raman geometry.
+
+
+
+   .. py:method:: apply_porto_notation_from_settings(show_warnings=False, update_widgets=False)
+
+      Apply any Porto notation stored in the scenario settings.
 
 
 
@@ -695,6 +794,21 @@ Module Contents
 
 
 
+   .. py:method:: get_active_layer_depth()
+
+      Return the total depth of dielectric (active) layers in metres.
+
+      Only applicable for Crystal Raman scenarios; returns None otherwise.
+
+      Returns
+      -------
+      float or None
+          Sum of thicknesses of all dielectric layers in metres, or None if not
+          Crystal Raman or if the total depth is zero.
+
+
+
+
    .. py:method:: get_dielectric_layer_index()
 
       Return the index of the dielectric layer in the list of layers.
@@ -914,6 +1028,12 @@ Module Contents
 
 
 
+   .. py:method:: on_coalesce_layers_cb_toggled(checked)
+
+      Handle a toggle of equivalent-layer coalescing.
+
+
+
    .. py:method:: on_collection_angle_sb_changed(value)
 
       Handle a change in the collection angle spin box.
@@ -935,6 +1055,12 @@ Module Contents
    .. py:method:: on_detected_pol_cb_activated(index)
 
       Handle a change in the detected polarisation combo box.
+
+
+
+   .. py:method:: on_eo_term_cb_toggled(checked)
+
+      Handle a toggle of the Raman electro-optic tensor contribution.
 
 
 
@@ -1073,6 +1199,18 @@ Module Contents
    .. py:method:: on_modal_pair_combination_cb_activated(index)
 
       Handle a change in the modal-pair combination combo box.
+
+
+
+   .. py:method:: on_modal_pair_final_state_cb_activated(index)
+
+      Handle a change in the modal-pair final-state model.
+
+
+
+   .. py:method:: on_modal_pair_q_tol_sb_changed(value)
+
+      Handle a change in the modal-pair q-angle tolerance spin box.
 
 
 
@@ -1218,6 +1356,12 @@ Module Contents
    .. py:method:: on_phonon_bc_cb_activated(index)
 
       Handle a change in the layer NAC mode combo box.
+
+
+
+   .. py:method:: on_porto_apply_button_clicked()
+
+      Apply a simple Porto notation to the Crystal Raman geometry.
 
 
 
@@ -1616,7 +1760,7 @@ Module Contents
 
 
 
-.. py:function:: _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, raman_tensors, to_sigmas, chi2_pm_per_v=None)
+.. py:function:: _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charges, eps_inf, volume_au, masses_au, U_TO, raman_tensors, to_sigmas, chi2_repsilon=None, return_mode_map=False)
 
    Module-level NAC computation for a given phonon wavevector direction.
 
@@ -1653,16 +1797,78 @@ Module Contents
        Physical bulk TO Raman tensors ``R_epsilon``.
    to_sigmas : ndarray, shape (n_to_modes,)
        Bulk TO linewidths in cm⁻¹.
-   chi2_pm_per_v : ndarray, shape (3, 3, 3) or None
-       Second-order NLO susceptibility χ^(2) in pm/V (= 2d from DFT output).
-       When provided, the electro-optic correction is applied to each NAC Raman
-       tensor.  Pass None to skip the correction.
+   chi2_repsilon : ndarray, shape (3, 3, 3) or None
+       Second-order NLO susceptibility χ^(2), already converted by the readers
+       to the same Angstrom-based internal convention as ``R_epsilon`` Raman
+       tensors.  When provided, the electro-optic correction is applied to
+       each NAC Raman tensor.  Pass None to skip the correction.
+   return_mode_map : bool, optional
+       When True, also return the dominant original TO-mode index for each
+       sorted NAC branch.  This is needed to apply Settings-tab mode
+       selections after NAC diagonalisation has reordered the branches.
 
    Returns
    -------
    nac_freqs : ndarray, shape (3N,)
+       Sorted NAC-corrected phonon frequencies in cm⁻¹.
    nac_tensors : list of ndarray, each (3, 3)
+       Raman tensors for the sorted NAC modes, including the electro-optic
+       correction when enabled and available.
    nac_sigmas : ndarray, shape (3N,)
+       Linewidths in cm⁻¹ for the sorted NAC modes.
+   dominant_to_by_nac : ndarray, shape (3N,), optional
+       Dominant original TO-mode index for each sorted NAC branch.
+       Only returned when ``return_mode_map=True``.
+
+
+.. py:function:: _disable_combo_item(combo, text)
+
+   Disable a marker item in a combo box while still allowing programmatic display.
+
+
+.. py:function:: _dominant_pol_label(pol)
+
+   Return the dominant p/s label for code paths that need one channel.
+
+
+.. py:function:: _parse_porto_notation(porto)
+
+   Parse a simple normal-incidence Porto notation string.
+
+   Supported examples are ``x(yy)x``, ``x(yz)-x``, ``x(yz)barx``,
+   ``x(yz)\bar{x}`` and ``z(x+y,x+y)z``.  A bare final direction is
+   treated as backscattering relative to the incident direction, matching the
+   shorthand commonly used in PDielec scripts and discussions.
+
+
+.. py:function:: _parse_porto_polarisation(token, propagation_axis)
+
+   Convert a Porto crystal-axis polarisation token to p/s or a Jones vector.
+
+
+.. py:function:: _selection_for_nac_modes(modes_selected, dominant_to_by_nac)
+
+   Map a Settings-tab TO-mode selection mask onto sorted NAC branches.
+
+
+.. py:function:: _set_combo_to_porto(combo)
+
+   Set a polarisation combo box to the Porto-controlled marker.
+
+
+.. py:function:: _set_combo_to_setting(combo, setting)
+
+   Set a combo box only when the setting is one of its string labels.
+
+
+.. py:function:: _split_porto_axis(axis, default_sign)
+
+   Return ``(sign, axis, was_signed)`` for a Porto direction token.
+
+
+.. py:function:: _split_porto_polarisations(polarisations)
+
+   Split the incident and detected polarisation tokens inside ``(...)``.
 
 
 .. py:function:: solve_single_crystal_equations(layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold, v)
@@ -1701,6 +1907,10 @@ Module Contents
            - largest_exponent  : the largest exponent
 
 
+
+.. py:data:: _PORTO_HKL_BY_AXIS
+
+.. py:data:: _PORTO_POL_BY_AXIS
 
 .. py:data:: gtm_methods
 

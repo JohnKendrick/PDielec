@@ -1,528 +1,863 @@
 .. include:: preamble.txt
 
-..
-    .. contents::
-       :local:
-..
-
-
 .. meta::
-   :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE
-
+   :description: PDGui guide to infrared, ATR and Raman calculations, scenarios and visualisation
+   :keywords: PDielec, PDGui, Infrared, ATR, Raman, Electro-optic, NAC, GUI
 
 =====
 PDGui
 =====
 
+PDGui provides a graphical front end to PDielec. It reads a material's structure
+and response from a QM/MM calculation or a user-supplied input file, and
+calculates infrared, ATR or Raman spectra. The interface is a notebook with
+*Main*, *Settings*, *Scenario*, *Plotting*, *Analysis*, *3D Viewer* and *Fitter*
+tabs. Additional scenarios appear as additional tabs.
 
-PDGui provides a graphical front end to the capabilities of PDielec.
-PDGui can be run from the command line without any parameters or followed by the file to be read in.  PDGui makes a best guess at the DFT/MM program used to create the output.
-It can also be used as a command line tool without having to use the GUI, this needs a script file to be available.
+Starting PDGui
+==============
 
-For example; 
-
-.. code-block:: bash
+PDGui can be run without arguments, or with an output file. It makes a best
+guess at the program from the filename and associated files. For example::
 
     pdgui
+    pdgui OUTCAR
+    pdgui raman.castep -spectroscopy crystal_raman
+    pdgui raman.castep -spectroscopy powder_raman
+    pdgui experiment material.exp
+    pdgui finite_field zno-raman.json -spectroscopy crystal_raman
+    pdgui qe run1.dynG
 
-or 
+Use ``qe`` as the program name when explicitly selecting that reader.
+A program name can also be supplied with ``-program``. For a saved session use
+``pdgui -script script.py``. To calculate and write a spreadsheet without
+remaining in the GUI, use::
 
-.. code-block:: bash
+    pdgui -script script.py -spreadsheet results.xlsx -nosplash -exit
 
-    pdgui OUTCAR                                                # A Vasp calculation, only OUTCAR is parsed for information
-    pdgui vasprun.xml                                           # A Vasp calculation, only vasprun.xml is parsed for information
-    pdgui LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out    # A Crystal calculation
-    pdgui run1.dynG                                             # A QE calculation, pwscf.xml is also read
-    pdgui run1.log                                              # A QE calculation, run1.dynG is also read
-    pdgui run2.abo                                              # An Abinit calculation
-    pdgui run3.gout                                             # An Gulp calculation
-    pdgui phonopy.yaml                                          # A Phonopy calculation
-    pdgui control.in                                            # An FHI-Aims calculation
+.. list-table:: Common command-line options
+   :header-rows: 1
+   :widths: 1 3
 
-Sometimes pdgui is unable to unambiguously determind which DFT program has been read.  This is particularly problematic for phonopy calculations.
-It is possible to specifiy the DFT program as in the examples below; 
+   * - Option
+     - Description
+   * - ``-spectroscopy type``
+     - Initial spectroscopy: ``powder_infrared`` (default), ``crystal_infrared``,
+       ``powder_raman`` or ``crystal_raman``. Select *Powder ATR* in the
+       Settings Tab or a script.
+   * - ``-program name``
+     - Explicit input program, for example ``castep``, ``experiment`` or ``finite_field``.
+   * - ``-script filename``
+     - Read a Python settings script.
+   * - ``-spreadsheet filename``
+     - Write results to an Excel file with an ``.xlsx`` extension.
+   * - ``-cpus N``
+     - Number of workers; zero selects the available physical cores.
+   * - ``-threading``
+     - Use threads instead of the default worker processes.
+   * - ``-nosplash``
+     - Suppress the splash window.
+   * - ``-exit``
+     - Exit after the script and requested spreadsheet output.
+   * - ``-debug``
+     - Enable diagnostic logging.
 
-.. code-block:: bash
-
-    pdgui -program aims geometry.in                              # An FHI-Aims calculation
-    pdgui -program vasp OUTCAR                                   # A Vasp calculation, only OUTCAR is parsed for information
-    pdgui -program phonopy phonopy.yaml                          # A Phonopy calculation
-
-
-If running a script that contains program and output file information, then::
-
-    pdgui -script script.py
-
-If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line. 
-
-.. code-block::
-
-    pdgui OUTCAR -spreadsheet results.xlsx
-    
-The spreadsheet name must have an .xlsx extension.
-To use as a command line tool an example would be; ::
-
-    pdgui OUTCAR -spreadsheet results.xlsx -script script.py -nosplash -exit
-
-Several command line options may be useful in running the package.
-Options are specified using '-' or '--' before a keyword.  In addition, up to 3 none-option keywords can be specfied.
-
-If only one is specified it is taken to be a file name and the dft program is guessed from the file name extension.
-
-If two none option keywords are given, the first is assumed to be the dft program designation ( one of abinit, aims, crystal, vasp, qe, gulp, phonopy), and the second is the output file to be read.
-
-If three non option keywords are given, the first is the program designation, the second is the output file and the third is a spreadsheet name ending in .xlsx.
-
-.. table:: PDGui command line options
-   :name: command_line_options
-   :widths: 1 3 
-   :column-dividers:   single single  single 
-   :header-alignment: left left
-   :column-alignment: left left
-
-   +-----------------------+----------------------------------------+
-   | Command line option   | Description                            |
-   +=======================+========================================+
-   | -script filename      | Specify a Python script to run         |
-   +-----------------------+----------------------------------------+
-   | -scenario type        | Changes the initial scenario type,     |
-   |                       | type can be *powder* or *crystal*,     |
-   |                       | the default is *powder*                |
-   +-----------------------+----------------------------------------+
-   | -spreadsheet file     | An alternative way of defining the     |
-   |                       | spreadsheet                            |
-   +-----------------------+----------------------------------------+
-   | -program name         | An alternative way of defining the     |
-   |                       | program used to create the output      |
-   +-----------------------+----------------------------------------+
-   | -version              | Give information of the version no.    |
-   +-----------------------+----------------------------------------+
-   | -debug                | Debugging mode, only for developers    |
-   +-----------------------+----------------------------------------+
-   | -exit                 | Exit the program after running the     |
-   |                       | script                                 |
-   +-----------------------+----------------------------------------+
-   | -nosplash             | Do not show the splash screen          |
-   +-----------------------+----------------------------------------+
-   | -cpus 2               | Sets the number of cpus or threads to 2|
-   +-----------------------+----------------------------------------+
-   | -threads              | Using threading, instead of            |
-   |                       | multiprocessing                        |
-   +-----------------------+----------------------------------------+
-   | -h                    | Print out help information             |
-   +-----------------------+----------------------------------------+
-
-
-
-After running the program the user sees a notebook interface with seven tabs.
-
--   *Main Tab* allows the user to specify the program and filename that are to be analysed.  It is also possible to specify here the spreadsheet name to which results are saved.  
-
--   *Settings Tab* is used for changing the settings within the package
-
--   *Scenario Tab* can be a powder scenario or a single-crystal scenario.  In the case of a powder scenario, the tab specifies the material properties used to define the effective medium from which the  absorption characteristics are calculated.  In the case of a single crystal, the orientation of the crystal and the angle of incidence of the radiation can be defined.
-
--   *Plotting Tab* shows the results of all the scenario tabs in one place.
-
--   *Analysis Tab* shows the decomposition of the normal modes into molecular components.
-
--   *Visualisation Tab* displays the normal modes as either arrows showing the atomic displacement or as an animation.
-
--   *Fitter Tab* allows a user to display an experimental spectrum and compare it with the calculated spectrum.
-
+The figures below use the CASTEP wurtzite ZnO calculation in
+``Examples/Crystal_Raman/Castep``. Its output includes Raman tensors and a
+non-zero nonlinear optical susceptibility, allowing the electro-optic (EO)
+correction to be demonstrated. The Raman examples use 532 nm excitation,
+298 K and a Lorentzian half-width of 5 |cm-1|. These are example settings;
+individual control defaults are described below. The Fitter uses the existing
+sodium-sulphate ATR example with an experimental spectrum.
 
 Main Tab
 ========
 
-The *Main Tab* is used to pick the MM/QM package and the output file that will be analysed.
+The *Main Tab* selects the calculation to analyse and the files used for saving
+results and settings.
 
 .. _fig-mainTab:
 
-.. figure:: ./_static/Figures/MainTab.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/main.png
+   :width: 100%
+   :alt: Main Tab with the CASTEP ZnO output loaded.
 
-   The Main Tab
+   The Main Tab for the ZnO calculation.
 
-The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported is Abinit, Castep, Crystal, Experiment, Gulp, FHI-Aims, Phonopy, Quantum Espresso, Vasp, and PDGui.
-The output file name can be provided in the text box below it, or it can be specified using the `File manager` button.  In addition to input files from QM/MM programs, the program can read a Python script files written by PDGui.  This should have a '.py' extension.
-The *Experimental* file format allows the user to provide their specification of a dielectric medium, where a code other than that catered for by the program has been used.
-The file format is described in full in the section: :ref:`experimental-file-format`
-The *PDGui* option allows the user to select a scripting file from the interface.
+Choose the *QM/MM Program* from Abinit, Aims, Castep, Crystal, Experiment,
+Finite field, Gulp, Phonopy, Quantum Espresso, Vasp or PDGui. Enter the output
+filename in *Analyse this output file*, or select it with *File manager*.
+The *PDGui* choice reads a saved Python session. Some readers also use files
+beside the selected output, so keep the calculation's companion files together.
 
-If an Excel spreadsheet file name is given, it must have the extensions .xlsx.  The spreadsheet is written when the `Save results` button is pressed.
+*Experiment* reads material descriptions in the :ref:`experimental-file-format`.
+*Finite field* reads the consolidated :ref:`finite-field-json-format`, including
+results from finite-difference workflows. These are material inputs; the
+experimental spectrum used for fitting is selected in the Fitter Tab.
 
-If the current program settings need to be stored they can be stored as a Python script file by pressing the `Save settings` button.  Any settings saved in this way can be re-instated by reading the script using the `File manager` and selecting the `PDGui (*.py)` option in the file types selection.
+*Excel spread sheet* sets the ``.xlsx`` destination. *Save results* writes the
+calculated results and settings. *Script filename* sets the Python file written
+by *Save settings*. Reload that file to reproduce the session; the calculation
+input and any materials database referenced by it must still be available.
 
-Once the file has been specified and read, the unit cell is shown and the frequencies found in the calculation file are reported in the output text boxes.
-
+The lower text areas report the unit-cell vectors in Angstrom and the
+frequencies read from the input. They are outputs, not editable model
+parameters. Frequencies after mass changes and other corrections are shown in
+the Settings Tab.
 
 Settings Tab
 ============
 
-The *Settings Tab* controls the calculation of the frequencies and their intensities.
+The *Settings Tab* controls the spectroscopy and the common vibrational data
+used by every scenario.
 
 .. _fig-settingsTab:
 
-.. figure:: ./_static/Figures/SettingsTab.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/settings-raman-eo.png
+   :width: 100%
+   :alt: Settings Tab with Raman activities, NAC direction and EO enabled.
 
-   The Settings Tab
+   The Settings Tab with NAC and EO diagnostics enabled for ZnO.
 
-The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default, the Eckart conditions are applied and the 3 modes are projected out.
+*Spectroscopy type* selects *Powder Infrared*, *Powder ATR*, *Powder Raman*,
+*Crystal Infrared* or *Crystal Raman*. Changing it replaces the scenarios with
+one scenario of the selected type. Save a session before changing spectroscopy
+if the existing scenarios will be needed again.
 
-There is an option to set the sum of the Born charge matrices to zero.  By default, this is not applied.  
+*Apply Eckart conditions?* projects out the three translational modes of the
+dynamical matrix and is on by default. *Apply Born charge neutrality?* removes
+the sum of the Born-charge tensors and is off by default. These controls
+require the corresponding data from the reader.
 
-The atomic masses can be specified in a variety of ways.  They can be chosen from;
-  - The average natural abundance
-  - The masses used by the QM/MM program
-  - The isotopic mass of the most abundant isotope
+*Atomic mass definition* offers average natural-abundance masses (the default),
+program masses, most-common-isotope masses or individually entered masses.
+The *Atomic masses* table is editable and uses amu. With a dynamical matrix,
+changing masses recalculates modes and frequencies. The input-format reference
+explains the limitations when only precomputed modes or Raman tensors are
+supplied.
 
-If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.
+*Lorentzian width (σ)* sets the common half-width at half maximum in |cm-1|,
+initially 5. Individual mode widths can be changed in the lower table. The
+*Optical permittivity* table contains the dimensionless electronic background
+tensor. Edit its elements when a value must be supplied or replaced.
+*Symmetrise optical permittivity?*, on by default for electronic-structure readers, averages it over the crystal
+point group. Experimental input leaves this off by default. Reading a new input resets input-dependent masses and permittivity.
 
-The width (:math:`\sigma`) of all the absorptions can be set using the *Lorentzian width (sigma)*  spin box. 
+For Raman calculations, *Raman activity units* chooses polarizability-volume
+activities in Angstrom⁴/amu or activities in the internal
+:math:`R_\epsilon` convention in Angstrom/amu. This changes the displayed
+activities, not the physical normalisation of the tensors used by scenarios.
 
-Finally, the optical permittivity at zero frequency is given in the *Optical permittivity* table.  In some cases, it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table that needs changing and typing the new matrix element.
+The *NAC Options* row controls the mode-table diagnostics. *Apply NAC* fills
+the LO-frequency column using the direction specified by x, y and z in the
+crystal Cartesian frame; initially it is off and the direction is (0, 0, 1).
+Use a non-zero direction. *Include EO correction* adds the nonlinear response
+to the diagnostic Raman tensors when the required data are present. It is
+initially off. These controls are separate from *Layer NAC mode* and *Include
+electro-optic term* in a Crystal Raman scenario. *Raman polar plot* opens the
+:ref:`raman-polar-window`.
 
-When a new output file is read the atomic masses and the optical permittivity matrix are reset.
+The lower table has one row per mode. The checkbox beside *Sigma* determines
+whether the mode contributes to subsequent spectra; greyed values indicate
+unselected modes. The columns show TO frequency, optional LO frequency, IR
+intensity in Debye²/Angstrom²/amu, integrated molar absorption, absorption
+maximum, and total, parallel and perpendicular Raman activities where present.
+The headers give the units. The IR quantities and the Raman activities are
+different measures of response; a Raman-active mode can have zero IR intensity.
 
-The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions that do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.
+.. figure:: _static/Figures/gui/settings-infrared.png
+   :width: 100%
+   :alt: Settings Tab in Powder Infrared mode.
+
+   The same input with Powder Infrared selected. Raman-specific controls are hidden.
+
+.. _scenario-tabs:
 
 Scenario Tabs
 =============
-There are two sorts of scenario tab, one for powder calculations and one for single-crystal calculations.  By default, it is assumed that powder calculations are being performed.  There is a button (`Switch to crystal scenario` or `Switch to powder scenario`) at the bottom of the tabs which allows the user to switch between the two.
 
-Scenarios can be added or removed using the push buttons at the bottom of each *Scenario Tab*.  When a new scenario is created the settings are copied from the current scenario.  
+A scenario defines the sample and measurement conditions. *Add another
+scenario* copies the current scenario, allowing one variable to be changed for
+comparison. *Delete this scenario* removes it. The *legend* field names its
+curve in plots. All scenarios in a session use the spectroscopy selected in
+the Settings Tab; use that tab to change the spectroscopy.
 
-There can be more than one *Scenario Tab*.  Each one specifies a particular material, method, or particle shape which will be used for the calculation of the effective medium or single crystal.  The results of the calculations will be shown in the *Plotting Tab*.
+.. include:: scenario_links.inc
 
-Powder Scenarios
-----------------
+.. _powder-infrared-gui:
 
-For each powder scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.
+.. _powder-infrared-and-atr-scenarios:
 
+Powder Infrared Scenarios
+-------------------------
+
+A powder scenario describes crystallites dispersed in a supporting material.
+The particle shape and the permittivities determine the effective optical
+response.
 
 .. _fig-scenarioTab-Powder:
 
-.. figure:: ./_static/Figures/ScenarioTab-Powder.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/powder-infrared.png
+   :width: 100%
+   :alt: Powder Infrared scenario for ZnO in PTFE.
 
-   The Scenario Tab for a Powder
+   The Powder Infrared scenario, using the default PTFE support.
 
-A database of material properties is opened at the start of the program.
-The default database (*PDielec/MaterialsDataBase.xlsx*) is opened although other databases can be loaded by pressing the *Open materials' database* button.
-The open database is shown in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.
+*Open materials' database* selects an Excel materials database; the following
+line reports the current file. *Support matrix* selects an entry. Its adjacent
+read-only description reports the kind of dielectric model and, for tabulated
+entries, the frequency range. *Support density* is in g/cm³. *Support
+permittivity* shows real and imaginary parts. Editing supported matrix values
+creates a manual description; frequency-dependent database entries should be
+used within their stated range.
 
-Materials can have either a constant or frequency-dependent permittivity.  
-In the case of frequency-dependent entries the range of frequencies which the entry covers is displayed.
-A warning is appropriate here as all of the frequency-dependent materials have been extrapolated to be valid at 0 |cm1| and above.  
-The extrapolated values are indicated in the database itself.
+The mass and volume fractions are displayed as percentages. Editing one
+recalculates the other using the material densities. They describe the amount
+of dielectric crystallite in the mixture. *% Air void volume fraction* and
+*Air void radius* describe additional air inclusions; the radius is in µm.
+The air-void fraction defaults to zero.
 
-The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop-down menu.  
-The selected supporting material will change the density and permittivity shown in the respective text boxes.
-For frequency-dependent entries the value of the permittivity at 0 |cm1| is used.
-The user can edit these values independently if necessary.  
-But if this is done the program assumes that the changes result in a frequency-independent permittivity.
-The *Support permittivity* consists of two inputs for the real and imaginary components of the permittivity.  
-For any Mie calculation the imaginary component is ignored.
+*Method* selects Maxwell-Garnett (default), Bruggeman, Averaged Permittivity
+or Mie. The first two are effective-medium treatments, Averaged Permittivity
+averages the response, and Mie includes finite-size spherical scattering.
+*Particle radius* and *Particle sigma* are in µm; the latter describes the
+size-distribution parameter, not the Lorentzian mode width. Their availability
+depends on the method. Use a small-particle effective-medium treatment only
+where its assumptions apply; see :doc:`theory_powder`.
 
-The supporting medium may have bubbles of air trapped in the matrix. 
-For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and the size of the air inclusions :cite:`Kaushik2014`.
+*Particle shape* offers Sphere, Needle, Plate and Ellipsoid. A sphere needs no
+orientation. A needle or ellipsoid uses *Unique direction [abc]* for its axis;
+a plate uses the corresponding (hkl) surface normal. *Ellipsoid a/b* is the
+axial aspect ratio, with one giving a sphere. Direction and ratio controls
+are enabled only for the relevant shape.
 
+.. include:: scenario_links.inc
 
-.. table:: Size of air inclusion (bubbles) in polyethylene
-   :name: tab-air_bubbles
-   :widths:               1    1     1 
-   :column-dividers:   none none  none  
-   :header-alignment: right right right 
-   :column-alignment: right right right 
+.. _powder-atr-gui:
 
-   +-------------------------------+--------------+----------------------+
-   | PE Sphere Diameter (μ)        | Porosity (%) | Void radius (μ)      |
-   +===============================+==============+======================+
-   | 60                            | 24           | 24.0                 |
-   +-------------------------------+--------------+----------------------+
-   | 72                            | 25           | 28.0                 |
-   +-------------------------------+--------------+----------------------+
-   | 360                           | 44.5         | 90.0                 |
-   +-------------------------------+--------------+----------------------+
+Powder ATR Scenarios
+--------------------
 
-The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given, the scattering due to the air inclusions is calculated before the effective medium calculation is performed.
-The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculate the scattering using the Waterman-Truell approximation.
+Powder ATR uses the particle, support-matrix and effective-medium controls
+described under :ref:`powder-infrared-gui`, with additional controls for the
+ATR measurement geometry.
 
-The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).
-If the matrix support density is changed the calculated mass fraction will be updated.
-It is assumed that the volume fraction has precedence.
-If an air void volume fraction is supplied then this is taken account of in the calculation of the volume and mass fractions.
+.. figure:: _static/Figures/gui/powder-atr.png
+   :width: 100%
+   :alt: Powder ATR scenario including refractive index, incidence angle and s fraction.
 
-The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop-down menu.
-If the *Mie* method is chosen the user can enter the particles' radius (μ).
-*Particle sigma* specifies the width of a log-normal distribution.
-If the width is 0.0 no sampling of the distribution is performed.
+   The Powder ATR scenario adds the measurement geometry.
 
-For effective medium theories, the particle shape can be specified using the *Shape* pull-down menu.
-Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.
-For the cases of *Needle* and *Ellipsoid* the unique direction is specified by a direction \[abc\] in lattice units.
-In the case of *Plate* the unique direction is specified as the normal to a plane (hkl) in recipricol lattice units.
-If an *Ellipsoid* shape is used the eccentricity factor can be specified in the *Ellipsoid a/b eccentricity* text box.
+The *Powder ATR* choice adds the ATR-material refractive index, the incident
+angle in degrees, and the s-polarisation fraction. A fraction of zero is pure
+p polarisation, one is pure s, and 0.5 is an equal mixture. These controls
+specify the ATR optical geometry; they do not change the particle orientation.
+See :ref:`ATR_theory` for the calculation.
 
-The plot in the *Plotting Tab* has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the *Scenario legend*.
+.. include:: scenario_links.inc
 
+.. _crystal-infrared-gui:
 
-Single-Crystal Scenarios
-------------------------
+Crystal Infrared Scenarios
+--------------------------
 
-As in the powder scenario, a single-crystal scenario has an option to open a new database of materials.  
-By default, the program opens the default database distributed with the program.
-
-The mode of calculation is determined by the *Single crystal methodology* option.  Possible options are; *Transfer matrix* and *Scattering matrix*.
-Details of the theory underlying each method are given in the theory section: :ref:`Single-Crystal-Theory`.
-The transfer matrix is faster and all the available methods for treating incoherence are available.  The scattering matrix method is slower and the option to treat incoherence by using intensities is not available, but it is much more stable when treating thick films.
-Single-crystal films are defined by a surface determined by the (hkl) settings.
-
+A crystal scenario describes a stack of planar layers between a superstrate
+and substrate. The *Dielectric layer* uses the calculation loaded in Main;
+other materials are selected from the database.
 
 .. _fig-scenarioTab-SingleCrystal:
 
-.. figure:: ./_static/Figures/ScenarioTab-SingleCrystal.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/crystal-infrared.png
+   :width: 100%
+   :alt: Crystal Infrared scenario with air, ZnO and air layers.
 
-   The Scenario Tab for a Single Crystal
+   The Crystal Infrared scenario for air / ZnO / air.
 
-The method of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
-The global azimuthal angle controls the rotation of all the layers around the laboratory Z-axis, although each layer also has its own azimuthal angle as will be described later.
+*Single crystal methodology* selects Transfer matrix or Scattering matrix.
+The default Scattering matrix is useful for avoiding numerical problems with
+strongly absorbing or thick layers. *Global azimuthal angle* rotates the stack
+about its surface normal; *Angle of incidence* measures the incoming beam
+from that normal. Both angles are in degrees and initially zero.
 
-The layer information is provided as a spread-sheet of materials, with the specification of the thickness of the layer, the (hkl) parameters of the surface, the azimuthal angle of the layer and an option to treat the layer coherently or incoherently.
-The material at the top of the list is the superstrate, which should be isotropic and non-absorbing.  It is treated as a semi-infinite material.
-The material at the bottom of the list is the substrate, which is also semi-infinite.  Although, if only reflectance information is needed, this can be an anisotropic, absorbing material.
-The layer in-between is initially set to the DFT dielectric material.  
-New layers can be added by pressing the *New layer...* button and choosing from what is available in the database.
-The position of the layers can be adjusted by pressing the up and down buttons and a layer can be removed by pressing the *delete* button.
-There are options to treat the layer, coherently or incoherently available from the *Options* pull down.
+Under *Layer information*, each row represents a layer. *Material* opens the
+layer editor. *Thickness* and *Units* set the finite-layer thickness; the
+semi-infinite superstrate and substrate do not have an editable optical
+thickness. H, K and L specify the crystalline surface normal, and *Azimuthal*
+rotates that layer about the normal. These orientation fields do not apply to
+isotropic materials.
 
-Pressing the button which shows the name of the material, brings up the layer editor window for that material, which is described in more detail below.
-
-Finally, there is a legend that can be provided for the Plotting Tab.
+*Options* selects the layer's optical coherence treatment. *Coherent* retains
+phase interference; *Incoherent (intensity)* combines intensities,
+*Incoherent (phase averaging)* averages optical phases, and
+*Incoherent (non-reflective)* describes a thick non-reflective medium. These optical options are distinct from Raman depth and layer coherence.
+The up/down arrows move a layer within the stack; the cross deletes it.
+*New layer...* adds a material selected from the database. Check the layer
+order after making changes.
 
 .. _the-layer-editor:
 
 The Layer Editor
 ................
 
-To see more details of a crystalline layer in the system press the *Material* button of the material of interest.
-This brings up a new window, which shows more information about the layer.
-A useful feature of the *layer editor* is that it shows the connection between the crystal and laboratory coordinate systems.
-The laboratory axes are defined with Z- being normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane. 
-The incident radiation is assumed to be at an angle :math:`\theta` to the normal. 
-p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle :math:`\phi` defines the rotation of the crystal around the Z-axis.
-To help understand the relationship between the crystal and laboratory coordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
-A more complete description of the relationship between the coordinate systems is given in :ref:`crystal-and-laboratory-coordinates`
-
+Press a *Material* button to edit the corresponding layer.
 
 .. _fig-layer-editor-window:
 
-.. figure:: ./_static/Figures/layer-editor-window.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/layer-crystal.png
+   :width: 85%
+   :alt: Layer editor showing ZnO thickness, hkl, azimuth and laboratory coordinates.
 
-   The layer editor
+   The layer editor for crystalline ZnO.
 
+*Layer type* and *Material* identify the layer being edited. *Thickness* and
+its unit selector describe the finite layer. For a crystal, hkl and
+*Azimuthal* set the surface and rotation. The *Lab frame information* output
+shows the lattice vectors in laboratory coordinates and their relation to
+the surface. It is not a second set of editable lattice parameters.
+
+The laboratory Z-axis is normal to the surface and the incidence plane is XZ.
+p-polarised light lies in this plane; s-polarised light is perpendicular to it.
+The relationship is described in :ref:`crystal-and-laboratory-coordinates`.
+*OK* accepts the layer changes and *Cancel* discards them.
+
+.. figure:: _static/Figures/gui/layer-isotropic.png
+   :width: 75%
+   :alt: Isotropic layer editor without crystallographic orientation controls.
+
+   An isotropic material does not require crystallographic orientation controls.
+
+.. include:: scenario_links.inc
+
+.. _powder-raman-gui:
+
+Powder Raman Scenarios
+----------------------
+
+The *Powder Raman* scenario averages scattering over crystallite orientations
+and includes the particle's local optical fields. It requires Raman tensors
+from the loaded calculation. The theory is described in
+:ref:`Powder-Raman-Theory`.
+
+.. figure:: _static/Figures/gui/powder-raman.png
+   :width: 100%
+   :alt: Powder Raman scenario with VV polarisation and electro-optic correction enabled.
+
+   ZnO spheres in air with the EO correction enabled.
+
+The database, support material, density, complex permittivity, mass/volume
+fractions and particle-shape controls have the meanings given for powder
+infrared scenarios. The example uses 10% volume fraction. *Laser wavelength*
+is in nm, initially 785; the figures use 532. *Raman laser polarisation*
+selects VV (parallel, the default), VH or HV (crossed), or Unpolarised.
+*Temperature* is in K, initially 298, and determines the thermal population
+factor.
+
+*Include electro-optic term* adds the finite-particle EO contribution to the
+Raman tensors using the particle's depolarisation field. It is off by default
+and explicitly enabled here. The input must contain nonlinear susceptibility
+as well as the response needed for the particle phonon correction. Enabling
+the checkbox cannot supply missing data. The CASTEP ZnO example contains this
+response, and switching EO off gives a different spectrum.
+
+*Orientation samples* selects the number of numerical orientations for
+non-spherical particles, from 4 to 4096, initially 512. Increase it to check
+convergence of an anisotropic particle average. Spheres do not need this
+numerical sampling. Particle shape can affect both the mode frequencies and
+the Raman response, so a change in shape is not simply a rescaling of peaks.
+
+.. figure:: _static/Figures/gui/powder-raman-ellipsoid.png
+   :width: 100%
+   :alt: Powder Raman ellipsoid controls with direction and aspect ratio enabled.
+
+   Selecting Ellipsoid enables the unique-axis and aspect-ratio controls.
+
+.. include:: scenario_links.inc
+
+.. _crystal-raman-gui:
+
+Crystal Raman Scenarios
+-----------------------
+
+The *Crystal Raman* scenario calculates laser and reciprocal scattered fields
+in a layered sample and combines them with the Raman tensors. The common
+optical method and incidence controls are followed by Raman controls, the
+layer table, and the azimuthal sweep controls at the bottom.
+
+.. figure:: _static/Figures/gui/crystal-raman.png
+   :width: 100%
+   :alt: Crystal Raman scenario showing Snell's law EO, p/p polarisation, layers and sweep controls.
+
+   A 1 µm ZnO layer with p/p backscattering and Snell's law (EO).
+
+*Laser wavelength* is in nm (default 532) and *Temperature* is in K (default
+298). *Integration density* sets the depth quadrature density in points/µm.
+The default is 20 and the example uses 40; doubling it to 80 changes this spectrum negligibly.
+Convergence depends on the layer thickness and optical fields, so check it
+for a different sample.
+
+*Polarisation* contains the incident (*in*) and detected (*out*) choices.
+The defaults are p/p; s is perpendicular to the incidence plane and
+Unpolarised detection sums the two detector channels as intensities.
+Alternatively enter *Porto* notation and press *Apply*. This sets a
+normal-incidence geometry, surface direction and polarisations; the selectors
+then show *porto*. For example, ``x(yy)-x`` denotes backscattering with y-in/y-out.
+The common shorthand ``x(yy)x`` is also interpreted as backscattering;
+``x(yy)+x`` explicitly requests forward scattering. Compound polarisations use
+comma-separated expressions, for example ``z(x+y,x+y)z``.
+
+*Collection side* chooses superstrate (backscattering, default) or substrate
+(forward scattering). *Collection angle* is in degrees. The default −1 is
+automatic: retro-backscattering on the superstrate side or collinear forward
+scattering on the substrate side. An explicit angle equal to the incidence
+angle specifies specular reflection. The distinction matters at oblique
+incidence.
+
+*Depth coherence* selects Coherent amplitude or Incoherent intensity. The
+former adds amplitudes through a layer before squaring; it requires an
+appropriate phase-coherent phonon model. The latter integrates local
+intensities. *Layer combination* separately specifies Incoherent intensities
+or Coherent amplitudes between active layers. Incoherent depth forces
+incoherent layer combination and disables that selector. The default depth choice is Coherent amplitude and the default layer
+combination is Incoherent intensities. The introductory example uses
+incoherent intensity at both levels. Thin optical layers alone
+do not establish coherent spontaneous Raman emission.
+
+*Include electro-optic term* is on by default for crystal Raman. It uses the
+input nonlinear susceptibility to correct the Raman tensor of a polar mode.
+The *Layer NAC mode* chooses the phonon-frequency treatment:
+
+.. list-table:: Layer NAC choices
+   :header-rows: 1
+   :widths: 1 3
+
+   * - Choice
+     - Meaning
+   * - TO
+     - Use bulk transverse-optic frequencies without the polar correction.
+       The EO term is not applied in this mode.
+   * - Snell's law
+     - Use the macroscopic scattering geometry to determine the phonon
+       wavevector for the non-analytic correction. This is the default.
+   * - Dominant mode
+     - Use the dominant internal optical eigenmode to determine that direction.
+   * - All modes
+     - Resolve incident/scattered internal propagation-channel pairs, allowing
+       more than one corrected frequency for an original TO mode.
+
+The last three choices acquire an *(EO)* suffix when the nonlinear response
+is available and the EO option is enabled. The selected example therefore
+shows *Snell's law (EO)*. These phonon corrections are separate from solving
+optical propagation with the transfer/scattering matrix. See
+:ref:`Crystal-Raman-Theory` for the assumptions and equations.
+
+.. figure:: _static/Figures/gui/crystal-raman-all-modes.png
+   :width: 100%
+   :alt: All modes EO selection exposing modal-pair combination, final-state model and q-angle tolerance.
+
+   The additional controls shown for All modes (EO).
+
+*Modal pair combination* offers Group q channels (default), Incoherent pairs
+and Coherent all pairs. Group q channels combines amplitudes for the same
+phonon final state before summing intensities over different states. The other
+two choices are diagnostic alternatives. *Modal-pair final-state model*
+distinguishes Bulk phase matched from Local incoherent for incoherent-depth,
+grouped-q calculations. In the bulk model *Modal pair q-angle tolerance*,
+initially 90°, controls the accepted directions relative to the external
+momentum transfer. It is inactive for Local incoherent. Controls are enabled
+only where their combination is meaningful; a hidden All modes control does
+not change the Snell's-law calculation.
+
+The layer-table columns and editor are shared with Crystal Infrared. Raman
+response comes from the active dielectric layer; a database optical material
+does not acquire Raman tensors merely by being inserted into the stack.
+
+Under *Azimuthal sweep*, *Sweep points* specifies equally spaced angles over
+0–360°, excluding the repeated endpoint, initially 36. *Plot azimuthal sweep*
+calculates the selected geometry at those angles and opens the
+:ref:`azimuthal-sweep-window`. Run a spectrum first to define the frequency
+axis. Each new sweep opens a separate result window.
+
+.. include:: scenario_links.inc
 
 Plotting Tab
 ============
 
-The *Plotting Tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
-The plots available depend on the availability of powder and single-crystal scenarios.
-
+The *Plotting Tab* displays the calculated scenarios together.
 
 .. _fig-plottingTab-Powder:
 
-.. figure:: ./_static/Figures/PlottingTab-Powder.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/plotting-powder-infrared.png
+   :width: 100%
+   :alt: Plotting Tab showing a ZnO powder infrared spectrum.
 
-   The Plotting Tab Showing Powder Absorption
+   The Plotting Tab for Powder Infrared.
 
-The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maximum frequencies at the interval specified.
+*Frequency min, max and increment* set the calculation grid. The adjacent
+unit selector offers wavenumber, THz, GHz and wavelength units from Angstrom
+to metres. Zero is not a valid wavelength. For Raman, use wavenumber to show
+Raman shifts unambiguously. A sufficiently small increment is needed to
+resolve narrow peaks.
 
-By default, the calculation uses moles of unit cells for the molar absorption coefficient.  This can be altered using the the *Molar definition* pull-down menu.  Options include *Unit cells*, *Atoms* and *Molecules*.  In the case of *Molecules*, it is necessary to supply the number of atoms in a formula unit of the compound in the *Number of atoms per molecule* text box.
+*Molar definition* chooses Unit cells, Atoms or Molecules for molar absorption;
+*Number of atoms per molecule* supplies the molecular conversion. These
+controls do not set the normalisation of a Raman tensor. *Choose plot type*
+offers quantities appropriate to the spectroscopy: powder absorption or
+permittivity, ATR response, crystal reflectance/transmittance/absorptance,
+or Raman intensity.
 
-The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.
-
-For powder scenarios, the molar absorption, the absorption, and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
-
-For single-crystal plots, the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as :math:`1-R-T`.
-For thick slabs, only the reflactance is of any relevance.  For thin films, absorptance is useful as it removes some of the oscillations that occur in the transmittance or reflectance due to the film thickness.
+*Spectrum renormalisation* offers none, max=1 and area=1. Crystal Raman also
+offers layer depth to divide by active-layer depth. Use none when comparing
+absolute calculated scales between scenarios; independently normalising curves
+can obscure an EO or thickness effect. Raman intensities are reported in
+arbitrary units, not calibrated experimental cross sections.
 
 .. _fig-plottingTab-SingleCrystal:
 
-.. figure:: ./_static/Figures/PlottingTab-SingleCrystal.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/plotting-crystal-infrared.png
+   :width: 100%
+   :alt: Crystal Infrared plot with its available optical response selection.
 
-   The Plotting Tab showing Single-Crystal results
+   The Plotting Tab for Crystal Infrared.
 
-The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed other units including *wavenumber*, *THz* or a wavelength such as *cm*, *mm* or *um*.  A default plot title is generated giving information about the type of plot being viewed.
+.. figure:: _static/Figures/gui/plotting-crystal-raman.png
+   :width: 100%
+   :alt: Crystal Raman spectrum calculated with the EO correction.
 
+   The ZnO Crystal Raman spectrum with EO enabled.
+
+.. figure:: _static/Figures/gui/plotting-powder-raman.png
+   :width: 100%
+   :alt: Powder Raman spectrum calculated with VV polarisation and EO correction.
+
+   The corresponding Powder Raman spectrum.
+
+*Select scenarios...* opens a table with a *Plot* checkbox, scenario number
+and legend for each scenario. *OK* applies the selection; *Cancel* keeps it.
+The text beside the button reports how many are selected. *Update plot*
+refreshes the calculations and figure, with *Calculation progress* reporting
+completion. The Matplotlib toolbar provides Home, back/forward view history,
+pan, zoom, subplot/curve configuration and image saving; these are display
+operations and do not change the scenario physics.
+
+.. figure:: _static/Figures/gui/select-scenarios.png
+   :width: 75%
+   :alt: Select scenarios dialog with Plot checkbox, scenario number and legend.
+
+   Choosing which scenarios appear in the plot.
 
 Analysis Tab
 ============
 
-The *Analysis Tab* shows a breakdown of the phonon modes into molecular components or internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be specified individually if needed.  The *Analysis Tab* shows the number of molecules that have been found in the analysis.
-
+The *Analysis Tab* decomposes normal-mode motion into internal and external
+components or molecular contributions. It needs atomic positions and normal
+modes, rather than a permittivity-only input.
 
 .. _fig-analysisTab:
 
-.. figure:: ./_static/Figures/AnalysisTab.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/analysis.png
+   :width: 100%
+   :alt: Analysis Tab showing frequency range, bonding criteria and mode decomposition.
 
-   The Analysis Tab
+   The Analysis Tab for ZnO.
 
-The bar graph shows a breakdown of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell are displayed in the *3D Viewer Tab*
+*Minimum frequency* and *Maximum frequency* select modes in |cm-1|.
+*Bonding scale and tolerance* identify connected atoms using a distance cutoff
+of scale × (radius i + radius j) + tolerance; tolerance and *Atomic radii*
+are in Angstrom. The defaults are scale 1.1 and tolerance 0.1. Edit the
+individual radii in the table where a different bonding description is needed.
+*Number of molecules found* is an output of that connectivity analysis. In an
+extended crystal a connected group should not automatically be interpreted
+as an isolated molecule.
+
+*Bar width* (default 0.5) controls the appearance of the bars and *Plot title*
+sets the heading. *Choose the plot type* switches between Internal vs External
+and Molecular Composition. Neither option changes the phonon frequencies.
+The figure toolbar has the same navigation and saving actions as Plotting.
+See :doc:`analysis` for the interpretation of the decomposition.
 
 3D Viewer Tab
 =============
 
-The *3D Viewer Tab* shows the unit cell of the system using the molecular information and atomic sizes from the *Analysis Tab*.
-
-The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.  A series of CIF files can also be generated which follows the motion of the mode being studied.
-
+The *3D Viewer* displays atomic structure and phonon displacements using the
+bonding information from Analysis.
 
 .. _fig-viewerTab:
 
-.. figure:: ./_static/Figures/ViewerTab.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/viewer.png
+   :width: 100%
+   :alt: ZnO unit cell and displacement arrows in the OpenGL viewer.
 
-   The 3D Viewer Tab
+   The 3D Viewer showing a ZnO phonon.
 
-As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.  The unit cell can be shown as a supercell by altering the a, b, c parameters in the settings tab.  Other parameters affecting the display can also be modified.
+*Select phonon mode* selects a numbered mode; the disabled *Frequency* box
+reports its frequency in |cm-1|. *Choose the plot type* selects Animation,
+Arrows or No arrows or animation. Mouse movement and the wheel
+rotate and magnify the view. The *Settings* strip contains the following tabs;
+use its arrows to reach those outside the available width.
 
+.. list-table:: Viewer settings
+   :header-rows: 1
+   :widths: 1 3
+
+   * - Tab
+     - Description
+   * - Elements
+     - Element buttons open colour selectors for the atomic spheres.
+   * - Colours
+     - Separate colours for background, cell outline, bonds and displacement arrows.
+   * - Atom Size
+     - Scale factor multiplying the covalent radii for displayed sphere sizes.
+   * - Super Cell
+     - Integer repetitions along a, b and c of the original DFT cell.
+   * - Transform
+     - Open the cell-transformation matrix editor described below.
+   * - Surface
+     - hkl chooses a surface normal and uvw an in-plane direction for the view.
+   * - Lighting
+     - Switch light sources 0–7 on or off.
+   * - Toggles
+     - Turn cell labels, the cell outline, the orientation indicator, bonds
+       and atoms on or off using the selector.
+   * - Displacement
+     - Maximum displayed phonon displacement; controls visual scale, not a
+       thermal displacement amplitude.
+   * - Bond Radius
+     - Radius of displayed bond cylinders in Angstrom.
+   * - Cell Radius
+     - Radius of the cell-outline cylinders in Angstrom.
+   * - Arrow Radius
+     - Radius of displacement arrows in Angstrom.
+
+*Image file name* supplies the output path. *Save as png* writes a still image;
+*Save as mp4* and *Save as gif* write animation; *Save as cif or mcif* exports
+the structure or mode information according to the extension. These are
+outputs of the viewer, not replacements for the calculation input.
+
+.. _viewer-transform-window:
+
+The Transformation Window
+-------------------------
+
+.. figure:: _static/Figures/gui/transform.png
+   :width: 65%
+   :alt: Three by three cell transformation matrix with OK and Cancel buttons.
+
+   The cell-transformation editor.
+
+Each row of the 3 by 3 table gives a new lattice vector as a linear
+combination of the old lattice vectors. The identity matrix leaves the cell
+unchanged. Entries accept numerical expressions such as fractions. *OK*
+accepts the transformation and *Cancel* discards it. The viewer transformation
+changes the displayed cell, not the DFT calculation that supplied the modes.
 
 Fitter Tab
 ==========
 
-The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in |cm-1| and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single-crystal properties.  
-Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
-Indeed the calculated signal used for fitting is the same as that being shown in the *plotting tab*.
-At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition, there are options to change the *Plot type*, include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use independent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specify the spectral difference threshold.
-The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
-If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the *HP filter lambda* tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.
-
+The *Fitter Tab* compares a calculated scenario with an experimental spectrum
+and can adjust selected linewidths and an optional frequency scale.
 
 .. _fig-fitter:
 
-.. figure:: ./_static/Figures/FitterTab.png 
-   :scale: 80%
+.. figure:: _static/Figures/gui/fitter.png
+   :width: 100%
+   :alt: Fitter comparing sodium-sulphate calculated ATR and experimental spectra.
 
-   The Fitter Tab
+   The existing sodium-sulphate ATR fitting example.
 
+The *Options* tabs provide the controls below. The experimental file is an
+``.xlsx`` spreadsheet or ``.csv`` file with frequency in |cm-1| in the first
+column and measured signal in the second, with at most one heading row.
+This is distinct from an *Experiment* material file. The example uses
+``Examples/ATR/Na2SO42_fit/ATR_Spectra_for_fitting.xlsx`` and its matching
+calculation; it does not use an invented ZnO experimental spectrum.
 
-After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The *Replot with frequency shift* shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.
+.. list-table:: Fitter options
+   :header-rows: 1
+   :widths: 1 3
 
-It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  
-However, experience with this option shows that it may be better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjusted too.
+   * - Tab
+     - Description
+   * - Experimental spectrum
+     - Path of the measured data. Press Return after entering it to read it.
+   * - Scenario
+     - Select the calculated scenario to compare. Its plotted quantity must
+       match the experimental signal.
+   * - Frequency scaling factor
+     - Multiplier for calculated frequencies, initially 1.0.
+   * - No. of iterations
+     - Optimisation iteration limit, initially 20.
+   * - Independent y-axes
+     - Use separate scales for calculated and experimental signals; initially
+       on. Inspect the scales before comparing peak heights.
+   * - Fitting type
+     - Minimise x-correlation maximises the correlation through its objective;
+       Minimise spectral difference minimises the spectral error.
+   * - Optimise scaling
+     - Include the frequency scaling factor in optimisation; initially off.
+   * - Spectral difference threshold
+     - Signal threshold for the spectral-difference objective, initially 0.05.
+   * - Baseline removal?
+     - Apply baseline correction to the experimental data; initially off.
+   * - HP Filter Lambda
+     - Base-10 logarithm of the Hodrick-Prescott filter parameter, initially 7.
 
-Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).
+In *Lorentzian widths*, edit sigma values in |cm-1| and check those to include
+in the fit. Frequency and intensity columns identify the transitions; they
+are not independent fitted parameters. *Replot* recalculates the comparison.
+*Replot with frequency shift* additionally applies the lag that maximises the
+cross-correlation. *Perform fitting* starts optimisation and changes to an
+interrupt control while running. The progress bar reports calculation progress.
 
-A summary of the optional settings available in the *Fitter Tab* is shown below;
+The four read-only diagnostics are cross-correlation, shift/lag in |cm-1|,
+frequency scale and root-mean-square error. Inspect the resulting spectrum
+as well as these numbers. The fitting uses the frequency range from Plotting;
+its toolbar controls the view and exports images.
 
-.. table:: Fitter Tab options
-   :name: fitter_tab_options
-   :widths: 1 3 
-   :column-dividers:   none none  none 
-   :header-alignment: left left
-   :column-alignment: left left
+.. _raman-polar-window:
 
-   +--------------------------+-----------------------------------------------------+
-   | Fitter options           | Description                                         |
-   +==========================+=====================================================+
-   | Experimental spectrum    | Provide a file with the experimental                |
-   |                          | data. A return brings up a file manager             |
-   +--------------------------+-----------------------------------------------------+
-   | Scenario                 | Allows the user to choose which                     |
-   |                          | will be used in the fitting                         |
-   +--------------------------+-----------------------------------------------------+
-   | Frequency scaling factor | The calculated frequencies are scaled               |
-   +--------------------------+-----------------------------------------------------+
-   | No. of iterations        | Number of iterations for automatic                  |
-   |                          | fitting                                             |
-   +--------------------------+-----------------------------------------------------+
-   | Independent y-axes       | The calculated spectrum uses the left               |
-   |                          | axis and the experimental the right                 |
-   +--------------------------+-----------------------------------------------------+
-   | Fitting type             | Refers to the method used for automatically fitting |
-   |                          |     - minimise x-correlation                        |
-   |                          |     - minimise spectral difference                  |
-   +--------------------------+-----------------------------------------------------+
-   | Optimise scaling         | Tick if frequency scaling is to be included in the  |
-   |                          | automatic optimisation                              |
-   +--------------------------+-----------------------------------------------------+
-   | Spectral difference      | Used if fitting type is minimise spectral difference|
-   | threshold                |                                                     |
-   +--------------------------+-----------------------------------------------------+
-   | Baseline removal?        | Tick to request that the Hodrick-Prescott (HP)      |
-   |                          | method is used to remove a sloping baseline         |
-   |                          | in the experimental data                            |
-   +--------------------------+-----------------------------------------------------+
-   | HP filter Lambda         | Provide the lambda value in the HP method           |
-   +--------------------------+-----------------------------------------------------+
+Raman Polar Window
+==================
 
-Scripting
----------
-Nearly all aspects of the program can be accessed through scripting.  
-The script is provided by the *-script* command line option or by choosing the PDGui (\*.py) file type from the file manager on the *Main tab*.
-A very useful feature is the ability to save a script that reflects the current state of the program.  This is available from the *Main tab*.
+The *Raman polar plot* button in Settings opens a tensor-level polarisation
+simulator. It is useful for examining selection rules without constructing
+an optical layer stack.
 
-There are several things to be aware of when using this option to read in settings from one calculation into another.  
-The file will contain parameters that have been calculated whilst reading the input file.  
-For example, the optical permittivities are calculated and stored in this file.  
-If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in one calculation but they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed. 
+.. figure:: _static/Figures/gui/raman-polar.png
+   :width: 100%
+   :alt: Raman polar simulator with TO and LO frequencies, vectors and EO control.
 
-Parallelisation and threads
-===========================
+   The ZnO Raman polar simulator with the nonlinear response available.
 
-To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default, this parallelisation spawns additional Python executables, depending on the number of cores available.
+The *Raman-active modes* table contains an Include checkbox, mode number, TO
+frequency, LO frequency when NAC data are available, and total Raman activity
+in the units chosen in Settings. *Select all active modes* and *Clear selection*
+change the plotted set.
 
-In addition to this form of parallelisation the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimised BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads. 
+*Light direction Rz* gives the propagation/rotation axis and *Zero-angle pol.
+Pza* the initial incident polarisation, both as Cartesian vectors. Pza should
+be perpendicular to Rz; changing Rz adjusts Pza accordingly. The read-only
+*Orthogonality* value is their dot product and should be zero.
+*Phonon q̂ direction* independently sets the crystal-frame direction for the
+LO and EO corrections. *Sync q̂ to Rz* copies the light axis, appropriate to
+the backscattering approximation.
 
-In the case of Phonopy, the dynamical matrix is read from a yaml file. This is very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts to the Python parser.
+*Include EO correction (χ² available)* is shown when nonlinear response is
+available and is initially checked. It is this window's own control, not the
+scenario checkbox. The LO column likewise uses this window's phonon direction.
+The three curves show parallel VV, crossed HV and a fixed-incident,
+rotating-analyser geometry. They show tensor-level angular response, without
+the scenario's layer interference or depth integration. The toolbar saves and
+navigates the plot. *Description* explains the axes and geometries.
 
-Finally, the use of non-standard BLAS libraries seems to cause problems with the affinity settings for multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. To prevent this, before executing the pdielec and preader scripts it may be necessary to include;
+.. figure:: _static/Figures/gui/raman-polar-description.png
+   :width: 85%
+   :alt: Raman polar simulator description of coordinates and polarisation geometries.
 
-        export OPENBLAS_MAIN_FREE=1
+   The description window; close it to return to the simulator.
 
-For some reason, this also works if the MKL library is being used.
+.. _azimuthal-sweep-window:
 
-There have been issues in running PDielec on Catalina, MacOS.  
-This appears to be due to the multiprocessing features of Python not working as expected on this operating system.  
-A workaround is to use;
+Azimuthal Sweep Window
+======================
 
-        pdgui -threads -cpu 1
+The Crystal Raman *Plot azimuthal sweep* button opens a result window using
+the scenario's layer stack, optical fields, NAC and EO settings. This is a
+different calculation from the tensor-level polar simulator.
 
-This runs the program on a single processor using the threading library for multiprocessing.  
-Sometimes it is more convenient to set these using the environment.  Two environment variables are read before any command line options are processed;
+.. figure:: _static/Figures/gui/sweep-grouped.png
+   :width: 100%
+   :alt: Azimuthal sweep showing near-degenerate mode grouping and tolerance.
 
-        export PDIELEC_NUM_PROCESSORS=4
+   A ZnO (100) azimuthal sweep with mode grouping enabled. This surface was
+   chosen to show the variation under rotation, unlike the (001) main example.
 
-will run `pdgui` on 4 processors.  By default, the number of processors is determined by interrogating the computer.  This is achieved, by setting the value of PDIELEC_NUM_PROCESSORS to 0.
+*Plot type* offers Polar, Colour map, Waterfall and Line. *Mode* chooses an
+individual mode or All modes (integrated). *Mode display* selects Individual
+eigenmodes or Group near-degenerate. Grouping reveals *Tol (cm⁻¹)*, initially
+2.0, which sets the frequency tolerance. Grouping sums the intensities of
+nearly degenerate modes, avoiding an interpretation that depends on an
+arbitrary choice of eigenvectors within a degenerate subspace.
 
-        export PDIELEC_THREADING=TRUE
+Polar and Line show angular intensities. Colour map and Waterfall show the
+spectral dependence across angles. Switching the plot presentation does not
+rerun the scenario; to change physical settings, return to the scenario and
+run a new sweep. The toolbar navigates and saves the figure.
 
-will run `pdgui` using the threading multiprocessing options.
+.. figure:: _static/Figures/gui/sweep-colour-map.png
+   :width: 100%
+   :alt: Colour map of ZnO Raman shift versus azimuthal angle.
+
+   The spectral colour-map view of the same sweep.
+
+.. figure:: _static/Figures/gui/sweep-waterfall.png
+   :width: 100%
+   :alt: Waterfall spectra for the ZnO azimuthal sweep.
+
+   The waterfall view.
+
+.. figure:: _static/Figures/gui/sweep-line.png
+   :width: 100%
+   :alt: Line presentation of integrated Raman intensity against azimuthal angle.
+
+   The line view.
+
+.. _pdgui-scripting:
+
+Saving Settings and Scripting
+=============================
+
+*Save settings* on Main writes a Python session file. The script accesses the
+notebook as ``self.notebook`` and the setting dictionaries of its tabs. A
+saved session records the chosen data and options; the display-only controls
+of auxiliary windows should be set in those windows when required.
+
+The :doc:`settings_reference` lists every tab's dictionary keys, accepted
+values and their effects, including settings available only through scripts.
+
+Two advanced Crystal Raman settings are available through scripts while being
+absent from the scenario GUI::
+
+    tab = self.notebook.scenarios[0]
+    tab.settings['Coalesce equivalent layers'] = True
+    tab.settings['Approximate ES'] = False
+
+*Coalesce equivalent layers*, default True, merges adjacent equivalent
+coherent layers before Raman field integration. Disabling it is useful for
+diagnosing artificial internal-boundary effects. *Approximate ES*, default
+False, uses the laser field in place of separately evaluating the scattered
+field when set True. It changes the optical approximation and should be
+recorded when reporting results.
+
+The powder Raman wavelength in nm is stored as ``Raman laser wavelength``.
+The crystal NAC selector uses
+``Layer NAC mode`` values ``none``, ``geometry``, ``dominant_mode`` and
+``modal_pairs`` for TO, Snell's law, Dominant mode and All modes respectively.
+Use the saved script as the starting point rather than guessing visible-label
+spellings. In an interactive script, request a refresh after changing settings.
 
 .. _performance:
 
 Performance
 ===========
 
-PDielec has been written to make use of multiprocessor computers. On an 8-processor (16 thread) machine using multiprocessing, the speed-up soon slows down after three processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
-The speedup is calculated by running the benchmark suite (pdmake benchmarks), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.
+PDGui can distribute calculations over worker processes. Use ``-cpus N`` to
+limit the number of workers, and ``-threading`` where a thread-based worker
+pool is needed. The environment variables ``PDIELEC_NUM_PROCESSORS``,
+``PDIELEC_THREADING`` and ``PDIELEC_NUM_THREADS`` also configure parallelism.
+Choose settings appropriate to the available memory and calculation size;
+more workers need not make a small calculation faster.
 
-.. _fig-speedup:
+.. _additional-settings-views:
 
-.. figure:: ./_static/Figures/SpeedUp.png 
-   :scale: 90%
+Additional settings references
+==============================
 
-   Speed-up on a 8-processor workstation
+The settings views show each viewer and fitter settings tab separately, so
+controls hidden by the tab strip in an overview remain visible. The settings
+reference documents the dictionary keys used in Python session scripts.
 
-Using the same suite of benchmarks on an 8-processor Intel core i9-9900K running at 3.6GHz took 92.6s.
+.. toctree::
+   :maxdepth: 1
 
-On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 432s seconds.  On the same machine but running the Linux operating system the benchmark suite took 358s, making the impact of Windows on performance a factor of 1.2 times slower.
-
+   gui_options
+   settings_reference

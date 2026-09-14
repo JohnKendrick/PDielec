@@ -813,8 +813,9 @@ Module Contents
       that this Rydberg-a.u. electro-optic tensor should be multiplied by
       1/2 to obtain static chi^2, and by 2.7502 to convert to pm/V.
 
-      The stored attribute ``nonlinear_optical_susceptibility`` is chi^2 in
-      pm/V, with layout ``chi2[i, j, k]``.
+      The stored attribute ``nonlinear_optical_susceptibility`` is chi^2
+      converted to the reader ``R_epsilon`` convention, with layout
+      ``chi2[i, j, k]``.
 
       Parameters
       ----------
@@ -836,8 +837,8 @@ Module Contents
       The ``ELOP_TNS`` element stores the same electro-optic tensor printed
       in the ph.x output log, but with the full XML precision.  Values are
       arranged as three consecutive 3x3 matrices for electric fields along
-      x, y, and z.  The stored attribute is chi^2 in pm/V, with layout
-      ``chi2[i, j, k]``.
+      x, y, and z.  The stored attribute is chi^2 converted to the reader
+      ``R_epsilon`` convention, with layout ``chi2[i, j, k]``.
 
       Parameters
       ----------
@@ -994,6 +995,12 @@ Module Contents
       self.final_free_energy : float
           The final energy in eV
 
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Rebuild QE Raman tensors exactly from stored displacement derivatives.
 
 
 

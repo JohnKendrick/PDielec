@@ -45,6 +45,7 @@ Submodules
    /autoapi/PDielec/CrystalOutputReader/index
    /autoapi/PDielec/DielectricFunction/index
    /autoapi/PDielec/ExperimentOutputReader/index
+   /autoapi/PDielec/FiniteFieldOutputReader/index
    /autoapi/PDielec/GTMcore/index
    /autoapi/PDielec/GUI/index
    /autoapi/PDielec/GenericOutputReader/index
@@ -54,11 +55,17 @@ Submodules
    /autoapi/PDielec/LayeredRamanCalculator/index
    /autoapi/PDielec/Materials/index
    /autoapi/PDielec/Mie/index
+   /autoapi/PDielec/NACDiagnostics/index
+   /autoapi/PDielec/OpticalChannelResolver/index
+   /autoapi/PDielec/PhononFinalStateResolver/index
    /autoapi/PDielec/PhonopyOutputReader/index
    /autoapi/PDielec/Plotter/index
    /autoapi/PDielec/PrimitiveCell/index
    /autoapi/PDielec/QEOutputReader/index
+   /autoapi/PDielec/RamanAmplitudeAccumulator/index
+   /autoapi/PDielec/RamanGeometry/index
    /autoapi/PDielec/RamanPolarCalculator/index
+   /autoapi/PDielec/RamanSpectrum/index
    /autoapi/PDielec/SuperCell/index
    /autoapi/PDielec/Tests/index
    /autoapi/PDielec/UnitCell/index

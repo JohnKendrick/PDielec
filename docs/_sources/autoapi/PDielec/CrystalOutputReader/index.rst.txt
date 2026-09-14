@@ -50,6 +50,12 @@ Module Contents
 
 
 
+   .. py:method:: _calculate_raman_tensors_from_tens_raman_dat()
+
+      Project stored CRYSTAL polarizability derivatives onto current modes.
+
+
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the output file.
@@ -119,6 +125,12 @@ Module Contents
 
 
 
+   .. py:method:: _read_chi2_block(fd, source)
+
+      Read a CRYSTAL second-order susceptibility table from an open file.
+
+
+
    .. py:method:: _read_chi2_dat(filename)
 
       Read the second-order nonlinear optical susceptibility χ^(2) from CHI2.DAT.
@@ -137,8 +149,9 @@ Module Contents
       permutations equivalent).  ``d(MKS)`` is already in pm/V and satisfies
       d = χ^(2)/2.
 
-      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V),
-      consistent with the Abinit and CASTEP readers.
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+      converted from pm/V to the reader ``R_epsilon`` convention, consistent
+      with the Abinit and CASTEP readers.
 
       Parameters
       ----------
@@ -149,6 +162,12 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: _read_chi2_output(line)
+
+      Read the second-order susceptibility block embedded in a CRYSTAL output file.
 
 
 
@@ -546,6 +565,17 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Rebuild CRYSTAL Raman tensors exactly from TENS_RAMAN.DAT derivatives.
+
+
+
+   .. py:attribute:: _crystal_raman_dalpha
+      :value: None
 
 
 

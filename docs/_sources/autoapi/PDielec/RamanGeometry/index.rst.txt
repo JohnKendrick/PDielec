@@ -1,0 +1,33 @@
+PDielec.RamanGeometry
+=====================
+
+.. py:module:: PDielec.RamanGeometry
+
+.. autoapi-nested-parse::
+
+   Shared geometry helpers for layered Raman calculations.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.RamanGeometry.resolve_collection_angle
+
+
+Module Contents
+---------------
+
+.. py:function:: resolve_collection_angle(incident_angle, collection_angle, collection_side)
+
+   Return the signed detector angle in the same units as the inputs.
+
+   ``collection_angle=None`` selects the automatic convention: an antiparallel
+   (retro-backscattered) ray on the superstrate side and a collinear forward
+   ray on the substrate side. An explicit signed angle is returned unchanged,
+   so a positive angle equal to the incident angle retains the historical
+   specular-reflection geometry.
+
+

@@ -370,7 +370,8 @@ Module Contents
               ...
               3      3      3        -33.368821342
 
-      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+      converted from pm/V to the reader ``R_epsilon`` convention.
 
       Parameters
       ----------
@@ -630,6 +631,18 @@ Module Contents
       --------
       atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.
 
+
+
+
+   .. py:method:: _recalculate_raman_tensors_from_susceptibility_derivatives()
+
+      Rebuild AbInit Raman tensors from stored dχ/du and current normal modes.
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Rebuild AbInit Raman tensors exactly from stored dχ/du derivatives.
 
 
 

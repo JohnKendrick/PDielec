@@ -25,6 +25,7 @@ Functions
 .. autoapisummary::
 
    PDielec.RamanPolarCalculator.apply_eo_correction
+   PDielec.RamanPolarCalculator.apply_particle_eo_correction
    PDielec.RamanPolarCalculator.build_Z_mat
    PDielec.RamanPolarCalculator.build_eigvecs_from_normal_modes
    PDielec.RamanPolarCalculator.build_polarisation_basis
@@ -41,14 +42,14 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: apply_eo_correction(tensors, chi2_pm_per_v, q_hat_crystal, Z_mat, eigvecs, eps_inf)
+.. py:function:: apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, eps_inf)
 
    Apply the electro-optic (EO) q-dependent correction to Raman tensors.
 
    Implements the electro-optic term in ``eq-nonanalytic`` and ``eq-nac_ramantensor``.
    For each mode *p* the correction is::
 
-       ΔR_p = −2 · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
+       ΔR_p = −8π · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
 
    where ``f_ij(q̂) = Σ_l χ^(2)_ijl q̂_l`` and
    ``Z^mw(q̂)[n] = (Z_mat^T q̂)[n]``.
@@ -58,8 +59,10 @@ Module Contents
    tensors : list of ndarray, each (3, 3)
        Input physical bulk Raman tensors ``R_epsilon`` (not modified; corrected
        copies are returned).
-   chi2_pm_per_v : ndarray, shape (3, 3, 3)
-       Second-order NLO susceptibility χ^(2) in pm/V.
+   chi2_repsilon : ndarray, shape (3, 3, 3)
+       Second-order NLO susceptibility χ^(2), already converted by the
+       readers to the same Angstrom-based internal convention as
+       ``R_epsilon`` Raman tensors.
    q_hat_crystal : ndarray, shape (3,)
        Unit phonon wavevector in the crystal frame.
    Z_mat : ndarray, shape (3, 3N)
@@ -79,9 +82,45 @@ Module Contents
 
    Notes
    -----
-   The unit conversion is χ^(2) [pm/V] → [Bohr/V_atomic]:
-   ``1 pm = 1e-12 m``, ``1 Bohr ≈ 5.292e-11 m``, so
-   ``pm_to_bohr ≈ 0.01890``.
+   Reader Raman tensors and reader χ^(2) tensors use the Angstrom-based
+   ``R_epsilon`` convention used by
+   :func:`PDielec.Calculator.raman_intensities`.  The Gaussian-unit
+   nonanalytic electro-optic term contributes the explicit ``4π`` factor.
+
+
+
+.. py:function:: apply_particle_eo_correction(tensors, chi2_repsilon, K_particle, Z_mat, eigvecs)
+
+   Apply the finite-particle macroscopic EO correction to Raman tensors.
+
+   Implements ``eq-particle-eo-raman-correction`` using the same electrostatic
+   kernel as the particle dynamical matrix.  For particle mode *m*::
+
+       z_m = Z_mat @ eigvecs[:, m]
+       Delta R_m = -8π chi2_repsilon : (K_particle @ z_m)
+
+   ``chi2_repsilon`` is already converted by the output readers to the
+   internal ``R_epsilon`` convention.  As in :func:`apply_eo_correction`, the
+   Gaussian-unit electrostatic term contributes the explicit ``4π`` factor.
+   Unlike the bulk correction, this function has no propagation direction.
+
+   Parameters
+   ----------
+   tensors : sequence of array_like, each shape (3, 3)
+       Zero-field Raman tensors in the particle-mode basis.
+   chi2_repsilon : array_like, shape (3, 3, 3)
+       Second-order susceptibility in the reader ``R_epsilon`` convention.
+   K_particle : array_like, shape (3, 3)
+       Finite-particle kernel ``N_bg @ L / epsilon_e_b``.
+   Z_mat : array_like, shape (3, n_dof)
+       Mass-weighted Born-charge matrix.
+   eigvecs : array_like, shape (n_dof, n_modes)
+       Particle eigenvectors as columns.
+
+   Returns
+   -------
+   list of ndarray
+       EO-corrected tensor copies, one per particle mode.
 
 
 

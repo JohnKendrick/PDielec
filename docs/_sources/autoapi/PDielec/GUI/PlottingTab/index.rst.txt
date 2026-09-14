@@ -110,6 +110,24 @@ Module Contents
 
 
 
+   .. py:method:: _normalise_scenario_selection()
+
+      Return a scenario selection list matching the current scenario count.
+
+
+
+   .. py:method:: _update_scenario_line_visibility()
+
+      Update existing plot lines for scenario selection changes.
+
+
+
+   .. py:method:: _update_scenario_selection_summary()
+
+      Update the compact scenario selection summary in the plotting tab.
+
+
+
    .. py:method:: get_number_of_calculations_required()
 
       Return the total number of spectra that need to be calculated.
@@ -125,6 +143,12 @@ Module Contents
       int
           The total number of spectra that require calculation.
 
+
+
+
+   .. py:method:: get_scenarios_to_plot()
+
+      Return the currently selected scenarios.
 
 
 
@@ -365,6 +389,12 @@ Module Contents
 
 
 
+   .. py:method:: open_scenario_selection_dialog()
+
+      Open a dialog to choose which scenarios are included in the plot.
+
+
+
    .. py:method:: plot()
 
       Plot the results based on specified settings and scenarios.
@@ -430,6 +460,12 @@ Module Contents
           - Re-enabling signals for child widgets after modifications are complete.
       - The processEvents call is used to ensure the UI remains responsive during long operations.
 
+
+
+
+   .. py:method:: refresh_scenario_table()
+
+      Refresh scenario selection controls.
 
 
 
@@ -663,6 +699,15 @@ Module Contents
 
 
    .. py:attribute:: renorm_label
+
+
+   .. py:attribute:: scenario_lines
+
+
+   .. py:attribute:: scenario_selection_label
+
+
+   .. py:attribute:: select_scenarios_button
 
 
    .. py:attribute:: settings

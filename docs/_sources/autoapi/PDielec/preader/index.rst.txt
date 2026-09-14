@@ -11,7 +11,7 @@ PDielec.preader
 
        preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
          "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
-                  "phonopy", "qe", "vasp", "experiment", "auto"
+                  "phonopy", "qe", "vasp", "experiment", "finite_field", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!
          -masses [average|isotope|program]  chooses the atomic mass definition average
@@ -63,7 +63,7 @@ Module Contents
 
        preader -program program [-spectroscopy infrared|raman] [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
          "program" must be one of "abinit", "aims", "castep", "crystal", "gulp"
-                  "phonopy", "qe", "vasp", "experiment", "auto"
+                  "phonopy", "qe", "vasp", "experiment", "finite_field", "auto"
                   The default is auto, so the program tries to guess the package from
                   the contents of the directory.  However this is not fool-proof!
          -spectroscopy [infrared|raman]  selects which intensities are calculated

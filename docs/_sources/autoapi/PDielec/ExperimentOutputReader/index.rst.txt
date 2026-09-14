@@ -620,6 +620,11 @@ Module Contents
    .. py:attribute:: _ion_type_index
 
 
+   .. py:attribute:: default_symmetrise_optical_permittivity
+      :value: False
+
+
+
    .. py:attribute:: frequencies
       :value: None
 

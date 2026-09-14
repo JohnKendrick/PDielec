@@ -1,0 +1,49 @@
+{
+  "schema": "pdielect-finite-field-raman-v1",
+  "structure": {
+    "lattice_angstrom": [
+      [
+        5.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        5.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        5.0
+      ]
+    ],
+    "symbols": [
+      "Si"
+    ],
+    "positions_fractional": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "epsilon_infinity": [
+    [
+      2.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      2.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      2.0
+    ]
+  ]
+}

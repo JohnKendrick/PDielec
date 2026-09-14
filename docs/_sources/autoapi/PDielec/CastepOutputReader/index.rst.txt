@@ -51,6 +51,12 @@ Module Contents
 
 
 
+   .. py:method:: _calculate_raman_tensors_from_polar_derivatives()
+
+      Project CASTEP atomic polarizability derivatives onto current modes.
+
+
+
    .. py:method:: _read_born_charges(line)
 
       Read the born charges from the castep file.
@@ -474,7 +480,8 @@ Module Contents
       Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),
       4→(0,2)=(2,0), 5→(0,1)=(1,0).
 
-      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d (pm/V).
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+      converted from pm/V to the reader ``R_epsilon`` convention.
 
       Parameters
       ----------
@@ -485,6 +492,7 @@ Module Contents
       -------
       bool
           True on success.
+
 
 
 
@@ -546,6 +554,52 @@ Module Contents
 
 
 
+   .. py:method:: _read_raman_atomic_polar_tensors(line)
+
+      Read CASTEP's official atom-resolved Raman polar-tensor table.
+
+      Recent CASTEP versions print a table headed
+      ``Raman atomic polar tensor V*dChi(1)/dR (A**2)``. Each atom and
+      Cartesian displacement has a 3x3 derivative tensor. The species-local
+      atom number is mapped back onto the atom ordering of the unit cell.
+      Values are converted from Angstrom squared to the internal Bohr-squared
+      representation used by the common projection routine.
+
+      This official table takes priority over the older optional developer
+      ``POLAR_DERIV`` block if both are present.
+
+      Parameters
+      ----------
+      line : str
+          The table heading that triggered this method.
+
+
+
+
+   .. py:method:: _read_raman_polar_derivatives(line)
+
+      Read CASTEP's atom-resolved DFPT polarizability derivatives.
+
+      This legacy fallback reads the optional developer block containing the
+      internal ``polar_deriv`` array immediately before CASTEP contracts it
+      with its in-memory phonon eigenvectors. Its layout is
+
+      ``polar_deriv[atom, displacement, tensor_row, tensor_column]``.
+
+      Atom, displacement, and tensor-row indices in the output are one-based.
+      Values are derivatives of the cell polarizability in CASTEP atomic
+      units and therefore have dimensions of Bohr squared. They are retained
+      in their native units and projected only after the companion
+      ``.phonon`` file has supplied the normal modes.
+
+      Parameters
+      ----------
+      line : str
+          The ``BEGIN DFPT RAMAN POLAR_DERIV`` marker.
+
+
+
+
    .. py:method:: _read_raman_tensors(line)
 
       Read the Raman susceptibility tensors from the .castep file.
@@ -556,15 +610,14 @@ Module Contents
       own ``A**4 amu**(-1)`` activities are recovered as ``Vcell`` times the
       rotational invariants of the printed tensor.  PDielec stores the shared
       ``R_epsilon = sqrt(Vcell) dε/dQ`` convention, so the printed tensor is
-      multiplied by ``4*pi``.  Precision is limited to 4 decimal places; no
-      higher-precision text source exists
-      (the binary ``castep_bin`` checkpoint holds full double precision but
-      cannot be read without a Fortran binary parser).
+      multiplied by ``4*pi``. Precision is limited by CASTEP's formatted
+      output.
 
-      The tensors are stored directly in ``self.raman_tensors`` as a list of
-      ``(3, 3)`` NumPy arrays, one per mode in frequency order.  No eigenvector
-      projection is required because CASTEP writes the already-projected
-      per-mode tensors.
+      The tensors are stored directly in ``self.raman_tensors`` as a fallback
+      when neither the official atomic polar-tensor table nor the legacy
+      developer ``POLAR_DERIV`` block is available. Atom-resolved derivatives
+      are projected using the companion ``.phonon`` eigenvectors after all
+      files have been read and replace these pre-projected tensors.
 
       Parameters
       ----------
@@ -615,6 +668,28 @@ Module Contents
       -------
       None
 
+
+
+
+   .. py:method:: _set_raman_polar_derivatives(polar_deriv, source)
+
+      Store atom-resolved CASTEP Raman derivatives according to source priority.
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Reproject raw CASTEP derivatives after a normal-mode recalculation.
+
+
+
+   .. py:attribute:: _castep_raman_polar_deriv
+      :value: None
+
+
+
+   .. py:attribute:: _castep_raman_polar_deriv_source
+      :value: None
 
 
 

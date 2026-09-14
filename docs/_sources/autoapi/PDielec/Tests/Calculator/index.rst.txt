@@ -23,5 +23,6 @@ Submodules
    /autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index
    /autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index
    /autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index
+   /autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index
 
 

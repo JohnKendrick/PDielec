@@ -14,6 +14,7 @@ Attributes
 
 .. autoapisummary::
 
+   PDielec.GenericOutputReader.CHI2_PM_PER_V_TO_REPSILON
    PDielec.GenericOutputReader.logger
 
 
@@ -23,6 +24,14 @@ Classes
 .. autoapisummary::
 
    PDielec.GenericOutputReader.GenericOutputReader
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.GenericOutputReader.chi2_pm_per_v_to_repsilon
 
 
 Module Contents
@@ -117,7 +126,8 @@ Module Contents
 
    nonlinear_optical_susceptibility : ndarray or None
        Second-order nonlinear optical susceptibility tensor χ^(2), shape (3, 3, 3),
-       units pm/V; ``None`` if not available.
+       stored in Angstrom-based units consistent with reader ``R_epsilon``
+       Raman tensors; ``None`` if not available.
 
    original_born_charges_are_being_used : bool
        Signifies whether original Born charges are in use, defaults to True.
@@ -140,6 +150,15 @@ Module Contents
       -----
       This function applies a straightforward summation rule to the elements of the born matrices,
 
+
+
+
+   .. py:method:: _capture_mode_reference(masses=None)
+
+      Retain the native mass coordinate before any mass or mode changes.
+
+      Raw-derivative readers still reproject directly. This fixed reference
+      supplies the per-mode fallback and avoids repeated projection drift.
 
 
 
@@ -191,6 +210,25 @@ Module Contents
       numpy.ndarray
           The modified Hessian matrix with the same dimensions as the input matrix.
 
+
+
+
+   .. py:method:: _native_masses_for_mode_reference(masses=None)
+
+      Resolve native per-atom masses before active mass edits.
+
+      Some readers publish per-atom masses in _old_masses (Phonopy/Aims),
+      others in masses, and legacy paths expose only species masses plus
+      atom_type_list. Explicit masses are supplied by the finite-field reader.
+      Never infer a missing reference from average periodic-table masses.
+
+
+
+   .. py:method:: _normal_modes_to_matrix(modes)
+      :staticmethod:
+
+
+      Return normal modes as a row-normalised ``(n_modes, 3*nions)`` matrix.
 
 
 
@@ -291,6 +329,12 @@ Module Contents
 
 
 
+   .. py:method:: _store_nonlinear_optical_susceptibility_pm_per_v(chi2_pm_per_v)
+
+      Retain physical χ^(2) for conversion after the final cell volume is known.
+
+
+
    .. py:method:: _symmetric_orthogonalisation(A)
 
       Private routine to perform symmetric orthogonalization.
@@ -316,6 +360,23 @@ Module Contents
    .. py:method:: _symmetrise_nonlinear_optical_susceptibility()
 
       Symmetrise the parsed Cartesian χ^(2) tensor using the final unit-cell point group.
+
+
+
+   .. py:method:: _transform_raman_tensors_between_mode_bases(old_modes, new_modes, old_tensors, old_masses=None, new_masses=None)
+      :classmethod:
+
+
+      Reproject a complete mode response, including its mass coordinate.
+
+      For row eigenvectors, C = U_old sqrt(M_old/M_new) U_new.T.
+      Omitting masses denotes a change of basis at fixed masses only.
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Reproject from the fixed native response; derivative readers override this.
 
 
 
@@ -399,7 +460,8 @@ Module Contents
       Returns
       -------
       ndarray or None
-          χ^(2) tensor, shape (3, 3, 3), units pm/V; None if not available.
+          χ^(2) tensor, shape (3, 3, 3), in Angstrom-based units consistent
+          with reader ``R_epsilon`` Raman tensors; None if not available.
 
 
 
@@ -660,12 +722,27 @@ Module Contents
 
 
 
+   .. py:attribute:: _mode_reference_masses
+      :value: None
+
+
+
+   .. py:attribute:: _nonlinear_optical_susceptibility_pm_per_v
+      :value: None
+
+
+
    .. py:attribute:: _old_masses
       :value: []
 
 
 
    .. py:attribute:: _outputfiles
+
+
+   .. py:attribute:: _raman_reference
+      :value: None
+
 
 
    .. py:attribute:: atom_type_list
@@ -680,6 +757,11 @@ Module Contents
 
    .. py:attribute:: debug
       :value: False
+
+
+
+   .. py:attribute:: default_symmetrise_optical_permittivity
+      :value: True
 
 
 
@@ -934,6 +1016,25 @@ Module Contents
       :value: [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 
+
+.. py:function:: chi2_pm_per_v_to_repsilon(volume_angstrom3)
+
+   Return the cell-dependent conversion from pm/V to ``R_epsilon`` units.
+
+   Parameters
+   ----------
+   volume_angstrom3 : float
+       Primitive-cell volume in Angstrom cubed.
+
+   Returns
+   -------
+   float
+       Factor that converts physical chi(2) in pm/V for use with mass-weighted
+       Born charges and ``R_epsilon = sqrt(Vcell) d epsilon / dQ`` tensors.
+
+
+
+.. py:data:: CHI2_PM_PER_V_TO_REPSILON
 
 .. py:data:: logger
 
