@@ -180,18 +180,13 @@ class MainTab(QWidget):
         #
         self.program_cb = QComboBox(self)
         self.program_cb.setToolTip("Choose QM/MM program")
-        self.program_cb.addItem("Abinit")
-        self.program_cb.addItem("Aims")
-        self.program_cb.addItem("Castep")
-        self.program_cb.addItem("Crystal")
-        self.program_cb.addItem("Experiment")
-        self.program_cb.addItem("Finite_field")
-        self.program_cb.addItem("Gulp")
-        self.program_cb.addItem("Phonopy")
-        self.program_cb.addItem("Quantum Espresso")
-        self.program_cb.addItem("Vasp")
-        self.program_cb.addItem("PDGui")
-        index = self.program_cb.findText(self.settings["Program"], Qt.MatchFixedString)
+        # Keep readable menu labels separate from the reader names in settings.
+        for label in ("Abinit", "Aims", "Castep", "Crystal", "Experiment",
+                      "Finite field", "Gulp", "Phonopy", "Quantum Espresso",
+                      "Vasp", "PDGui"):
+            reader_name = "Finite_field" if label == "Finite field" else label.capitalize()
+            self.program_cb.addItem(label, reader_name)
+        index = self.program_cb.findData(self.settings["Program"])
         if index >=0:
             self.program_cb.setCurrentIndex(index)
         self.program_cb.activated.connect(self.on_program_cb_activated)
@@ -805,7 +800,7 @@ class MainTab(QWidget):
         """
         logger.debug(f"Start:: on_program_combobox_activated {index}")
         logger.debug(f"on_program_combobox_activated {self.program_cb.currentText()}")
-        self.settings["Program"] = self.program_cb.currentText()
+        self.settings["Program"] = self.program_cb.itemData(index)
         logger.debug(f"Program is now {self.settings['Program']}")
         self.calculation_required = True
         logger.debug(f"Finished:: on_program_combobox_activated {index}")
@@ -863,7 +858,7 @@ class MainTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
-        index = self.program_cb.findText(self.settings["Program"], Qt.MatchFixedString)
+        index = self.program_cb.findData(self.settings["Program"])
         if index >=0:
             self.program_cb.setCurrentIndex(index)
         self.file_le.setText(self.settings["Output file name"])

@@ -298,7 +298,7 @@ class App(QMainWindow):
         The usage information includes:
 
         - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy',
-          'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified. - `filename`:
+          'gulp', 'castep', 'abinit', 'qe', and 'finite_field'. The program is guessed from the filename if not specified. - `filename`:
           The name of the output file. - `spreadsheet file`: An optional name of a spreadsheet file (must end with
           .xlsx). If provided, both program and filename must be specified. - `-scenario type`: Changes the default
           scenario to "type", which can be either "Powder_Infrared", "Crystal_Infrared", "Powder_Raman" or
@@ -318,7 +318,7 @@ class App(QMainWindow):
         print("pdgui - graphical user interface to the PDielec package")
         print("pdgui [program] filename [spreadsheet] [options]")
         print("     program      The name of the program which created the outputfile")
-        print("                  Should be one of; vasp, aims, phonopy, gulp, castep, abinit or qe")
+        print("                  Should be one of; vasp, aims, phonopy, gulp, castep, abinit, crystal, qe, experiment or finite_field")
         print("                  If the program is not given a best guess is made from the output filename")
         print("    filename      The name of the output file")
         print(" spreadsheet file The optional name of a spreadsheet (file must end with .xlsx")

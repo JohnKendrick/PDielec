@@ -12,7 +12,13 @@ logger = logging.getLogger(__name__)
 def validate_laser_frequency(laser_cm1):
     """Require a finite positive excitation wavenumber before evaluating optics."""
     if not np.isfinite(laser_cm1) or laser_cm1 <= 0:
-        raise ValueError("Raman laser frequency must be finite and positive")
+        raise ValueError("Raman laser wavenumber must be finite and positive")
+
+
+def validate_laser_wavelength(laser_nm):
+    """Require a finite positive excitation wavelength in nm before conversion."""
+    if not np.isfinite(laser_nm) or laser_nm <= 0:
+        raise ValueError("Raman laser wavelength must be finite and positive")
 
 
 def valid_stokes_mode(nu_cm1, laser_cm1, acoustic_cutoff=0.0):

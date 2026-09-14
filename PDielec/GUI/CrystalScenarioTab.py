@@ -364,9 +364,14 @@ def _compute_nac_dynamical_matrix_standalone(q_hat_crystal, hessian, born_charge
     Returns
     -------
     nac_freqs : ndarray, shape (3N,)
+        Sorted NAC-corrected phonon frequencies in cm⁻¹.
     nac_tensors : list of ndarray, each (3, 3)
+        Raman tensors for the sorted NAC modes, including the electro-optic
+        correction when enabled and available.
     nac_sigmas : ndarray, shape (3N,)
+        Linewidths in cm⁻¹ for the sorted NAC modes.
     dominant_to_by_nac : ndarray, shape (3N,), optional
+        Dominant original TO-mode index for each sorted NAC branch.
         Only returned when ``return_mode_map=True``.
     """
     diagnostics = compute_nac_direction_diagnostics(
@@ -3125,9 +3130,14 @@ class CrystalScenarioTab(ScenarioTab):
         Returns
         -------
         nac_freqs : ndarray, shape (3N,)
+            Sorted NAC-corrected phonon frequencies in cm⁻¹.
         nac_tensors : list of ndarray, each (3, 3)
+            Raman tensors for the sorted NAC modes, including the electro-optic
+            correction when enabled and available.
         nac_sigmas : ndarray, shape (3N,)
+            Linewidths in cm⁻¹ for the sorted NAC modes.
         dominant_to_by_nac : ndarray, shape (3N,), optional
+            Dominant original TO-mode index for each sorted NAC branch.
             Only returned when ``return_mode_map=True``.
         """
         nAtoms = self.reader.nions

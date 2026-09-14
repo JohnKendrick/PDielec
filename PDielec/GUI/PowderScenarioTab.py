@@ -41,7 +41,7 @@ from PDielec.Constants import amu, angs2bohr, wavenumber
 from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.Materials import MaterialsDataBase
 from PDielec.RamanPolarCalculator import apply_particle_eo_correction
-from PDielec.RamanSpectrum import stokes_prefactor, valid_stokes_mode, validate_laser_frequency
+from PDielec.RamanSpectrum import stokes_prefactor, valid_stokes_mode, validate_laser_wavelength
 
 logger = logging.getLogger(__name__)
 class PowderScenarioTab(ScenarioTab):
@@ -156,8 +156,8 @@ class PowderScenarioTab(ScenarioTab):
         Handle changes to the ATR incident angle spinbox.
     on_atr_spolfrac_sb_changed(value)
         Handle changes to the ATR s-polarisation fraction spinbox.
-    on_laser_frequency_sb_changed(value)
-        Handle changes to the laser frequency spin box
+    on_laser_wavelength_sb_changed(value)
+        Handle changes to the laser wavelength spin box
     on_polarisation_cb_activated(index)
         Handle changes to polarisation setting for the experiment
     on_temperature_sb_changed(value)
@@ -1505,8 +1505,8 @@ class PowderScenarioTab(ScenarioTab):
         volume_fraction = self.settings["Volume fraction"]
 
         # Raman experiment parameters
-        laser_nm = self.settings["Raman laser frequency"]
-        validate_laser_frequency(laser_nm)
+        laser_nm = self.settings["Raman laser wavelength"]
+        validate_laser_wavelength(laser_nm)
         nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
         polarisation = self.settings["Raman laser polarisation"]
         temperature = self.settings["Raman temperature"]
@@ -2232,8 +2232,8 @@ class PowderScenarioTab(ScenarioTab):
         self.atr_spolfrac_sb.setValue(self.settings["ATR S polarisation fraction"])
         return
 
-    def on_laser_frequency_sb_changed(self, value):
-        """Handle a change to the Raman laser frequency.
+    def on_laser_wavelength_sb_changed(self, value):
+        """Handle a change to the Raman laser wavelength.
 
         Parameters
         ----------
@@ -2241,9 +2241,9 @@ class PowderScenarioTab(ScenarioTab):
             The laser wavelength in nm.
 
         """
-        logger.debug(f"{self.settings['Legend']} on_laser_frequency_sb_changed {value}")
+        logger.debug(f"{self.settings['Legend']} on_laser_wavelength_sb_changed {value}")
         self.refresh_required = True
-        self.settings["Raman laser frequency"] = value
+        self.settings["Raman laser wavelength"] = value
 
     def on_polarisation_cb_activated(self, index):
         """Handle a change to the Raman polarisation configuration.
@@ -2306,7 +2306,7 @@ class PowderScenarioTab(ScenarioTab):
         None
 
         """
-        self.laser_frequency_sb.setValue(self.settings["Raman laser frequency"])
+        self.laser_wavelength_sb.setValue(self.settings["Raman laser wavelength"])
         polarisations = ["VV", "VH", "HV", "Unpolarised"]
         pol = self.settings["Raman laser polarisation"]
         if pol in polarisations:
@@ -2436,18 +2436,18 @@ class PowderScenarioTab(ScenarioTab):
 
         """
         #
-        # Laser light frequency
+        # Laser light wavelength
         #
-        self.laser_frequency_sb = QDoubleSpinBox(self)
-        self.laser_frequency_sb.setRange(0.001, 2000.0)
-        self.laser_frequency_sb.setSingleStep(0.01)
-        self.laser_frequency_sb.setDecimals(3)
-        self.laser_frequency_sb.setToolTip("Define the laser wavelength in nm")
-        self.laser_frequency_sb.setValue(self.settings["Raman laser frequency"])
-        self.laser_frequency_sb.valueChanged.connect(self.on_laser_frequency_sb_changed)
+        self.laser_wavelength_sb = QDoubleSpinBox(self)
+        self.laser_wavelength_sb.setRange(0.001, 2000.0)
+        self.laser_wavelength_sb.setSingleStep(0.01)
+        self.laser_wavelength_sb.setDecimals(3)
+        self.laser_wavelength_sb.setToolTip("Define the laser wavelength in nm")
+        self.laser_wavelength_sb.setValue(self.settings["Raman laser wavelength"])
+        self.laser_wavelength_sb.valueChanged.connect(self.on_laser_wavelength_sb_changed)
         label = QLabel("Laser wavelength (nm)", self)
         label.setToolTip("Define the laser wavelength in nm")
-        form.addRow(label, self.laser_frequency_sb)
+        form.addRow(label, self.laser_wavelength_sb)
         #
         # Raman polarisation configuration
         #
@@ -2523,7 +2523,7 @@ class PowderScenarioTab(ScenarioTab):
         None
 
         """
-        self.settings["Raman laser frequency"] = 785
+        self.settings["Raman laser wavelength"] = 785
         self.settings["Raman laser polarisation"] = "VV"
         self.settings["Raman temperature"] = 298.0
         self.settings["Raman orientation samples"] = 512

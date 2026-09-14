@@ -170,13 +170,14 @@ test_powder_raman = [
 	"Powder_Raman/Finite_difference",
 	"Powder_Raman/AbInit",
 	"Powder_Raman/Castep",
-	"Powder_Raman/Crystal",
+	"Powder_Raman/Crystal23",
 	"Powder_Raman/QE",
 	"Powder_Raman/Vasp",
     ]
 
 test_crystal_raman = [
 	"Crystal_Raman/Castep",
+	"Crystal_Raman/Crystal23",
     ]
 
 test_powder_infrared = [
@@ -1395,13 +1396,19 @@ def main():
         test_all.extend(test_p2cif)
         test_all.extend(test_preader)
         test_all.extend(test_pdgui)
+        test_all.extend(test_powder_raman)
+        test_all.extend(test_crystal_raman)
         test_all.extend(test_vibanalysis)
         settings["padding"] = change_padding(test_all)
     for action in actions:
         if action == "test all":
             run_tests(test_p2cif      ,"p2cif"      ,regenerate)
             run_tests(test_preader    ,"preader"    ,regenerate)
-            run_tests(test_pdgui      ,"pdgui"      ,regenerate)
+            raman_examples = set(test_powder_raman + test_crystal_raman)
+            gui_examples = [directory for directory in test_pdgui if directory not in raman_examples]
+            run_tests(gui_examples    ,"pdgui"      ,regenerate)
+            run_tests(test_powder_raman,"powder_raman",regenerate)
+            run_tests(test_crystal_raman,"crystal_raman",regenerate)
             run_tests(test_vibanalysis,"vibanalysis",regenerate)
         elif action == "test preader":
             run_tests(test_preader    ,"preader"    ,regenerate)
