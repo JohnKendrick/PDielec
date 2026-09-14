@@ -31,14 +31,12 @@ from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standal
 # ---------------------------------------------------------------------------
 
 _REPO = os.path.join(os.path.dirname(__file__), "..", "..", "..")
-_ABINIT_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "AbInit", "raman.abo")
-_POWDER_ABINIT_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "AbInit", "raman.abo")
+_ABINIT_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "AbInit", "raman.abo")
 _CASTEP_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Castep", "raman.castep")
 _CRYSTAL23_FILE = os.path.join(_REPO, "Examples", "Crystal_Raman", "Crystal23", "opt_raman.out")
 _QE_TENSORS_FILE = os.path.join(_REPO, "Examples", "Powder_Raman", "QE", "tensors.xml")
 
 _have_abinit = os.path.exists(_ABINIT_FILE)
-_have_powder_abinit = os.path.exists(_POWDER_ABINIT_FILE)
 _have_castep = os.path.exists(_CASTEP_FILE)
 _have_crystal23 = os.path.exists(_CRYSTAL23_FILE)
 _have_qe_tensors = os.path.exists(_QE_TENSORS_FILE)
@@ -574,7 +572,7 @@ class TestJ10ReaderTensorConvention:
 # J11: AbInit Raman tensors stay consistent after GUI mass/mode recalculation
 # ---------------------------------------------------------------------------
 
-@pytest.mark.skipif(not _have_powder_abinit, reason="Powder Raman AbInit raman.abo not present")
+@pytest.mark.skipif(not _have_abinit, reason="Powder Raman AbInit raman.abo not present")
 class TestJ11AbinitRamanTensorRecalculation:
     """J11: Recalculated AbInit normal modes must keep Raman tensors phase-consistent."""
 
@@ -583,7 +581,7 @@ class TestJ11AbinitRamanTensorRecalculation:
         from PDielec.AbinitOutputReader import AbinitOutputReader
         from PDielec.HelperRoutines import calculate_dft_permittivity_object
 
-        r = AbinitOutputReader([_POWDER_ABINIT_FILE])
+        r = AbinitOutputReader([_ABINIT_FILE])
         r.read_output()
 
         # Mirrors the Settings/DFT-permittivity setup used by PDGui.  This
