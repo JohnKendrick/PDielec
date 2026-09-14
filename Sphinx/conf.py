@@ -130,6 +130,7 @@ def skip_member(app, what, name, obj, skip, options):
     return skip
 def setup(sphinx):
     sphinx.connect("autoapi-skip-member", skip_member)
+    sphinx.connect('html-page-context', add_pdgui_section_navigation, priority=800)
 
 # Autoapi stuff ends here
 
@@ -286,3 +287,36 @@ texinfo_documents = [
 
 
 # -- Extension configuration -------------------------------------------------
+
+def add_pdgui_section_navigation(app, pagename, templatename, context, doctree):
+    """Add the main PDGui sections to Furo's page-based navigation tree."""
+    from bs4 import BeautifulSoup
+    from furo.navigation import get_navigation_tree
+
+    if app.config.html_theme != 'furo' or 'toctree' not in context:
+        return
+
+    options = dict(collapse=False, includehidden=True)
+    navigation = BeautifulSoup(
+        context['toctree'](titles_only=True, maxdepth=-1, **options), 'html.parser')
+    sections = BeautifulSoup(
+        context['toctree'](titles_only=False, maxdepth=2, **options), 'html.parser')
+    pdgui_url = context['pathto']('pdgui')
+    page_link = navigation.find('a', href=pdgui_url)
+    if page_link is None:
+        return
+
+    children = page_link.parent.find('ul', recursive=False)
+    if children is None:
+        children = navigation.new_tag('ul')
+        page_link.parent.append(children)
+
+    anchors = ('main-tab', 'settings-tab', 'scenario-tabs', 'plotting-tab',
+               'analysis-tab', 'd-viewer-tab', 'fitter-tab')
+    section_url = '' if pdgui_url == '#' else pdgui_url
+    for position, anchor in enumerate(anchors):
+        link = sections.find('a', href=section_url + '#' + anchor)
+        if link is not None:
+            children.insert(position, link.parent.extract())
+
+    context['furo_navigation_tree'] = get_navigation_tree(str(navigation))

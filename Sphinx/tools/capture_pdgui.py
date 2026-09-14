@@ -156,7 +156,7 @@ def main():
     crystal.settings['Layer hkls'][1] = [0, 0, 1]
     switch(nb, 'Powder Raman')
     powder = nb.scenarios[0]
-    powder.settings.update({'Legend': 'ZnO powder — EO on', 'Matrix': 'air', 'Mass or volume fraction': 'volume', 'Volume fraction': 0.1, 'Raman laser frequency': 532., 'Raman laser polarisation': 'VV', 'Raman electro-optic term': True})
+    powder.settings.update({'Legend': 'ZnO powder — EO on', 'Matrix': 'air', 'Mass or volume fraction': 'volume', 'Volume fraction': 0.1, 'Raman laser wavelength': 532., 'Raman laser polarisation': 'VV', 'Raman electro-optic term': True})
     pon = spectrum(nb, powder)
     powder.settings['Raman electro-optic term'] = False
     poff = spectrum(nb, powder)

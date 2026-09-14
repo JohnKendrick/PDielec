@@ -26,9 +26,9 @@ guess at the program from the filename and associated files. For example::
     pdgui raman.castep -spectroscopy powder_raman
     pdgui experiment material.exp
     pdgui finite_field zno-raman.json -spectroscopy crystal_raman
-    pdgui "quantum espresso" run1.dynG
+    pdgui qe run1.dynG
 
-Use the full *quantum espresso* name when explicitly selecting that reader.
+Use ``qe`` as the program name when explicitly selecting that reader.
 A program name can also be supplied with ``-program``. For a saved session use
 ``pdgui -script script.py``. To calculate and write a spreadsheet without
 remaining in the GUI, use::
@@ -85,13 +85,13 @@ results and settings.
    The Main Tab for the ZnO calculation.
 
 Choose the *QM/MM Program* from Abinit, Aims, Castep, Crystal, Experiment,
-Finite_field, Gulp, Phonopy, Quantum Espresso, Vasp or PDGui. Enter the output
+Finite field, Gulp, Phonopy, Quantum Espresso, Vasp or PDGui. Enter the output
 filename in *Analyse this output file*, or select it with *File manager*.
 The *PDGui* choice reads a saved Python session. Some readers also use files
 beside the selected output, so keep the calculation's companion files together.
 
 *Experiment* reads material descriptions in the :ref:`experimental-file-format`.
-*Finite_field* reads the consolidated :ref:`finite-field-json-format`, including
+*Finite field* reads the consolidated :ref:`finite-field-json-format`, including
 results from finite-difference workflows. These are material inputs; the
 experimental spectrum used for fitting is selected in the Fitter Tab.
 
@@ -171,6 +171,8 @@ different measures of response; a Raman-active mode can have zero IR intensity.
 
    The same input with Powder Infrared selected. Raman-specific controls are hidden.
 
+.. _scenario-tabs:
+
 Scenario Tabs
 =============
 
@@ -180,8 +182,14 @@ comparison. *Delete this scenario* removes it. The *legend* field names its
 curve in plots. All scenarios in a session use the spectroscopy selected in
 the Settings Tab; use that tab to change the spectroscopy.
 
-Powder Infrared and ATR Scenarios
----------------------------------
+.. include:: scenario_links.inc
+
+.. _powder-infrared-gui:
+
+.. _powder-infrared-and-atr-scenarios:
+
+Powder Infrared Scenarios
+-------------------------
 
 A powder scenario describes crystallites dispersed in a supporting material.
 The particle shape and the permittivities determine the effective optical
@@ -223,6 +231,17 @@ a plate uses the corresponding (hkl) surface normal. *Ellipsoid a/b* is the
 axial aspect ratio, with one giving a sphere. Direction and ratio controls
 are enabled only for the relevant shape.
 
+.. include:: scenario_links.inc
+
+.. _powder-atr-gui:
+
+Powder ATR Scenarios
+--------------------
+
+Powder ATR uses the particle, support-matrix and effective-medium controls
+described under :ref:`powder-infrared-gui`, with additional controls for the
+ATR measurement geometry.
+
 .. figure:: _static/Figures/gui/powder-atr.png
    :width: 100%
    :alt: Powder ATR scenario including refractive index, incidence angle and s fraction.
@@ -234,6 +253,10 @@ angle in degrees, and the s-polarisation fraction. A fraction of zero is pure
 p polarisation, one is pure s, and 0.5 is an equal mixture. These controls
 specify the ATR optical geometry; they do not change the particle orientation.
 See :ref:`ATR_theory` for the calculation.
+
+.. include:: scenario_links.inc
+
+.. _crystal-infrared-gui:
 
 Crystal Infrared Scenarios
 --------------------------
@@ -303,6 +326,8 @@ The relationship is described in :ref:`crystal-and-laboratory-coordinates`.
 
    An isotropic material does not require crystallographic orientation controls.
 
+.. include:: scenario_links.inc
+
 .. _powder-raman-gui:
 
 Powder Raman Scenarios
@@ -345,6 +370,8 @@ the Raman response, so a change in shape is not simply a rescaling of peaks.
    :alt: Powder Raman ellipsoid controls with direction and aspect ratio enabled.
 
    Selecting Ellipsoid enables the unique-axis and aspect-ratio controls.
+
+.. include:: scenario_links.inc
 
 .. _crystal-raman-gui:
 
@@ -449,6 +476,8 @@ Under *Azimuthal sweep*, *Sweep points* specifies equally spaced angles over
 calculates the selected geometry at those angles and opens the
 :ref:`azimuthal-sweep-window`. Run a spectrum first to define the frequency
 axis. Each new sweep opens a separate result window.
+
+.. include:: scenario_links.inc
 
 Plotting Tab
 ============
@@ -782,6 +811,9 @@ notebook as ``self.notebook`` and the setting dictionaries of its tabs. A
 saved session records the chosen data and options; the display-only controls
 of auxiliary windows should be set in those windows when required.
 
+The :doc:`settings_reference` lists every tab's dictionary keys, accepted
+values and their effects, including settings available only through scripts.
+
 Two advanced Crystal Raman settings are available through scripts while being
 absent from the scenario GUI::
 
@@ -796,8 +828,8 @@ False, uses the laser field in place of separately evaluating the scattered
 field when set True. It changes the optical approximation and should be
 recorded when reporting results.
 
-Script keys may retain older terminology: the powder Raman wavelength in nm
-is stored as ``Raman laser frequency``. The crystal NAC selector uses
+The powder Raman wavelength in nm is stored as ``Raman laser wavelength``.
+The crystal NAC selector uses
 ``Layer NAC mode`` values ``none``, ``geometry``, ``dominant_mode`` and
 ``modal_pairs`` for TO, Snell's law, Dominant mode and All modes respectively.
 Use the saved script as the starting point rather than guessing visible-label
@@ -815,13 +847,17 @@ pool is needed. The environment variables ``PDIELEC_NUM_PROCESSORS``,
 Choose settings appropriate to the available memory and calculation size;
 more workers need not make a small calculation faster.
 
-Additional settings views
-=========================
+.. _additional-settings-views:
 
-The following page shows each viewer and fitter settings tab separately, so
-controls hidden by the tab strip in an overview remain visible.
+Additional settings references
+==============================
+
+The settings views show each viewer and fitter settings tab separately, so
+controls hidden by the tab strip in an overview remain visible. The settings
+reference documents the dictionary keys used in Python session scripts.
 
 .. toctree::
    :maxdepth: 1
 
    gui_options
+   settings_reference
