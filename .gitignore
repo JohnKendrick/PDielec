@@ -61,6 +61,13 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+docs/**/.doctrees/
+docs/**/*.doctree
+docs/**/environment.pickle
+docs/**/*.bak
+Sphinx/**/.doctrees/
+Sphinx/**/*.doctree
+Sphinx/**/environment.pickle
 
 # PyBuilder
 target/
@@ -109,4 +116,3 @@ Data/
 !PDielec/Tests/**
 PDielec/Tests/**/__pycache__/
 *.code-workspace
-
