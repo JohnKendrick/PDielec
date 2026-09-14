@@ -16,7 +16,7 @@ where N_s = 3 ε_e / (ε_i + 2 ε_e).
 
 There is one local-field factor at the laser frequency and one at the
 scattered frequency.  In the present non-dispersive optical approximation
-they are equal, so intensities scale as |N_s|^4.
+they are equal, so intensities scale as ``|N_s|^4``.
 """
 import os
 import sys
@@ -120,7 +120,7 @@ def test_b1_R_eff_scales_as_Ns_squared():
 
 
 def test_b1_intensity_scales_as_Ns_fourth():
-    """B1: Powder intensity (VV or VH) scales as |N_s|^4 for an isotropic sphere."""
+    """B1: Powder intensity (VV or VH) scales as ``|N_s|^4`` for an isotropic sphere."""
     R = np.diag([1.0, 2.0, 0.5])
     vv_bare, vh_bare = compute_powder_raman_intensities(R)
 

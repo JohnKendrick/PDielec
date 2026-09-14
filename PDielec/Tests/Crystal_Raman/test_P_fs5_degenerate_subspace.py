@@ -26,7 +26,7 @@ equals d * v^T @ R @ E_L_degen where E_L_degen = c_a u_a + c_b u_b is the
 total field in the degenerate subspace.  This is invariant to rotations
 that keep E_L_degen fixed.
 
-The incoherent pair-sum
+The incoherent pair-sum::
 
     I = |d * c_a * (v^T @ R @ u_a)|^2 + |d * c_b * (v^T @ R @ u_b)|^2
 
@@ -99,7 +99,7 @@ def _coherent_amplitude_degen(R, u_a, u_b, c_a, c_b, v, d):
 def _incoherent_intensity_degen(R, u_a, u_b, c_a, c_b, v, d):
     """Incoherent pair intensity from a degenerate forward-mode pair.
 
-        I = |d * c_a * (v^T @ R @ u_a)|^2 + |d * c_b * (v^T @ R @ u_b)|^2
+    ``I = |d * c_a * (v^T @ R @ u_a)|^2 + |d * c_b * (v^T @ R @ u_b)|^2``
     """
     amp_a = d * c_a * (v @ R @ u_a)
     amp_b = d * c_b * (v @ R @ u_b)
@@ -296,12 +296,14 @@ class TestFS5DegenerateSubspaceRotation:
         Setup: u_a = [1,0,0], u_b = [0,1,0], R = [[0,1,0],[1,0,0],[0,0,0]],
         v = [0,1,0], c_a = 1, c_b = 0, d = 1.
 
-        At theta = 0:
+        At theta = 0::
+
             R @ u_a = [0,1,0]; v^T R u_a = [0,1,0].[0,1,0] = 1
             R @ u_b = [1,0,0]; v^T R u_b = [0,1,0].[1,0,0] = 0
             I_0 = |1*1*1|^2 + |1*0*0|^2 = 1
 
-        At theta = 45°:
+        At theta = 45°::
+
             u_a' = [1/√2, 1/√2, 0],  c_a' =  1/√2
             u_b' = [-1/√2, 1/√2, 0], c_b' = -1/√2
             R @ u_a' = [1/√2, 1/√2, 0]; v^T R u_a' = 1/√2

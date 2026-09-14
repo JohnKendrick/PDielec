@@ -34,7 +34,7 @@ Bulk limits
 -----------
 - If Delta_k_ij = 0: F_ij(L) / L = 1 for all L (pair survives in bulk).
 - If Delta_k_ij != 0: F_ij(L) / L = sinc(Delta_k_ij L/2) * phase -> 0
-  as L -> infinity, at rate ~1/(|Delta_k_ij| L) (algebraic, not exponential).
+  as L -> infinity, at rate ``1/(|Delta_k_ij| L)`` (algebraic, not exponential).
 
 Therefore the normalized amplitude A_m(L) / L converges to the sum over
 only the phase-matched pairs, selecting the correct tensor R_m(q_ph) for
@@ -130,9 +130,10 @@ def _coherent_amplitude(pairs, L):
 
 
 def _upper_bound_residual(pairs_mismatched, L):
-    """Upper bound on |A_mismatch(L)/L|.
+    """Upper bound on ``|A_mismatch(L)/L|``.
 
-    For each mismatched pair (Delta_k != 0):
+    For each mismatched pair (Delta_k != 0)::
+
         |F_ij(L)/L| = |sinc(Delta_k L/2)| <= 2 / |Delta_k L|
 
     Returns the sum of per-pair bounds.
@@ -226,9 +227,9 @@ class TestFS16PhasMatchingFactor:
     def test_suppression_is_algebraic_not_exponential(self):
         """Suppression of mismatched pairs scales as 1/L not exp(-L).
 
-        |F(delta_k, L)/L| = |sinc(delta_k L/2)| has local maxima near
+        ``|F(delta_k, L)/L| = |sinc(delta_k L/2)|`` has local maxima near
         delta_k L/2 = (n+0.5)pi, i.e. L = (2n+1)pi/delta_k.  At those
-        peaks, |sinc| = 1/((n+0.5)pi) which scales exactly as 1/L because
+        peaks, ``|sinc| = 1/((n+0.5)pi)`` which scales exactly as 1/L because
         L_peak ~ (2n+1) and 1/((n+0.5)pi) ~ 1/n ~ 1/L_peak.
 
         By sampling at sinc peaks the oscillation is eliminated and the
@@ -425,7 +426,7 @@ class TestFS16BulkLimits:
 
     @pytest.mark.parametrize("L_factor", [1, 10, 100, 1000])
     def test_convergence_to_bulk_limit_is_monotone_in_envelope(self, L_factor):
-        """The residual |A(L)/L - a_matched| is bounded by 1/(dk L) at each L.
+        """The residual ``|A(L)/L - a_matched|`` is bounded by 1/(dk L) at each L.
 
         This checks that the bound is satisfied for several L values,
         confirming the algebraic (1/L) convergence rate.

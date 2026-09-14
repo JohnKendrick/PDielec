@@ -25,7 +25,7 @@ sum
 equals E_S_rec^T @ R @ E_L exactly, so it is unchanged by any unitary
 rotation of the mode basis that leaves the total field unchanged.
 
-The current incoherent modal-pairs approach,
+The current incoherent modal-pairs approach::
 
     I_incoherent = sum_{i,j} |d_j * c_i * (v_j^T @ R @ u_i)|^2,
 
@@ -108,7 +108,7 @@ def _modal_coherent_amplitude(R, c_L, modes_L, d_S, modes_S):
 def _incoherent_intensity(R, c_L, modes_L, d_S, modes_S):
     """Incoherent modal-pairs intensity (current approach).
 
-    I = sum_{i,j} |d_j * c_i * (v_j^T @ R @ u_i)|^2
+    ``I = sum_{i,j} |d_j * c_i * (v_j^T @ R @ u_i)|^2``
     """
     I = 0.0
     for i in range(len(c_L)):

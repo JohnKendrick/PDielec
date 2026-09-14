@@ -16,7 +16,7 @@ def powder_tab(shape, frequency=100.0, matrix="vacuum", missing="born"):
         "Legend": "fallback test",
         "Matrix": matrix,
         "Volume fraction": 1.0,
-        "Raman laser frequency": 500.0,
+        "Raman laser wavelength": 500.0,
         "Raman laser polarisation": "VV",
         "Raman temperature": 0.0,
         "Raman orientation samples": 32,
@@ -65,6 +65,25 @@ def test_powder_fallback_excludes_invalid_frequencies(frequency):
     tab = powder_tab([0.2, 0.3, 0.5], frequency)
     tab._calculate_raman(np.array([100.0]))
     assert tab.raman_spectrum == [0.0]
+
+
+@pytest.mark.parametrize("wavelength_nm", [500.0, 785.0, 1064.0])
+def test_powder_laser_wavelength_controls_stokes_weight(wavelength_nm):
+    """The wavelength setting is converted from nm to excitation wavenumber."""
+    tab = powder_tab([1 / 3] * 3, matrix="none")
+    tab.settings["Raman laser wavelength"] = wavelength_nm
+    tab._calculate_raman(np.array([100.0]))
+    expected = 45.0 * stokes_prefactor(100.0, 1.0e7 / wavelength_nm, 0.0) / 5.0
+    assert tab.raman_spectrum[0] == pytest.approx(expected, rel=1e-12)
+
+
+@pytest.mark.parametrize("wavelength_nm", [0.0, -1.0, np.nan, np.inf])
+def test_powder_invalid_laser_wavelength_is_rejected(wavelength_nm):
+    """Reject invalid wavelengths before dividing to obtain the wavenumber."""
+    tab = powder_tab([1 / 3] * 3, matrix="none")
+    tab.settings["Raman laser wavelength"] = wavelength_nm
+    with pytest.raises(ValueError, match="laser wavelength"):
+        tab._calculate_raman(np.array([100.0]))
 
 
 def test_missing_born_fallback_matches_zero_charge_orientation_average():
