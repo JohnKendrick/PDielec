@@ -640,7 +640,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.layers = []
         self.settings["Laser wavelength nm"] = 532.0
         self.settings["Incident polarisation"] = "p"
-        self.settings["Detected polarisation"] = "unpolarised"
+        self.settings["Detected polarisation"] = "p"
         self.settings["Temperature K"] = 298.0
         self.settings["GL point density"] = 20.0  # Gauss-Legendre points per µm
         self.settings["Collection side"] = "superstrate"  # 'superstrate' = backscatter, 'substrate' = forward
@@ -650,7 +650,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Approximate ES"] = False
         self.settings["Coalesce equivalent layers"] = True
         self.settings["Raman electro-optic term"] = True
-        self.settings["Layer NAC mode"] = "none"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
+        self.settings["Layer NAC mode"] = "geometry"  # 'none', 'geometry', 'dominant_mode', 'modal_pairs'
         self.settings["Modal pair combination"] = MODAL_PAIR_GROUP_Q
         self.settings["Modal pair final-state model"] = FINAL_STATE_BULK_PHASE_MATCHED
         self.settings["Modal pair include zero q"] = None
@@ -708,6 +708,11 @@ class CrystalScenarioTab(ScenarioTab):
         label, layout = self.angle_of_incidence_widget()
         self.form.addRow(label,layout)
         #
+        # Crystal Raman specific widgets (Phase 2f + Phase 3a)
+        #
+        if spectroscopy == "Crystal Raman":
+            self._build_raman_widgets()
+        #
         # Layer information widget
         #
         label = QLabel("Layer information")
@@ -718,13 +723,6 @@ class CrystalScenarioTab(ScenarioTab):
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label,hbox)
         self.form.addRow(self.draw_layer_table())
-        label = QLabel("    ")
-        line  = QFrame()
-        line.setFrameShape(QFrame.HLine)
-        hbox = QHBoxLayout()
-        hbox.addWidget(line)
-        hbox.setAlignment(Qt.AlignVCenter)
-        self.form.addRow(label,hbox)
         #
         # Partial incoherence widget
         #
@@ -734,10 +732,10 @@ class CrystalScenarioTab(ScenarioTab):
         #
         label,layout = self.smoothing_widget()
         #
-        # Crystal Raman specific widgets (Phase 2f + Phase 3a)
+        # Azimuthal sweep controls follow the layer information.
         #
         if spectroscopy == "Crystal Raman":
-            self._build_raman_widgets()
+            self._build_azimuthal_sweep_widgets()
         #
         # Add a legend option
         #
@@ -1764,15 +1762,6 @@ class CrystalScenarioTab(ScenarioTab):
         None
 
         """
-        # Separator
-        label = QLabel("Crystal Raman settings")
-        line = QFrame()
-        line.setFrameShape(QFrame.HLine)
-        hbox = QHBoxLayout()
-        hbox.addWidget(line)
-        hbox.setAlignment(Qt.AlignVCenter)
-        self.form.addRow(label, hbox)
-
         # Laser wavelength
         self.laser_wavelength_sb = QDoubleSpinBox(self)
         self.laser_wavelength_sb.setRange(200.0, 2000.0)
@@ -1945,26 +1934,6 @@ class CrystalScenarioTab(ScenarioTab):
         self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
         self.layer_combination_label.setEnabled(not _depth_is_incoherent)
 
-        self.coalesce_layers_cb = QCheckBox(self)
-        self.coalesce_layers_cb.setChecked(self.settings.get("Coalesce equivalent layers", True))
-        self.coalesce_layers_cb.toggled.connect(self.on_coalesce_layers_cb_toggled)
-        self.coalesce_layers_cb.setToolTip(
-            "Merge adjacent equivalent coherent layers before Raman field integration.\n"
-            "Disable only to diagnose artificial-boundary effects in GTM field reconstruction."
-        )
-        label = QLabel("Coalesce equivalent layers")
-        label.setToolTip(self.coalesce_layers_cb.toolTip())
-        self.form.addRow(label, self.coalesce_layers_cb)
-
-        # Approximate E_S = E_L
-        self.approximate_cb = QCheckBox(self)
-        self.approximate_cb.setChecked(self.settings["Approximate ES"])
-        self.approximate_cb.toggled.connect(self.on_approximate_cb_toggled)
-        self.approximate_cb.setToolTip("When checked, use E_S ≈ E_L (both at the laser frequency).\nDefault: compute E_S separately at ν_S = ν_L − ν_m per mode.")
-        label = QLabel("Approximate E_S = E_L")
-        label.setToolTip(self.approximate_cb.toolTip())
-        self.form.addRow(label, self.approximate_cb)
-
         # Electro-optic Raman tensor correction
         self.eo_term_cb = QCheckBox(self)
         self.eo_term_cb.setChecked(self.settings["Raman electro-optic term"])
@@ -2070,6 +2039,8 @@ class CrystalScenarioTab(ScenarioTab):
         self.modal_pair_q_tol_sb.setVisible(_show_modal)
         self._update_modal_final_state_controls()
 
+    def _build_azimuthal_sweep_widgets(self):
+        """Create the azimuthal sweep controls below the layer information."""
         # Separator: azimuthal sweep
         sweep_label = QLabel("Azimuthal sweep")
         sweep_line = QFrame()
@@ -2412,8 +2383,6 @@ class CrystalScenarioTab(ScenarioTab):
             )
             self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
             self.layer_combination_label.setEnabled(not _depth_is_incoherent)
-            self.coalesce_layers_cb.setChecked(self.settings.get("Coalesce equivalent layers", True))
-            self.approximate_cb.setChecked(self.settings["Approximate ES"])
             has_eo = getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None
             self.eo_term_cb.setChecked(self.settings.get("Raman electro-optic term", True))
             self._populate_nac_combo(has_eo=has_eo and self.settings.get("Raman electro-optic term", True))
@@ -3434,7 +3403,7 @@ class CrystalScenarioTab(ScenarioTab):
         # Capture only plain numpy arrays (no self reference)
         hessian = np.array(self.reader.hessian, dtype=float)
         G = G_total.copy()
-        tensors = [np.array(R, dtype=float) for R in raman_tensors_physical]
+        tensors = [np.array(R, dtype=complex) for R in raman_tensors_physical]
         sigmas = np.asarray(sigmas_cm1, dtype=float)
         selected = None if modes_selected is None else np.asarray(modes_selected, dtype=bool)
         chi2 = (

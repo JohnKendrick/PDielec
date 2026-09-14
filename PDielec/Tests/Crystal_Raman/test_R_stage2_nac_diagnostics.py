@@ -1,9 +1,13 @@
 """Stage 2 tests for complete NAC branch diagnostics."""
 
-import numpy as np
+import warnings
+from types import SimpleNamespace
 
-from PDielec.Constants import amu, wavenumber
-from PDielec.GUI.CrystalScenarioTab import _compute_nac_dynamical_matrix_standalone
+import numpy as np
+import pytest
+
+from PDielec.Constants import amu, angs2bohr, wavenumber
+from PDielec.GUI.CrystalScenarioTab import CrystalScenarioTab, _compute_nac_dynamical_matrix_standalone
 from PDielec.NACDiagnostics import (
     compute_nac_direction_diagnostics,
     group_degenerate_modes,
@@ -76,6 +80,36 @@ def test_legacy_nac_result_is_preserved():
     np.testing.assert_allclose(tensors, result["raman_tensors_with_eo"])
     np.testing.assert_allclose(linewidths, result["linewidths_cm1"])
     np.testing.assert_array_equal(dominant, result["dominant_to_by_nac"])
+
+
+@pytest.mark.parametrize("phase", [1.0 + 0.0j, 1.0j])
+def test_nac_closure_preserves_complex_tensors_without_warning(phase):
+    """The GUI closure preserves tensor phase through NAC mode mixing."""
+    hessian, born, epsilon, volume, masses, modes, tensors, sigmas, _ = _synthetic_inputs()
+    scenario = SimpleNamespace(
+        notebook=SimpleNamespace(settingsTab=SimpleNamespace(settings={"Optical permittivity": epsilon})),
+        reader=SimpleNamespace(
+            nions=1, volume=volume / angs2bohr ** 3, masses=masses / amu,
+            born_charges=born, mass_weighted_normal_modes=modes.reshape(3, 1, 3), hessian=hessian,
+        ),
+        settings={"Raman electro-optic term": False},
+    )
+    frequencies = np.array([100.0, 100.0, 300.0])
+    q = np.array([0.3, 0.4, 0.5])
+    q /= np.linalg.norm(q)
+    expected_freqs, expected_tensors, expected_sigmas = _compute_nac_dynamical_matrix_standalone(
+        q, hessian, born, epsilon, volume, masses, modes, tensors, sigmas,
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        nac = CrystalScenarioTab._make_nac_function(
+            scenario, np.eye(3), [phase * tensor for tensor in tensors], frequencies, sigmas,
+        )
+        actual_freqs, actual_tensors, actual_sigmas, _, _ = nac(q)
+
+    np.testing.assert_allclose(actual_freqs, expected_freqs)
+    np.testing.assert_allclose(actual_tensors, phase * np.asarray(expected_tensors), atol=1.0e-14)
+    np.testing.assert_allclose(actual_sigmas, expected_sigmas)
 
 
 def test_to_reordering_does_not_change_observable_nac_results():

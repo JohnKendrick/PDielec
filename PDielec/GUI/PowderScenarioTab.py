@@ -2442,11 +2442,11 @@ class PowderScenarioTab(ScenarioTab):
         self.laser_frequency_sb.setRange(0.001, 2000.0)
         self.laser_frequency_sb.setSingleStep(0.01)
         self.laser_frequency_sb.setDecimals(3)
-        self.laser_frequency_sb.setToolTip("Define the laser frequency in nm")
+        self.laser_frequency_sb.setToolTip("Define the laser wavelength in nm")
         self.laser_frequency_sb.setValue(self.settings["Raman laser frequency"])
         self.laser_frequency_sb.valueChanged.connect(self.on_laser_frequency_sb_changed)
-        label = QLabel("Laser frequency (nm)", self)
-        label.setToolTip("Define the laser frequency in nm")
+        label = QLabel("Laser wavelength (nm)", self)
+        label.setToolTip("Define the laser wavelength in nm")
         form.addRow(label, self.laser_frequency_sb)
         #
         # Raman polarisation configuration
@@ -2524,7 +2524,7 @@ class PowderScenarioTab(ScenarioTab):
 
         """
         self.settings["Raman laser frequency"] = 785
-        self.settings["Raman laser polarisation"] = "VH"
+        self.settings["Raman laser polarisation"] = "VV"
         self.settings["Raman temperature"] = 298.0
         self.settings["Raman orientation samples"] = 512
         self.settings["Raman electro-optic term"] = False
