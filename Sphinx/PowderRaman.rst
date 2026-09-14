@@ -48,14 +48,14 @@ Every Raman output reader returns the bulk dielectric-derivative tensor
    \tensorbf{R}^{(m)}_\epsilon = \sqrt{V_{cell}}
    \frac{\partial \tensorbs{\varepsilon}_\infty}{\partial Q_m}
 
-where :math:`V_{cell}` is in Angstrom cubed and :math:`Q_m` is in
-Angstrom times the square root of amu.  The tensor units are
-:math:`(\mathrm{Angstrom}/\mathrm{amu})^{1/2}`.  The reader already includes
+where :math:`V_{cell}` is in :math:`\text{Å}^3` and :math:`Q_m` is in
+:math:`\text{Å}` times the square root of amu.  The tensor units are
+:math:`(\text{Å}/\mathrm{amu})^{1/2}`.  The reader already includes
 :math:`\sqrt{V_{cell}}`; the powder and crystal calculations apply no additional
 cell-volume factor.  A source polarizability-volume derivative
 :math:`R_\alpha=\partial[V_{cell}(\varepsilon-I)/(4\pi)]/\partial Q_m`
 is converted on read using :math:`R_\epsilon=4\pi R_\alpha/\sqrt{V_{cell}}`.
-Activities in :math:`\mathrm{Angstrom}^4/\mathrm{amu}` are display quantities,
+Activities in :math:`\mathrm{Å}^4/\mathrm{amu}` are display quantities,
 obtained by multiplying the internal activities by :math:`V_{cell}/(16\pi^2)`.
 
 For particles whose Raman tensor does not depend on shape, the powder average can be
@@ -134,8 +134,7 @@ incident and one scattered optical local-field factor:
 The transpose is ordinary, including for complex reciprocal permittivities.
 The current powder implementation uses the same optical permittivity at both
 frequencies.  :math:`R_{eff}` retains the bulk :math:`R_\epsilon` normalization;
-it is not an extensive particle dipole-polarizability derivative.  The former
-three-factor expression double-counted the scattered-field response.
+it is not an extensive particle dipole-polarizability derivative.
 
 Particle Frequencies
 --------------------
@@ -167,9 +166,9 @@ where :math:`\tensorbf{D}^{TO}` is the transverse-optic dynamical matrix and
 permittivities.  Diagonalising :math:`\tensorbf{D}^{particle}` gives particle-mode
 frequencies and eigenvectors appropriate to the selected crystallite shape.
 
-In the SI expression above Born charges carry coulombs and masses carry kilograms.
+In the SI expression above Born charges are in coulombs and masses are in kilograms.
 The implementation uses charges in electrons, masses in electron-mass units,
-volume in Bohr cubed, and the prefactor :math:`4\pi/(\varepsilon_e V)`.
+volume in :math:`\text{Bohr}^3`, and the prefactor :math:`4\pi/(\varepsilon_e V)`.
 The same electrostatic kernel
 :math:`K=N_{bg}L/\varepsilon_e` determines the particle EO correction:
 

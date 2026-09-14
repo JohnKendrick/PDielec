@@ -6,3 +6,5 @@
 .. |kmmol-1|  replace:: km·mol\ :superscript:`-1`
 .. |D2A-2amu-1| replace:: D\ :superscript:`2`\ Å\ :superscript:`-2`\ amu\ :superscript:`-1`
 .. |micron| replace:: μm
+.. |angstrom| unicode:: U+212B .. ANGSTROM SIGN
+.. |angs| unicode:: U+212B .. ANGSTROM SIGN
