@@ -1109,9 +1109,9 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
                 s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
-            s1 = np.trapz(s1_factors*ndp,dp)
-            normal = np.trapz(ndp,dp)
-            #mean = np.trapz(ndp*dp,dp)
+            s1 = np.trapezoid(s1_factors*ndp,dp)
+            normal = np.trapezoid(ndp,dp)
+            #mean = np.trapezoid(ndp*dp,dp)
             #true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
             #v_cm1 = 1.0E4/lambda_vacuum_mu
             #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
@@ -1218,9 +1218,9 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
             s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
             s1_factors.append(s1)
         # Now integrate
-        s1 = np.trapz(s1_factors*ndp,dp)
-        normal = np.trapz(ndp,dp)
-        #mean = np.trapz(ndp*dp,dp)
+        s1 = np.trapezoid(s1_factors*ndp,dp)
+        normal = np.trapezoid(ndp,dp)
+        #mean = np.trapezoid(ndp*dp,dp)
         #true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
         #v_cm1 = 1.0E4/lambda_vacuum_mu
         #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
@@ -1323,9 +1323,9 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
                 s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
-            s1 = np.trapz(s1_factors*ndp,dp)
-            normal = np.trapz(ndp,dp)
-            #mean = np.trapz(ndp*dp,dp)
+            s1 = np.trapezoid(s1_factors*ndp,dp)
+            normal = np.trapezoid(ndp,dp)
+            #mean = np.trapezoid(ndp*dp,dp)
             #true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
             #v_cm1 = 1.0E4/lambda_vacuum_mu
             #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
