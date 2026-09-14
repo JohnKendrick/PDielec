@@ -1,5 +1,5 @@
 [build-system]
-requires = [ "setuptools"]
+requires = [ "setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -37,7 +37,8 @@ maintainers = [
 
 description = "PDielec package for the calculation of THz and infrared spectra for powders and single crystals"
 readme = "README.md"
-license = {file = "LICENSE.txt"}
+license = "MIT"
+license-files = ["LICENSE.txt", "PDielec/PyMieScatt_LICENSE.md"]
 keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
 
 classifiers = [

@@ -1,4 +1,6 @@
 version 10.0.0
+   Powder Raman and Crystal Raman Scenarios are now supported.
+   Documentation has been completed.
    Crystal Raman collection geometry:
    - Automatic collection now uses retro-backscattering on the superstrate side and collinear forward scattering
      on the substrate side. Explicitly setting the collection angle equal to the incidence angle retains specular
