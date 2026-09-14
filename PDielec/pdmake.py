@@ -20,7 +20,7 @@ cleaning build directories, and installing scripts.
 
 Command line options
 --------------------
-    - `test` or `tests`: Runs all test cases.
+    - `test` or `tests`: Runs all pytest suites first, then the example tests.
     - `test-crystal_infrared`: Runs tests for crystal infrared analysis.
     - `test-crystal_raman`: Runs tests for crystal raman analysis.
     - `test-powder_raman`: Runs tests for powder raman analysis.
@@ -279,7 +279,7 @@ def usage():
     print("pdmake:", file=sys.stderr)
     print("  test" , file=sys.stderr)
     print("  tests" , file=sys.stderr)
-    print("           run all the tests               " , file=sys.stderr)
+    print("           run all pytest suites first, then the example tests" , file=sys.stderr)
     print("  test-preader" , file=sys.stderr)
     print("           run all the preader tests" , file=sys.stderr)
     print("  test-pdgui" , file=sys.stderr)
@@ -1210,7 +1210,7 @@ def main():
 
     Command line options
     --------------------
-    - `test` or `tests`: Runs all test cases.
+    - `test` or `tests`: Runs all pytest suites first, then the example tests.
     - `test-crystal_ir`: Runs tests for crystal infrared analysis.
     - `test-powder_ir`: Runs tests for powder infrared analysis.
     - `test-crystal_raman`: Runs tests for crystal raman analysis.
@@ -1277,8 +1277,16 @@ def main():
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
-        if token in ( "test", "tests" ):
-            actions.append("test all")
+        if token in ("test", "tests", "test-pytests"):
+            actions.append("test pytest_powder_raman")
+            actions.append("test pytest_crystal_raman")
+            actions.append("test pytest_materials")
+            actions.append("test pytest_calculator")
+            actions.append("test pytest_unitcell")
+            actions.append("test pytest_gtmcore")
+            actions.append("test pytest_constants")
+            if token != "test-pytests":
+                actions.append("test all")
         elif token == "test-crystal_ir":
             actions.append("test crystal_infrared")
         elif token == "test-crystal_raman":
@@ -1300,14 +1308,6 @@ def main():
         elif token == "test-pytest-gtmcore":
             actions.append("test pytest_gtmcore")
         elif token == "test-pytest-constants":
-            actions.append("test pytest_constants")
-        elif token == "test-pytests":
-            actions.append("test pytest_powder_raman")
-            actions.append("test pytest_crystal_raman")
-            actions.append("test pytest_materials")
-            actions.append("test pytest_calculator")
-            actions.append("test pytest_unitcell")
-            actions.append("test pytest_gtmcore")
             actions.append("test pytest_constants")
         elif token == "test-atr":
             actions.append("test powder_atr")
