@@ -46,7 +46,7 @@ tab.settings['Particle shape'] = 'Sphere'
 tab.settings['ATR material refractive index'] =  4.0
 tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
-tab.settings['Raman laser frequency'] =  785
+tab.settings['Raman laser wavelength'] =  785
 tab.settings['Raman laser polarisation'] = 'HV'
 tab.settings['Raman temperature'] =  298.0
 #
