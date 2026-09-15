@@ -455,14 +455,14 @@ and linewidth.</p>
 <span class="eqno">(76)<a class="headerlink" href="#equation-eq-powder-raman-tensor" title="Link to this equation">¶</a></span>\[\tensorbf{R}^{(m)}_\epsilon = \sqrt{V_{cell}}
 \frac{\partial \tensorbs{\varepsilon}_\infty}{\partial Q_m}\]</div>
 </div>
-<p>where <span class="math notranslate nohighlight">\(V_{cell}\)</span> is in Angstrom cubed and <span class="math notranslate nohighlight">\(Q_m\)</span> is in
-Angstrom times the square root of amu.  The tensor units are
-<span class="math notranslate nohighlight">\((\mathrm{Angstrom}/\mathrm{amu})^{1/2}\)</span>.  The reader already includes
+<p>where <span class="math notranslate nohighlight">\(V_{cell}\)</span> is in <span class="math notranslate nohighlight">\(\text{Å}^3\)</span> and <span class="math notranslate nohighlight">\(Q_m\)</span> is in
+<span class="math notranslate nohighlight">\(\text{Å}\)</span> times the square root of amu.  The tensor units are
+<span class="math notranslate nohighlight">\((\text{Å}/\mathrm{amu})^{1/2}\)</span>.  The reader already includes
 <span class="math notranslate nohighlight">\(\sqrt{V_{cell}}\)</span>; the powder and crystal calculations apply no additional
 cell-volume factor.  A source polarizability-volume derivative
 <span class="math notranslate nohighlight">\(R_\alpha=\partial[V_{cell}(\varepsilon-I)/(4\pi)]/\partial Q_m\)</span>
 is converted on read using <span class="math notranslate nohighlight">\(R_\epsilon=4\pi R_\alpha/\sqrt{V_{cell}}\)</span>.
-Activities in <span class="math notranslate nohighlight">\(\mathrm{Angstrom}^4/\mathrm{amu}\)</span> are display quantities,
+Activities in <span class="math notranslate nohighlight">\(\mathrm{Å}^4/\mathrm{amu}\)</span> are display quantities,
 obtained by multiplying the internal activities by <span class="math notranslate nohighlight">\(V_{cell}/(16\pi^2)\)</span>.</p>
 <p>For particles whose Raman tensor does not depend on shape, the powder average can be
 written in terms of rotational invariants of <span class="math notranslate nohighlight">\(\tensorbf{R}\)</span>.  For one mode,</p>
@@ -526,8 +526,7 @@ incident and one scattered optical local-field factor:</p>
 <p>The transpose is ordinary, including for complex reciprocal permittivities.
 The current powder implementation uses the same optical permittivity at both
 frequencies.  <span class="math notranslate nohighlight">\(R_{eff}\)</span> retains the bulk <span class="math notranslate nohighlight">\(R_\epsilon\)</span> normalization;
-it is not an extensive particle dipole-polarizability derivative.  The former
-three-factor expression double-counted the scattered-field response.</p>
+it is not an extensive particle dipole-polarizability derivative.</p>
 </section>
 <section id="particle-frequencies">
 <h2>Particle Frequencies<a class="headerlink" href="#particle-frequencies" title="Link to this heading">¶</a></h2>
@@ -553,9 +552,9 @@ This gives an effective particle dynamical matrix</p>
 <span class="math notranslate nohighlight">\(\tensorbf{N}_{bg}\)</span> is the internal-field tensor constructed from the background
 permittivities.  Diagonalising <span class="math notranslate nohighlight">\(\tensorbf{D}^{particle}\)</span> gives particle-mode
 frequencies and eigenvectors appropriate to the selected crystallite shape.</p>
-<p>In the SI expression above Born charges carry coulombs and masses carry kilograms.
+<p>In the SI expression above Born charges are in coulombs and masses are in kilograms.
 The implementation uses charges in electrons, masses in electron-mass units,
-volume in Bohr cubed, and the prefactor <span class="math notranslate nohighlight">\(4\pi/(\varepsilon_e V)\)</span>.
+volume in <span class="math notranslate nohighlight">\(\text{Bohr}^3\)</span>, and the prefactor <span class="math notranslate nohighlight">\(4\pi/(\varepsilon_e V)\)</span>.
 The same electrostatic kernel
 <span class="math notranslate nohighlight">\(K=N_{bg}L/\varepsilon_e\)</span> determines the particle EO correction:</p>
 <div class="math-wrapper docutils container">

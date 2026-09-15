@@ -12,7 +12,7 @@ PDielec.pdmake
 
    Command line options
    --------------------
-       - `test` or `tests`: Runs all test cases.
+       - `test` or `tests`: Runs all pytest suites first, then the example tests.
        - `test-crystal_infrared`: Runs tests for crystal infrared analysis.
        - `test-crystal_raman`: Runs tests for crystal raman analysis.
        - `test-powder_raman`: Runs tests for powder raman analysis.
@@ -252,7 +252,7 @@ Module Contents
 
    Command line options
    --------------------
-   - `test` or `tests`: Runs all test cases.
+   - `test` or `tests`: Runs all pytest suites first, then the example tests.
    - `test-crystal_ir`: Runs tests for crystal infrared analysis.
    - `test-powder_ir`: Runs tests for powder infrared analysis.
    - `test-crystal_raman`: Runs tests for crystal raman analysis.
@@ -613,7 +613,7 @@ Module Contents
 
 
 .. py:data:: test_crystal_raman
-   :value: ['Crystal_Raman/Castep']
+   :value: ['Crystal_Raman/Castep', 'Crystal_Raman/Crystal23']
 
 
 .. py:data:: test_p2cif

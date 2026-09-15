@@ -111,7 +111,7 @@ Raman Tensor Orientation
 ------------------------
 
 Reader tensors use :math:`R_\epsilon=\sqrt{V_{cell}}\partial\varepsilon_\infty/\partial Q_m`,
-with volume in Angstrom cubed and :math:`Q_m` in Angstrom times the square root
+with volume in :math:`\text{Å}^3` and :math:`Q_m` in Å times the square root
 of amu.  They already contain the cell-volume normalization and enter
 ``RamanLayer`` directly.  Raw Gaussian susceptibility derivatives require
 :math:`\partial\varepsilon=4\pi\partial\chi`; SI dimensionless susceptibility
@@ -468,11 +468,11 @@ susceptibility expressed numerically in pm/V, the reader conversion is
    \widetilde\chi^{(2)}_{ijl} =
    \chi^{(2)}_{ijl}[\mathrm{pm/V}]
    \frac{\sqrt{\mathrm{amu}/m_e}\,e\,10^8}
-        {4\pi\epsilon_0\sqrt{V_{cell}[\mathrm{Angstrom}^3]}} .
+        {4\pi\epsilon_0\sqrt{V_{cell}[\text{Å}^3]}} .
 
-The numerical :math:`10^8` combines pm/V and Angstrom displacement/volume
+The numerical :math:`10^8` combines pm/V and Å displacement/volume
 units.  :math:`Z^{mw}` uses masses in electron-mass units.  This conversion
-is not merely a change from picometres to Angstrom or Bohr.
+is not merely a change from picometres to Å or Bohr.
 
 The explicit :math:`4\pi` in the correction is the Gaussian-unit electrostatic
 factor.  PDielec's conversion of physical :math:`\chi^{(2)}` values from pm/V to
@@ -517,7 +517,7 @@ PDielec reads :math:`\tensorbs{\chi}^{(2)}` automatically from the DFT output fi
 it is present.  ABINIT, CASTEP and CRYSTAL report the *d*-tensor
 (:math:`\tensorbf{d} = \tfrac{1}{2}\tensorbs{\chi}^{(2)}`); PDielec stores
 :math:`\tensorbs{\chi}^{(2)} = 2\tensorbf{d}` internally after converting the
-reported pm/V values to the same Angstrom-based convention used by the reader
+reported pm/V values to the same Å based convention used by the reader
 :math:`R_\epsilon` Raman tensors.
 
 *CASTEP* writes a 3×6 Voigt-format block labelled
@@ -532,7 +532,9 @@ Cartesian coordinates with 1-based integer indices.
 
 *CRYSTAL* supplies ``d(MKS)`` in ``CHI2.DAT`` or its output table; the reader
 uses :math:`\chi^{(2)}=2d` and expands the ten static components using
-Kleinman symmetry.  *Quantum ESPRESSO* supplies :math:`\partial\varepsilon/\partial E`
+Kleinman symmetry.
+
+*Quantum ESPRESSO* supplies :math:`\partial\varepsilon/\partial E`
 in Rydberg atomic units, from which the physical susceptibility in pm/V is
 :math:`\chi^{(2)}=0.5\times2.7502\times\mathrm{ELOP}`.  XML values take
 precedence over the log.  Each path then applies the common conversion above.

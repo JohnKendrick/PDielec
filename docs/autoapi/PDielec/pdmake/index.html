@@ -434,7 +434,7 @@ cleaning build directories, and installing scripts.</p>
 <h2>Command line options<a class="headerlink" href="#command-line-options" title="Link to this heading">¶</a></h2>
 <blockquote>
 <div><ul class="simple">
-<li><p><cite>test</cite> or <cite>tests</cite>: Runs all test cases.</p></li>
+<li><p><cite>test</cite> or <cite>tests</cite>: Runs all pytest suites first, then the example tests.</p></li>
 <li><p><cite>test-crystal_infrared</cite>: Runs tests for crystal infrared analysis.</p></li>
 <li><p><cite>test-crystal_raman</cite>: Runs tests for crystal raman analysis.</p></li>
 <li><p><cite>test-powder_raman</cite>: Runs tests for powder raman analysis.</p></li>
@@ -776,7 +776,7 @@ cleaning build directories, and installing scripts.</p>
 <section id="id13">
 <h3>Command line options<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p><cite>test</cite> or <cite>tests</cite>: Runs all test cases.</p></li>
+<li><p><cite>test</cite> or <cite>tests</cite>: Runs all pytest suites first, then the example tests.</p></li>
 <li><p><cite>test-crystal_ir</cite>: Runs tests for crystal infrared analysis.</p></li>
 <li><p><cite>test-powder_ir</cite>: Runs tests for powder infrared analysis.</p></li>
 <li><p><cite>test-crystal_raman</cite>: Runs tests for crystal raman analysis.</p></li>
@@ -1189,7 +1189,7 @@ options. It also handles platform-specific instructions for Linux systems.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.pdmake.test_crystal_raman">
-<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_crystal_raman</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Crystal_Raman/Castep']</span></em><a class="headerlink" href="#PDielec.pdmake.test_crystal_raman" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_crystal_raman</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Crystal_Raman/Castep',</span> <span class="pre">'Crystal_Raman/Crystal23']</span></em><a class="headerlink" href="#PDielec.pdmake.test_crystal_raman" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">

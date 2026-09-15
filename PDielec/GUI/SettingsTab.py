@@ -874,9 +874,13 @@ class SettingsTab(QWidget):
         sp.write_next_row([""], col=1)
 
         # Now write out the a spreadsheet of information
+        raman_display = self._raman_activity_display_metadata()
+        raman_factor = raman_display["factor"]
+        raman_units = raman_display["unit_label"]
         sp.write_next_row(["Mode","Include?","Sigma(cm-1)","Frequency(cm-1)","Intensity(Debye2/Angs2/amu)",
                            "Integrated Molar Absorption(L/mole/cm2)","Absorption maximum (L/mole/cm)",
-                           "Raman R_total (Å4/amu)","Raman R_parallel (Å4/amu)","Raman R_perp (Å4/amu)"], col=1)
+                           f"Raman R_total ({raman_units})", f"Raman R_parallel ({raman_units})",
+                           f"Raman R_perp ({raman_units})"], col=1)
         for mode,(f,intensity,raman_act,raman_par,raman_perp,sigma,selected) in enumerate(zip(
                 self.frequencies_cm1, self.intensities, self.raman_intensities,
                 self.raman_intensities_par, self.raman_intensities_perp,
@@ -885,7 +889,8 @@ class SettingsTab(QWidget):
             if selected:
                 yn = "Yes"
             sp.write_next_row([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi,
-                               raman_act, raman_par, raman_perp], col=1)
+                               raman_factor * raman_act, raman_factor * raman_par,
+                               raman_factor * raman_perp], col=1)
         logger.debug("Finished:: write_spreadsheet")
 
     def redraw_output_tw(self):

@@ -441,7 +441,7 @@
 
 <span class="sd">Command line options</span>
 <span class="sd">--------------------</span>
-<span class="sd">    - `test` or `tests`: Runs all test cases.</span>
+<span class="sd">    - `test` or `tests`: Runs all pytest suites first, then the example tests.</span>
 <span class="sd">    - `test-crystal_infrared`: Runs tests for crystal infrared analysis.</span>
 <span class="sd">    - `test-crystal_raman`: Runs tests for crystal raman analysis.</span>
 <span class="sd">    - `test-powder_raman`: Runs tests for powder raman analysis.</span>
@@ -591,13 +591,14 @@
 	<span class="s2">&quot;Powder_Raman/Finite_difference&quot;</span><span class="p">,</span>
 	<span class="s2">&quot;Powder_Raman/AbInit&quot;</span><span class="p">,</span>
 	<span class="s2">&quot;Powder_Raman/Castep&quot;</span><span class="p">,</span>
-	<span class="s2">&quot;Powder_Raman/Crystal&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;Powder_Raman/Crystal23&quot;</span><span class="p">,</span>
 	<span class="s2">&quot;Powder_Raman/QE&quot;</span><span class="p">,</span>
 	<span class="s2">&quot;Powder_Raman/Vasp&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
 <span class="n">test_crystal_raman</span> <span class="o">=</span> <span class="p">[</span>
 	<span class="s2">&quot;Crystal_Raman/Castep&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;Crystal_Raman/Crystal23&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
 <span class="n">test_powder_infrared</span> <span class="o">=</span> <span class="p">[</span>
@@ -701,7 +702,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pdmake:&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  test&quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  tests&quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           run all the tests               &quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           run all pytest suites first, then the example tests&quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  test-preader&quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;           run all the preader tests&quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  test-pdgui&quot;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
@@ -1695,7 +1696,7 @@
 
 <span class="sd">    Command line options</span>
 <span class="sd">    --------------------</span>
-<span class="sd">    - `test` or `tests`: Runs all test cases.</span>
+<span class="sd">    - `test` or `tests`: Runs all pytest suites first, then the example tests.</span>
 <span class="sd">    - `test-crystal_ir`: Runs tests for crystal infrared analysis.</span>
 <span class="sd">    - `test-powder_ir`: Runs tests for powder infrared analysis.</span>
 <span class="sd">    - `test-crystal_raman`: Runs tests for crystal raman analysis.</span>
@@ -1762,8 +1763,16 @@
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span> <span class="p">):</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test all&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;test-pytests&quot;</span><span class="p">):</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_powder_raman&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_crystal_raman&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_materials&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_calculator&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_unitcell&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_gtmcore&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_constants&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;test-pytests&quot;</span><span class="p">:</span>
+                <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test all&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-crystal_ir&quot;</span><span class="p">:</span>
             <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test crystal_infrared&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-crystal_raman&quot;</span><span class="p">:</span>
@@ -1785,14 +1794,6 @@
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-pytest-gtmcore&quot;</span><span class="p">:</span>
             <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_gtmcore&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-pytest-constants&quot;</span><span class="p">:</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_constants&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-pytests&quot;</span><span class="p">:</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_powder_raman&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_crystal_raman&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_materials&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_calculator&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_unitcell&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_gtmcore&quot;</span><span class="p">)</span>
             <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_constants&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-atr&quot;</span><span class="p">:</span>
             <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test powder_atr&quot;</span><span class="p">)</span>
@@ -1881,13 +1882,19 @@
         <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_p2cif</span><span class="p">)</span>
         <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_preader</span><span class="p">)</span>
         <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_pdgui</span><span class="p">)</span>
+        <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_powder_raman</span><span class="p">)</span>
+        <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_crystal_raman</span><span class="p">)</span>
         <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_vibanalysis</span><span class="p">)</span>
         <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">change_padding</span><span class="p">(</span><span class="n">test_all</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;test all&quot;</span><span class="p">:</span>
             <span class="n">run_tests</span><span class="p">(</span><span class="n">test_p2cif</span>      <span class="p">,</span><span class="s2">&quot;p2cif&quot;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
             <span class="n">run_tests</span><span class="p">(</span><span class="n">test_preader</span>    <span class="p">,</span><span class="s2">&quot;preader&quot;</span>    <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
-            <span class="n">run_tests</span><span class="p">(</span><span class="n">test_pdgui</span>      <span class="p">,</span><span class="s2">&quot;pdgui&quot;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+            <span class="n">raman_examples</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">test_powder_raman</span> <span class="o">+</span> <span class="n">test_crystal_raman</span><span class="p">)</span>
+            <span class="n">gui_examples</span> <span class="o">=</span> <span class="p">[</span><span class="n">directory</span> <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">test_pdgui</span> <span class="k">if</span> <span class="n">directory</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">raman_examples</span><span class="p">]</span>
+            <span class="n">run_tests</span><span class="p">(</span><span class="n">gui_examples</span>    <span class="p">,</span><span class="s2">&quot;pdgui&quot;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+            <span class="n">run_tests</span><span class="p">(</span><span class="n">test_powder_raman</span><span class="p">,</span><span class="s2">&quot;powder_raman&quot;</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+            <span class="n">run_tests</span><span class="p">(</span><span class="n">test_crystal_raman</span><span class="p">,</span><span class="s2">&quot;crystal_raman&quot;</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
             <span class="n">run_tests</span><span class="p">(</span><span class="n">test_vibanalysis</span><span class="p">,</span><span class="s2">&quot;vibanalysis&quot;</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;test preader&quot;</span><span class="p">:</span>
             <span class="n">run_tests</span><span class="p">(</span><span class="n">test_preader</span>    <span class="p">,</span><span class="s2">&quot;preader&quot;</span>    <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>

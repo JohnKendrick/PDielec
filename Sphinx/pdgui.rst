@@ -100,7 +100,7 @@ calculated results and settings. *Script filename* sets the Python file written
 by *Save settings*. Reload that file to reproduce the session; the calculation
 input and any materials database referenced by it must still be available.
 
-The lower text areas report the unit-cell vectors in Angstrom and the
+The lower text areas report the unit-cell vectors in Å and the
 frequencies read from the input. They are outputs, not editable model
 parameters. Frequencies after mass changes and other corrections are shown in
 the Settings Tab.
@@ -144,9 +144,11 @@ tensor. Edit its elements when a value must be supplied or replaced.
 point group. Experimental input leaves this off by default. Reading a new input resets input-dependent masses and permittivity.
 
 For Raman calculations, *Raman activity units* chooses polarizability-volume
-activities in Angstrom⁴/amu or activities in the internal
-:math:`R_\epsilon` convention in Angstrom/amu. This changes the displayed
+activities in Å⁴/amu or activities in the internal
+:math:`R_\epsilon` convention in Å/amu. This changes the displayed
 activities, not the physical normalisation of the tensors used by scenarios.
+The Raman activity columns in the exported *Settings* worksheet use the same
+selected units, indicated in their column headers.
 
 The *NAC Options* row controls the mode-table diagnostics. *Apply NAC* fills
 the LO-frequency column using the direction specified by x, y and z in the
@@ -160,10 +162,15 @@ electro-optic term* in a Crystal Raman scenario. *Raman polar plot* opens the
 The lower table has one row per mode. The checkbox beside *Sigma* determines
 whether the mode contributes to subsequent spectra; greyed values indicate
 unselected modes. The columns show TO frequency, optional LO frequency, IR
-intensity in Debye²/Angstrom²/amu, integrated molar absorption, absorption
+intensity in Debye²/Å²/amu, integrated molar absorption, absorption
 maximum, and total, parallel and perpendicular Raman activities where present.
 The headers give the units. The IR quantities and the Raman activities are
 different measures of response; a Raman-active mode can have zero IR intensity.
+
+To copy values from the frequency and intensity table, select the required
+cells and press :kbd:`Ctrl+C`. The selected values are copied as tab-separated
+text, with one line per table row, ready to paste into a spreadsheet or text
+editor. This also works for the Raman activity columns when they are shown.
 
 .. figure:: _static/Figures/gui/settings-infrared.png
    :width: 100%
@@ -493,7 +500,7 @@ The *Plotting Tab* displays the calculated scenarios together.
    The Plotting Tab for Powder Infrared.
 
 *Frequency min, max and increment* set the calculation grid. The adjacent
-unit selector offers wavenumber, THz, GHz and wavelength units from Angstrom
+unit selector offers wavenumber, THz, GHz and wavelength units from Å
 to metres. Zero is not a valid wavelength. For Raman, use wavenumber to show
 Raman shifts unambiguously. A sufficiently small increment is needed to
 resolve narrow peaks.
@@ -563,7 +570,7 @@ modes, rather than a permittivity-only input.
 *Minimum frequency* and *Maximum frequency* select modes in |cm-1|.
 *Bonding scale and tolerance* identify connected atoms using a distance cutoff
 of scale × (radius i + radius j) + tolerance; tolerance and *Atomic radii*
-are in Angstrom. The defaults are scale 1.1 and tolerance 0.1. Edit the
+are in Å. The defaults are scale 1.1 and tolerance 0.1. Edit the
 individual radii in the table where a different bonding description is needed.
 *Number of molecules found* is an output of that connectivity analysis. In an
 extended crystal a connected group should not automatically be interpreted
@@ -622,11 +629,11 @@ use its arrows to reach those outside the available width.
      - Maximum displayed phonon displacement; controls visual scale, not a
        thermal displacement amplitude.
    * - Bond Radius
-     - Radius of displayed bond cylinders in Angstrom.
+     - Radius of displayed bond cylinders in Å.
    * - Cell Radius
-     - Radius of the cell-outline cylinders in Angstrom.
+     - Radius of the cell-outline cylinders in Å.
    * - Arrow Radius
-     - Radius of displacement arrows in Angstrom.
+     - Radius of displacement arrows in Å.
 
 *Image file name* supplies the output path. *Save as png* writes a still image;
 *Save as mp4* and *Save as gif* write animation; *Save as cif or mcif* exports
@@ -824,9 +831,11 @@ absent from the scenario GUI::
 *Coalesce equivalent layers*, default True, merges adjacent equivalent
 coherent layers before Raman field integration. Disabling it is useful for
 diagnosing artificial internal-boundary effects. *Approximate ES*, default
-False, uses the laser field in place of separately evaluating the scattered
-field when set True. It changes the optical approximation and should be
-recorded when reporting results.
+False, evaluates the reciprocal detector field once at the laser frequency
+when set True, instead of at each mode's Stokes frequency. It retains the
+resolved collection geometry and reuses the incident field only when the
+optical system and signed angle match. It changes the optical approximation
+and should be recorded when reporting results.
 
 The powder Raman wavelength in nm is stored as ``Raman laser wavelength``.
 The crystal NAC selector uses

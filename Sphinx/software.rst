@@ -505,14 +505,14 @@ Column B is not used by PDGui but because refractive indices are often tabulated
 The Format of the Output Spreadsheet
 ====================================
 
-The Excel spreadsheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
+The Excel spreadsheet, which can be written by the program, contains details of the system being analysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission. It also includes mode frequencies, IR intensities and Raman activities when Raman data are available.
 The spreadsheet is divided into different sheets;
 
 -   **Main**
         | This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.
 
 -   **Settings**
-        | The information here comes from the settings tab.  Masses, permittivities and the frequencies that will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.
+        | The information here comes from the Settings Tab: masses, permittivities and the frequencies that will be used in subsequent calculations. These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms. Each mode has an inclusion flag and a linewidth (Sigma), followed by its frequency, IR intensity, integrated molar absorption and absorption maximum. The Raman columns give total, parallel and perpendicular activities, labelled ``Raman R_total``, ``Raman R_parallel`` and ``Raman R_perp``. The activity values use the units selected by *Raman activity units* in the Settings Tab: Å⁴/amu for polarizability-volume activities or Å/amu for the internal convention. The column headers indicate the selected units. These activities describe the individual modes, rather than the Raman spectrum calculated for a particular scenario.
   
 -   **Analysis**
         | The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.
@@ -552,6 +552,5 @@ The spreadsheet is divided into different sheets;
 
 -   **Imag Crystal Permittivity**
         | The imaginary components of the crystal permittivity tensor are tabulated as a function of frequency.
-
 
 

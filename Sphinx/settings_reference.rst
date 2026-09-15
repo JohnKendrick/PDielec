@@ -413,9 +413,11 @@ NAC/EO corrections and the different coherence choices.
     a Raman emission choice, not the optical layer's propagation coherence.
 
 ``Approximate ES``
-    Script-only boolean, default ``False``. If ``True``, substitutes the laser
-    field for the separately calculated scattered field. This changes the
-    optical approximation; see :doc:`CrystalRaman`.
+    Script-only boolean, default ``False``. If ``True``, evaluates the reciprocal
+    detector field once at the laser frequency instead of at each mode's Stokes
+    frequency, retaining the resolved collection geometry. The incident field
+    is reused only when the optical system and signed angle match. This changes
+    the optical approximation; see :doc:`CrystalRaman`.
 
 ``Coalesce equivalent layers``
     Script-only boolean, default ``True``. Merges adjacent equivalent coherent

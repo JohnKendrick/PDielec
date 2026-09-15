@@ -508,7 +508,7 @@ case the p- and s-detected intensities are summed incoherently.</p>
 <section id="raman-tensor-orientation">
 <h2>Raman Tensor Orientation<a class="headerlink" href="#raman-tensor-orientation" title="Link to this heading">¶</a></h2>
 <p>Reader tensors use <span class="math notranslate nohighlight">\(R_\epsilon=\sqrt{V_{cell}}\partial\varepsilon_\infty/\partial Q_m\)</span>,
-with volume in Angstrom cubed and <span class="math notranslate nohighlight">\(Q_m\)</span> in Angstrom times the square root
+with volume in <span class="math notranslate nohighlight">\(\text{Å}^3\)</span> and <span class="math notranslate nohighlight">\(Q_m\)</span> in Å times the square root
 of amu.  They already contain the cell-volume normalization and enter
 <code class="docutils literal notranslate"><span class="pre">RamanLayer</span></code> directly.  Raw Gaussian susceptibility derivatives require
 <span class="math notranslate nohighlight">\(\partial\varepsilon=4\pi\partial\chi\)</span>; SI dimensionless susceptibility
@@ -808,11 +808,11 @@ susceptibility expressed numerically in pm/V, the reader conversion is</p>
 \[\widetilde\chi^{(2)}_{ijl} =
 \chi^{(2)}_{ijl}[\mathrm{pm/V}]
 \frac{\sqrt{\mathrm{amu}/m_e}\,e\,10^8}
-     {4\pi\epsilon_0\sqrt{V_{cell}[\mathrm{Angstrom}^3]}} .\]</div>
+     {4\pi\epsilon_0\sqrt{V_{cell}[\text{Å}^3]}} .\]</div>
 </div>
-<p>The numerical <span class="math notranslate nohighlight">\(10^8\)</span> combines pm/V and Angstrom displacement/volume
+<p>The numerical <span class="math notranslate nohighlight">\(10^8\)</span> combines pm/V and Å displacement/volume
 units.  <span class="math notranslate nohighlight">\(Z^{mw}\)</span> uses masses in electron-mass units.  This conversion
-is not merely a change from picometres to Angstrom or Bohr.</p>
+is not merely a change from picometres to Å or Bohr.</p>
 <p>The explicit <span class="math notranslate nohighlight">\(4\pi\)</span> in the correction is the Gaussian-unit electrostatic
 factor.  PDielec’s conversion of physical <span class="math notranslate nohighlight">\(\chi^{(2)}\)</span> values from pm/V to
 the internal <span class="math notranslate nohighlight">\(R_\epsilon\)</span> convention contains the reciprocal
@@ -849,7 +849,7 @@ orthogonal to <span class="math notranslate nohighlight">\(\mathbf{x}_p\)</span>
 it is present.  ABINIT, CASTEP and CRYSTAL report the <em>d</em>-tensor
 (<span class="math notranslate nohighlight">\(\tensorbf{d} = \tfrac{1}{2}\tensorbs{\chi}^{(2)}\)</span>); PDielec stores
 <span class="math notranslate nohighlight">\(\tensorbs{\chi}^{(2)} = 2\tensorbf{d}\)</span> internally after converting the
-reported pm/V values to the same Angstrom-based convention used by the reader
+reported pm/V values to the same Å based convention used by the reader
 <span class="math notranslate nohighlight">\(R_\epsilon\)</span> Raman tensors.</p>
 <p><em>CASTEP</em> writes a 3×6 Voigt-format block labelled
 <code class="docutils literal notranslate"><span class="pre">Nonlinear</span> <span class="pre">Optical</span> <span class="pre">Susceptibility</span> <span class="pre">(pm/V)</span></code> in the <code class="docutils literal notranslate"><span class="pre">.castep</span></code> output file.  The
@@ -861,7 +861,8 @@ in the <code class="docutils literal notranslate"><span class="pre">.abo</span><
 Cartesian coordinates with 1-based integer indices.</p>
 <p><em>CRYSTAL</em> supplies <code class="docutils literal notranslate"><span class="pre">d(MKS)</span></code> in <code class="docutils literal notranslate"><span class="pre">CHI2.DAT</span></code> or its output table; the reader
 uses <span class="math notranslate nohighlight">\(\chi^{(2)}=2d\)</span> and expands the ten static components using
-Kleinman symmetry.  <em>Quantum ESPRESSO</em> supplies <span class="math notranslate nohighlight">\(\partial\varepsilon/\partial E\)</span>
+Kleinman symmetry.</p>
+<p><em>Quantum ESPRESSO</em> supplies <span class="math notranslate nohighlight">\(\partial\varepsilon/\partial E\)</span>
 in Rydberg atomic units, from which the physical susceptibility in pm/V is
 <span class="math notranslate nohighlight">\(\chi^{(2)}=0.5\times2.7502\times\mathrm{ELOP}\)</span>.  XML values take
 precedence over the log.  Each path then applies the common conversion above.
