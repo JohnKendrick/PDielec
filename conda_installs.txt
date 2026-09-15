@@ -1,21 +1,16 @@
-conda install pip
-conda install numpy
-conda install scipy
-conda install imageio
-conda install imageio-ffmpeg
-conda install matplotlib
-conda install numpy
-conda install openpyxl
-conda install psutil
-conda install pyopengl
-conda install pyyaml
-conda install qtpy
-conda install scikit-learn
-conda install setuptools
-conda install spglib
-conda install termcolor
-conda install xlsxwriter
-conda install dill
-# QtPy needs either PyQt5 or PyQt6 installed
-# conda install pyqt (for PyQt5)
-# pip install PyQt6 (for PyQt6)
+# Source-development environment (run from the PDielec repository root).
+# Python 3.12 is an example choice; PDielec 10 requires Python >=3.10.
+conda create --name pdielec-dev --channel conda-forge python=3.12 pip
+conda activate pdielec-dev
+# Install PDielec and all declared dependencies, including PyQt6 and pytest.
+# pyproject.toml is the source of truth for these dependencies.
+python -m pip install -e .
+
+# Alternatively, install the published conda-forge package in a new environment:
+# conda create --name pdielec --channel conda-forge pdielec
+# conda activate pdielec
+
+# Optional development tools:
+# python -m pip install -r Sphinx/requirements.txt
+# python -m pip install build
+# python -m pip install phonopy

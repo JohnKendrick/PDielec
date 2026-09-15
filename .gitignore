@@ -116,3 +116,6 @@ Data/
 !PDielec/Tests/**
 PDielec/Tests/**/__pycache__/
 *.code-workspace
+
+# Example documentation (private development directories above remain ignored)
+!Examples/**/README.md

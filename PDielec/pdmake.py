@@ -55,6 +55,7 @@ Command line options
 
 import contextlib
 import functools
+import io
 import logging
 import os
 import shlex
@@ -838,12 +839,14 @@ def run_pdgui_test(title, instructions, regenerate, benchmarks=False):
     if not viewing:
         # If not doing a regeneration perform a check
         if not regenerate and not benchmarks:
-            sys.argv = ["checkexcel", "results.ref.xlsx","results.xlsx"]
-            with redirect(os.devnull):
+            sys.argv = ["checkexcel", "results.ref.xlsx", "results.xlsx", "-settings"]
+            comparison_output = io.StringIO()
+            with contextlib.redirect_stdout(comparison_output):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
-                print(f"{nerrors} ERRORS:"+f"{sheet}@{row},{col} - max %error={max_percentage_error}")
+                print(f"{nerrors} ERRORS:")
+                print(comparison_output.getvalue(), end="")
             else:
                 print(" OK:"+f" - max %error={max_percentage_error}")
             # end if
@@ -1278,13 +1281,7 @@ def main():
         itoken += 1
         token = tokens[itoken]
         if token in ("test", "tests", "test-pytests"):
-            actions.append("test pytest_powder_raman")
-            actions.append("test pytest_crystal_raman")
-            actions.append("test pytest_materials")
-            actions.append("test pytest_calculator")
-            actions.append("test pytest_unitcell")
-            actions.append("test pytest_gtmcore")
-            actions.append("test pytest_constants")
+            actions.append("test pytests")
             if token != "test-pytests":
                 actions.append("test all")
         elif token == "test-crystal_ir":
@@ -1424,6 +1421,8 @@ def main():
             run_tests(test_powder_infrared      ,"powder_infrared"      ,regenerate)
         elif action == "test powder_raman":
             run_tests(test_powder_raman      ,"powder_raman"      ,regenerate)
+        elif action == "test pytests":
+            run_pytest_suite(os.path.join("PDielec", "Tests"), "Pytest All")
         elif action == "test pytest_powder_raman":
             run_pytest_suite(os.path.join("PDielec", "Tests", "Powder_Raman"), "Pytest Powder Raman")
         elif action == "test pytest_crystal_raman":

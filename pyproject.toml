@@ -35,11 +35,11 @@ maintainers = [
   {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
 ]
 
-description = "PDielec package for the calculation of THz and infrared spectra for powders and single crystals"
+description = "PDielec package for the calculation of THz, infrared and Raman spectra for powders and single crystals"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE.txt", "PDielec/PyMieScatt_LICENSE.md"]
-keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
+keywords = ["Raman Spectroscopy","Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
 
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -57,7 +57,7 @@ Homepage      = "https://johnkendrick.github.io/PDielec"
 Documentation = "https://johnkendrick.github.io/PDielec"
 Repository    = "https://github.com/JohnKendrick/PDielec.git"
 "Bug Tracker" = "https://github.com/JohnKendrick/PDielec/issues"
-Changelog     = "https://github.com/JohnKendrick/PDielec/blob/master/CHANGES.txt"
+Changelog     = "https://github.com/JohnKendrick/PDielec/blob/master/CHANGES"
 
 [project.scripts]
 preader              = "PDielec.preader:main"

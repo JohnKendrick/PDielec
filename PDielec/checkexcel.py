@@ -45,6 +45,7 @@ def main():
     - Two file paths.
     - Optional `-thresh` followed by a float value for the threshold of numerical difference (default is 1.0E-3).
     - Optional `-f` flag for forcing a full comparison including typically excluded sheets.
+    - Optional `-settings` flag to include Settings without Main and Scenarios.
 
     Returns
     -------
@@ -75,12 +76,13 @@ def main():
 
     """    
     if len(sys.argv) <= 1 :
-        print("checkexcel file file2 [-thresh 1.0E-3] [-f]", file=sys.stderr)
+        print("checkexcel file file2 [-thresh 1.0E-3] [-f] [-settings]", file=sys.stderr)
         print("         Compare the two excel files for any significant changes", file=sys.stderr)
         print("         Numbers f1 and f2 in each file are compared", file=sys.stderr)
         print("         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold", file=sys.stderr)
         print("         The default value for threshold is 1.0E-3 ", file=sys.stderr)
         print("         -f forces a full comparison of the sheets ", file=sys.stderr)
+        print("         -settings also compares the Settings sheet", file=sys.stderr)
         print("            by default Settings and Scenarios are not included    ", file=sys.stderr)
         sys.exit()
 
@@ -90,14 +92,17 @@ def main():
     itoken = -1
     files = []
     full = False
+    include_settings = False
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
         if token == "-thresh":
             itoken +=1
             threshold = float(tokens[itoken])
-        if token == "-f":
+        elif token == "-f":
             full = True
+        elif token == "-settings":
+            include_settings = True
         else:
             files.append(tokens[itoken])
         # end if
@@ -120,9 +125,7 @@ def main():
     row = 0
     col = 0
     sheet = ""
-    file1 = "" 
     value1 = 0
-    file2 = "" 
     value2 = 0
     #
     # Loop over sheets
@@ -130,12 +133,18 @@ def main():
     sheets = ["Powder Molar Absorption (cells)","Powder Absorption","Powder Real Permittivity","Powder Imaginary Permittivity", "Powder ATR Reflectance", "Powder Raman", "Analysis","Crystal R_p","Crystal R_s","Crystal T_p","Crystal T_s","Real Crystal Permittivity","Imag Crystal Permittivity","Crystal Raman"]
     if full:
         sheets.append("Main")
-        sheets.append("Settings")
         sheets.append("Scenarios")
+    if full or include_settings:
+        sheets.append("Settings")
     for sheet in sheets:
-        if sheet not in wb1 :
+        if sheet not in wb1 and sheet not in wb2:
             continue
-        if sheet not in wb2 :
+        if sheet not in wb1 or sheet not in wb2:
+            missing_file = file1 if sheet not in wb1 else file2
+            print(f"Error - missing expected sheet '{sheet}' in {missing_file}")
+            nerrors += 1
+            error = (sheet, -1, -1, "present" if sheet in wb1 else "missing",
+                     "present" if sheet in wb2 else "missing", 0.0)
             continue
         print("Checking sheet ",sheet)
         ws1 = wb1[sheet]
@@ -203,9 +212,14 @@ def main():
             # for cell1, cell2
         # for rowq, row
     # for sheet
+    wb1.close()
+    wb2.close()
     if error is not None:
         sheet,row,col,value1,value2,max_percentage_error = error
-        print("  "+colored("ERRORS:","red")+f"({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}")
+        if row == -1:
+            print("  "+colored("ERRORS:","red")+f"({nerrors}) Missing expected sheet: {sheet}")
+        else:
+            print("  "+colored("ERRORS:","red")+f"({nerrors}) LARGEST ON ROW,COL {row},{col} OF SHEET {sheet}, {file1}({value1}) and {file2}({value2}) -- max %error={max_percentage_error}")
     elif nerrors > 0:
         print("  "+colored("ERRORS:","red")+f"({nerrors}) Dimensions of spreadsheet were wrong                                    ")
     else:

@@ -2,9 +2,9 @@ The PDielec Package
 ===================
 Authors: John Kendrick and Andrew Burnett
 
-The Python package, PDielec calculates the infrared absorption
+The Python package, PDielec calculates the infrared absorption and Raman scattering
 characteristics of a crystalline material supported in a non absorbing
-medium by post processesing the output of solid state quantum mechanical
+medium by post-processing the output of solid state quantum mechanical
 and molecular mechanical calculations of the phonons or dielectric
 response of the crystalline material. The package calculates the
 internal electric field arising from different particle morphologies and
@@ -14,6 +14,10 @@ theory of the approach has been published. Any use of the package should
 cite; PDielec: The calculation of infrared and terahertz absorption for
 powdered crystals John Kendrick and Andrew D. Burnett Journal of
 Computational Chemistry 2016, vol 27, 1491-1504 DOI: 10.1002/jcc.24344
+
+PDielec also calculates powder and crystal Raman spectra, including polarisation
+and collection geometry. See the [version 10 migration guide](https://johnkendrick.github.io/PDielec/migration.html)
+for changes to Python APIs, saved Raman geometry and spreadsheet comparisons.
 
 Introduction
 ============
@@ -34,7 +38,7 @@ be a large coupling between a phonon mode and the internal field within
 a particle resulting from its morphology. The PDielec program is written
 in Python and post processes the output of solid state quantum
 mechanical (QM) and molecular mechanics (MM) based codes such as VASP,
-CASTEP, CRYSTAL14, Abinit, QuantumEspresso, Phonopy and GULP to predict
+CASTEP, CRYSTAL23, Abinit, QuantumEspresso, Phonopy and GULP to predict
 the infrared absorption of crystalline insulator materials whose crystal
 size is small compared with the wavelength of the absorbing radiation.
 The package is suited for the calculation of the complex, frequency
@@ -43,8 +47,9 @@ radiation for a finely ground crystalline material dispersed in a low
 loss dielectric medium such KBr or PTFE. A particular feature of the
 program is its ability to take into account the constant permittivity of
 the supporting medium and the particle shape through an effective medium
-theory. Calculation of ATR spectra has been included in v5.0. More
-details as to the theory are available here;
+theory. Calculation of ATR spectra has been included from v5.0.
+Version 10 introduced Raman scattering simulations.
+More details as to the theory are available here;
 <https://johnkendrick.github.io/PDielec/>
 
 Installation
