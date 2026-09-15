@@ -49,7 +49,5 @@ The results of the calculations are collected together as separate directories i
 
 ## Further directories
 
-- [Andrew_EMA](Andrew_EMA/README.md)
-- [Marimo](Marimo/README.md)
 - [MgO](MgO/README.md)
 - [Na2SO42](Na2SO42/README.md)

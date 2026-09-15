@@ -19,13 +19,13 @@ These files do not have pseudo-potential, cutoffs etc and so it is necessary to 
 The header.in is based on urea.scf.in and is shown below:
 The celldm(1) statement urea.scf.in has been removed, as the cell dimensions given by Phonopy are in Bohr in the supercell file.  
 Otherwise it can be created from urea.scf.in by removing everything after and including the CELL_PARAMETERS line.
+Set `pseudo_dir` for your Quantum ESPRESSO installation before running new calculations.
 
 ```
 &CONTROL
   calculation = 'scf' 
   restart_mode = 'from_scratch'
   outdir = '.' 
-  pseudo_dir = '/home/john/Data/PseudoPotentials/SSSP_1.3.0_Efficiency'
   nstep = 1000
   tprnfor = .true.
   tstress = .true.

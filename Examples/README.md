@@ -34,10 +34,6 @@ Run `pdmake command.pdmake` in a directory containing a recipe, or
 From the repository root, `pdmake tests` runs pytest followed by the configured
 example suites. Not every supporting file or notebook is a regression recipe.
 
-## Further directories
-
-- [ASE](ASE/README.md)
-
 ## Reading these files locally
 
 Navigation links name `README.md` explicitly. A link to a directory opens a
