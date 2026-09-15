@@ -11,3 +11,8 @@
 | [ZnO/](./ZnO/README.md) | ZnO example                 |
 
 [Back](../README.md)
+
+## Further directories
+
+- [Na2SO42_v](Na2SO42_v/README.md)
+- [Vasp6](Vasp6/README.md)

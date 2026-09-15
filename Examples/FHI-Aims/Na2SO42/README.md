@@ -106,3 +106,7 @@ For the PDGui calculations, a 10% volume fraction of Na2(SO4)2 is supported in a
 | Vasp_FHI-Aims_Comparison.qti |                                                           |
 
 [Back](../README.md)
+
+## Further directories
+
+- [Dielectric](Dielectric/README.md)

@@ -6,3 +6,7 @@
 | [Na2SO42/](./Na2SO42/README.md) | Na2(SO4)2 example           |
 
 [Back](../README.md)
+
+## Further directories
+
+- [preader](preader/README.md)

@@ -293,4 +293,9 @@ phonopy --dim="2 2 1" --qpoints="0 0 0" --writedm --pa auto
 phonopy-pdielec-born > BORN_PDIELEC
 ```
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [Primitive_cell](Primitive_cell/README.md)
+- [Standard_cell](Standard_cell/README.md)

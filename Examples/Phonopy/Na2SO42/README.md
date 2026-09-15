@@ -58,3 +58,7 @@ phononwebsite at http://henriquemiranda.github.io/phononwebsite/
 
 
 [Back](../README.md)
+
+## Further directories
+
+- [VASP](VASP/README.md)

@@ -46,3 +46,10 @@ Compares calculations on Na2(SO4)2 using different DFT methods.
 The results of the calculations are collected together as separate directories in Na2SO42/
 
 [Back](../README.md)
+
+## Further directories
+
+- [Andrew_EMA](Andrew_EMA/README.md)
+- [Marimo](Marimo/README.md)
+- [MgO](MgO/README.md)
+- [Na2SO42](Na2SO42/README.md)

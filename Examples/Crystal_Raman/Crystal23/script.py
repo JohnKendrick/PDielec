@@ -1,15 +1,16 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switch_scenario(0,scenarioType="Powder Raman")
+self.notebook.switch_scenario(0,scenarioType="Crystal Raman")
 #
 #
 #
 tab = self.notebook.mainTab
-tab.settings['Program'] = 'Crystal'
-tab.settings['Output file name'] = 'opt_raman.out'
+tab.settings['Program'] = 'Castep'
+tab.settings['Output file name'] = 'raman.castep'
 tab.settings['Excel file name'] = 'results.xlsx'
 tab.settings['Script file name'] = 'script.py'
+tab.settings['QM program'] = ''
 tab.settings['Compatibility mode'] = 'Linux'
 #
 #
@@ -19,42 +20,247 @@ tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
-tab.settings['Spectroscopy type'] = 'Powder Raman'
+tab.settings['Spectroscopy type'] = 'Crystal Raman'
 tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 #
+# Scenario 1: Coherent depth integration - thin film 1 um, p-in unpolarised
+# Tests: per-layer Coherent mode, Coherent amplitude depth, backscattering
 #
 tab = self.notebook.scenarios[0]
-tab.settings['Legend'] = 'Scenario 1'
-tab.settings['Scenario type'] = 'Unset'
+tab.settings['Legend'] = 'Coherent depth - thin film 1um p-in'
+tab.settings['Scenario type'] = 'Crystal Raman'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
-tab.settings['Matrix'] = 'ptfe'
-tab.settings['Matrix density'] =  2.2
-tab.settings['Matrix permittivity'] =  (2+0j)
-tab.settings['Bubble radius'] =  30.0
-tab.settings['Bubble volume fraction'] =  0.0
-tab.settings['Mass fraction'] =  0.22095054239489945
-tab.settings['Volume fraction'] =  0.1
-tab.settings['Particle size(mu)'] =  0.0001
-tab.settings['Particle size distribution sigma(mu)'] =  0.0
-tab.settings['Ellipsoid a/b'] =  1.0
-tab.settings['Unique direction - h'] =  0
-tab.settings['Unique direction - k'] =  0
-tab.settings['Unique direction - l'] =  1
-tab.settings['Mass or volume fraction'] = 'volume'
-tab.settings['Effective medium method'] = 'Maxwell-Garnett'
-tab.settings['Particle shape'] = 'Sphere'
-tab.settings['ATR material refractive index'] =  4.0
-tab.settings['ATR theta'] =  45.0
-tab.settings['ATR S polarisation fraction'] =  0.5
-tab.settings['Raman laser wavelength'] =  785
-tab.settings['Raman laser polarisation'] = 'HV'
-tab.settings['Raman temperature'] =  298.0
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  0.0
+tab.settings['Mode'] = 'Scattering matrix'
+tab.settings['Frequency units'] = 'wavenumber'
+tab.settings['Partially incoherent samples'] =  20
+tab.settings['Percentage partial incoherence'] =  0
+tab.settings['Filter kernel size'] =  1
+tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'air']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0]
+tab.settings['Layer thicknesses'] =  [1, 1.0, 1]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Laser wavelength nm'] =  532.0
+tab.settings['Incident polarisation'] = 'p'
+tab.settings['Detected polarisation'] = 'unpolarised'
+tab.settings['Temperature K'] =  298.0
+tab.settings['GL point density'] =  20.0
+tab.settings['Collection side'] = 'superstrate'
+tab.settings['Collection angle'] =  -1.0
+tab.settings['Depth coherence'] = 'Coherent amplitude'
+tab.settings['Layer combination'] = 'Incoherent intensities'
+tab.settings['Approximate ES'] =  False
+tab.settings['Coalesce equivalent layers'] =  True
+tab.settings['Raman electro-optic term'] =  True
+tab.settings['Layer NAC mode'] = 'none'
+tab.settings['Modal pair combination'] = 'Group q channels'
+tab.settings['Porto notation'] = ''
+#
+# Scenario 2: Incoherent depth integration - thick slab 100 um, Incoherent(non-reflective) layer
+# Tests: Incoherent (non-reflective) layer mode, Incoherent intensity depth
+#
+self.notebook.add_scenario(scenarioType="Crystal Raman")
+tab = self.notebook.scenarios[1]
+tab.settings['Legend'] = 'Incoherent depth - thick slab 100um'
+tab.settings['Scenario type'] = 'Crystal Raman'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  0.0
+tab.settings['Mode'] = 'Scattering matrix'
+tab.settings['Frequency units'] = 'wavenumber'
+tab.settings['Partially incoherent samples'] =  20
+tab.settings['Percentage partial incoherence'] =  0
+tab.settings['Filter kernel size'] =  1
+tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'air']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0]
+tab.settings['Layer thicknesses'] =  [1, 100.0, 1]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Incoherent (non-reflective)', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Laser wavelength nm'] =  532.0
+tab.settings['Incident polarisation'] = 'p'
+tab.settings['Detected polarisation'] = 'unpolarised'
+tab.settings['Temperature K'] =  298.0
+tab.settings['GL point density'] =  20.0
+tab.settings['Collection side'] = 'superstrate'
+tab.settings['Collection angle'] =  -1.0
+tab.settings['Depth coherence'] = 'Incoherent intensity'
+tab.settings['Layer combination'] = 'Incoherent intensities'
+tab.settings['Approximate ES'] =  False
+tab.settings['Coalesce equivalent layers'] =  True
+tab.settings['Raman electro-optic term'] =  True
+tab.settings['Layer NAC mode'] = 'none'
+tab.settings['Modal pair combination'] = 'Group q channels'
+tab.settings['Porto notation'] = ''
+#
+# Scenario 3: s-polarisation in, s-polarisation out - thin film 1 um
+# Tests: different polarisation channel selection
+#
+self.notebook.add_scenario(scenarioType="Crystal Raman")
+tab = self.notebook.scenarios[2]
+tab.settings['Legend'] = 's-in s-out polarisation 1um'
+tab.settings['Scenario type'] = 'Crystal Raman'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  0.0
+tab.settings['Mode'] = 'Scattering matrix'
+tab.settings['Frequency units'] = 'wavenumber'
+tab.settings['Partially incoherent samples'] =  20
+tab.settings['Percentage partial incoherence'] =  0
+tab.settings['Filter kernel size'] =  1
+tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'air']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0]
+tab.settings['Layer thicknesses'] =  [1, 1.0, 1]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Laser wavelength nm'] =  532.0
+tab.settings['Incident polarisation'] = 's'
+tab.settings['Detected polarisation'] = 's'
+tab.settings['Temperature K'] =  298.0
+tab.settings['GL point density'] =  20.0
+tab.settings['Collection side'] = 'superstrate'
+tab.settings['Collection angle'] =  -1.0
+tab.settings['Depth coherence'] = 'Coherent amplitude'
+tab.settings['Layer combination'] = 'Incoherent intensities'
+tab.settings['Approximate ES'] =  False
+tab.settings['Coalesce equivalent layers'] =  True
+tab.settings['Raman electro-optic term'] =  True
+tab.settings['Layer NAC mode'] = 'none'
+tab.settings['Modal pair combination'] = 'Group q channels'
+tab.settings['Porto notation'] = ''
+#
+# Scenario 4: Forward scattering (substrate collection side) - thin film 1 um
+# Tests: substrate collection (transmission geometry)
+#
+self.notebook.add_scenario(scenarioType="Crystal Raman")
+tab = self.notebook.scenarios[3]
+tab.settings['Legend'] = 'Forward scattering - substrate collection 1um'
+tab.settings['Scenario type'] = 'Crystal Raman'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  0.0
+tab.settings['Mode'] = 'Scattering matrix'
+tab.settings['Frequency units'] = 'wavenumber'
+tab.settings['Partially incoherent samples'] =  20
+tab.settings['Percentage partial incoherence'] =  0
+tab.settings['Filter kernel size'] =  1
+tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'air']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0]
+tab.settings['Layer thicknesses'] =  [1, 1.0, 1]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Laser wavelength nm'] =  532.0
+tab.settings['Incident polarisation'] = 'p'
+tab.settings['Detected polarisation'] = 'unpolarised'
+tab.settings['Temperature K'] =  298.0
+tab.settings['GL point density'] =  20.0
+tab.settings['Collection side'] = 'substrate'
+tab.settings['Collection angle'] =  -1.0
+tab.settings['Depth coherence'] = 'Coherent amplitude'
+tab.settings['Layer combination'] = 'Incoherent intensities'
+tab.settings['Approximate ES'] =  False
+tab.settings['Coalesce equivalent layers'] =  True
+tab.settings['Raman electro-optic term'] =  True
+tab.settings['Layer NAC mode'] = 'none'
+tab.settings['Modal pair combination'] = 'Group q channels'
+tab.settings['Porto notation'] = ''
+#
+# Scenario 5: Oblique incidence 45 degrees - thin film 1 um
+# Tests: non-zero angle of incidence
+#
+self.notebook.add_scenario(scenarioType="Crystal Raman")
+tab = self.notebook.scenarios[4]
+tab.settings['Legend'] = 'Oblique incidence 45deg p-in 1um'
+tab.settings['Scenario type'] = 'Crystal Raman'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  45.0
+tab.settings['Mode'] = 'Scattering matrix'
+tab.settings['Frequency units'] = 'wavenumber'
+tab.settings['Partially incoherent samples'] =  20
+tab.settings['Percentage partial incoherence'] =  0
+tab.settings['Filter kernel size'] =  1
+tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'air']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0]
+tab.settings['Layer thicknesses'] =  [1, 1.0, 1]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Laser wavelength nm'] =  532.0
+tab.settings['Incident polarisation'] = 'p'
+tab.settings['Detected polarisation'] = 'unpolarised'
+tab.settings['Temperature K'] =  298.0
+tab.settings['GL point density'] =  20.0
+tab.settings['Collection side'] = 'superstrate'
+tab.settings['Collection angle'] =  -1.0
+tab.settings['Depth coherence'] = 'Coherent amplitude'
+tab.settings['Layer combination'] = 'Incoherent intensities'
+tab.settings['Approximate ES'] =  False
+tab.settings['Coalesce equivalent layers'] =  True
+tab.settings['Raman electro-optic term'] =  True
+tab.settings['Layer NAC mode'] = 'none'
+tab.settings['Modal pair combination'] = 'Group q channels'
+tab.settings['Porto notation'] = ''
+#
+# Scenario 6: NAC geometry correction - thin film 1 um
+# Tests: Layer NAC mode = 'geometry' (Snell's law phonon q)
+#
+self.notebook.add_scenario(scenarioType="Crystal Raman")
+tab = self.notebook.scenarios[5]
+tab.settings['Legend'] = 'NAC geometry correction 1um'
+tab.settings['Scenario type'] = 'Crystal Raman'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  0.0
+tab.settings['Mode'] = 'Scattering matrix'
+tab.settings['Frequency units'] = 'wavenumber'
+tab.settings['Partially incoherent samples'] =  20
+tab.settings['Percentage partial incoherence'] =  0
+tab.settings['Filter kernel size'] =  1
+tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'air']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0]
+tab.settings['Layer thicknesses'] =  [1, 1.0, 1]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Laser wavelength nm'] =  532.0
+tab.settings['Incident polarisation'] = 'p'
+tab.settings['Detected polarisation'] = 'unpolarised'
+tab.settings['Temperature K'] =  298.0
+tab.settings['GL point density'] =  20.0
+tab.settings['Collection side'] = 'superstrate'
+tab.settings['Collection angle'] =  -1.0
+tab.settings['Depth coherence'] = 'Coherent amplitude'
+tab.settings['Layer combination'] = 'Incoherent intensities'
+tab.settings['Approximate ES'] =  False
+tab.settings['Coalesce equivalent layers'] =  True
+tab.settings['Raman electro-optic term'] =  True
+tab.settings['Layer NAC mode'] = 'geometry'
+tab.settings['Modal pair combination'] = 'Group q channels'
+tab.settings['Porto notation'] = ''
 #
 #
 tab = self.notebook.analysisTab
-tab.settings['Radii'] =  [1.22, 0.66]
+tab.settings['Radii'] =  [0.66, 1.22]
 tab.settings['Minimum frequency'] =  -1
-tab.settings['Maximum frequency'] =  400
+tab.settings['Maximum frequency'] =  700
 tab.settings['title'] = 'Analysis'
 tab.settings['Covalent radius scaling'] =  1.1
 tab.settings['Bonding tolerance'] =  0.1
@@ -102,11 +308,9 @@ tab.settings['Scenario index'] =  0
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  1.0
-tab.settings['Maximum frequency'] =  200
-tab.settings['Frequency increment'] =  0.2
+tab.settings['Maximum frequency'] =  700.0
+tab.settings['Frequency increment'] =  0.5
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
-tab.settings['Plot type'] = 'Powder Raman'
+tab.settings['Plot type'] = 'Crystal Raman'
 tab.settings['Frequency unit'] = 'wavenumber'
-tab.settings['concentration'] =  34.50251501489597
-tab.settings['cell concentration'] =  34.50251501489597

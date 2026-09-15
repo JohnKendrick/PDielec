@@ -13,3 +13,7 @@
  | [Sapphire/](./Sapphire/README.md) | An FPSQ model of Sapphire is used for single crystal calculations |
 
 [Back](../README.md)
+
+## Further directories
+
+- [cp2k](cp2k/README.md)
