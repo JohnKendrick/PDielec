@@ -18,7 +18,7 @@ Other Software Components
 preader
 =======
 
-preader is a 'helper' program that uses the underlying modules of PDielec to read output files and summarise the results of several MM/QM packages.  The program can be used to perform some straightforward calculations.  
+preader is a 'helper' program that uses the underlying modules of PDielec to read output files and summarise the results of several MM/QM packages.  The program can be used to perform some straightforward calculations.
 For instance, projection of any remaining centre-of-mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also, the masses used in the calculation of the dynamical matrix can be altered.
 Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases, preader will read geometry optimisation runs.
 
@@ -28,9 +28,12 @@ Command options
 Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarised below. Some options may be repeated.
 
   - \-program program_name
-       | Program_name can be “abinit”,  "aims", “castep”, “crystal”, “gulp”, “qe”, “experiment”, "phonopy", or “vasp” and specifies the program which generated the results to be analysed
+       | Program_name can be “abinit”,  "aims", “castep”, “crystal”, “gulp”, “qe”, “experiment”, "phonopy", “vasp”, “finite_field”, or “auto” and specifies the program which generated the results to be analysed
   - \-neutral
        | Impose neutrality on the Born charge matrices
+  - \-spectroscopy infrared|raman
+       | Select IR intensities (default) or Raman activities; Raman requires tensor data.
+
   - \-nocalculation
        | No calculations are performed.  This results in a single line of output with just information from the program.  If -eckart, -mass, -masses, -neutral or -crystal have -hessian crystal have been specified they will be ignored
   - \-eckart
@@ -61,7 +64,7 @@ There are examples of preader being used in the Examples/'Package'/preader subdi
 aims-pdielec-born
 =================
 
-To generate the Born charges from an FHI-Aims calculation of infrared vibrational frequencies and intensities, the aims-pdielec-born command reads the single point FHI-Aims calculations of forces and polarisation at the displaced geometries created by the get_vibrations.py script from the FHI-Aims distribution. 
+To generate the Born charges from an FHI-Aims calculation of infrared vibrational frequencies and intensities, the aims-pdielec-born command reads the single point FHI-Aims calculations of forces and polarisation at the displaced geometries created by the get_vibrations.py script from the FHI-Aims distribution.
 The aims-pdielec-born writes a single file BORN_PDIELEC containing the Born charges for all atoms in the unit cell.
 
 In the example given below the FHI-Aims command ``python get_vibrations.py na2so42`` was used to generate the perturbations.
@@ -90,7 +93,7 @@ The command line options are:
 phonopy-pdielec-born
 ====================
 
-The BORN file calculated by Phonopy holds the Born charges for the symmetry unique atoms in the unit-cell.  
+The BORN file calculated by Phonopy holds the Born charges for the symmetry unique atoms in the unit-cell.
 To allow PDielec to use these Born charges the phonopy-pdielec-born command reads the phonopy.yaml and BORN files and writes out the full set of charges to the terminal.
 PDGui expects the Born charges to be in the file BORN_PDIELEC.  An example of the use of the script is given below.
 
@@ -131,7 +134,7 @@ vibanalysis
 
 The vibanalysis command provides an interface the vibAnalysis package of Philipe Teixeira.  This package provides Vibrational Mode Decomposition of the phonon modes using a variety of methods including; Vibrational Mode Projection (VMP), Vibrational Mode Linear Decomposition (VMLD) and Vibrational Mode Automatic Relevance Determination (VMARD).  By default VMARD is used.
 
-The package options can be determined using; 
+The package options can be determined using;
 
 .. code-block:: bash
 
@@ -142,77 +145,131 @@ which will analyse a VASP and a CASTEP phonon calculation output to produce a su
 
 pdmake
 ======
-The testing suite is run using the the pdmake command.  The command line options are summarised below.
+Use ``./pdmake`` from the repository root, or the installed ``pdmake``
+command. Running it without arguments prints help. Run named test suites from
+a checkout containing ``Examples/`` and ``PDielec/Tests/``.
 
-+-----------------------+----------------------------------------+
-| Command line option   | Description                            |
-+=======================+========================================+
-| test                  | Run all the tests                      |
-| tests                 | Run all the tests                      |
-+-----------------------+----------------------------------------+
-| test-preader          | Run preader tests                      |
-+-----------------------+----------------------------------------+
-| test-pdgui            | Run pdgui tests                        |
-+-----------------------+----------------------------------------+
-| test-p2cif            | Run p2cif tests                        |
-+-----------------------+----------------------------------------+
-| test-vibanalysis      | Run vibanalysis tests                  |
-+-----------------------+----------------------------------------+
-| benchmarks            | Run the benchmark suite (no testing)   |
-+-----------------------+----------------------------------------+
-| --regenerate          | Regenerate the reference data          |
-+-----------------------+----------------------------------------+
-| --root adirectory     | Set the root directory to adirectory   |
-+-----------------------+----------------------------------------+
-| --directory           | Print the directory name for the test  |
-+-----------------------+----------------------------------------+
-| --debug               | Switch on debugging                    |
-+-----------------------+----------------------------------------+
-| --view                | Use windowing with pdgui               |
-+-----------------------+----------------------------------------+
-| --padding 60          | Set the size of the title field to 60  |
-+-----------------------+----------------------------------------+
-| --usesystem           | Force the use of system executables    |
-+-----------------------+----------------------------------------+
+.. list-table:: Commands and options
+   :header-rows: 1
+   :widths: 35 65
 
+   * - Command or option
+     - Behaviour
+   * - ``tests (or test)``
+     - Run the complete PDielec/Tests pytest suite first, including General, then the example regression suites.
+   * - ``test-pytests``
+     - Run the complete PDielec/Tests directory, equivalent to python -m pytest PDielec/Tests. New test directories are discovered automatically.
+   * - ``test-pytest-powder_raman, test-pytest-crystal_raman, test-pytest-materials, test-pytest-calculator, test-pytest-unitcell, test-pytest-gtmcore, test-pytest-constants``
+     - Run one configured pytest group.
+   * - ``test-powder_ir, test-crystal_ir, test-powder_raman, test-crystal_raman, test-atr``
+     - Run the corresponding example group.
+   * - ``test-preader, test-p2cif, test-vibanalysis, test-pdgui``
+     - Run the selected tool’s example suite.
+   * - ``benchmarks``
+     - Run benchmark examples without reference comparison.
+   * - ``pypi``
+     - Remove existing build artifacts and build source and wheel archives using python -m build. Does not upload; unavailable on Windows.
+   * - ``clean``
+     - Remove generated regression outputs below the root directory. Review the working tree first; unavailable on Windows.
+   * - ``install``
+     - Legacy Unix script-copying installation. Prefer the package installation described in the installation guide.
+   * - ``scripts DIRECTORY``
+     - Choose the destination for the legacy install action (default ~/bin).
+   * - ``--root DIRECTORY``
+     - Set the repository root used to locate tests and examples.
+   * - ``--view command.pdmake``
+     - Open a PDGui recipe interactively.
+   * - ``--regenerate command.pdmake``
+     - Replace reference outputs for the recipe; review differences first.
+   * - ``--cpus N, --threads N, --threading``
+     - Pass CPU count, thread count or threading selection to PDGui.
+   * - ``--debug, --padding N``
+     - Enable debugging or set the printed title width.
+   * - ``-usesystem``
+     - Use installed executables instead of local scripts.
 
-The command can also be use in an examples directory.  There will be a file, command.pdmake, which contains the instructions to run the test.
-The first line of the file is a title that is used to identify the test.
-The second line is the command to be used in the test followed by the command parameters required.
+A recipe's first line is its title. Subsequent command lines invoke ``pdgui``,
+``preader``, ``p2cif`` or ``vibanalysis`` with their arguments. Run recipes from
+the directory containing their input files; for example::
 
-Examples of the use of the command are;
+    cd Examples/Powder_Raman/Castep
+    pdmake command.pdmake
+    pdmake --view command.pdmake
 
-.. code-block:: bash
+PDGui regression recipes load ``script.py`` and write ``results.xlsx``.
+Use separate invocations for recipes and named suites when execution order
+matters. The current parser accepts ``-usesystem`` with one leading dash.
+The ``--directory`` display flag should be placed last, because the current
+parser skips the following argument.
 
-        pdmake                              # prints a help summary
-        pdmake tests                        # runs all the tests
-        pdmake command.pdmake               # runs the test in command.pdmake
-        pdmake --debug command.pdmake       # run the test with debugging
-        pdmake --view command.pdmake        # Bring up the GUI interface
-
-
+Excel regression comparisons include the *Settings* worksheet, including
+Raman activity values and their unit headers, as well as the result sheets.
+A checked sheet present in only one of the reference and generated workbooks
+is reported as an error. Sheets absent from both are skipped, so infrared
+examples do not require Raman result sheets. *Main* and *Scenarios* remain
+excluded from the standard comparison. When running ``checkexcel`` directly,
+use ``-settings`` to include Settings or ``-f`` to include all three metadata
+sheets. Review reported differences before regenerating reference workbooks.
 
 
 MM/QM Interfaces
 ================
 
-The packages have interfaces to six solid-state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009`, FHI-Aims :cite:`Blum2009` and Phonopy :cite:`Togo2015`.  In addition, an interface is available for GULP :cite:`Gale2003` which is a force field based solid-state code. Finally, an interface has been written to an 'experiment' file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
+The packages have interfaces to solid-state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009`, FHI-Aims :cite:`Blum2009` and Phonopy :cite:`Togo2015`.  In addition, an interface is available for GULP :cite:`Gale2003` which is a force field based solid-state code. Finally, an interface has been written to an 'experiment' file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here.
 The package used for the calculation is described by the -program option. In addition, a file name is given which contains the output to be processed by PDielec.
 
-VASP 
+Raman input availability
+------------------------
+
+Phonon data alone do not supply Raman tensors. The following examples show
+Raman-capable inputs; nonlinear susceptibility is additionally needed for an
+electro-optic correction. Availability depends on what was calculated and saved.
+
+.. list-table:: Raman inputs and companion data
+   :header-rows: 1
+   :widths: 20 45 35
+
+   * - Reader
+     - Raman data
+     - Nonlinear susceptibility
+   * - CASTEP
+     - Mode derivatives or atomic polar tensors in output; matching phonon file.
+     - Read when present in output.
+   * - CRYSTAL
+     - ``TENS_RAMAN.DAT`` alongside the frequency output.
+     - ``CHI2.DAT`` or susceptibility in output.
+   * - ABINIT
+     - Raman response in output; see ``Examples/Powder_Raman/AbInit``.
+     - Read when present in output.
+   * - Quantum ESPRESSO
+     - Phonon log and/or ``tensors.xml``, with matching mode data.
+     - Read from the log or XML when present.
+   * - VASP
+     - Optional ``Raman-Tensors.yaml`` alongside the electronic/phonon output.
+     - Use a complete finite-field JSON dataset for the EO workflow.
+   * - Finite field
+     - JSON tensors or Cartesian dielectric derivatives with mode data.
+     - Optional ``chi2`` in JSON; see the input-format reference below.
+
+VASP
 -----
 The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
 pdgui is able to parse the OUTCAR file for the information it needs, but it is recommended to use vasprun.xml as this file gives greater precision to the required variables.
-The latest version of VASP tested with this package is VASP 5.4.4. VASP 6 is known to be incompatible.
+The repository includes VASP 5 and VASP 6 examples, including ``Examples/Vasp/Vasp6``. Raman calculations can supply the optional companion file ``Raman-Tensors.yaml``; see ``Examples/Powder_Raman/Vasp``.
 
-CASTEP 
+CASTEP
 -------
 The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit-cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
-The latest version of CASTEP tested with the package is CASTEP 24.1, later versions of CASTEP may also be compatible.
+The repository includes CASTEP 24.1 and 25.12 Raman examples. The reader supports mode polarizability derivatives and the newer atomic polar tensors, together with nonlinear susceptibility when present in the output.
 
-CRYSTAL 
+CRYSTAL
 -------
-The name on the command line is a file ending in .out, containing the output of a CRYSTAL run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL.
+The name on the command line is a file ending in .out, containing the output of a CRYSTAL run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory containing the CRYSTAL output, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL.
+
+For Raman calculations, place ``TENS_RAMAN.DAT`` alongside the output file.
+The optional ``CHI2.DAT`` supplies nonlinear susceptibility for electro-optic
+corrections; the reader also recognises susceptibility in the main output.
+See ``Examples/Powder_Raman/Crystal23`` and ``Examples/Crystal_Raman/Crystal23``.
 
 Versions of CRYSTAL which are known to be compatible with the package are CRYSTAL14, 17, 21 & 23 later versions may be compatible also.
 
@@ -221,15 +278,18 @@ ABINIT
 The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimised geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
 The package should be compatible with AbInit 8 to 10.
 
-QE 
+QE
 ---
 The output file is the dynamical matrix file, specified by "filedyn" in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution.  It is assumed that this files ends with a ".dynG" extension.
-The latest version of QE for which the package has been tested is version 7.3.1.  
+For Raman calculations, the reader supports tensors in the phonon log and
+companion ``tensors.xml``. Keep matching dynamical-matrix and tensor files
+together; see ``Examples/Powder_Raman/QE`` for a complete dataset.
+The latest version of QE for which the package has been tested is version 7.3.1.
 pdgui is capable of reading the output log file of pwscf and ph, but it is recommended to use the pwscf.xml and the .dynG file written by ph and pwscf.
 
 FHI-Aims
 --------
-The vibrational frequencies and intensities calculation uses FHI-Aims and the get_vibrations.py script which is distributed with it.  
+The vibrational frequencies and intensities calculation uses FHI-Aims and the get_vibrations.py script which is distributed with it.
 After determining the optimised cell, the script is used to generate perturbed single point calculations of the forces and the polarization which are then used to provide data for numerical differentiation to form the hessian and the IR intensities.
 An example of the output from these calculations is provided in Examples/FHI-Aims/Na2SO42.
 In this example, PDGui requires the hessian.na2so42.dat, masses.na2so42.dat, geometry.in and the Dielectric/ directory.
@@ -237,7 +297,7 @@ The Dielectric/ directory contains an FHI-Aims calculation of the electronic per
 
 The any file with the "in" or "dat" extension will cause PDGui to assume the DFT package used to create the files in that directory was the FHI-Aims package.  The current version of FHI-Aims which is supported is 250822.
 
-PHONOPY 
+PHONOPY
 -------
 Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs.
 The second parameter for the --program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;
@@ -252,10 +312,10 @@ where the DISP-\* directories are where the VASP calculation was performed. Fina
 
         phonopy --dim="1 1 1" --qpoints="0 0 0" --writedm
 
-To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit-cell and these can be calculated using the scripts provided by Phonopy.  The Phonopy scripts (for instance phonopy_vasp_born) to write a file called BORN, which contains the symmetry unique Born charges.  
+To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit-cell and these can be calculated using the scripts provided by Phonopy.  The Phonopy scripts (for instance phonopy_vasp_born) to write a file called BORN, which contains the symmetry unique Born charges.
 PDielec provides a script `phonopy-pdielec-born` which takes the BORN file and writes a file called BORN_PDIELEC containing the Born charges for all the atoms in the cell.
 
-GULP 
+GULP
 -----
 
 The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit-cell. The keywords; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.
@@ -281,15 +341,15 @@ The general format of an experimental file is best shown by an example;::
       Si 0.0
        O 0.0
     unitcell 9
-      Si 0.000000000000000   0.477290000000000   0.333333333333333 
-      Si 0.477290000000000   0.000000000000000   0.666666666666667 
-      Si 0.522710000000000   0.522710000000000   0.000000000000000 
-       O 0.160740000000000   0.745703000000000   0.537333670000000 
-       O 0.584963000000000   0.839260000000000   0.870667003333333 
-       O 0.415037000000000   0.254297000000000   0.795999663333333 
-       O 0.745703000000000   0.160740000000000   0.462666330000000 
-       O 0.839260000000000   0.584963000000000   0.129332996666667 
-       O 0.254297000000000   0.415037000000000   0.204000336666667 
+      Si 0.000000000000000   0.477290000000000   0.333333333333333
+      Si 0.477290000000000   0.000000000000000   0.666666666666667
+      Si 0.522710000000000   0.522710000000000   0.000000000000000
+       O 0.160740000000000   0.745703000000000   0.537333670000000
+       O 0.584963000000000   0.839260000000000   0.870667003333333
+       O 0.415037000000000   0.254297000000000   0.795999663333333
+       O 0.745703000000000   0.160740000000000   0.462666330000000
+       O 0.839260000000000   0.584963000000000   0.129332996666667
+       O 0.254297000000000   0.415037000000000   0.204000336666667
     epsinf
     2.296 0.0   0.0
     0.0   2.296 0.0
@@ -319,7 +379,7 @@ The general format of an experimental file is best shown by an example;::
       497.9     3.1        553.6    2.8
       773.7     5.4        789.9    6.3
      1073.0     6.2       1238.7   12.4
-   
+
 The file starts with a definition of the lattice, the first number being a lattice constant followed by three lines specifying the a, b, and c directions of the unit-cell.
 
 The next directive specifies the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.
@@ -342,7 +402,7 @@ The constant model defines a frequency-independent permittivity.  The data for s
     0.0      0.0      2.0+0.1j
 
 This would specify an isotropic permittivity with some absorption.
-    
+
 
 
 
@@ -354,7 +414,7 @@ The FPSQ model defines a frequency-dependent permittivity using the Four Paramet
     fpsq
     xx 6
     # E Phonon modes
-    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) 
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO)
       391.5     1.0        403.0    1.0
       454.0     2.6        510.5    1.0
       695.9     4.9        698.4    4.0
@@ -363,7 +423,7 @@ The FPSQ model defines a frequency-dependent permittivity using the Four Paramet
      1157.2     6.2       1154.9    6.1
     yy 6
     # E Phonon modes
-    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) 
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO)
       391.5     1.0        403.0    1.0
       454.0     2.6        510.5    1.0
       695.9     4.9        698.4    4.0
@@ -372,12 +432,12 @@ The FPSQ model defines a frequency-dependent permittivity using the Four Paramet
      1157.2     6.2       1154.9    6.1
     zz 4
     # A2 Phonon modes
-    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) 
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO)
       360.7     1.0        384.8    1.0
       497.9     3.1        553.6    2.8
       773.7     5.4        789.9    6.3
      1073.0     6.2       1238.7   12.4
-   
+
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
 .. _fpsq:
@@ -403,7 +463,7 @@ The drude-lorentz model defines a frequency-dependent permittivity.  An example 
     zz 2
       413.7           1050.0  22.2
       652.2             90.0  64.6
-   
+
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
 .. _drude:
@@ -435,7 +495,7 @@ The entry type may be one of: "Constant refractive index", "Constant permittivit
 For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui but can be used to describe the contents of the column.
 The contents of these columns depend upon the entry type.
 
-For tabulated entries, column A must have the frequency in |cm-1| and in ascending order.  
+For tabulated entries, column A must have the frequency in |cm-1| and in ascending order.
 Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm-1|.
 
    Summary of columns used for different Entry modes
@@ -455,8 +515,8 @@ Column B is not used by PDGui but because refractive indices are often tabulated
    +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
    | Drude-Lorentz              | xx/yy/zz    | :math:`{\epsilon}_{\infty}` | :math:`{\Omega}_j`    | :math:`{S_j}`         | :math:`{\sigma_j}`    |                       |
    +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
-  
- 
+
+
    Summary of columns G and H
 
    +-----------------------+----------------------------------------+
@@ -506,6 +566,13 @@ The Format of the Output Spreadsheet
 ====================================
 
 The Excel spreadsheet, which can be written by the program, contains details of the system being analysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission. It also includes mode frequencies, IR intensities and Raman activities when Raman data are available.
+Result sheets are conditional on the scenario types present: powder IR/ATR,
+crystal IR, powder Raman and crystal Raman each supply their corresponding
+sheets. Spectrum frequencies are exported in cm⁻¹. Plotting-tab spectrum
+renormalisation is a display operation and is not applied by the spreadsheet
+exporter. The Settings sheet contains base mode data, rather than the optional
+NAC/EO diagnostics displayed in the frequency table.
+
 The spreadsheet is divided into different sheets;
 
 -   **Main**
@@ -513,7 +580,7 @@ The spreadsheet is divided into different sheets;
 
 -   **Settings**
         | The information here comes from the Settings Tab: masses, permittivities and the frequencies that will be used in subsequent calculations. These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms. Each mode has an inclusion flag and a linewidth (Sigma), followed by its frequency, IR intensity, integrated molar absorption and absorption maximum. The Raman columns give total, parallel and perpendicular activities, labelled ``Raman R_total``, ``Raman R_parallel`` and ``Raman R_perp``. The activity values use the units selected by *Raman activity units* in the Settings Tab: Å⁴/amu for polarizability-volume activities or Å/amu for the internal convention. The column headers indicate the selected units. These activities describe the individual modes, rather than the Raman spectrum calculated for a particular scenario.
-  
+
 -   **Analysis**
         | The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.
 
@@ -527,10 +594,10 @@ The spreadsheet is divided into different sheets;
         | The absorption for each powder scenario is tabulated as a function frequency.  The units are |cm-1|
 
 -   **Powder Real Permittivity**
-        | The real component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
+        | The real component of the complex permittivity for each powder scenario is tabulated as a function frequency.
 
 -   **Powder Imaginary Permittivity**
-        | The imaginary component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
+        | The imaginary component of the complex permittivity for each powder scenario is tabulated as a function frequency.
 
 -   **Powder ATR Reflectance**
         | The extinction coefficient associated with the attenuated total reflectance for each powder scenario is tabulated as a function frequency.  See :ref:`ATR_theory` for more details.
@@ -554,3 +621,11 @@ The spreadsheet is divided into different sheets;
         | The imaginary components of the crystal permittivity tensor are tabulated as a function of frequency.
 
 
+-   **Powder Molar Absorption (mols)** and **Powder Molar Absorption (atoms)**
+        | The selected molecular or atomic molar definition adds the corresponding sheet, in |Lmol-1cm-1|, alongside the unit-cell sheet.
+
+-   **Crystal A_p** and **Crystal A_s**
+        | Dimensionless p- and s-polarised absorptance for crystal infrared scenarios, alongside reflectance and transmittance.
+
+-   **Powder Raman** and **Crystal Raman**
+        | Raman spectra for the corresponding scenarios, in arbitrary intensity units, as a function of Raman shift in cm⁻¹. These include scenario-dependent geometry and line broadening; they are distinct from the Settings-sheet mode activities in Å⁴/amu or Å/amu.

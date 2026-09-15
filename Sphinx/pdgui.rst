@@ -744,8 +744,8 @@ change the plotted set.
 Pza* the initial incident polarisation, both as Cartesian vectors. Pza should
 be perpendicular to Rz; changing Rz adjusts Pza accordingly. The read-only
 *Orthogonality* value is their dot product and should be zero.
-*Phonon q̂ direction* independently sets the crystal-frame direction for the
-LO and EO corrections. *Sync q̂ to Rz* copies the light axis, appropriate to
+*Phonon* :math:`\hat{q}` *direction* independently sets the crystal-frame direction for the
+LO and EO corrections. *Sync* :math:`\hat{q}` *to Rz* copies the light axis, appropriate to
 the backscattering approximation.
 
 *Include EO correction (χ² available)* is shown when nonlinear response is

@@ -333,7 +333,7 @@ AlN on Silicon and Silicon Carbide
 
 This is an example of a multilayer system where two layers are anisotropic.
 In an experimental and theoretical study of the infrared reflectance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke :cite:`MacMillan1993` used a four parameter semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
-In the Examples/Experimental/AlN directory the file AlN.exp provides an experimental file that describes their FPSQ model in a format the PDGui can use.
+In the Examples/Experiment/AlN directory the file AlN.exp provides an experimental file that describes their FPSQ model in a format the PDGui can use.
 In addition, parameters for the permittivities of silicon and 6H-SiC are given in the TestDataBase.xlsx file in the same directory.  
 The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities are calculated from an experimental refractive index.
 References for the origins of the models and experimental data are given in the spreadsheet.

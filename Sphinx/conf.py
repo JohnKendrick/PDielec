@@ -46,6 +46,19 @@ preamble = r'''
 \usepackage{float}
 \usepackage{parskip}
 \usepackage{amsmath}
+% Scientific Unicode in prose; HTML continues to use the original characters.
+\DeclareUnicodeCharacter{207B}{\ensuremath{^{-}}}
+\DeclareUnicodeCharacter{207D}{\ensuremath{^{(}}}
+\DeclareUnicodeCharacter{207E}{\ensuremath{^{)}}}
+\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
+\DeclareUnicodeCharacter{03B1}{\ensuremath{\alpha}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\DeclareUnicodeCharacter{2010}{-}
+\setlength{\headheight}{14pt}
 \newcommand{\water}{H_{2}O}
 \newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
 \newcommand{\tensorbf}[1]{\bar{\bar{\boldsymbol{#1}}}}
@@ -128,7 +141,14 @@ def skip_member(app, what, name, obj, skip, options):
     if obj.name in skipping_list:
         skip = True
     return skip
+def enable_pdf_image_conversion(app):
+    """Load the optional converter only for PDF/LaTeX builds."""
+    if app.builder.format == "latex":
+        app.setup_extension("sphinxcontrib.rsvgconverter")
+
+
 def setup(sphinx):
+    sphinx.connect("builder-inited", enable_pdf_image_conversion)
     sphinx.connect("autoapi-skip-member", skip_member)
     sphinx.connect('html-page-context', add_pdgui_section_navigation, priority=800)
 
@@ -171,7 +191,7 @@ language = 'en'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = ["_build", "index-latex.rst", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'default'

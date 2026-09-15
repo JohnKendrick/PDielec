@@ -24,6 +24,12 @@ html:
 	    --exclude='*.doctree' --exclude='environment.pickle' --exclude='*.bak' \
 	    "$(BUILDDIR)/html/" ../docs/
 
+.PHONY: pdf
+# Build the PDF before copying it; a failed build must not publish an old manual.
+pdf:
+	$(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	cp "$(BUILDDIR)/latex/PDielec.pdf" ../PDielec.pdf
+
 .PHONY: help Makefile
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

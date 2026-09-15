@@ -1,3 +1,5 @@
+:orphan:
+
 .. include:: preamble.txt
 
 ========
@@ -10,11 +12,15 @@ Contents
 
    introduction
    software
-   theory
+   installation
+   migration
+   pdgui
+   theory_powder
+   theory_single_crystal
+   PowderRaman
+   CrystalRaman
    analysis
    application_notes_1
-   
-.. bibliography:: pdielec.bib
-   :style: plain
-
-
+   application_notes_2
+   application_notes_3
+   zreferences

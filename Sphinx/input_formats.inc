@@ -128,7 +128,7 @@ finite-field workflow using VASP, Quantum ESPRESSO, CASTEP or another program
 can write this common format. PDielec reads the results; it does not launch
 the displaced or finite-field electronic-structure calculations.
 
-Choose *Finite_field* and *Finite field (*.json)* in the *Main Tab* file
+Choose *Finite field* and *Finite field (*.json)* in the *Main Tab* file
 selector, or use::
 
     pdgui finite_field zno-raman.json -spectroscopy crystal_raman
@@ -273,5 +273,6 @@ CASTEP mode tensors. It is a format-conversion example, not a claim of a new
 finite-difference calculation. Its provenance is stored in the file.
 ``Sphinx/tools/make_format_examples.py`` regenerates these examples and checks
 that they can be read. Existing finite-difference workflow data can also be
-found in ``Examples/Powder_Raman/Finite_difference`` and
-``Examples/Crystal_Raman/Finite_field``.
+found in ``Examples/Powder_Raman/Finite_difference``. Reader regression recipes are
+in ``Examples/Finite_difference/preader`` and
+``Examples/Finite_difference/preader_raman``.

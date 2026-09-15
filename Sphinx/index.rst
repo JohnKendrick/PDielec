@@ -23,6 +23,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 
    introduction
    installation
+   migration
    pdgui
    software
 
