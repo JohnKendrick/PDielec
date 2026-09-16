@@ -23,6 +23,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 
    introduction
    installation
+   migration
    pdgui
    software
 
@@ -43,6 +44,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
    application_notes_1
    application_notes_2
    application_notes_3
+   application_notes_gan
 
 .. toctree::
    :caption: API

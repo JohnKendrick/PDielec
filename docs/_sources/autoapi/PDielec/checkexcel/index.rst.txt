@@ -45,6 +45,7 @@ Module Contents
    - Two file paths.
    - Optional `-thresh` followed by a float value for the threshold of numerical difference (default is 1.0E-3).
    - Optional `-f` flag for forcing a full comparison including typically excluded sheets.
+   - Optional `-settings` flag to include Settings without Main and Scenarios.
 
    Returns
    -------

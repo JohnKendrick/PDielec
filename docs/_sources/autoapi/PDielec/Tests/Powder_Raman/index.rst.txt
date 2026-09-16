@@ -25,6 +25,7 @@ Submodules
    /autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index
    /autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index
    /autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index
+   /autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index
    /autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index
    /autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index
 

@@ -199,6 +199,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
@@ -219,6 +220,7 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -317,6 +319,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -333,6 +338,7 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -436,12 +442,19 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements-and-installation-choices">Requirements and installation choices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#conda">Conda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#pypi">PyPi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-linux">GitHub - Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-windows">GitHub - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#id1">PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-github">Installing from GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#package-dependencies">Package dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#github-pdielec-directory-structure">GitHub - PDielec directory structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migration.html#python-scripts">Python scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html#crystal-raman-geometry">Crystal Raman geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html#spreadsheets-and-regression-references">Spreadsheets and regression references</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pdgui.html">PDGui</a><ul>
@@ -550,6 +563,16 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l2"><a class="reference internal" href="application_notes_3.html#al2o3">α-Al<sub>2</sub>O<sub>3</sub></a></li>
 <li class="toctree-l2"><a class="reference internal" href="application_notes_3.html#primitive-cell-phonopy">Primitive Cell Phonopy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="application_notes_3.html#comparison-of-results">Comparison of results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#preparing-the-calculation">Preparing the calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#powder-raman-separate-orientation-averaging-from-particle-effects">1. Powder Raman: separate orientation averaging from particle effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#crystal-raman-near-forward-scattering-and-modal-pairs">2. Crystal Raman: near-forward scattering and modal pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#irmer-et-al-an-aperture-scan-and-a-finite-q-comparison">3. Irmer et al.: an aperture scan and a finite-q comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#what-does-an-incoherent-final-state-mean">4. What does an incoherent final state mean?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#reproducing-the-note-and-preparing-documentation">Reproducing the note and preparing documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#references">References</a></li>
 </ul>
 </li>
 </ul>

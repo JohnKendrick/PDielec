@@ -195,6 +195,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
@@ -215,6 +216,7 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -313,6 +315,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -329,6 +334,7 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -587,6 +593,8 @@
         <li><a href="autoapi/PDielec/PhononFinalStateResolver/index.html#PDielec.PhononFinalStateResolver.PhononFinalStateResolver._coherent_key">_coherent_key() (PDielec.PhononFinalStateResolver.PhononFinalStateResolver method)</a>
 </li>
         <li><a href="autoapi/PDielec/GUI/SettingsTab/index.html#PDielec.GUI.SettingsTab.SettingsTab._collect_raman_polar_data">_collect_raman_polar_data() (PDielec.GUI.SettingsTab.SettingsTab method)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison._compare">_compare() (in module PDielec.Tests.General.test_excel_comparison)</a>
 </li>
         <li><a href="autoapi/test_B_dielectric_tabulated/index.html#test_B_dielectric_tabulated._complex_eps">_complex_eps() (in module test_B_dielectric_tabulated)</a>
 </li>
@@ -1752,6 +1760,8 @@
           <li><a href="autoapi/test_D_material_classes/index.html#test_D_material_classes.TestD7TabulatedMaterial._vs">(test_D_material_classes.TestD7TabulatedMaterial attribute)</a>
 </li>
         </ul></li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison._workbook">_workbook() (in module PDielec.Tests.General.test_excel_comparison)</a>
+</li>
         <li><a href="autoapi/PDielec/GUI/RamanPolarWindow/index.html#PDielec.GUI.RamanPolarWindow.RamanPolarWindow._Z_mat">_Z_mat (PDielec.GUI.RamanPolarWindow.RamanPolarWindow attribute)</a>
 </li>
     </ul></td>
@@ -4224,6 +4234,12 @@
 </li>
           <li><a href="autoapi/PDielec/Tests/General/index.html#module-PDielec.Tests.General">PDielec.Tests.General</a>
 </li>
+          <li><a href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html#module-PDielec.Tests.General.test_azimuthal_plot_compatibility">PDielec.Tests.General.test_azimuthal_plot_compatibility</a>
+</li>
+          <li><a href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html#module-PDielec.Tests.General.test_cli_release_smoke">PDielec.Tests.General.test_cli_release_smoke</a>
+</li>
+          <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#module-PDielec.Tests.General.test_excel_comparison">PDielec.Tests.General.test_excel_comparison</a>
+</li>
           <li><a href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html#module-PDielec.Tests.General.test_experiment_reader_defaults">PDielec.Tests.General.test_experiment_reader_defaults</a>
 </li>
           <li><a href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html#module-PDielec.Tests.General.test_gui_program_names">PDielec.Tests.General.test_gui_program_names</a>
@@ -4251,6 +4267,8 @@
           <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html#module-PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a>
 </li>
           <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html#module-PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a>
+</li>
+          <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html#module-PDielec.Tests.Powder_Raman.test_L_spreadsheet_units">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a>
 </li>
           <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html#module-PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a>
 </li>
@@ -5536,8 +5554,6 @@
           <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html#module-PDielec.Tests.Crystal_Raman.test_I_modal_pairs">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction
 
@@ -5552,6 +5568,8 @@
           <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index.html#module-PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping
 
@@ -5672,6 +5690,27 @@
 </li>
         </ul></li>
         <li>
+    PDielec.Tests.General.test_azimuthal_plot_compatibility
+
+        <ul>
+          <li><a href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html#module-PDielec.Tests.General.test_azimuthal_plot_compatibility">module</a>
+</li>
+        </ul></li>
+        <li>
+    PDielec.Tests.General.test_cli_release_smoke
+
+        <ul>
+          <li><a href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html#module-PDielec.Tests.General.test_cli_release_smoke">module</a>
+</li>
+        </ul></li>
+        <li>
+    PDielec.Tests.General.test_excel_comparison
+
+        <ul>
+          <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#module-PDielec.Tests.General.test_excel_comparison">module</a>
+</li>
+        </ul></li>
+        <li>
     PDielec.Tests.General.test_experiment_reader_defaults
 
         <ul>
@@ -5767,6 +5806,13 @@
 
         <ul>
           <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html#module-PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor">module</a>
+</li>
+        </ul></li>
+        <li>
+    PDielec.Tests.Powder_Raman.test_L_spreadsheet_units
+
+        <ul>
+          <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html#module-PDielec.Tests.Powder_Raman.test_L_spreadsheet_units">module</a>
 </li>
         </ul></li>
         <li>
@@ -7035,6 +7081,8 @@
 </li>
         <li><a href="autoapi/test_D_system/index.html#test_D_system.TestD1LayerManagement.test_add_two_layers">test_add_two_layers() (test_D_system.TestD1LayerManagement method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html#PDielec.Tests.General.test_pdmake_arguments.test_aggregate_runs_complete_pytest_suite_first">test_aggregate_runs_complete_pytest_suite_first() (in module PDielec.Tests.General.test_pdmake_arguments)</a>
+</li>
         <li><a href="autoapi/test_A_math_utilities/index.html#test_A_math_utilities.TestA3ExactInv3x3.test_agrees_with_numpy_inv">test_agrees_with_numpy_inv() (test_A_math_utilities.TestA3ExactInv3x3 method)</a>
 
         <ul>
@@ -7064,6 +7112,8 @@
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html#PDielec.Tests.Crystal_Raman.test_C_layered_consistency.TestC1RamanInactiveLayers.test_all_inactive_multilayer_gives_zero">test_all_inactive_multilayer_gives_zero() (PDielec.Tests.Crystal_Raman.test_C_layered_consistency.TestC1RamanInactiveLayers method)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index.html#PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping.TestGroupDegenerateModes.test_all_merged_when_within_tol">test_all_merged_when_within_tol() (PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping.TestGroupDegenerateModes method)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html#PDielec.Tests.General.test_azimuthal_plot_compatibility.test_all_mode_lines_render_without_legacy_colormap_api">test_all_mode_lines_render_without_legacy_colormap_api() (in module PDielec.Tests.General.test_azimuthal_plot_compatibility)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index.html#PDielec.Tests.Calculator.test_F_normal_modes.TestF4RamanIntensities.test_all_non_negative">test_all_non_negative() (PDielec.Tests.Calculator.test_F_normal_modes.TestF4RamanIntensities method)</a>
 </li>
@@ -7659,6 +7709,8 @@
 </li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_E_frequency/index.html#PDielec.Tests.Crystal_Raman.test_E_frequency.TestE2LargeRamanShift.test_dispersive_layer_gives_different_result">test_dispersive_layer_gives_different_result() (PDielec.Tests.Crystal_Raman.test_E_frequency.TestE2LargeRamanShift method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html#PDielec.Tests.General.test_pdmake_arguments.test_display_flags_preserve_following_suite">test_display_flags_preserve_following_suite() (in module PDielec.Tests.General.test_pdmake_arguments)</a>
+</li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html#PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver.test_dominant_to_by_nac_path_reports_overlap">test_dominant_to_by_nac_path_reports_overlap() (in module PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Calculator/test_E_euler_angles/index.html#PDielec.Tests.Calculator.test_E_euler_angles.TestE3EulerRotation.test_double_application">test_double_application() (PDielec.Tests.Calculator.test_E_euler_angles.TestE3EulerRotation method)</a>
@@ -7793,6 +7845,8 @@
         <li><a href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html#PDielec.Tests.General.test_experiment_reader_defaults.test_experimental_reader_disables_optical_symmetrisation_by_default">test_experimental_reader_disables_optical_symmetrisation_by_default() (in module PDielec.Tests.General.test_experiment_reader_defaults)</a>
 </li>
         <li><a href="autoapi/test_C_smatrix/index.html#test_C_smatrix.TestC3CalculateS.test_explicit_s_from_unit_matrix">test_explicit_s_from_unit_matrix() (test_C_smatrix.TestC3CalculateS method)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html#PDielec.Tests.Powder_Raman.test_L_spreadsheet_units.test_exported_raman_activities_use_settings_table_units">test_exported_raman_activities_use_settings_table_units() (in module PDielec.Tests.Powder_Raman.test_L_spreadsheet_units)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html#PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit.TestFS16PhasMatchingFactor.test_F_continuity_at_zero_delta_k">test_F_continuity_at_zero_delta_k() (PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit.TestFS16PhasMatchingFactor method)</a>
 </li>
@@ -7986,6 +8040,8 @@
 </li>
         <li><a href="autoapi/test_B_derived_constants/index.html#test_B_derived_constants.TestB1Hbar.test_hbar_positive">test_hbar_positive() (test_B_derived_constants.TestB1Hbar method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html#PDielec.Tests.General.test_cli_release_smoke.test_help_exits_without_reading_input">test_help_exits_without_reading_input() (in module PDielec.Tests.General.test_cli_release_smoke)</a>
+</li>
         <li><a href="autoapi/test_E_fresnel/index.html#test_E_fresnel.TestE3AbsorbingMedium.test_high_absorption_R_approaches_1">test_high_absorption_R_approaches_1() (test_E_fresnel.TestE3AbsorbingMedium method)</a>
 </li>
         <li><a href="autoapi/test_C_dielectric_lorentzian/index.html#test_C_dielectric_lorentzian.TestC4FPSQIsotropic.test_high_frequency_approaches_eps_inf">test_high_frequency_approaches_eps_inf() (test_C_dielectric_lorentzian.TestC4FPSQIsotropic method)</a>
@@ -8093,6 +8149,8 @@
         <li><a href="autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index.html#PDielec.Tests.Calculator.test_I_raman_mass_normalization.test_incomplete_reference_cannot_support_mass_reprojection">test_incomplete_reference_cannot_support_mass_reprojection() (in module PDielec.Tests.Calculator.test_I_raman_mass_normalization)</a>
 </li>
         <li><a href="autoapi/test_E_fresnel/index.html#test_E_fresnel.TestE3AbsorbingMedium.test_increasing_kappa_increases_R">test_increasing_kappa_increases_R() (test_E_fresnel.TestE3AbsorbingMedium method)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html#PDielec.Tests.General.test_pdmake_arguments.test_individual_pytest_group_remains_available">test_individual_pytest_group_remains_available() (in module PDielec.Tests.General.test_pdmake_arguments)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html#PDielec.Tests.Crystal_Raman.test_I_modal_pairs.TestI7NACFrequencyShift.test_intensity_at_nac_mode_not_tiny">test_intensity_at_nac_mode_not_tiny() (PDielec.Tests.Crystal_Raman.test_I_modal_pairs.TestI7NACFrequencyShift method)</a>
 </li>
@@ -8304,6 +8362,10 @@
 </li>
         <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html#PDielec.Tests.Powder_Raman.test_N_missing_polar_data.test_missing_born_fallback_matches_zero_charge_orientation_average">test_missing_born_fallback_matches_zero_charge_orientation_average() (in module PDielec.Tests.Powder_Raman.test_N_missing_polar_data)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison.test_missing_checked_sheet_is_an_error">test_missing_checked_sheet_is_an_error() (in module PDielec.Tests.General.test_excel_comparison)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison.test_missing_sheet_does_not_hide_spectrum_errors">test_missing_sheet_does_not_hide_spectrum_errors() (in module PDielec.Tests.General.test_excel_comparison)</a>
+</li>
         <li><a href="autoapi/test_E_symmetry/index.html#test_E_symmetry.TestE4GetAtomicNumbers.test_mixed_elements">test_mixed_elements() (test_E_symmetry.TestE4GetAtomicNumbers method)</a>
 </li>
         <li><a href="autoapi/test_A_length_units/index.html#test_A_length_units.TestA1ConvertLengthUnits.test_mm_to_nm">test_mm_to_nm() (test_A_length_units.TestA1ConvertLengthUnits method)</a>
@@ -8460,6 +8522,8 @@
 </li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html#PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver.test_optical_subspace_grouping_uses_connected_components_not_seed_only">test_optical_subspace_grouping_uses_connected_components_not_seed_only() (in module PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison.test_optional_sheets_absent_from_both_are_not_errors">test_optional_sheets_absent_from_both_are_not_errors() (in module PDielec.Tests.General.test_excel_comparison)</a>
+</li>
         <li><a href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html#PDielec.Tests.Powder_Raman.test_N_missing_polar_data.test_orientation_path_excludes_invalid_stokes_modes">test_orientation_path_excludes_invalid_stokes_modes() (in module PDielec.Tests.Powder_Raman.test_N_missing_polar_data)</a>
 </li>
         <li><a href="autoapi/test_G_coordinate_io/index.html#test_G_coordinate_io.TestG2BoundingBox.test_origin_option">test_origin_option() (test_G_coordinate_io.TestG2BoundingBox method)</a>
@@ -8504,7 +8568,11 @@
 </li>
         <li><a href="autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index.html#PDielec.Tests.Calculator.test_G_effective_medium.TestG5InternalFieldTensor.test_particle_raman_tensor_shape">test_particle_raman_tensor_shape() (PDielec.Tests.Calculator.test_G_effective_medium.TestG5InternalFieldTensor method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html#PDielec.Tests.General.test_cli_release_smoke.test_pdcompare_without_excel_output">test_pdcompare_without_excel_output() (in module PDielec.Tests.General.test_cli_release_smoke)</a>
+</li>
         <li><a href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_pdgui">test_pdgui (in module PDielec.pdmake)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison.test_pdmake_checks_settings_and_reports_missing_sheets">test_pdmake_checks_settings_and_reports_missing_sheets() (in module PDielec.Tests.General.test_excel_comparison)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index.html#PDielec.Tests.Calculator.test_H_absorption_spectrum.TestH1AbsorptionFromModeIntensities.test_peak_at_mode_frequency">test_peak_at_mode_frequency() (PDielec.Tests.Calculator.test_H_absorption_spectrum.TestH1AbsorptionFromModeIntensities method)</a>
 </li>
@@ -8844,6 +8912,8 @@
 </li>
         <li><a href="autoapi/test_C_coordinates/index.html#test_C_coordinates.TestC4SetCoordinates.test_set_xyz_updates_nions">test_set_xyz_updates_nions() (test_C_coordinates.TestC4SetCoordinates method)</a>
 </li>
+        <li><a href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html#PDielec.Tests.General.test_excel_comparison.test_settings_values_and_headers_are_checked">test_settings_values_and_headers_are_checked() (in module PDielec.Tests.General.test_excel_comparison)</a>
+</li>
         <li><a href="autoapi/PDielec/Tests/Crystal_Raman/test_D_reciprocity/index.html#PDielec.Tests.Crystal_Raman.test_D_reciprocity.TestD1ReciprocityApproximate.test_several_symmetric_tensors">test_several_symmetric_tensors() (PDielec.Tests.Crystal_Raman.test_D_reciprocity.TestD1ReciprocityApproximate method)</a>
 </li>
         <li><a href="autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index.html#PDielec.Tests.Calculator.test_A_tensor_utilities.TestA1DiagonalTensor.test_shape">test_shape() (PDielec.Tests.Calculator.test_A_tensor_utilities.TestA1DiagonalTensor method)</a>
@@ -9063,6 +9133,8 @@
         <li><a href="autoapi/test_D_volume_density/index.html#test_D_volume_density.TestD1GetVolume.test_volume_positive">test_volume_positive() (test_D_volume_density.TestD1GetVolume method)</a>
 </li>
         <li><a href="autoapi/test_D_volume_density/index.html#test_D_volume_density.TestD1GetVolume.test_volume_scales_with_units">test_volume_scales_with_units() (test_D_volume_density.TestD1GetVolume method)</a>
+</li>
+        <li><a href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html#PDielec.Tests.General.test_azimuthal_plot_compatibility.test_waterfall_renders_without_legacy_colormap_api">test_waterfall_renders_without_legacy_colormap_api() (in module PDielec.Tests.General.test_azimuthal_plot_compatibility)</a>
 </li>
         <li><a href="autoapi/test_B_derived_constants/index.html#test_B_derived_constants.TestB5Wavenumber.test_wavenumber_consistent_with_planck">test_wavenumber_consistent_with_planck() (test_B_derived_constants.TestB5Wavenumber method)</a>
 </li>

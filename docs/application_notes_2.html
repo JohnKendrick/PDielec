@@ -199,6 +199,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
@@ -219,6 +220,7 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -317,6 +319,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -333,6 +338,7 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -499,7 +505,7 @@ The FPSQ model is defined by the following equation.</p>
 <p>Forsterite is an orthosilicate belonging to an orthorhombic space group.  The permittivity matrix is diagonal when the x, y and z axes of the crystal are aligned with a, b and c axes of the unit cell.  The parameters for the FPSQ model are summarised in the tables below.</p>
 <div class="table-wrapper styled-table docutils container" id="tab-optical">
 <table class="styled-table docutils align-default" id="tab-optical">
-<caption><span class="caption-number">Table 21 </span><span class="caption-text">Optical Permittivity</span><a class="headerlink" href="#tab-optical" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 23 </span><span class="caption-text">Optical Permittivity</span><a class="headerlink" href="#tab-optical" title="Link to this table">¶</a></caption>
 <tbody>
 <tr class="row-odd"><td class="center-align no-left-divider single-right-divider"></td>
 <td class="right-align single-left-divider single-right-divider"><p>X</p></td>
@@ -526,7 +532,7 @@ The FPSQ model is defined by the following equation.</p>
 </div>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-fpsqa">
 <table class="styled-table docutils align-default" id="tab-fpsqa">
-<caption><span class="caption-number">Table 22 </span><span class="caption-text">FPSQ Model Parameters for Forsterite</span><a class="headerlink" href="#tab-fpsqa" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 24 </span><span class="caption-text">FPSQ Model Parameters for Forsterite</span><a class="headerlink" href="#tab-fpsqa" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 8.3%" />
 <col style="width: 8.3%" />
@@ -900,7 +906,7 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
 <h2>AlN on Silicon and Silicon Carbide<a class="headerlink" href="#aln-on-silicon-and-silicon-carbide" title="Link to this heading">¶</a></h2>
 <p>This is an example of a multilayer system where two layers are anisotropic.
 In an experimental and theoretical study of the infrared reflectance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke <span id="id7">[<a class="reference internal" href="zreferences.html#id84" title="M. F. MacMillan, R. P. Devaty, and W. J. Choyke. Infrared reflectance of thin aluminum nitride films on various substrates. Applied Physics Letters, 62(7):750–752, 1993. doi:10.1063/1.108595.">77</a>]</span> used a four parameter semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
-In the Examples/Experimental/AlN directory the file AlN.exp provides an experimental file that describes their FPSQ model in a format the PDGui can use.
+In the Examples/Experiment/AlN directory the file AlN.exp provides an experimental file that describes their FPSQ model in a format the PDGui can use.
 In addition, parameters for the permittivities of silicon and 6H-SiC are given in the TestDataBase.xlsx file in the same directory.
 The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities are calculated from an experimental refractive index.
 References for the origins of the models and experimental data are given in the spreadsheet.</p>

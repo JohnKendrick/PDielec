@@ -15,6 +15,9 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
+   /autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index
+   /autoapi/PDielec/Tests/General/test_cli_release_smoke/index
+   /autoapi/PDielec/Tests/General/test_excel_comparison/index
    /autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index
    /autoapi/PDielec/Tests/General/test_gui_program_names/index
    /autoapi/PDielec/Tests/General/test_pdmake_arguments/index

@@ -199,6 +199,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
@@ -219,6 +220,7 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -317,6 +319,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -333,6 +338,7 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -441,7 +447,7 @@ Unlike PDGui it is not necessary to have performed a full calculation of the dyn
 <div><ul>
 <li><dl>
 <dt>-program program_name</dt><dd><div class="line-block">
-<div class="line">Program_name can be “abinit”,  “aims”, “castep”, “crystal”, “gulp”, “qe”, “experiment”, “phonopy”, or “vasp” and specifies the program which generated the results to be analysed</div>
+<div class="line">Program_name can be “abinit”,  “aims”, “castep”, “crystal”, “gulp”, “qe”, “experiment”, “phonopy”, “vasp”, “finite_field”, or “auto” and specifies the program which generated the results to be analysed</div>
 </div>
 </dd>
 </dl>
@@ -449,6 +455,13 @@ Unlike PDGui it is not necessary to have performed a full calculation of the dyn
 <li><dl>
 <dt>-neutral</dt><dd><div class="line-block">
 <div class="line">Impose neutrality on the Born charge matrices</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>-spectroscopy infrared|raman</dt><dd><div class="line-block">
+<div class="line">Select IR intensities (default) or Raman activities; Raman requires tensor data.</div>
 </div>
 </dd>
 </dl>
@@ -660,99 +673,217 @@ vibanalysis<span class="w"> </span>phonon.castep
 </section>
 <section id="pdmake">
 <h2>pdmake<a class="headerlink" href="#pdmake" title="Link to this heading">¶</a></h2>
-<p>The testing suite is run using the the pdmake command.  The command line options are summarised below.</p>
-<div class="table-wrapper docutils container">
-<table class="docutils align-default">
+<p>Use <code class="docutils literal notranslate"><span class="pre">./pdmake</span></code> from the repository root, or the installed <code class="docutils literal notranslate"><span class="pre">pdmake</span></code>
+command. Running it without arguments prints help. Run named test suites from
+a checkout containing <code class="docutils literal notranslate"><span class="pre">Examples/</span></code> and <code class="docutils literal notranslate"><span class="pre">PDielec/Tests/</span></code>.</p>
+<div class="table-wrapper colwidths-given docutils container" id="id10">
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">Commands and options</span><a class="headerlink" href="#id10" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
+</colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Command line option</p></th>
-<th class="head"><p>Description</p></th>
+<tr class="row-odd"><th class="head"><p>Command or option</p></th>
+<th class="head"><p>Behaviour</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>test
-tests</p></td>
-<td><p>Run all the tests
-Run all the tests</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tests</span> <span class="pre">(or</span> <span class="pre">test)</span></code></p></td>
+<td><p>Run the complete PDielec/Tests pytest suite first, including General, then the example regression suites.</p></td>
 </tr>
-<tr class="row-odd"><td><p>test-preader</p></td>
-<td><p>Run preader tests</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test-pytests</span></code></p></td>
+<td><p>Run the complete PDielec/Tests directory, equivalent to python -m pytest PDielec/Tests. New test directories are discovered automatically.</p></td>
 </tr>
-<tr class="row-even"><td><p>test-pdgui</p></td>
-<td><p>Run pdgui tests</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test-pytest-powder_raman,</span> <span class="pre">test-pytest-crystal_raman,</span> <span class="pre">test-pytest-materials,</span> <span class="pre">test-pytest-calculator,</span> <span class="pre">test-pytest-unitcell,</span> <span class="pre">test-pytest-gtmcore,</span> <span class="pre">test-pytest-constants</span></code></p></td>
+<td><p>Run one configured pytest group.</p></td>
 </tr>
-<tr class="row-odd"><td><p>test-p2cif</p></td>
-<td><p>Run p2cif tests</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test-powder_ir,</span> <span class="pre">test-crystal_ir,</span> <span class="pre">test-powder_raman,</span> <span class="pre">test-crystal_raman,</span> <span class="pre">test-atr</span></code></p></td>
+<td><p>Run the corresponding example group.</p></td>
 </tr>
-<tr class="row-even"><td><p>test-vibanalysis</p></td>
-<td><p>Run vibanalysis tests</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test-preader,</span> <span class="pre">test-p2cif,</span> <span class="pre">test-vibanalysis,</span> <span class="pre">test-pdgui</span></code></p></td>
+<td><p>Run the selected tool’s example suite.</p></td>
 </tr>
-<tr class="row-odd"><td><p>benchmarks</p></td>
-<td><p>Run the benchmark suite (no testing)</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">benchmarks</span></code></p></td>
+<td><p>Run benchmark examples without reference comparison.</p></td>
 </tr>
-<tr class="row-even"><td><p>–regenerate</p></td>
-<td><p>Regenerate the reference data</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pypi</span></code></p></td>
+<td><p>Remove existing build artifacts and build source and wheel archives using python -m build. Does not upload; unavailable on Windows.</p></td>
 </tr>
-<tr class="row-odd"><td><p>–root adirectory</p></td>
-<td><p>Set the root directory to adirectory</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">clean</span></code></p></td>
+<td><p>Remove generated regression outputs below the root directory. Review the working tree first; unavailable on Windows.</p></td>
 </tr>
-<tr class="row-even"><td><p>–directory</p></td>
-<td><p>Print the directory name for the test</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">install</span></code></p></td>
+<td><p>Legacy Unix script-copying installation. Prefer the package installation described in the installation guide.</p></td>
 </tr>
-<tr class="row-odd"><td><p>–debug</p></td>
-<td><p>Switch on debugging</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">scripts</span> <span class="pre">DIRECTORY</span></code></p></td>
+<td><p>Choose the destination for the legacy install action (default ~/bin).</p></td>
 </tr>
-<tr class="row-even"><td><p>–view</p></td>
-<td><p>Use windowing with pdgui</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--root</span> <span class="pre">DIRECTORY</span></code></p></td>
+<td><p>Set the repository root used to locate tests and examples.</p></td>
 </tr>
-<tr class="row-odd"><td><p>–padding 60</p></td>
-<td><p>Set the size of the title field to 60</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--view</span> <span class="pre">command.pdmake</span></code></p></td>
+<td><p>Open a PDGui recipe interactively.</p></td>
 </tr>
-<tr class="row-even"><td><p>–usesystem</p></td>
-<td><p>Force the use of system executables</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--regenerate</span> <span class="pre">command.pdmake</span></code></p></td>
+<td><p>Replace reference outputs for the recipe; review differences first.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--cpus</span> <span class="pre">N,</span> <span class="pre">--threads</span> <span class="pre">N,</span> <span class="pre">--threading</span></code></p></td>
+<td><p>Pass CPU count, thread count or threading selection to PDGui.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--debug,</span> <span class="pre">--padding</span> <span class="pre">N</span></code></p></td>
+<td><p>Enable debugging or set the printed title width.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--usesystem,</span> <span class="pre">-usesystem</span></code></p></td>
+<td><p>Use installed executables instead of local scripts.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--directory,</span> <span class="pre">-directory</span></code></p></td>
+<td><p>Display directory names as test titles. This flag takes no value.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The command can also be use in an examples directory.  There will be a file, command.pdmake, which contains the instructions to run the test.
-The first line of the file is a title that is used to identify the test.
-The second line is the command to be used in the test followed by the command parameters required.</p>
-<p>Examples of the use of the command are;</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pdmake<span class="w">                              </span><span class="c1"># prints a help summary</span>
-pdmake<span class="w"> </span>tests<span class="w">                        </span><span class="c1"># runs all the tests</span>
-pdmake<span class="w"> </span>command.pdmake<span class="w">               </span><span class="c1"># runs the test in command.pdmake</span>
-pdmake<span class="w"> </span>--debug<span class="w"> </span>command.pdmake<span class="w">       </span><span class="c1"># run the test with debugging</span>
-pdmake<span class="w"> </span>--view<span class="w"> </span>command.pdmake<span class="w">        </span><span class="c1"># Bring up the GUI interface</span>
+<p>A recipe’s first line is its title. Subsequent command lines invoke <code class="docutils literal notranslate"><span class="pre">pdgui</span></code>,
+<code class="docutils literal notranslate"><span class="pre">preader</span></code>, <code class="docutils literal notranslate"><span class="pre">p2cif</span></code> or <code class="docutils literal notranslate"><span class="pre">vibanalysis</span></code> with their arguments. Run recipes from
+the directory containing their input files; for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Examples</span><span class="o">/</span><span class="n">Powder_Raman</span><span class="o">/</span><span class="n">Castep</span>
+<span class="n">pdmake</span> <span class="n">command</span><span class="o">.</span><span class="n">pdmake</span>
+<span class="n">pdmake</span> <span class="o">--</span><span class="n">view</span> <span class="n">command</span><span class="o">.</span><span class="n">pdmake</span>
 </pre></div>
 </div>
+<p>PDGui regression recipes load <code class="docutils literal notranslate"><span class="pre">script.py</span></code> and write <code class="docutils literal notranslate"><span class="pre">results.xlsx</span></code>.
+Use separate invocations for recipes and named suites when execution order
+matters.</p>
+<p>Excel regression comparisons include the <em>Settings</em> worksheet, including
+Raman activity values and their unit headers, as well as the result sheets.
+A checked sheet present in only one of the reference and generated workbooks
+is reported as an error. Sheets absent from both are skipped, so infrared
+examples do not require Raman result sheets. <em>Main</em> and <em>Scenarios</em> remain
+excluded from the standard comparison. When running <code class="docutils literal notranslate"><span class="pre">checkexcel</span></code> directly,
+use <code class="docutils literal notranslate"><span class="pre">-settings</span></code> to include Settings or <code class="docutils literal notranslate"><span class="pre">-f</span></code> to include all three metadata
+sheets. Review reported differences before regenerating reference workbooks.</p>
 </section>
 <section id="mm-qm-interfaces">
 <h2>MM/QM Interfaces<a class="headerlink" href="#mm-qm-interfaces" title="Link to this heading">¶</a></h2>
-<p>The packages have interfaces to six solid-state QM codes, VASP <span id="id1">[<a class="reference internal" href="zreferences.html#id58" title="Jurgen Hafner. Ab-initio simulations of materials using VASP: Density-functional theory and beyond. Journal of Computational Chemistry, 29(13):2044-2078, Oct 2008. arXiv:NIHMS150003, doi:10.1002/jcc.21057.">1</a>]</span>, CASTEP <span id="id2">[<a class="reference internal" href="zreferences.html#id64" title="Stewart J. Clark, Matthew D. Segall, Chris J. Pickard, Phil J. Hasnip, M. I J Probert, Keith Refson, and Mike C. Payne. First principles methods using CASTEP. Zeitschrift fur Kristallographie, 220(5-6):567-570, Jan 2005. doi:10.1524/zkri.220.5.567.65075.">2</a>]</span>, CRYSTAL14 <span id="id3">[<a class="reference internal" href="zreferences.html#id17" title="Roberto Dovesi, Roberto Orlando, Alessandro Erba, Claudio M. Zicovich-Wilson, Bartolomeo Civalleri, Silvia Casassa, Lorenzo Maschio, Matteo Ferrabone, Marco De La Pierre, Philippe D'Arco, Yves Noel, Mauro Causa, Michel Rerat, and Bernard Kirtman. CRYSTAL14: A program for the ab initio investigation of crystalline solids. International Journal of Quantum Chemistry, 114(19):1287-1317, Oct 2014. doi:10.1002/qua.24658.">3</a>]</span>, Abinit <span id="id4">[<a class="reference internal" href="zreferences.html#id16" title="X. Gonze, F. Jollet, F. Abreu Araujo, D. Adams, B. Amadon, T. Applencourt, C. Audouze, J. M. Beuken, J. Bieder, A. Bokhanchuk, E. Bousquet, F. Bruneval, D. Caliste, M. Cote, F. Dahm, F. Da Pieve, M. Delaveau, M. Di Gennaro, B. Dorado, C. Espejo, G. Geneste, L. Genovese, A. Gerossier, M. Giantomassi, Y. Gillet, D. R. Hamann, L. He, G. Jomard, J. Laflamme Janssen, S. Le Roux, A. Levitt, A. Lherbier, F. Liu, I. Lukacevic, A. Martin, C. Martins, M. J.T. Oliveira, S. Ponce, Y. Pouillon, T. Rangel, G. M. Rignanese, A. H. Romero, B. Rousseau, O. Rubel, A. A. Shukri, M. Stankovski, M. Torrent, M. J. Van Setten, B. Van Troeye, M. J. Verstraete, D. Waroquiers, J. Wiktor, B. Xu, A. Zhou, and J. W. Zwanziger. Recent developments in the ABINIT software package. Computer Physics Communications, 205:106-131, Aug 2016. doi:10.1016/j.cpc.2016.04.003.">4</a>]</span>, Quantum Espresso <span id="id5">[<a class="reference internal" href="zreferences.html#id15" title="Paolo Giannozzi, Stefano Baroni, Nicola Bonini, Matteo Calandra, Roberto Car, Carlo Cavazzoni, Davide Ceresoli, Guido L. Chiarotti, Matteo Cococcioni, Ismaila Dabo, Andrea Dal Corso, Stefano De Gironcoli, Stefano Fabris, Guido Fratesi, Ralph Gebauer, Uwe Gerstmann, Christos Gougoussis, Anton Kokalj, Michele Lazzeri, Layla Martin-Samos, Nicola Marzari, Francesco Mauri, Riccardo Mazzarello, Stefano Paolini, Alfredo Pasquarello, Lorenzo Paulatto, Carlo Sbraccia, Sandro Scandolo, Gabriele Sclauzero, Ari P. Seitsonen, Alexander Smogunov, Paolo Umari, and Renata M. Wentzcovitch. QUANTUM ESPRESSO: A modular and open-source software project for quantum simulations of materials. Journal of Physics Condensed Matter, 21(39):395502, Sep 2009. arXiv:0906.2569, doi:10.1088/0953-8984/21/39/395502.">6</a>]</span>, FHI-Aims <span id="id6">[<a class="reference internal" href="zreferences.html#id2" title="Volker Blum, Ralf Gehrke, Felix Hanke, Paula Havu, Ville Havu, Xinguo Ren, Karsten Reuter, and Matthias Scheffler. Ab initio molecular simulations with numeric atom-centered orbitals. Computer Physics Communications, 180(11):2175–2196, 2009. URL: http://dx.doi.org/10.1016/j.cpc.2009.06.022, doi:10.1016/j.cpc.2009.06.022.">5</a>]</span> and Phonopy <span id="id7">[<a class="reference internal" href="zreferences.html#id14" title="Atsushi Togo and Isao Tanaka. First principles phonon calculations in materials science. Scripta Materialia, 108:1-5, Nov 2015. arXiv:1506.08498, doi:10.1016/j.scriptamat.2015.07.021.">7</a>]</span>.  In addition, an interface is available for GULP <span id="id8">[<a class="reference internal" href="zreferences.html#id13" title="Julian D. Gale and Andrew L. Rohl. The General Utility Lattice Program (GULP). Molecular Simulation, 29(5):291-341, May 2003. arXiv:arXiv:1011.1669v3, doi:10.1080/0892702031000104887.">8</a>]</span> which is a force field based solid-state code. Finally, an interface has been written to an ‘experiment’ file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here.
+<p>The packages have interfaces to solid-state QM codes, VASP <span id="id1">[<a class="reference internal" href="zreferences.html#id58" title="Jurgen Hafner. Ab-initio simulations of materials using VASP: Density-functional theory and beyond. Journal of Computational Chemistry, 29(13):2044-2078, Oct 2008. doi:10.1002/jcc.21057.">1</a>]</span>, CASTEP <span id="id2">[<a class="reference internal" href="zreferences.html#id64" title="Stewart J. Clark, Matthew D. Segall, Chris J. Pickard, Phil J. Hasnip, M. I J Probert, Keith Refson, and Mike C. Payne. First principles methods using CASTEP. Zeitschrift fur Kristallographie, 220(5-6):567-570, Jan 2005. doi:10.1524/zkri.220.5.567.65075.">2</a>]</span>, CRYSTAL14 <span id="id3">[<a class="reference internal" href="zreferences.html#id17" title="Roberto Dovesi, Roberto Orlando, Alessandro Erba, Claudio M. Zicovich-Wilson, Bartolomeo Civalleri, Silvia Casassa, Lorenzo Maschio, Matteo Ferrabone, Marco De La Pierre, Philippe D'Arco, Yves Noel, Mauro Causa, Michel Rerat, and Bernard Kirtman. CRYSTAL14: A program for the ab initio investigation of crystalline solids. International Journal of Quantum Chemistry, 114(19):1287-1317, Oct 2014. doi:10.1002/qua.24658.">3</a>]</span>, Abinit <span id="id4">[<a class="reference internal" href="zreferences.html#id16" title="X. Gonze, F. Jollet, F. Abreu Araujo, D. Adams, B. Amadon, T. Applencourt, C. Audouze, J. M. Beuken, J. Bieder, A. Bokhanchuk, E. Bousquet, F. Bruneval, D. Caliste, M. Cote, F. Dahm, F. Da Pieve, M. Delaveau, M. Di Gennaro, B. Dorado, C. Espejo, G. Geneste, L. Genovese, A. Gerossier, M. Giantomassi, Y. Gillet, D. R. Hamann, L. He, G. Jomard, J. Laflamme Janssen, S. Le Roux, A. Levitt, A. Lherbier, F. Liu, I. Lukacevic, A. Martin, C. Martins, M. J.T. Oliveira, S. Ponce, Y. Pouillon, T. Rangel, G. M. Rignanese, A. H. Romero, B. Rousseau, O. Rubel, A. A. Shukri, M. Stankovski, M. Torrent, M. J. Van Setten, B. Van Troeye, M. J. Verstraete, D. Waroquiers, J. Wiktor, B. Xu, A. Zhou, and J. W. Zwanziger. Recent developments in the ABINIT software package. Computer Physics Communications, 205:106-131, Aug 2016. doi:10.1016/j.cpc.2016.04.003.">4</a>]</span>, Quantum Espresso <span id="id5">[<a class="reference internal" href="zreferences.html#id15" title="Paolo Giannozzi, Stefano Baroni, Nicola Bonini, Matteo Calandra, Roberto Car, Carlo Cavazzoni, Davide Ceresoli, Guido L. Chiarotti, Matteo Cococcioni, Ismaila Dabo, Andrea Dal Corso, Stefano De Gironcoli, Stefano Fabris, Guido Fratesi, Ralph Gebauer, Uwe Gerstmann, Christos Gougoussis, Anton Kokalj, Michele Lazzeri, Layla Martin-Samos, Nicola Marzari, Francesco Mauri, Riccardo Mazzarello, Stefano Paolini, Alfredo Pasquarello, Lorenzo Paulatto, Carlo Sbraccia, Sandro Scandolo, Gabriele Sclauzero, Ari P. Seitsonen, Alexander Smogunov, Paolo Umari, and Renata M. Wentzcovitch. QUANTUM ESPRESSO: A modular and open-source software project for quantum simulations of materials. Journal of Physics Condensed Matter, 21(39):395502, Sep 2009. arXiv:0906.2569, doi:10.1088/0953-8984/21/39/395502.">6</a>]</span>, FHI-Aims <span id="id6">[<a class="reference internal" href="zreferences.html#id2" title="Volker Blum, Ralf Gehrke, Felix Hanke, Paula Havu, Ville Havu, Xinguo Ren, Karsten Reuter, and Matthias Scheffler. Ab initio molecular simulations with numeric atom-centered orbitals. Computer Physics Communications, 180(11):2175–2196, 2009. URL: http://dx.doi.org/10.1016/j.cpc.2009.06.022, doi:10.1016/j.cpc.2009.06.022.">5</a>]</span> and Phonopy <span id="id7">[<a class="reference internal" href="zreferences.html#id14" title="Atsushi Togo and Isao Tanaka. First principles phonon calculations in materials science. Scripta Materialia, 108:1-5, Nov 2015. arXiv:1506.08498, doi:10.1016/j.scriptamat.2015.07.021.">7</a>]</span>.  In addition, an interface is available for GULP <span id="id8">[<a class="reference internal" href="zreferences.html#id13" title="Julian D. Gale and Andrew L. Rohl. The General Utility Lattice Program (GULP). Molecular Simulation, 29(5):291-341, May 2003. arXiv:arXiv:1011.1669v3, doi:10.1080/0892702031000104887.">8</a>]</span> which is a force field based solid-state code. Finally, an interface has been written to an ‘experiment’ file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here.
 The package used for the calculation is described by the -program option. In addition, a file name is given which contains the output to be processed by PDielec.</p>
+<section id="raman-input-availability">
+<h3>Raman input availability<a class="headerlink" href="#raman-input-availability" title="Link to this heading">¶</a></h3>
+<p>Phonon data alone do not supply Raman tensors. The following examples show
+Raman-capable inputs; nonlinear susceptibility is additionally needed for an
+electro-optic correction. Availability depends on what was calculated and saved.
+The correction also needs the Born charges, optical permittivity, cell volume
+and compatible phonon modes. A Raman activity alone cannot replace a Raman
+tensor, and enabling the EO option cannot supply missing susceptibility data.
+Companion files must describe the same structure, atom order and Cartesian
+axes as the main calculation. See <a class="reference internal" href="CrystalRaman.html"><span class="doc">Theory for Crystal Layer Raman</span></a> for the EO conventions.</p>
+<div class="table-wrapper colwidths-given docutils container" id="id11">
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text">Raman inputs and companion data</span><a class="headerlink" href="#id11" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 45.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Reader</p></th>
+<th class="head"><p>Raman data</p></th>
+<th class="head"><p>Nonlinear susceptibility</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CASTEP</p></td>
+<td><p>Mode derivatives or atomic polar tensors in output; matching phonon file.</p></td>
+<td><p>Read when present in output.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CRYSTAL</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TENS_RAMAN.DAT</span></code> alongside the frequency output.</p></td>
+<td><p>Susceptibility in output; optional <code class="docutils literal notranslate"><span class="pre">CHI2.DAT</span></code> takes precedence.</p></td>
+</tr>
+<tr class="row-even"><td><p>ABINIT</p></td>
+<td><p>Raman response in output; see <code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/AbInit</span></code>.</p></td>
+<td><p>Read when present in output.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Quantum ESPRESSO</p></td>
+<td><p>Phonon log and/or <code class="docutils literal notranslate"><span class="pre">tensors.xml</span></code>, with matching mode data.</p></td>
+<td><p>Read from the log or XML when present.</p></td>
+</tr>
+<tr class="row-even"><td><p>VASP</p></td>
+<td><p>Optional <code class="docutils literal notranslate"><span class="pre">Raman-Tensors.yaml</span></code> alongside the electronic/phonon output.</p></td>
+<td><p>Use a complete finite-field JSON dataset for the EO workflow.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Finite field</p></td>
+<td><p>JSON tensors or Cartesian dielectric derivatives with mode data.</p></td>
+<td><p>Optional <code class="docutils literal notranslate"><span class="pre">chi2</span></code> in JSON; see the input-format reference below.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="vasp">
 <h3>VASP<a class="headerlink" href="#vasp" title="Link to this heading">¶</a></h3>
 <p>The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
 pdgui is able to parse the OUTCAR file for the information it needs, but it is recommended to use vasprun.xml as this file gives greater precision to the required variables.
-The latest version of VASP tested with this package is VASP 5.4.4. VASP 6 is known to be incompatible.</p>
+The repository includes VASP 5 and VASP 6 examples, including <code class="docutils literal notranslate"><span class="pre">Examples/Vasp/Vasp6</span></code>. Raman calculations can supply the optional companion file <code class="docutils literal notranslate"><span class="pre">Raman-Tensors.yaml</span></code>; see <code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/Vasp</span></code>.
+This file contains mode Raman tensors and is required for Raman calculations
+through this reader; it does not supply the nonlinear susceptibility for EO.
+For a VASP finite-field calculation with EO, use the consolidated finite-field
+JSON reader with both Raman data and <code class="docutils literal notranslate"><span class="pre">chi2</span></code> in the documented internal units.</p>
 </section>
 <section id="castep">
 <h3>CASTEP<a class="headerlink" href="#castep" title="Link to this heading">¶</a></h3>
 <p>The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit-cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
-The latest version of CASTEP tested with the package is CASTEP 24.1, later versions of CASTEP may also be compatible.</p>
+The repository includes CASTEP 24.1 and 25.12 Raman examples. The reader supports mode polarizability derivatives and the newer atomic polar tensors, together with nonlinear susceptibility when present in the output.
+Keep the matching <code class="docutils literal notranslate"><span class="pre">.castep</span></code> and <code class="docutils literal notranslate"><span class="pre">.phonon</span></code> files together. Raman tensor and
+nonlinear susceptibility tables must be included in the <code class="docutils literal notranslate"><span class="pre">.castep</span></code> output;
+no separate Raman or susceptibility companion file is needed.</p>
 </section>
 <section id="crystal">
 <h3>CRYSTAL<a class="headerlink" href="#crystal" title="Link to this heading">¶</a></h3>
-<p>The name on the command line is a file ending in .out, containing the output of a CRYSTAL run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2<sup>nd</sup> derivative matrix, because of this an optional directive “-hessian crystal” can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL.</p>
+<p>The name on the command line is a file ending in .out, containing the output of a CRYSTAL run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory containing the CRYSTAL output, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2<sup>nd</sup> derivative matrix, because of this an optional directive “-hessian crystal” can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL.</p>
+<p>For Raman calculations, place <code class="docutils literal notranslate"><span class="pre">TENS_RAMAN.DAT</span></code> alongside the output file.
+This supplies the polarizability derivatives used to construct Raman tensors;
+printed Raman activities alone are insufficient.</p>
+<p>For electro-optic corrections, the reader recognises the
+<code class="docutils literal notranslate"><span class="pre">FIRST</span> <span class="pre">HYPERPOLARIZABILITY</span> <span class="pre">(BETA)</span> <span class="pre">AND</span> <span class="pre">SECOND</span> <span class="pre">ELECTRIC</span> <span class="pre">SUSCEPTIBILITY</span> <span class="pre">(CHI(2))</span></code>
+table in the main output. Alternatively, place that table in an optional
+<code class="docutils literal notranslate"><span class="pre">CHI2.DAT</span></code> beside the output, for example when the nonlinear response was
+calculated separately. PDielec reads the <code class="docutils literal notranslate"><span class="pre">d(MKS)</span></code> column in pm/V and converts
+it using <span class="math notranslate nohighlight">\(\chi^{(2)}=2d\)</span>. A successfully read <code class="docutils literal notranslate"><span class="pre">CHI2.DAT</span></code> overrides the
+susceptibility from the main output. It is redundant only when both sources
+contain the same tensor.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Examples/Crystal_Raman/Crystal23</span></code> uses the susceptibility table embedded in
+<code class="docutils literal notranslate"><span class="pre">opt_raman.out</span></code> without a <code class="docutils literal notranslate"><span class="pre">CHI2.DAT</span></code> companion. Its reference spreadsheet
+uses this embedded response for the EO correction.
+<code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/Crystal23</span></code> retains <code class="docutils literal notranslate"><span class="pre">CHI2.DAT</span></code> as an example of the
+optional companion format; its contents duplicate the embedded table, so it
+can be omitted without changing the susceptibility.</p>
 <p>Versions of CRYSTAL which are known to be compatible with the package are CRYSTAL14, 17, 21 &amp; 23 later versions may be compatible also.</p>
 </section>
 <section id="abinit">
 <h3>ABINIT<a class="headerlink" href="#abinit" title="Link to this heading">¶</a></h3>
 <p>The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimised geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
-The package should be compatible with AbInit 8 to 10.</p>
+The package should be compatible with AbInit 8 to 10.
+For Raman and EO, use an output containing the atomic susceptibility
+derivatives and the <code class="docutils literal notranslate"><span class="pre">Non-linear</span> <span class="pre">optical</span> <span class="pre">susceptibility</span> <span class="pre">tensor</span> <span class="pre">d</span></code> table,
+as in <code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/AbInit/raman.abo</span></code>. The reader constructs Raman
+tensors from these derivatives and the phonon modes. The example’s DDB files
+and <code class="docutils literal notranslate"><span class="pre">analysis.abo</span></code> are used for the separate <code class="docutils literal notranslate"><span class="pre">anaddb</span></code> analysis; they are
+not automatically loaded as companions to <code class="docutils literal notranslate"><span class="pre">raman.abo</span></code> by PDielec.</p>
 </section>
 <section id="qe">
 <h3>QE<a class="headerlink" href="#qe" title="Link to this heading">¶</a></h3>
 <p>The output file is the dynamical matrix file, specified by “filedyn” in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution.  It is assumed that this files ends with a “.dynG” extension.
+For Raman calculations, the reader supports tensors in the phonon log and
+companion <code class="docutils literal notranslate"><span class="pre">tensors.xml</span></code>. Keep matching dynamical-matrix and tensor files
+together; see <code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/QE</span></code> for a complete dataset.
+Copy <code class="docutils literal notranslate"><span class="pre">tensors.xml</span></code> from the phonon calculation’s <code class="docutils literal notranslate"><span class="pre">_ph0/ph.save/</span></code> directory
+beside the input selected in PDielec. It is discovered automatically and its
+Raman data take precedence over the lower-precision log tables. For EO, the
+reader uses the log’s <code class="docutils literal notranslate"><span class="pre">Electro-optic</span> <span class="pre">tensor</span> <span class="pre">in</span> <span class="pre">cartesian</span> <span class="pre">axis</span></code> block or the
+XML <code class="docutils literal notranslate"><span class="pre">ELOP_TNS</span></code> data, preferring the XML when present. A dynamical-matrix file
+alone does not supply these Raman and EO tensors; retain the tensor XML or
+the matching phonon log containing them.
 The latest version of QE for which the package has been tested is version 7.3.1.
 pdgui is capable of reading the output log file of pwscf and ph, but it is recommended to use the pwscf.xml and the .dynG file written by ph and pwscf.</p>
 </section>
@@ -928,9 +1059,9 @@ Select <em>Experiment</em> in the Main Tab or use <code class="docutils literal 
 of the permittivity. Frequencies are in cm<sup>-1</sup> and should increase strictly;
 provide enough points for interpolation and cover the range to be plotted.
 Finish each block with <code class="docutils literal notranslate"><span class="pre">end</span></code> or <code class="docutils literal notranslate"><span class="pre">&amp;end</span></code>. Commas or spaces separate values.</p>
-<div class="table-wrapper colwidths-given docutils container" id="id10">
-<table class="docutils align-default" id="id10">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text">Interpolation columns</span><a class="headerlink" href="#id10" title="Link to this table">¶</a></caption>
+<div class="table-wrapper colwidths-given docutils container" id="id12">
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">Interpolation columns</span><a class="headerlink" href="#id12" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 75.0%" />
@@ -985,9 +1116,9 @@ synonym <code class="docutils literal notranslate"><span class="pre">static</spa
 ordering in all blocks. Use a complete set of <span class="math notranslate nohighlight">\(3N\)</span> modes for a cell of
 <span class="math notranslate nohighlight">\(N\)</span> atoms, including acoustic and silent modes. List modes in ascending
 frequency order and use negative frequencies for imaginary modes.</p>
-<div class="table-wrapper colwidths-given docutils container" id="id11">
-<table class="docutils align-default" id="id11">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text">Vibrational blocks</span><a class="headerlink" href="#id11" title="Link to this table">¶</a></caption>
+<div class="table-wrapper colwidths-given docutils container" id="id13">
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Vibrational blocks</span><a class="headerlink" href="#id13" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 75.0%" />
@@ -1066,7 +1197,7 @@ structure and its vibrational and Raman response. A finite-displacement or
 finite-field workflow using VASP, Quantum ESPRESSO, CASTEP or another program
 can write this common format. PDielec reads the results; it does not launch
 the displaced or finite-field electronic-structure calculations.</p>
-<p>Choose <em>Finite_field</em> and <em>Finite field (</em>.json)* in the <em>Main Tab</em> file
+<p>Choose <em>Finite field</em> and <em>Finite field (</em>.json)* in the <em>Main Tab</em> file
 selector, or use:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">finite_field</span> <span class="n">zno</span><span class="o">-</span><span class="n">raman</span><span class="o">.</span><span class="n">json</span> <span class="o">-</span><span class="n">spectroscopy</span> <span class="n">crystal_raman</span>
 </pre></div>
@@ -1135,9 +1266,9 @@ or Raman response and is intended to illustrate the required structure keys.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="table-wrapper colwidths-given docutils container" id="id12">
-<table class="docutils align-default" id="id12">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text">Structure and reference fields</span><a class="headerlink" href="#id12" title="Link to this table">¶</a></caption>
+<div class="table-wrapper colwidths-given docutils container" id="id14">
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">Structure and reference fields</span><a class="headerlink" href="#id14" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 66.7%" />
@@ -1266,8 +1397,9 @@ CASTEP mode tensors. It is a format-conversion example, not a claim of a new
 finite-difference calculation. Its provenance is stored in the file.
 <code class="docutils literal notranslate"><span class="pre">Sphinx/tools/make_format_examples.py</span></code> regenerates these examples and checks
 that they can be read. Existing finite-difference workflow data can also be
-found in <code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/Finite_difference</span></code> and
-<code class="docutils literal notranslate"><span class="pre">Examples/Crystal_Raman/Finite_field</span></code>.</p>
+found in <code class="docutils literal notranslate"><span class="pre">Examples/Powder_Raman/Finite_difference</span></code>. Reader regression recipes are
+in <code class="docutils literal notranslate"><span class="pre">Examples/Finite_difference/preader</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Examples/Finite_difference/preader_raman</span></code>.</p>
 </section>
 </section>
 <section id="the-format-of-the-materials-database">
@@ -1434,8 +1566,14 @@ Column B is not used by PDGui but because refractive indices are often tabulated
 </section>
 <section id="the-format-of-the-output-spreadsheet">
 <h2>The Format of the Output Spreadsheet<a class="headerlink" href="#the-format-of-the-output-spreadsheet" title="Link to this heading">¶</a></h2>
-<p>The Excel spreadsheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
-The spreadsheet is divided into different sheets;</p>
+<p>The Excel spreadsheet, which can be written by the program, contains details of the system being analysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission. It also includes mode frequencies, IR intensities and Raman activities when Raman data are available.
+Result sheets are conditional on the scenario types present: powder IR/ATR,
+crystal IR, powder Raman and crystal Raman each supply their corresponding
+sheets. Spectrum frequencies are exported in cm⁻¹. Plotting-tab spectrum
+renormalisation is a display operation and is not applied by the spreadsheet
+exporter. The Settings sheet contains base mode data, rather than the optional
+NAC/EO diagnostics displayed in the frequency table.</p>
+<p>The spreadsheet is divided into different sheets;</p>
 <ul>
 <li><dl>
 <dt><strong>Main</strong></dt><dd><div class="line-block">
@@ -1446,7 +1584,7 @@ The spreadsheet is divided into different sheets;</p>
 </li>
 <li><dl>
 <dt><strong>Settings</strong></dt><dd><div class="line-block">
-<div class="line">The information here comes from the settings tab.  Masses, permittivities and the frequencies that will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.</div>
+<div class="line">The information here comes from the Settings Tab: masses, permittivities and the frequencies that will be used in subsequent calculations. These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms. Each mode has an inclusion flag and a linewidth (Sigma), followed by its frequency, IR intensity, integrated molar absorption and absorption maximum. The Raman columns give total, parallel and perpendicular activities, labelled <code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">R_total</span></code>, <code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">R_parallel</span></code> and <code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">R_perp</span></code>. The activity values use the units selected by <em>Raman activity units</em> in the Settings Tab: Å⁴/amu for polarizability-volume activities or Å/amu for the internal convention. The column headers indicate the selected units. These activities describe the individual modes, rather than the Raman spectrum calculated for a particular scenario.</div>
 </div>
 </dd>
 </dl>
@@ -1542,6 +1680,27 @@ The spreadsheet is divided into different sheets;</p>
 </dd>
 </dl>
 </li>
+<li><dl>
+<dt><strong>Powder Molar Absorption (mols)</strong> and <strong>Powder Molar Absorption (atoms)</strong></dt><dd><div class="line-block">
+<div class="line">The selected molecular or atomic molar definition adds the corresponding sheet, in L·mol<sup>-1</sup>·cm<sup>-1</sup>, alongside the unit-cell sheet.</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Crystal A_p</strong> and <strong>Crystal A_s</strong></dt><dd><div class="line-block">
+<div class="line">Dimensionless p- and s-polarised absorptance for crystal infrared scenarios, alongside reflectance and transmittance.</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Powder Raman</strong> and <strong>Crystal Raman</strong></dt><dd><div class="line-block">
+<div class="line">Raman spectra for the corresponding scenarios, in arbitrary intensity units, as a function of Raman shift in cm⁻¹. These include scenario-dependent geometry and line broadening; they are distinct from the Settings-sheet mode activities in Å⁴/amu or Å/amu.</div>
+</div>
+</dd>
+</dl>
+</li>
 </ul>
 </section>
 </section>
@@ -1612,6 +1771,7 @@ The spreadsheet is divided into different sheets;</p>
 <li><a class="reference internal" href="#vibanalysis">vibanalysis</a></li>
 <li><a class="reference internal" href="#pdmake">pdmake</a></li>
 <li><a class="reference internal" href="#mm-qm-interfaces">MM/QM Interfaces</a><ul>
+<li><a class="reference internal" href="#raman-input-availability">Raman input availability</a></li>
 <li><a class="reference internal" href="#vasp">VASP</a></li>
 <li><a class="reference internal" href="#castep">CASTEP</a></li>
 <li><a class="reference internal" href="#crystal">CRYSTAL</a></li>

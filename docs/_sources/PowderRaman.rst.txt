@@ -55,7 +55,7 @@ where :math:`V_{cell}` is in :math:`\text{Å}^3` and :math:`Q_m` is in
 cell-volume factor.  A source polarizability-volume derivative
 :math:`R_\alpha=\partial[V_{cell}(\varepsilon-I)/(4\pi)]/\partial Q_m`
 is converted on read using :math:`R_\epsilon=4\pi R_\alpha/\sqrt{V_{cell}}`.
-Activities in :math:`\mathrm{Å}^4/\mathrm{amu}` are display quantities,
+Activities in :math:`\text{Å}^4/\mathrm{amu}` are display quantities,
 obtained by multiplying the internal activities by :math:`V_{cell}/(16\pi^2)`.
 
 For particles whose Raman tensor does not depend on shape, the powder average can be

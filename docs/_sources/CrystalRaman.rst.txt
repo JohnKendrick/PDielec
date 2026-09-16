@@ -104,6 +104,12 @@ side.  For forward scattering it is launched from the substrate side, which is i
 by using the reversed stack and mapping each integration point to the corresponding
 position in that reversed system.
 
+With the script option ``Approximate ES=True``, the reciprocal detector field
+is instead evaluated once at the laser frequency and reused for all modes.
+The resolved collection geometry is retained. The incident field is reused
+only when the optical system and signed angle match those of the detector
+field. The default is ``False``, which uses each mode's Stokes frequency.
+
 The detected channel can be p-polarised, s-polarised, or unpolarised.  In the unpolarised
 case the p- and s-detected intensities are summed incoherently.
 

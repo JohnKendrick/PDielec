@@ -37,11 +37,11 @@ PDielec.pdmake
        - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
        - `-root` or `--root`: Specifies the root directory to operate in.
        - `-debug` or `--debug` or `-d`: Enables debug mode.
-       - `-usesystem`: Use system installed binaries rather than local ones.
+       - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.
        - `-view` or `--view` or `-v`: Enables viewing mode.
        - `-regenerate`: Forces regeneration of test data.
        - `-padding`: Sets padding for some operation (expects an integer value next).
-       - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+       - `-directory` or `--directory`: Display directory names when listing tests (takes no value).
        - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 
 
@@ -277,11 +277,11 @@ Module Contents
    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
    - `-root` or `--root`: Specifies the root directory to operate in.
    - `-debug` or `--debug` or `-d`: Enables debug mode.
-   - `-usesystem`: Use system installed binaries rather than local ones.
+   - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.
    - `-view` or `--view` or `-v`: Enables viewing mode.
    - `-regenerate`: Forces regeneration of test data.
    - `-padding`: Sets padding for some operation (expects an integer value next).
-   - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+   - `-directory` or `--directory`: Display directory names when listing tests (takes no value).
    - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 
    Raises

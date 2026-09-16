@@ -196,6 +196,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../settings_reference.html">PDGui Settings Reference</a></li>
@@ -216,6 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -314,6 +316,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -330,6 +335,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -466,16 +472,17 @@
 <span class="sd">    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).</span>
 <span class="sd">    - `-root` or `--root`: Specifies the root directory to operate in.</span>
 <span class="sd">    - `-debug` or `--debug` or `-d`: Enables debug mode.</span>
-<span class="sd">    - `-usesystem`: Use system installed binaries rather than local ones.</span>
+<span class="sd">    - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.</span>
 <span class="sd">    - `-view` or `--view` or `-v`: Enables viewing mode.</span>
 <span class="sd">    - `-regenerate`: Forces regeneration of test data.</span>
 <span class="sd">    - `-padding`: Sets padding for some operation (expects an integer value next).</span>
-<span class="sd">    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).</span>
+<span class="sd">    - `-directory` or `--directory`: Display directory names when listing tests (takes no value).</span>
 <span class="sd">    - `&lt;filename&gt;.pdmake`: Specifies a PDMakefile to execute.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shlex</span>
@@ -1291,12 +1298,14 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">viewing</span><span class="p">:</span>
         <span class="c1"># If not doing a regeneration perform a check</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">regenerate</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">benchmarks</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;checkexcel&quot;</span><span class="p">,</span> <span class="s2">&quot;results.ref.xlsx&quot;</span><span class="p">,</span><span class="s2">&quot;results.xlsx&quot;</span><span class="p">]</span>
-            <span class="k">with</span> <span class="n">redirect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">):</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;checkexcel&quot;</span><span class="p">,</span> <span class="s2">&quot;results.ref.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;results.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;-settings&quot;</span><span class="p">]</span>
+            <span class="n">comparison_output</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="n">comparison_output</span><span class="p">):</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">main_checkexcel</span><span class="p">()</span>
             <span class="n">nerrors</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">file1</span><span class="p">,</span><span class="n">value1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">result</span>
             <span class="k">if</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2"> ERRORS:&quot;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sheet</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> - max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2"> ERRORS:&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">comparison_output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; OK:&quot;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot; - max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># end if</span>
@@ -1721,11 +1730,11 @@
 <span class="sd">    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).</span>
 <span class="sd">    - `-root` or `--root`: Specifies the root directory to operate in.</span>
 <span class="sd">    - `-debug` or `--debug` or `-d`: Enables debug mode.</span>
-<span class="sd">    - `-usesystem`: Use system installed binaries rather than local ones.</span>
+<span class="sd">    - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.</span>
 <span class="sd">    - `-view` or `--view` or `-v`: Enables viewing mode.</span>
 <span class="sd">    - `-regenerate`: Forces regeneration of test data.</span>
 <span class="sd">    - `-padding`: Sets padding for some operation (expects an integer value next).</span>
-<span class="sd">    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).</span>
+<span class="sd">    - `-directory` or `--directory`: Display directory names when listing tests (takes no value).</span>
 <span class="sd">    - `&lt;filename&gt;.pdmake`: Specifies a PDMakefile to execute.</span>
 
 <span class="sd">    Raises</span>
@@ -1764,13 +1773,7 @@
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;tests&quot;</span><span class="p">,</span> <span class="s2">&quot;test-pytests&quot;</span><span class="p">):</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_powder_raman&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_crystal_raman&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_materials&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_calculator&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_unitcell&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_gtmcore&quot;</span><span class="p">)</span>
-            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytest_constants&quot;</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test pytests&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;test-pytests&quot;</span><span class="p">:</span>
                 <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;test all&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;test-crystal_ir&quot;</span><span class="p">:</span>
@@ -1812,7 +1815,7 @@
             <span class="n">rootDirectory</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-debug&quot;</span><span class="p">,</span> <span class="s2">&quot;--debug&quot;</span><span class="p">,</span> <span class="s2">&quot;-d&quot;</span> <span class="p">):</span>
             <span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-usesystem&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-usesystem&quot;</span><span class="p">,</span> <span class="s2">&quot;--usesystem&quot;</span><span class="p">):</span>
             <span class="n">useLocal</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-view&quot;</span><span class="p">,</span> <span class="s2">&quot;--view&quot;</span><span class="p">,</span> <span class="s2">&quot;-v&quot;</span> <span class="p">):</span>
             <span class="n">viewing</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1822,7 +1825,6 @@
             <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;padding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="ow">in</span> <span class="p">(</span> <span class="s2">&quot;-directory&quot;</span><span class="p">,</span> <span class="s2">&quot;--directory&quot;</span> <span class="p">):</span>
-            <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;directory&quot;</span>
         <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;pypi&quot;</span><span class="p">:</span>
             <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;run pypi&quot;</span><span class="p">)</span>
@@ -1910,6 +1912,8 @@
             <span class="n">run_tests</span><span class="p">(</span><span class="n">test_powder_infrared</span>      <span class="p">,</span><span class="s2">&quot;powder_infrared&quot;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;test powder_raman&quot;</span><span class="p">:</span>
             <span class="n">run_tests</span><span class="p">(</span><span class="n">test_powder_raman</span>      <span class="p">,</span><span class="s2">&quot;powder_raman&quot;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;test pytests&quot;</span><span class="p">:</span>
+            <span class="n">run_pytest_suite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;PDielec&quot;</span><span class="p">,</span> <span class="s2">&quot;Tests&quot;</span><span class="p">),</span> <span class="s2">&quot;Pytest All&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;test pytest_powder_raman&quot;</span><span class="p">:</span>
             <span class="n">run_pytest_suite</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;PDielec&quot;</span><span class="p">,</span> <span class="s2">&quot;Tests&quot;</span><span class="p">,</span> <span class="s2">&quot;Powder_Raman&quot;</span><span class="p">),</span> <span class="s2">&quot;Pytest Powder Raman&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;test pytest_crystal_raman&quot;</span><span class="p">:</span>

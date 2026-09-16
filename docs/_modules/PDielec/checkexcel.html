@@ -196,6 +196,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../settings_reference.html">PDGui Settings Reference</a></li>
@@ -216,6 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -314,6 +316,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -330,6 +335,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -468,6 +474,7 @@
 <span class="sd">    - Two file paths.</span>
 <span class="sd">    - Optional `-thresh` followed by a float value for the threshold of numerical difference (default is 1.0E-3).</span>
 <span class="sd">    - Optional `-f` flag for forcing a full comparison including typically excluded sheets.</span>
+<span class="sd">    - Optional `-settings` flag to include Settings without Main and Scenarios.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -498,12 +505,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;checkexcel file file2 [-thresh 1.0E-3] [-f]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;checkexcel file file2 [-thresh 1.0E-3] [-f] [-settings]&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         Compare the two excel files for any significant changes&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         Numbers f1 and f2 in each file are compared&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) &gt; threshold&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         The default value for threshold is 1.0E-3 &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         -f forces a full comparison of the sheets &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         -settings also compares the Settings sheet&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;            by default Settings and Scenarios are not included    &quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
@@ -513,14 +521,17 @@
     <span class="n">itoken</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">full</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">include_settings</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
         <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-thresh&quot;</span><span class="p">:</span>
             <span class="n">itoken</span> <span class="o">+=</span><span class="mi">1</span>
             <span class="n">threshold</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-f&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-f&quot;</span><span class="p">:</span>
             <span class="n">full</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s2">&quot;-settings&quot;</span><span class="p">:</span>
+            <span class="n">include_settings</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
         <span class="c1"># end if</span>
@@ -543,9 +554,7 @@
     <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">sheet</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">file1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
     <span class="n">value1</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">file2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
     <span class="n">value2</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c1">#</span>
     <span class="c1"># Loop over sheets</span>
@@ -553,12 +562,18 @@
     <span class="n">sheets</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Powder Molar Absorption (cells)&quot;</span><span class="p">,</span><span class="s2">&quot;Powder Absorption&quot;</span><span class="p">,</span><span class="s2">&quot;Powder Real Permittivity&quot;</span><span class="p">,</span><span class="s2">&quot;Powder Imaginary Permittivity&quot;</span><span class="p">,</span> <span class="s2">&quot;Powder ATR Reflectance&quot;</span><span class="p">,</span> <span class="s2">&quot;Powder Raman&quot;</span><span class="p">,</span> <span class="s2">&quot;Analysis&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal R_p&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal R_s&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal T_p&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal T_s&quot;</span><span class="p">,</span><span class="s2">&quot;Real Crystal Permittivity&quot;</span><span class="p">,</span><span class="s2">&quot;Imag Crystal Permittivity&quot;</span><span class="p">,</span><span class="s2">&quot;Crystal Raman&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
-        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Settings&quot;</span><span class="p">)</span>
         <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Scenarios&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">full</span> <span class="ow">or</span> <span class="n">include_settings</span><span class="p">:</span>
+        <span class="n">sheets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Settings&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">sheets</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb1</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb1</span> <span class="ow">and</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb2</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb2</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb1</span> <span class="ow">or</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb2</span><span class="p">:</span>
+            <span class="n">missing_file</span> <span class="o">=</span> <span class="n">file1</span> <span class="k">if</span> <span class="n">sheet</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wb1</span> <span class="k">else</span> <span class="n">file2</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error - missing expected sheet &#39;</span><span class="si">{</span><span class="n">sheet</span><span class="si">}</span><span class="s2">&#39; in </span><span class="si">{</span><span class="n">missing_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;present&quot;</span> <span class="k">if</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">wb1</span> <span class="k">else</span> <span class="s2">&quot;missing&quot;</span><span class="p">,</span>
+                     <span class="s2">&quot;present&quot;</span> <span class="k">if</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">wb2</span> <span class="k">else</span> <span class="s2">&quot;missing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checking sheet &quot;</span><span class="p">,</span><span class="n">sheet</span><span class="p">)</span>
         <span class="n">ws1</span> <span class="o">=</span> <span class="n">wb1</span><span class="p">[</span><span class="n">sheet</span><span class="p">]</span>
@@ -626,9 +641,14 @@
             <span class="c1"># for cell1, cell2</span>
         <span class="c1"># for rowq, row</span>
     <span class="c1"># for sheet</span>
+    <span class="n">wb1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">wb2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">sheet</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">value1</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">error</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) LARGEST ON ROW,COL </span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> OF SHEET </span><span class="si">{</span><span class="n">sheet</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file1</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">value1</span><span class="si">}</span><span class="s2">) and </span><span class="si">{</span><span class="n">file2</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">value2</span><span class="si">}</span><span class="s2">) -- max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) Missing expected sheet: </span><span class="si">{</span><span class="n">sheet</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) LARGEST ON ROW,COL </span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> OF SHEET </span><span class="si">{</span><span class="n">sheet</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file1</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">value1</span><span class="si">}</span><span class="s2">) and </span><span class="si">{</span><span class="n">file2</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">value2</span><span class="si">}</span><span class="s2">) -- max %error=</span><span class="si">{</span><span class="n">max_percentage_error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="o">+</span><span class="n">colored</span><span class="p">(</span><span class="s2">&quot;ERRORS:&quot;</span><span class="p">,</span><span class="s2">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">nerrors</span><span class="si">}</span><span class="s2">) Dimensions of spreadsheet were wrong                                    &quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>

@@ -1,0 +1,11 @@
+# Reproducible PDGui and analysis products; keep the CRYSTAL source data.
+*.xlsx
+*.xlsx.*
+**/Data/
+**/Figures/
+**/RESULTS.md
+**/.pytest_cache/
+**/__pycache__/
+
+# The repository-wide *test* rule would otherwise hide these useful checks.
+!**/test_*.py

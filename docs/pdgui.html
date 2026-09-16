@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="PDGui guide to infrared, ATR and Raman calculations, scenarios and visualisation" name="description" />
 <meta content="PDielec, PDGui, Infrared, ATR, Raman, Electro-optic, NAC, GUI" name="keywords" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Viewer and Fitter Settings Views" href="gui_options.html"><link rel="prev" title="Installation" href="installation.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Viewer and Fitter Settings Views" href="gui_options.html"><link rel="prev" title="Version 10 migration" href="migration.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDGui - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -199,6 +199,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
 <li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">PDGui</a><input aria-label="Toggle navigation of PDGui" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
@@ -219,6 +220,7 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -317,6 +319,9 @@
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
@@ -333,6 +338,7 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
 </ul>
@@ -531,7 +537,7 @@ experimental spectrum used for fitting is selected in the Fitter Tab.</p>
 calculated results and settings. <em>Script filename</em> sets the Python file written
 by <em>Save settings</em>. Reload that file to reproduce the session; the calculation
 input and any materials database referenced by it must still be available.</p>
-<p>The lower text areas report the unit-cell vectors in Angstrom and the
+<p>The lower text areas report the unit-cell vectors in Å and the
 frequencies read from the input. They are outputs, not editable model
 parameters. Frequencies after mass changes and other corrections are shown in
 the Settings Tab.</p>
@@ -568,9 +574,11 @@ tensor. Edit its elements when a value must be supplied or replaced.
 <em>Symmetrise optical permittivity?</em>, on by default for electronic-structure readers, averages it over the crystal
 point group. Experimental input leaves this off by default. Reading a new input resets input-dependent masses and permittivity.</p>
 <p>For Raman calculations, <em>Raman activity units</em> chooses polarizability-volume
-activities in Angstrom⁴/amu or activities in the internal
-<span class="math notranslate nohighlight">\(R_\epsilon\)</span> convention in Angstrom/amu. This changes the displayed
-activities, not the physical normalisation of the tensors used by scenarios.</p>
+activities in Å⁴/amu or activities in the internal
+<span class="math notranslate nohighlight">\(R_\epsilon\)</span> convention in Å/amu. This changes the displayed
+activities, not the physical normalisation of the tensors used by scenarios.
+The Raman activity columns in the exported <em>Settings</em> worksheet use the same
+selected units, indicated in their column headers.</p>
 <p>The <em>NAC Options</em> row controls the mode-table diagnostics. <em>Apply NAC</em> fills
 the LO-frequency column using the direction specified by x, y and z in the
 crystal Cartesian frame; initially it is off and the direction is (0, 0, 1).
@@ -582,10 +590,14 @@ electro-optic term</em> in a Crystal Raman scenario. <em>Raman polar plot</em> o
 <p>The lower table has one row per mode. The checkbox beside <em>Sigma</em> determines
 whether the mode contributes to subsequent spectra; greyed values indicate
 unselected modes. The columns show TO frequency, optional LO frequency, IR
-intensity in Debye²/Angstrom²/amu, integrated molar absorption, absorption
+intensity in Debye²/Å²/amu, integrated molar absorption, absorption
 maximum, and total, parallel and perpendicular Raman activities where present.
 The headers give the units. The IR quantities and the Raman activities are
 different measures of response; a Raman-active mode can have zero IR intensity.</p>
+<p>To copy values from the frequency and intensity table, select the required
+cells and press <kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">C</kbd>. The selected values are copied as tab-separated
+text, with one line per table row, ready to paste into a spreadsheet or text
+editor. This also works for the Raman activity columns when they are shown.</p>
 <figure class="align-default" id="id9">
 <a class="reference internal image-reference" href="_images/settings-infrared.png"><img alt="Settings Tab in Powder Infrared mode." src="_images/settings-infrared.png" style="width: 100%;" />
 </a>
@@ -902,7 +914,7 @@ axis. Each new sweep opens a separate result window.</p>
 </figcaption>
 </figure>
 <p><em>Frequency min, max and increment</em> set the calculation grid. The adjacent
-unit selector offers wavenumber, THz, GHz and wavelength units from Angstrom
+unit selector offers wavenumber, THz, GHz and wavelength units from Å
 to metres. Zero is not a valid wavelength. For Raman, use wavenumber to show
 Raman shifts unambiguously. A sufficiently small increment is needed to
 resolve narrow peaks.</p>
@@ -968,7 +980,7 @@ modes, rather than a permittivity-only input.</p>
 <p><em>Minimum frequency</em> and <em>Maximum frequency</em> select modes in cm<sup>-1</sup>.
 <em>Bonding scale and tolerance</em> identify connected atoms using a distance cutoff
 of scale × (radius i + radius j) + tolerance; tolerance and <em>Atomic radii</em>
-are in Angstrom. The defaults are scale 1.1 and tolerance 0.1. Edit the
+are in Å. The defaults are scale 1.1 and tolerance 0.1. Edit the
 individual radii in the table where a different bonding description is needed.
 <em>Number of molecules found</em> is an output of that connectivity analysis. In an
 extended crystal a connected group should not automatically be interpreted
@@ -1038,13 +1050,13 @@ and atoms on or off using the selector.</p></td>
 thermal displacement amplitude.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Bond Radius</p></td>
-<td><p>Radius of displayed bond cylinders in Angstrom.</p></td>
+<td><p>Radius of displayed bond cylinders in Å.</p></td>
 </tr>
 <tr class="row-even"><td><p>Cell Radius</p></td>
-<td><p>Radius of the cell-outline cylinders in Angstrom.</p></td>
+<td><p>Radius of the cell-outline cylinders in Å.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Arrow Radius</p></td>
-<td><p>Radius of displacement arrows in Angstrom.</p></td>
+<td><p>Radius of displacement arrows in Å.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1166,8 +1178,8 @@ change the plotted set.</p>
 Pza</em> the initial incident polarisation, both as Cartesian vectors. Pza should
 be perpendicular to Rz; changing Rz adjusts Pza accordingly. The read-only
 <em>Orthogonality</em> value is their dot product and should be zero.
-<em>Phonon q̂ direction</em> independently sets the crystal-frame direction for the
-LO and EO corrections. <em>Sync q̂ to Rz</em> copies the light axis, appropriate to
+<em>Phonon</em> <span class="math notranslate nohighlight">\(\hat{q}\)</span> <em>direction</em> independently sets the crystal-frame direction for the
+LO and EO corrections. <em>Sync</em> <span class="math notranslate nohighlight">\(\hat{q}\)</span> <em>to Rz</em> copies the light axis, appropriate to
 the backscattering approximation.</p>
 <p><em>Include EO correction (χ² available)</em> is shown when nonlinear response is
 available and is initially checked. It is this window’s own control, not the
@@ -1247,9 +1259,11 @@ absent from the scenario GUI:</p>
 <p><em>Coalesce equivalent layers</em>, default True, merges adjacent equivalent
 coherent layers before Raman field integration. Disabling it is useful for
 diagnosing artificial internal-boundary effects. <em>Approximate ES</em>, default
-False, uses the laser field in place of separately evaluating the scattered
-field when set True. It changes the optical approximation and should be
-recorded when reporting results.</p>
+False, evaluates the reciprocal detector field once at the laser frequency
+when set True, instead of at each mode’s Stokes frequency. It retains the
+resolved collection geometry and reuses the incident field only when the
+optical system and signed angle match. It changes the optical approximation
+and should be recorded when reporting results.</p>
 <p>The powder Raman wavelength in nm is stored as <code class="docutils literal notranslate"><span class="pre">Raman</span> <span class="pre">laser</span> <span class="pre">wavelength</span></code>.
 The crystal NAC selector uses
 <code class="docutils literal notranslate"><span class="pre">Layer</span> <span class="pre">NAC</span> <span class="pre">mode</span></code> values <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">geometry</span></code>, <code class="docutils literal notranslate"><span class="pre">dominant_mode</span></code> and
@@ -1294,14 +1308,14 @@ reference documents the dictionary keys used in Python session scripts.</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="installation.html">
+          <a class="prev-page" href="migration.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Installation</div>
+                <div class="title">Version 10 migration</div>
                 
               </div>
             </a>
