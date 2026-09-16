@@ -4,9 +4,14 @@
 The PDGui calculation in script.py calculates the powder Raman spectrum using a DFT calculation on ZnO 
 The DFT calculation uses an TZVP basis and PBE functional with the D3 dispersion correction.
 To calculate the Raman spectrum run `pdgui --spectroscopy powder_raman opt_raman.out`
-The CHI2.DAT file holds the non-linear susceptibility which was calculated in a separate calculation to
-the Raman calculation (third.d12 and third.log).
-The CHI2.DAT file was created from third.log by copying the lines around the relavant output in third.log.
+`TENS_RAMAN.DAT` supplies the polarizability derivatives needed for Raman tensors.
+For the electro-optic correction, PDielec reads the nonlinear susceptibility table
+embedded in `opt_raman.out`. An optional `CHI2.DAT` in the same directory
+overrides that table; the reader converts its `d(MKS)` values using chi(2) = 2d.
+
+Here `CHI2.DAT` duplicates the embedded susceptibility table. It is retained as
+an example of the optional companion format, but can be omitted without
+changing the parsed susceptibility or the EO correction.
 
 | **File**              | **Description**                                   |
 | --------------------- | ------------------------------------------------- |

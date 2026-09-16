@@ -45,11 +45,11 @@ Command line options
     - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
     - `-root` or `--root`: Specifies the root directory to operate in.
     - `-debug` or `--debug` or `-d`: Enables debug mode.
-    - `-usesystem`: Use system installed binaries rather than local ones.
+    - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.
     - `-view` or `--view` or `-v`: Enables viewing mode.
     - `-regenerate`: Forces regeneration of test data.
     - `-padding`: Sets padding for some operation (expects an integer value next).
-    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+    - `-directory` or `--directory`: Display directory names when listing tests (takes no value).
     - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 """
 
@@ -1238,11 +1238,11 @@ def main():
     - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
     - `-root` or `--root`: Specifies the root directory to operate in.
     - `-debug` or `--debug` or `-d`: Enables debug mode.
-    - `-usesystem`: Use system installed binaries rather than local ones.
+    - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.
     - `-view` or `--view` or `-v`: Enables viewing mode.
     - `-regenerate`: Forces regeneration of test data.
     - `-padding`: Sets padding for some operation (expects an integer value next).
-    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+    - `-directory` or `--directory`: Display directory names when listing tests (takes no value).
     - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 
     Raises
@@ -1323,7 +1323,7 @@ def main():
             rootDirectory = tokens[itoken]
         elif token in ( "-debug", "--debug", "-d" ):
             debug = True
-        elif token == "-usesystem":
+        elif token in ("-usesystem", "--usesystem"):
             useLocal = False
         elif token in ( "-view", "--view", "-v" ):
             viewing = True
@@ -1333,7 +1333,6 @@ def main():
             itoken += 1
             settings["padding"] = int(tokens[itoken])
         elif token in ( "-directory", "--directory" ):
-            itoken += 1
             settings["title"] = "directory"
         elif token == "pypi":
             actions.append("run pypi")

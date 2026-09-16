@@ -151,6 +151,7 @@ def setup(sphinx):
     sphinx.connect("builder-inited", enable_pdf_image_conversion)
     sphinx.connect("autoapi-skip-member", skip_member)
     sphinx.connect('html-page-context', add_pdgui_section_navigation, priority=800)
+    sphinx.connect('html-page-context', filter_unavailable_source_pages)
 
 # Autoapi stuff ends here
 
@@ -307,6 +308,27 @@ texinfo_documents = [
 
 
 # -- Extension configuration -------------------------------------------------
+
+def filter_unavailable_source_pages(app, pagename, templatename, context, doctree):
+    """Keep the viewcode index limited to source pages that were generated."""
+    if pagename != '_modules/index':
+        return
+    from pathlib import Path
+    from bs4 import BeautifulSoup
+
+    # Sphinx can retain failed source lookups (including compiled Qt modules)
+    # in its index. viewcode emits its source pages before this index page.
+    output_directory = Path(app.builder.get_outfilename(pagename)).parent
+    body = BeautifulSoup(context.get('body', ''), 'html.parser')
+    for item in body.find_all('li'):
+        link = item.find('a', href=True, recursive=False)
+        if link is None:
+            continue
+        target = output_directory / link['href']
+        if not target.is_file() and not (target / 'index.html').is_file():
+            item.decompose()
+    context['body'] = str(body)
+
 
 def add_pdgui_section_navigation(app, pagename, templatename, context, doctree):
     """Add the main PDGui sections to Furo's page-based navigation tree."""

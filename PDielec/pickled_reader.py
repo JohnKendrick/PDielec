@@ -83,7 +83,7 @@ def main():
     #
     # Print out the help file if there is nothing else on the command line
     #
-    if len(sys.argv) <= 1 :
+    if len(sys.argv) <= 1 or sys.argv[1] in ("-h", "-help", "--help"):
         print_help()
     #
     # Read in the pickled reader objects from the dump file

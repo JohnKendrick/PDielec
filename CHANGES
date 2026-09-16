@@ -1,6 +1,11 @@
 version 10.0.0
    Powder Raman and Crystal Raman Scenarios are now supported.
    Documentation has been completed.
+   Release validation fixes:
+   - Fixed azimuthal waterfall and all-mode line plots with current Matplotlib.
+   - Added help-flag handling to pdcompare and pickled_reader; pdcompare no longer requires -excel.
+   - pdmake accepts --usesystem, and --directory no longer skips the next argument.
+   - Corrected broken migration, bibliography and API documentation links.
    Crystal Raman collection geometry:
    - Automatic collection now uses retro-backscattering on the superstrate side and collinear forward scattering
      on the substrate side. Explicitly setting the collection angle equal to the incidence angle retains specular

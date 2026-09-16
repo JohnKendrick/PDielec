@@ -185,8 +185,10 @@ a checkout containing ``Examples/`` and ``PDielec/Tests/``.
      - Pass CPU count, thread count or threading selection to PDGui.
    * - ``--debug, --padding N``
      - Enable debugging or set the printed title width.
-   * - ``-usesystem``
+   * - ``--usesystem, -usesystem``
      - Use installed executables instead of local scripts.
+   * - ``--directory, -directory``
+     - Display directory names as test titles. This flag takes no value.
 
 A recipe's first line is its title. Subsequent command lines invoke ``pdgui``,
 ``preader``, ``p2cif`` or ``vibanalysis`` with their arguments. Run recipes from
@@ -198,9 +200,7 @@ the directory containing their input files; for example::
 
 PDGui regression recipes load ``script.py`` and write ``results.xlsx``.
 Use separate invocations for recipes and named suites when execution order
-matters. The current parser accepts ``-usesystem`` with one leading dash.
-The ``--directory`` display flag should be placed last, because the current
-parser skips the following argument.
+matters.
 
 Excel regression comparisons include the *Settings* worksheet, including
 Raman activity values and their unit headers, as well as the result sheets.
@@ -224,6 +224,11 @@ Raman input availability
 Phonon data alone do not supply Raman tensors. The following examples show
 Raman-capable inputs; nonlinear susceptibility is additionally needed for an
 electro-optic correction. Availability depends on what was calculated and saved.
+The correction also needs the Born charges, optical permittivity, cell volume
+and compatible phonon modes. A Raman activity alone cannot replace a Raman
+tensor, and enabling the EO option cannot supply missing susceptibility data.
+Companion files must describe the same structure, atom order and Cartesian
+axes as the main calculation. See :doc:`CrystalRaman` for the EO conventions.
 
 .. list-table:: Raman inputs and companion data
    :header-rows: 1
@@ -237,7 +242,7 @@ electro-optic correction. Availability depends on what was calculated and saved.
      - Read when present in output.
    * - CRYSTAL
      - ``TENS_RAMAN.DAT`` alongside the frequency output.
-     - ``CHI2.DAT`` or susceptibility in output.
+     - Susceptibility in output; optional ``CHI2.DAT`` takes precedence.
    * - ABINIT
      - Raman response in output; see ``Examples/Powder_Raman/AbInit``.
      - Read when present in output.
@@ -256,20 +261,42 @@ VASP
 The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
 pdgui is able to parse the OUTCAR file for the information it needs, but it is recommended to use vasprun.xml as this file gives greater precision to the required variables.
 The repository includes VASP 5 and VASP 6 examples, including ``Examples/Vasp/Vasp6``. Raman calculations can supply the optional companion file ``Raman-Tensors.yaml``; see ``Examples/Powder_Raman/Vasp``.
+This file contains mode Raman tensors and is required for Raman calculations
+through this reader; it does not supply the nonlinear susceptibility for EO.
+For a VASP finite-field calculation with EO, use the consolidated finite-field
+JSON reader with both Raman data and ``chi2`` in the documented internal units.
 
 CASTEP
 -------
 The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit-cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
 The repository includes CASTEP 24.1 and 25.12 Raman examples. The reader supports mode polarizability derivatives and the newer atomic polar tensors, together with nonlinear susceptibility when present in the output.
+Keep the matching ``.castep`` and ``.phonon`` files together. Raman tensor and
+nonlinear susceptibility tables must be included in the ``.castep`` output;
+no separate Raman or susceptibility companion file is needed.
 
 CRYSTAL
 -------
 The name on the command line is a file ending in .out, containing the output of a CRYSTAL run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory containing the CRYSTAL output, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL.
 
 For Raman calculations, place ``TENS_RAMAN.DAT`` alongside the output file.
-The optional ``CHI2.DAT`` supplies nonlinear susceptibility for electro-optic
-corrections; the reader also recognises susceptibility in the main output.
-See ``Examples/Powder_Raman/Crystal23`` and ``Examples/Crystal_Raman/Crystal23``.
+This supplies the polarizability derivatives used to construct Raman tensors;
+printed Raman activities alone are insufficient.
+
+For electro-optic corrections, the reader recognises the
+``FIRST HYPERPOLARIZABILITY (BETA) AND SECOND ELECTRIC SUSCEPTIBILITY (CHI(2))``
+table in the main output. Alternatively, place that table in an optional
+``CHI2.DAT`` beside the output, for example when the nonlinear response was
+calculated separately. PDielec reads the ``d(MKS)`` column in pm/V and converts
+it using :math:`\chi^{(2)}=2d`. A successfully read ``CHI2.DAT`` overrides the
+susceptibility from the main output. It is redundant only when both sources
+contain the same tensor.
+
+``Examples/Crystal_Raman/Crystal23`` uses the susceptibility table embedded in
+``opt_raman.out`` without a ``CHI2.DAT`` companion. Its reference spreadsheet
+uses this embedded response for the EO correction.
+``Examples/Powder_Raman/Crystal23`` retains ``CHI2.DAT`` as an example of the
+optional companion format; its contents duplicate the embedded table, so it
+can be omitted without changing the susceptibility.
 
 Versions of CRYSTAL which are known to be compatible with the package are CRYSTAL14, 17, 21 & 23 later versions may be compatible also.
 
@@ -277,6 +304,12 @@ ABINIT
 ------
 The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimised geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
 The package should be compatible with AbInit 8 to 10.
+For Raman and EO, use an output containing the atomic susceptibility
+derivatives and the ``Non-linear optical susceptibility tensor d`` table,
+as in ``Examples/Powder_Raman/AbInit/raman.abo``. The reader constructs Raman
+tensors from these derivatives and the phonon modes. The example's DDB files
+and ``analysis.abo`` are used for the separate ``anaddb`` analysis; they are
+not automatically loaded as companions to ``raman.abo`` by PDielec.
 
 QE
 ---
@@ -284,6 +317,13 @@ The output file is the dynamical matrix file, specified by "filedyn" in a run of
 For Raman calculations, the reader supports tensors in the phonon log and
 companion ``tensors.xml``. Keep matching dynamical-matrix and tensor files
 together; see ``Examples/Powder_Raman/QE`` for a complete dataset.
+Copy ``tensors.xml`` from the phonon calculation's ``_ph0/ph.save/`` directory
+beside the input selected in PDielec. It is discovered automatically and its
+Raman data take precedence over the lower-precision log tables. For EO, the
+reader uses the log's ``Electro-optic tensor in cartesian axis`` block or the
+XML ``ELOP_TNS`` data, preferring the XML when present. A dynamical-matrix file
+alone does not supply these Raman and EO tensors; retain the tensor XML or
+the matching phonon log containing them.
 The latest version of QE for which the package has been tested is version 7.3.1.
 pdgui is capable of reading the output log file of pwscf and ph, but it is recommended to use the pwscf.xml and the .dynG file written by ph and pwscf.
 

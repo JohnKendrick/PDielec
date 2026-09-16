@@ -18,6 +18,7 @@ import matplotlib.colors
 import matplotlib.figure
 import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
+from matplotlib.pyplot import get_cmap
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (
     QComboBox,
@@ -352,7 +353,7 @@ class AzimuthalSweepWindow(QWidget):
         stride = max(1, len(psi) // 36)
         shown_indices = list(range(0, len(psi), stride))
         n_shown = len(shown_indices)
-        cmap = matplotlib.cm.get_cmap("viridis", n_shown)  # noqa: RUF100
+        cmap = get_cmap("viridis", n_shown)
         vmax = spectra.max() or 1.0
         offset_step = vmax * 0.8
 
@@ -360,7 +361,7 @@ class AzimuthalSweepWindow(QWidget):
             ax.plot(vs, spectra[i] + offset_step * plot_idx, color=cmap(plot_idx), lw=0.8)
 
         sm = matplotlib.cm.ScalarMappable(
-            cmap=matplotlib.cm.get_cmap("viridis"),  # noqa: RUF100
+            cmap=get_cmap("viridis"),
             norm=matplotlib.colors.Normalize(vmin=psi[0], vmax=psi[-1]),
         )
         sm.set_array([])
@@ -393,7 +394,7 @@ class AzimuthalSweepWindow(QWidget):
 
         if mode_idx < 0:
             n_modes = len(mode_freqs)
-            cmap = matplotlib.cm.get_cmap("tab10", max(n_modes, 1))  # noqa: RUF100
+            cmap = get_cmap("tab10", max(n_modes, 1))
             for m_idx in range(n_modes):
                 ax.plot(psi, mode_ints[:, m_idx], color=cmap(m_idx), label=labels[m_idx])
             if n_modes > 0:

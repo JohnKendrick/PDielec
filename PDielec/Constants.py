@@ -17,7 +17,7 @@
 
 The following are some fundamental definitions.  
 The values were supplied from the NIST web site 
-`physics.nist.gov <physics.nist.gov>`_ .
+`physics.nist.gov <https://physics.nist.gov/>`_ .
 They are consistent with the 2018 CODATA recommended values of physical constants
 
 

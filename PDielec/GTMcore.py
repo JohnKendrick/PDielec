@@ -183,11 +183,8 @@ def exact_inv_4x4(M):
 
     Notes
     -----
-    This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. 
-
-    See Also
-    --------
-    http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche23.html : For mathematical background related to this computation.
+    This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in
+    `FSRStools <https://github.com/ddietze/FSRStools>`_.
 
     """
     assert M.shape == (4, 4)

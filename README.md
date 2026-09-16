@@ -16,7 +16,7 @@ powdered crystals John Kendrick and Andrew D. Burnett Journal of
 Computational Chemistry 2016, vol 27, 1491-1504 DOI: 10.1002/jcc.24344
 
 PDielec also calculates powder and crystal Raman spectra, including polarisation
-and collection geometry. See the [version 10 migration guide](https://johnkendrick.github.io/PDielec/migration.html)
+and collection geometry. See the [version 10 migration guide](Sphinx/migration.rst)
 for changes to Python APIs, saved Raman geometry and spreadsheet comparisons.
 
 Introduction

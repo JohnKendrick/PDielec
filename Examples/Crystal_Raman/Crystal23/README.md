@@ -6,9 +6,9 @@ The DFT calculation uses an TZVP basis and PBE functional with the D3 dispersion
 To calculate the Raman spectrum run `pdmake --view command.pdmake`
 Run `pdmake command.pdmake` to compare against the reference workbook.
 
-The CHI2.DAT file holds the non-linear susceptibility which was calculated in a separate calculation to
-the Raman calculation (third.d12 and third.log).
-The CHI2.DAT file was created from third.log by copying the lines around the relavant output in third.log.
+`TENS_RAMAN.DAT` supplies the polarizability derivatives needed for Raman tensors.
+For the electro-optic correction, PDielec reads the nonlinear susceptibility table
+embedded in `opt_raman.out`. 
 
 | **File**              | **Description**                                   |
 | --------------------- | ------------------------------------------------- |
@@ -18,7 +18,6 @@ The CHI2.DAT file was created from third.log by copying the lines around the rel
 | TENS_IR.DAT           | The IR tensor          |
 | BORN.DAT              | The Born charge        |
 | TENS_RAMAN.DAT        | The Raman tensor       |
-| CHI2.DAT              | The non-linear susceptibility tensor       |
 | command.pdmake        | pdmake script for the test suite |
 | results.ref.xlsx      | reference results for the test suite |
 | script.py             | script used by pdgui for the test suite |

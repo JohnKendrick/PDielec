@@ -71,3 +71,22 @@ def test_individual_pytest_group_remains_available(tmp_path, monkeypatch, group)
     monkeypatch.setattr(pdmake, "run_pytest_suite", lambda path, label: targets.append(path))
     pdmake.main()
     assert targets == [os.path.join("PDielec", "Tests", group)]
+
+
+@pytest.mark.parametrize("system_flag", ["-usesystem", "--usesystem"])
+@pytest.mark.parametrize("directory_flag", ["-directory", "--directory"])
+def test_display_flags_preserve_following_suite(tmp_path, monkeypatch, system_flag, directory_flag):
+    """Accept both aliases and execute the command following the directory flag."""
+    (tmp_path / "Examples").mkdir()
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["pdmake", system_flag, directory_flag, "test-pytest-constants"])
+    monkeypatch.setattr(pdmake, "find_root_directory", lambda _: str(tmp_path))
+    monkeypatch.setattr(pdmake, "rootDirectory", str(tmp_path), raising=False)
+    monkeypatch.setattr(pdmake, "useLocal", True)
+    monkeypatch.setattr(pdmake, "settings", {**pdmake.settings, "title": "title"})
+    targets = []
+    monkeypatch.setattr(pdmake, "run_pytest_suite", lambda path, label: targets.append(path))
+    pdmake.main()
+    assert pdmake.useLocal is False
+    assert pdmake.settings["title"] == "directory"
+    assert targets == [os.path.join("PDielec", "Tests", "Constants")]
