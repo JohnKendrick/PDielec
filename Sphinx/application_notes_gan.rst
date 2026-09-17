@@ -213,7 +213,7 @@ features remain, while a polar feature appears near
 arbitrary units. These changes demonstrate boundary and local-field
 effects, not finite-q polariton dispersion.
 
-.. figure:: ../Examples/ApplicationNotes/GaN/Powder/Figures/gan_powder.png
+.. figure:: _static/figures/gan/gan_powder.png
    :width: 100%
    :alt: Parallel and crossed powder spectra for uncorrected GaN and spheres in air.
 
@@ -376,7 +376,7 @@ forward scattering. At 2 degrees they recover, with integrated
 :math:`730\ \mathrm{cm}^{-1}`. Tiny residual signals in the zero-angle
 crossed channels should not be assigned as observable Raman peaks.
 
-.. figure:: ../Examples/ApplicationNotes/GaN/ModalPairs/Figures/gan_modal_pairs_summary.png
+.. figure:: _static/figures/gan/gan_modal_pairs_summary.png
    :width: 100%
    :alt: Crossed-channel spectra and integrated intensity ratios for three NAC choices.
 
@@ -520,7 +520,7 @@ the DFT Maxwell response has a peak at about
 frequency scale accessible to a polariton; it is not a reproduction of
 the different-wavelength Mina experiment.
 
-.. figure:: ../Examples/ApplicationNotes/GaN/ModalPairs/Irmer2013/Figures/irmer_response_spectra.png
+.. figure:: _static/figures/gan/irmer_response_spectra.png
    :width: 100%
    :alt: Aperture-dependent finite-wavevector response for paper and DFT dielectric models.
 
@@ -588,7 +588,7 @@ tolerance nearly removes three channels at 2-degree incidence. This
 is a sensitivity test of a hard directional cutoff, not a fit parameter
 that should be selected to recover an experimental intensity.
 
-.. figure:: ../Examples/ApplicationNotes/GaN/ModalPairs/IncoherentModels/Figures/gan_incoherent_models.png
+.. figure:: _static/figures/gan/gan_incoherent_models.png
    :width: 100%
    :alt: Bulk and local incoherent final-state spectra and q-angle tolerance sensitivity.
 
@@ -608,6 +608,12 @@ the quantitative conclusion that can be drawn from this example.
 
 Reproducing the note and preparing documentation
 ------------------------------------------------
+
+The documentation includes copies of the four figures in
+``Sphinx/_static/figures/gan``, so building the manual does not require
+running the example calculations. After regenerating the plots, copy the
+four PNG files used above from the examples' ``Figures`` directories into
+that directory to update the documentation.
 
 From a source checkout, activate the PDielec Python environment and run::
 

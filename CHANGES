@@ -1,21 +1,22 @@
 version 10.0.0
    Powder Raman and Crystal Raman Scenarios are now supported.
-   Documentation has been completed.
+   Documentation has been extended to include the Raman methodologies.
+   There is a new pdf manual
+   Added an option to the frequency-intensity table in the settings tab to copy columns using ctrlC
+   Changed the plotting tab so that the user can select what plots to include in the plot
+   A substantial application note has been added which covers powder and crystal Raman usage.
+   Scripts will not be backward compatible.
+
    Release validation fixes:
    - Fixed azimuthal waterfall and all-mode line plots with current Matplotlib.
    - Added help-flag handling to pdcompare and pickled_reader; pdcompare no longer requires -excel.
    - pdmake accepts --usesystem, and --directory no longer skips the next argument.
    - Corrected broken migration, bibliography and API documentation links.
+
    Crystal Raman collection geometry:
-   - Automatic collection now uses retro-backscattering on the superstrate side and collinear forward scattering
+   - Automatic collection uses retro-backscattering on the superstrate side and collinear forward scattering
      on the substrate side. Explicitly setting the collection angle equal to the incidence angle retains specular
      reflection.
-   - Approximate ES now evaluates the resolved detector geometry once at the laser frequency; it reuses the
-     incident field only when the detector system and signed angle are identical.
-   - Migration note: saved scenarios with Collection angle = -1 change at nonzero incidence. Normal-incidence
-     automatic scenarios are unchanged. Negative values other than the -1 sentinel are now explicit signed angles.
-   Extensive code quality improvements across the entire codebase.
-   NOTE: Scripts written before this version that call renamed methods will not be compatible.
 
    API renaming (snake_case):
    - Renamed all camelCase methods and functions to snake_case throughout all modules:
@@ -62,6 +63,7 @@ version 10.0.0
    - Removed all development debug comments (#JK / #jk) from source files.
    - Moved stdlib imports (glob, csv, warnings, yaml) from inside functions to module level.
    - Wrapped long docstring prose lines to the 120-character line length limit.
+
 version 9.1.1
    Fixed a MAC bug, where the axes label in the viewerTab didn't follow the axes rotation
 version 9.1.0
