@@ -327,11 +327,31 @@ class TestJ3CastepParser:
 class TestJ3BCrystalParser:
     """J3B: CRYSTAL CHI2.DAT reads χ^(2) = 2d correctly."""
 
-    def test_crystal_chi2_dat_internal_units(self):
-        """CRYSTAL d(MKS) values are converted from pm/V to internal units."""
+    def test_crystal_chi2_dat_internal_units(self, tmp_path):
+        """Companion d(MKS) values override embedded data and convert to internal units."""
         from PDielec.CrystalOutputReader import CrystalOutputReader
 
-        r = CrystalOutputReader([_CRYSTAL23_FILE])
+        output_file = tmp_path / "opt_raman.out"
+        shutil.copyfile(_CRYSTAL23_FILE, output_file)
+        # Use distinct values from the embedded table to verify companion precedence.
+        # The example no longer ships a CHI2.DAT file.
+        (tmp_path / "CHI2.DAT").write_text(
+            " COMPONENT BETA CHI(2) d(MKS) d(cgs)\n"
+            " *******************************************************************************\n"
+            " XXX 0.0 (0.0) 0.0 0.0 0.0\n"
+            " XXY 0.0 (0.0) 0.0 0.0 0.0\n"
+            " XXZ 6.1371E+02 (6.1372E+02) 1.2024E+01 1.1691E+01 2.7892E-01\n"
+            " XYY 0.0 (0.0) 0.0 0.0 0.0\n"
+            " XYZ 0.0 (0.0) 0.0 0.0 0.0\n"
+            " XZZ 0.0 (0.0) 0.0 0.0 0.0\n"
+            " YYY 0.0 (0.0) 0.0 0.0 0.0\n"
+            " YYZ 6.1371E+02 (6.1369E+02) 1.2024E+01 1.1691E+01 2.7892E-01\n"
+            " YZZ 0.0 (0.0) 0.0 0.0 0.0\n"
+            " ZZZ -1.7410E+03 (-1.7410E+03) -3.4110E+01 -3.3166E+01 -7.9124E-01\n"
+            " *******************************************************************************\n",
+            encoding="utf-8",
+        )
+        r = CrystalOutputReader([str(output_file)])
         r.read_output()
         chi2 = r.nonlinear_optical_susceptibility
         factor = chi2_pm_per_v_to_repsilon(r.volume)
