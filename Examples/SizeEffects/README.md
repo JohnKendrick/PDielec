@@ -7,4 +7,4 @@
 | [MgO/](./MgO/README.md)         | Magnesium Oxide             |
 | [ZnO/](./ZnO/README.md)         | Zin Oxide                   |
 
-[Back](..)
+[Back](../README.md)

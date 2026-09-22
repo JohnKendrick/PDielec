@@ -30,7 +30,7 @@ method = 'Maxwell-Garnett'
 shapes = ['Sphere', 'Plate', 'Plate','Ellipsoid']
 hkls    = [[0,0,0],  [1,0,0], [0,0,1], [0,0,1]]
 for shape,hkl in zip(shapes,hkls):
-    self.notebook.addScenario()
+    self.notebook.add_scenario()
     tab = self.notebook.scenarios[-1]
     tab.settings['Particle shape'] = shape
     tab.settings['Effective medium method'] = method

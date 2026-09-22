@@ -23,6 +23,14 @@ PDielec.pdcompare
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.pdcompare.logger
+
+
 Functions
 ---------
 
@@ -52,4 +60,6 @@ Module Contents
            -sheet [molar/absorption/real/imaginary/atr]
            -excel filename
 
+
+.. py:data:: logger
 

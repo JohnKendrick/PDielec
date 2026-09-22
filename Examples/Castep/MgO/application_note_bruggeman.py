@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
 #
 #
 #
@@ -24,7 +24,7 @@ tab.sigmas_cm1 = [10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'f=0.01'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -46,10 +46,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'f=0.1'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -71,10 +71,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'f=0.2'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -96,10 +96,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'f=0.3'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -121,10 +121,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'f=0.4'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -146,10 +146,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'f=0.5'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -171,10 +171,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[6]
 tab.settings['Legend'] = 'f=0.6'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -196,10 +196,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[7]
 tab.settings['Legend'] = 'f=0.7'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -221,10 +221,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[8]
 tab.settings['Legend'] = 'f=0.8'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -246,10 +246,10 @@ tab.settings['Effective medium method'] = 'Bruggeman'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[9]
 tab.settings['Legend'] = 'f=0.9'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0

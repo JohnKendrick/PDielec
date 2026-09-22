@@ -197,13 +197,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -211,11 +218,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
@@ -224,20 +232,23 @@
 <li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,13 +257,92 @@
 <li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -271,6 +361,29 @@
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
@@ -322,13 +435,13 @@
 <span id="pdielec-utilities"></span><h1>PDielec.Utilities<a class="headerlink" href="#module-PDielec.Utilities" title="Link to this heading">¶</a></h1>
 <p>Utility Functions.</p>
 <p>A set of utility functions that may be used anywhere in the package.</p>
-<section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.Debug" title="PDielec.Utilities.Debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Debug</span></code></a></p></td>
-<td><p>A class aimed at providing a structured way to include debug messages in code.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.logger" title="PDielec.Utilities.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -342,7 +455,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.find_program_from_name" title="PDielec.Utilities.find_program_from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_program_from_name</span></code></a>(filename)</p></td>
 <td><p>Determine the simulation program from a given filename.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Utilities.get_reader" title="PDielec.Utilities.get_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reader</span></code></a>(name, program[, debug])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Utilities.get_reader" title="PDielec.Utilities.get_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reader</span></code></a>(name, program)</p></td>
 <td><p>Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Utilities.printsp" title="PDielec.Utilities.printsp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">printsp</span></code></a>(name, matrix)</p></td>
@@ -354,96 +467,29 @@
 </section>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="PDielec.Utilities.Debug">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">Debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#Debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.Debug" title="Link to this definition">¶</a></dt>
-<dd><p>A class aimed at providing a structured way to include debug messages in code.</p>
-<section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>print(args, level=0)</dt><dd><p>Prints debug messages based on the debug level provided as argument compared to the object’s debug level.</p>
-</dd>
-<dt>state()</dt><dd><p>Returns the current state (enabled or disabled) of debugging.</p>
-</dd>
-</dl>
-</section>
-<section id="notes">
-<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
-<p>The <cite>print</cite> method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.Utilities.Debug.print">
-<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#Debug.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.Debug.print" title="Link to this definition">¶</a></dt>
-<dd><p>Print message if debugging level allows.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>args</dt><dd><p>Variable length argument list for the message to be printed.</p>
-</dd>
-<dt>level<span class="classifier">int, optional</span></dt><dd><p>The level of the message that determines if it gets printed or not,
-based on the instance’s <cite>level</cite>. Default value is 0.</p>
-</dd>
-</dl>
-</section>
-<section id="id1">
-<h4>Notes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
-<p>This method will only print the message if the instance’s <cite>debug</cite> flag is True
-and the provided <cite>level</cite> is less than or equal to the instance’s <cite>level</cite>.</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.Utilities.Debug.state">
-<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#Debug.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.Debug.state" title="Link to this definition">¶</a></dt>
-<dd><p>Get the debug state.</p>
-<section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
-<p>The current debug state.</p>
-</section>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.Utilities.Debug.debug">
-<span class="sig-name descname"><span class="pre">debug</span></span><a class="headerlink" href="#PDielec.Utilities.Debug.debug" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.Utilities.Debug.level">
-<span class="sig-name descname"><span class="pre">level</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#PDielec.Utilities.Debug.level" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.Utilities.Debug.text">
-<span class="sig-name descname"><span class="pre">text</span></span><a class="headerlink" href="#PDielec.Utilities.Debug.text" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</section>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Utilities.find_program_from_name">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">find_program_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#find_program_from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.find_program_from_name" title="Link to this definition">¶</a></dt>
 <dd><p>Determine the simulation program from a given filename.</p>
-<section id="id3">
-<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The complete path (absolute or relative) to a file.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h3>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>str</dt><dd><p>The program name that was used to calculate the frequencies.</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h3>Notes<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
-<p>This function examines the file extension and, in some cases, the presence of specific files in the same directory, to determine the associated simulation program. It recognizes files from several popular materials simulation programs, such as ‘phonopy’, ‘gulp’, ‘vasp’, and others.</p>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
+<p>This function examines the file extension and, in some cases, the presence of specific files in the same directory,
+to determine the associated simulation program. It recognizes files from several popular materials simulation
+programs, such as ‘phonopy’, ‘gulp’, ‘vasp’, and others.</p>
 </section>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
@@ -461,29 +507,30 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.Utilities.get_reader">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#get_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.get_reader" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#get_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.get_reader" title="Link to this definition">¶</a></dt>
 <dd><p>Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.</p>
-<p>This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<p>This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP,
+etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the
+specified quantum mechanical program.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>name<span class="classifier">str</span></dt><dd><p>The primary filepath or name associated with the output file(s).</p>
 </dd>
-<dt>program<span class="classifier">str</span></dt><dd><p>The name of the simulation program. Supported values are ‘castep’, ‘vasp’, ‘gulp’, ‘crystal’, ‘abinit’, ‘qe’, and ‘phonopy’.</p>
-</dd>
-<dt>debug<span class="classifier">boolean</span></dt><dd><p>Optional.  If true print debug information.  Default is false</p>
+<dt>program<span class="classifier">str</span></dt><dd><p>The name of the simulation program. Supported values are ‘castep’, ‘vasp’, ‘gulp’, ‘crystal’, ‘abinit’,
+‘qe’, and ‘phonopy’.</p>
 </dd>
 </dl>
 </section>
-<section id="id7">
-<h3>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>object</dt><dd><p>An instance of the appropriate output reader class based on the input <cite>program</cite></p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h3>Examples<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h3>Examples<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">get_reader</span><span class="p">(</span><span class="s2">&quot;output.log&quot;</span><span class="p">,</span> <span class="s2">&quot;castep&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">get_reader</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="s2">&quot;phonopy&quot;</span><span class="p">)</span>
 </pre></div>
@@ -495,8 +542,8 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
 <dt class="sig sig-object py" id="PDielec.Utilities.printsp">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">printsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Utilities.html#printsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Utilities.printsp" title="Link to this definition">¶</a></dt>
 <dd><p>Print 4x4 matrices or 4 vectors.</p>
-<section id="id9">
-<h3>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>name<span class="classifier">string</span></dt><dd><p>The name of the matrix</p>
 </dd>
@@ -504,15 +551,20 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h3>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<section id="id5">
+<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
 <p>None</p>
 </section>
-<section id="id11">
-<h3>Notes<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<section id="id6">
+<h3>Notes<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
 <p>None</p>
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Utilities.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Utilities.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.Utilities.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -573,20 +625,13 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.Utilities</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#PDielec.Utilities.Debug"><code class="docutils literal notranslate"><span class="pre">Debug</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.Utilities.Debug.print"><code class="docutils literal notranslate"><span class="pre">Debug.print()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Utilities.Debug.state"><code class="docutils literal notranslate"><span class="pre">Debug.state()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Utilities.Debug.debug"><code class="docutils literal notranslate"><span class="pre">Debug.debug</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Utilities.Debug.level"><code class="docutils literal notranslate"><span class="pre">Debug.level</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Utilities.Debug.text"><code class="docutils literal notranslate"><span class="pre">Debug.text</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#PDielec.Utilities.find_program_from_name"><code class="docutils literal notranslate"><span class="pre">find_program_from_name()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Utilities.get_reader"><code class="docutils literal notranslate"><span class="pre">get_reader()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Utilities.printsp"><code class="docutils literal notranslate"><span class="pre">printsp()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Utilities.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -600,7 +645,7 @@ and the provided <cite>level</cite> is less than or equal to the instance’s <c
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -1,0 +1,2 @@
+Finite-difference VASP ZnO preader Raman
+preader -program finite_field -spectroscopy raman -eckart ../../Powder_Raman/Finite_difference/finite_difference.json

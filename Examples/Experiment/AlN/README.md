@@ -19,4 +19,4 @@ The permittvity of SiC is also given in DataBase.xlsx.  It is a Drude-Lorentz mo
   | script.py           | Script for testing           |
   | results.ref.xlsx    | Reference xlsx file for testing           |
 
-[Back](..)
+[Back](../README.md)

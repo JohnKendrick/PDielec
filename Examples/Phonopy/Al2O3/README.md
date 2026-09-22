@@ -6,7 +6,7 @@
 | Primitive_cell | Phonopy calculation using primitive cell                      |
 | Standard_cell  | Phonopy calculation using standard cell                       |
 
-[Back](..)
+[Back](../README.md)
 
 
 This example is based on the example/Al2O3 given in the Phonopy distribution.  There are some differences as the INCAR, KPOINTS and POTCAR files are not present in the distribution.
@@ -293,4 +293,9 @@ phonopy --dim="2 2 1" --qpoints="0 0 0" --writedm --pa auto
 phonopy-pdielec-born > BORN_PDIELEC
 ```
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [Primitive_cell](Primitive_cell/README.md)
+- [Standard_cell](Standard_cell/README.md)

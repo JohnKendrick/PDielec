@@ -7,5 +7,28 @@ This page contains auto-generated API reference documentation [#f1]_.
    :titlesonly:
 
    /autoapi/PDielec/index
+   /autoapi/test_H_cif/index
+   /autoapi/test_B_layer/index
+   /autoapi/test_D_system/index
+   /autoapi/test_B_lattice/index
+   /autoapi/test_E_fresnel/index
+   /autoapi/test_C_smatrix/index
+   /autoapi/test_E_database/index
+   /autoapi/test_E_symmetry/index
+   /autoapi/test_F_molecular/index
+   /autoapi/test_F_incoherent/index
+   /autoapi/test_C_coordinates/index
+   /autoapi/test_A_length_units/index
+   /autoapi/test_D_element_data/index
+   /autoapi/test_G_coordinate_io/index
+   /autoapi/test_D_volume_density/index
+   /autoapi/test_A_math_utilities/index
+   /autoapi/test_D_material_classes/index
+   /autoapi/test_C_unit_conversions/index
+   /autoapi/test_B_derived_constants/index
+   /autoapi/test_A_dielectric_constant/index
+   /autoapi/test_B_dielectric_tabulated/index
+   /autoapi/test_C_dielectric_lorentzian/index
+   /autoapi/test_A_fundamental_constants/index
 
 .. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

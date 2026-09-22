@@ -1,0 +1,79 @@
+{% set name = "pdielec" %}
+{% set version = "9.1.1" %}
+{% set python_min = python_min | default("3.8") %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+
+  sha256: 6587ea69bb271e4d869eeccf0e3344cedbdd824dc7c413eeabd5a9de7ec4801b
+
+
+build:
+  noarch: python
+  number: 1
+  script: {{ PYTHON }} -m pip install . -vv
+  # Conda-forge creates the executable wrappers for these automatically
+  entry_points:
+    - preader = PDielec.preader:main
+    - p2cif = PDielec.p2cif:main
+    - pdcompare = PDielec.pdcompare:main
+    - phonopy-pdielec-born = PDielec.phonopy_pdielec_born:main
+    - aims-pdielec-born = PDielec.aims_pdielec_born:main
+    - pickled_reader = PDielec.pickled_reader:main
+    - vibanalysis = PDielec.vibanalysis:main
+    - pdmake = PDielec.pdmake:main
+    - pdgui = PDielec.pdgui:main
+
+requirements:
+  host:
+    - python {{ python_min }}
+    - setuptools
+    - pip
+  run:
+    - python >={{ python_min }}
+    - scipy
+    - numpy
+    - matplotlib-base
+    - pyqt6            # Maps to PyQt6 in your pyproject.toml
+    - qtpy
+    - pyopengl
+    - pyyaml
+    - dill
+    - scikit-learn     # Maps to scikit_learn
+    - spglib
+    - termcolor
+    - xlsxwriter       # Maps to XlsxWriter
+    - openpyxl
+    - imageio
+    - imageio-ffmpeg
+    - psutil
+
+test:
+  imports:
+    - PDielec
+    - PDielec.GUI
+  commands:
+    - preader --help
+    - p2cif --help
+    - pdmake --help
+  requires:
+    - python {{ python_min }}
+    - pip
+
+about:
+  home: https://johnkendrick.github.io/PDielec
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  summary: PDielec package for the calculation of THz and infrared spectra
+  doc_url: https://johnkendrick.github.io/PDielec
+  dev_url: https://github.com/JohnKendrick/PDielec
+
+extra:
+  recipe-maintainers:
+    - JohnKendrick
+    - ADBurnett

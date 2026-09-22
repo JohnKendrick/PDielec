@@ -1,0 +1,239 @@
+PDielec.GUI.AzimuthalSweepWindow
+================================
+
+.. py:module:: PDielec.GUI.AzimuthalSweepWindow
+
+.. autoapi-nested-parse::
+
+   AzimuthalSweepWindow module — pop-up window showing Raman intensity vs azimuthal angle.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.AzimuthalSweepWindow.AzimuthalSweepWindow
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.GUI.AzimuthalSweepWindow.group_degenerate_modes
+
+
+Module Contents
+---------------
+
+.. py:class:: AzimuthalSweepWindow(sweep_data, title='Azimuthal sweep', parent=None)
+
+   Bases: :py:obj:`qtpy.QtWidgets.QWidget`
+
+
+   Non-modal window displaying Raman intensity vs azimuthal angle in four plot styles.
+
+   Parameters
+   ----------
+   sweep_data : dict
+       Pre-computed sweep data with keys:
+
+       ``psi_array`` : ndarray, shape (N,)
+           Azimuthal angles in degrees.
+       ``mode_frequencies`` : ndarray, shape (M,)
+           Active mode frequencies in cm⁻¹.
+       ``mode_intensities_2d`` : ndarray, shape (N, M)
+           Per-mode intensities at each azimuthal angle.
+       ``vs_cm1`` : ndarray, shape (K,)
+           Wavenumber axis in cm⁻¹.
+       ``spectra_2d`` : ndarray, shape (N, K)
+           Broadened spectra at each azimuthal angle.
+
+   title : str, optional
+       Window title string.
+   parent : QWidget or None, optional
+       Parent widget (pass ``None`` for an independent top-level window).
+
+
+
+   .. py:method:: _get_effective_modes()
+
+      Return (frequencies, intensities_2d, labels) with optional grouping.
+
+      Returns
+      -------
+      freqs : ndarray, shape (G,)
+      ints : ndarray, shape (N, G)
+      labels : list of str, length G
+
+
+
+
+   .. py:method:: _on_controls_changed()
+
+      React to plot-type or mode combo-box changing.
+
+
+
+   .. py:method:: _on_degen_changed()
+
+      React to degenerate-mode display combo changing.
+
+
+
+   .. py:method:: _on_tol_changed()
+
+      React to tolerance spinbox changing.
+
+
+
+   .. py:method:: _plot_colourmap(psi, vs, spectra)
+
+      Draw a colour-map (image) of the broadened Raman spectrum vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      vs : ndarray
+          Wavenumber axis in cm⁻¹, shape (K,).
+      spectra : ndarray
+          Broadened spectra, shape (N, K).
+
+
+
+
+   .. py:method:: _plot_line(psi, mode_freqs, mode_ints, labels, mode_idx)
+
+      Draw a line plot of Raman mode intensity vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      mode_freqs : ndarray
+          Mode frequencies in cm⁻¹, shape (M,).
+      mode_ints : ndarray
+          Per-mode intensities, shape (N, M).
+      labels : list of str
+          Display label for each mode/group, length M.
+      mode_idx : int
+          Index of selected mode, or -1 to plot all modes.
+
+
+
+
+   .. py:method:: _plot_polar(psi, mode_freqs, mode_ints, labels, mode_idx)
+
+      Draw a polar plot of Raman intensity vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      mode_freqs : ndarray
+          Mode frequencies in cm⁻¹, shape (M,).
+      mode_ints : ndarray
+          Per-mode intensities, shape (N, M).
+      labels : list of str
+          Display label for each mode/group, length M.
+      mode_idx : int
+          Index of selected mode, or -1 for the integrated sum over all modes.
+
+
+
+
+   .. py:method:: _plot_waterfall(psi, vs, spectra)
+
+      Draw a waterfall plot of the broadened Raman spectrum vs azimuthal angle.
+
+      Parameters
+      ----------
+      psi : ndarray
+          Azimuthal angles in degrees, shape (N,).
+      vs : ndarray
+          Wavenumber axis in cm⁻¹, shape (K,).
+      spectra : ndarray
+          Broadened spectra, shape (N, K).
+
+
+
+
+   .. py:method:: _rebuild_mode_combo()
+
+      Repopulate the mode combo to match the current grouping.
+
+
+
+   .. py:method:: _update_plot()
+
+      Clear the figure and redraw according to the current control state.
+
+
+
+   .. py:attribute:: _degen_cb
+
+
+   .. py:attribute:: _mode_cb
+
+
+   .. py:attribute:: _mode_freqs
+
+
+   .. py:attribute:: _mode_ints
+
+
+   .. py:attribute:: _plot_type_cb
+
+
+   .. py:attribute:: _psi
+
+
+   .. py:attribute:: _spectra
+
+
+   .. py:attribute:: _tol_label
+
+
+   .. py:attribute:: _tol_sb
+
+
+   .. py:attribute:: _vs
+
+
+   .. py:attribute:: canvas
+
+
+   .. py:attribute:: figure
+
+
+   .. py:attribute:: toolbar
+
+
+.. py:function:: group_degenerate_modes(frequencies, intensities_2d, tol_cm1=2.0)
+
+   Group near-degenerate modes by summing their intensities.
+
+   Parameters
+   ----------
+   frequencies : ndarray, shape (M,)
+       Mode frequencies in cm⁻¹.
+   intensities_2d : ndarray, shape (N, M)
+       Per-mode intensities at each azimuthal angle.
+   tol_cm1 : float, optional
+       Frequency tolerance in cm⁻¹.  Modes whose frequencies span no more
+       than this range are merged into a single group.  Default is 2.0.
+
+   Returns
+   -------
+   grouped_freqs : ndarray, shape (G,)
+       Mean frequency for each group.
+   grouped_ints : ndarray, shape (N, G)
+       Summed intensities for each group.
+   group_labels : list of str
+       Human-readable label for each group.
+
+
+

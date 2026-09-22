@@ -196,13 +196,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -210,11 +217,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
@@ -223,20 +231,23 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -245,13 +256,92 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -270,6 +360,29 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
@@ -329,13 +442,19 @@
 <span class="c1">#</span>
 <span class="sd">&quot;&quot;&quot;CastepOutputReader module.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">angs2bohr</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.GenericOutputReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericOutputReader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.UnitCell</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitCell</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 
 <div class="viewcode-block" id="CastepOutputReader">
@@ -352,15 +471,20 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in &#39;.castep&#39; or &#39;.phonon&#39; to set up the necessary output files for the instance.</span>
-<span class="sd">    - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.</span>
+<span class="sd">    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it</span>
+<span class="sd">      looks for filenames ending in &#39;.castep&#39; or &#39;.phonon&#39; to set up the necessary output files for the instance. - The</span>
+<span class="sd">      method does not return a value but initializes the instance with the necessary attributes for further processing</span>
+<span class="sd">      and analysis of CASTEP output files.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a new instance of the class CastepOutputReader.</span>
 
-<span class="sd">        This constructor initializes the class with data from the provided filenames. It sets up the necessary properties for further operations, including identifying and setting up key output files (.castep and .phonon files) from the given filenames. Additional properties related to electronic calculations, phonon calculations, and ionic types are also initialized but not explicitly defined.</span>
+<span class="sd">        This constructor initializes the class with data from the provided filenames. It sets up the necessary</span>
+<span class="sd">        properties for further operations, including identifying and setting up key output files (.castep and .phonon</span>
+<span class="sd">        files) from the given filenames. Additional properties related to electronic calculations, phonon calculations,</span>
+<span class="sd">        and ionic types are also initialized but not explicitly defined.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -369,13 +493,16 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in &#39;.castep&#39; or &#39;.phonon&#39; to set up the necessary output files for the instance.</span>
-<span class="sd">        - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.</span>
+<span class="sd">        - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs.</span>
+<span class="sd">          Specifically, it looks for filenames ending in &#39;.castep&#39; or &#39;.phonon&#39; to set up the necessary output files for</span>
+<span class="sd">          the instance. - The method does not return a value but initializes the instance with the necessary attributes</span>
+<span class="sd">          for further processing and analysis of CASTEP output files.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If the first filename does not contain &#39;.castep&#39; or &#39;.phonon&#39;, implying it may not be suitable for initializing this class instance as intended. (Note: This exception raising is implied and should ideally be added to the code to handle cases where filenames do not meet expected criteria.)</span>
+<span class="sd">        ValueError If the first filename does not contain &#39;.castep&#39; or &#39;.phonon&#39;, implying it may not be suitable for</span>
+<span class="sd">        initializing this class instance as intended. (Note: This exception raising is implied and should ideally be</span>
+<span class="sd">        added to the code to handle cases where filenames do not meet expected criteria.)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">GenericOutputReader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span>
@@ -395,6 +522,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_ion_type_index</span>         <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ion_index_type</span>         <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intensities</span>             <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv_source</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">de_ion</span>                  <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fmax</span>                    <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dr_max</span>                  <span class="o">=</span> <span class="p">[]</span>
@@ -435,8 +564,23 @@
         <span class="c1">#  For the .phonon file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;frequency&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_frequencies</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nbranches&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot; Number of branches&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_nbranches</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ramanAtomicPolarTensor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;.*Raman atomic polar tensor V\*dChi\(1\)/dR&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_raman_atomic_polar_tensors</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ramanPolarDeriv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s*BEGIN DFPT RAMAN POLAR_DERIV&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_raman_polar_derivatives</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;ramanTensors&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;.*Raman Susceptibility Tensors&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_raman_tensors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manage</span><span class="p">[</span><span class="s2">&quot;nloSusceptibility&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; *Nonlinear Optical Susceptibility&quot;</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_nlo_susceptibility</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outputfiles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_read_output_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_raman_tensors_from_polar_derivatives</span><span class="p">()</span>
         <span class="k">return</span></div>
 
 
@@ -458,7 +602,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This function does not return anything as it sets the parsed number directly to an instance variable named `_nbranches`.</span>
+<span class="sd">        This function does not return anything as it sets the parsed number directly to an instance variable named</span>
+<span class="sd">        `_nbranches`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">_nbranches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span></div>
@@ -469,7 +614,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and process frequencies, intensities, and normal modes from  phonon file.</span>
 
-<span class="sd">        This method assumes a specific format of the input file, where frequencies, intensities, and normal mode coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal mode vectors for each mode.</span>
+<span class="sd">        This method assumes a specific format of the input file, where frequencies, intensities, and normal mode</span>
+<span class="sd">        coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal</span>
+<span class="sd">        mode vectors for each mode.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -482,18 +629,19 @@
 
 <span class="sd">        Attributes Modified</span>
 <span class="sd">        -------------------</span>
-<span class="sd">        mass_weighted_normal_modes : list</span>
-<span class="sd">            A list of mass-weighted normal modes. Each normal mode is represented as a list of 3D vectors (lists) for each ion in the structure.</span>
-<span class="sd">        frequencies : list</span>
-<span class="sd">            A list of frequency values read from the file.</span>
-<span class="sd">        _intensities : list</span>
-<span class="sd">            A list of intensity values corresponding to each frequency.</span>
+<span class="sd">        mass_weighted_normal_modes : list A list of mass-weighted normal modes. Each normal mode is represented as a</span>
+<span class="sd">        list of 3D vectors (lists) for each ion in the structure. frequencies : list A list of frequency values read</span>
+<span class="sd">        from the file. _intensities : list A list of intensity values corresponding to each frequency.</span>
+
+
+
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        - This method directly modifies the instance attributes `mass_weighted_normal_modes`, `frequencies`, and `_intensities`.</span>
-<span class="sd">        - It is assumed that `self.file_descriptor` is an open file object from which the data is read.</span>
-<span class="sd">        - The method relies on the internal variable `self._nbranches` to determine the number of modes to read, and `self.nions` for the number of ions per mode.</span>
+<span class="sd">        - This method directly modifies the instance attributes `mass_weighted_normal_modes`, `frequencies`, and</span>
+<span class="sd">          `_intensities`. - It is assumed that `self.file_descriptor` is an open file object from which the data is</span>
+<span class="sd">          read. - The method relies on the internal variable `self._nbranches` to determine the number of modes to read,</span>
+<span class="sd">          and `self.nions` for the number of ions per mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -530,12 +678,361 @@
         <span class="k">return</span></div>
 
 
+<div class="viewcode-block" id="CastepOutputReader._set_raman_polar_derivatives">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._set_raman_polar_derivatives">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_raman_polar_derivatives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polar_deriv</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Store atom-resolved CASTEP Raman derivatives according to source priority.&quot;&quot;&quot;</span>
+        <span class="n">priorities</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;developer&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;official&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">current_priority</span> <span class="o">=</span> <span class="n">priorities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv_source</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">priorities</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">current_priority</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv</span> <span class="o">=</span> <span class="n">polar_deriv</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv_source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="CastepOutputReader._read_raman_atomic_polar_tensors">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._read_raman_atomic_polar_tensors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_raman_atomic_polar_tensors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read CASTEP&#39;s official atom-resolved Raman polar-tensor table.</span>
+
+<span class="sd">        Recent CASTEP versions print a table headed</span>
+<span class="sd">        ``Raman atomic polar tensor V*dChi(1)/dR (A**2)``. Each atom and</span>
+<span class="sd">        Cartesian displacement has a 3x3 derivative tensor. The species-local</span>
+<span class="sd">        atom number is mapped back onto the atom ordering of the unit cell.</span>
+<span class="sd">        Values are converted from Angstrom squared to the internal Bohr-squared</span>
+<span class="sd">        representation used by the common projection routine.</span>
+
+<span class="sd">        This official table takes priority over the older optional developer</span>
+<span class="sd">        ``POLAR_DERIV`` block if both are present.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The table heading that triggered this method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">line</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">atom_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">displacement_indices</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">derivative_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">derivative_line</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;CASTEP Raman atomic polar tensor table ended unexpectedly&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="s2">&quot;+====&quot;</span> <span class="ow">in</span> <span class="n">derivative_line</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">derivative_line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="ow">or</span> <span class="n">fields</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">displacement_indices</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">species</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">species_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">displacement</span> <span class="o">=</span> <span class="n">displacement_indices</span><span class="p">[</span><span class="n">fields</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+                <span class="n">rows</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]]]</span>
+                <span class="k">for</span> <span class="n">_row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                    <span class="n">row_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_fields</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">row_fields</span><span class="p">[:</span><span class="mi">3</span><span class="p">]])</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Malformed CASTEP Raman atomic polar tensor row: </span><span class="si">{</span><span class="n">derivative_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">atom_label</span> <span class="o">=</span> <span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="n">species_index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">atom_label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">atom_labels</span><span class="p">:</span>
+                <span class="n">atom_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom_label</span><span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">atom_label</span><span class="p">,</span> <span class="n">displacement</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;CASTEP Raman atomic polar tensor table contained no derivative data&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">atom_indices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_element_names</span><span class="p">())</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">:</span>
+            <span class="n">species_counts</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_element_names</span><span class="p">()):</span>
+                <span class="n">species</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+                <span class="n">species_counts</span><span class="p">[</span><span class="n">species</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">atom_indices</span><span class="p">[</span><span class="n">species</span><span class="p">,</span> <span class="n">species_counts</span><span class="p">[</span><span class="n">species</span><span class="p">]]</span> <span class="o">=</span> <span class="n">atom</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_labels</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">:</span>
+            <span class="n">atom_indices</span> <span class="o">=</span> <span class="p">{</span><span class="n">atom_label</span><span class="p">:</span> <span class="n">atom</span> <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">atom_label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atom_labels</span><span class="p">)}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Cannot map CASTEP Raman atomic polar tensors onto the structure&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">expected_entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">*</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="n">expected_entries</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;CASTEP Raman atomic polar tensor table contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;expected </span><span class="si">{</span><span class="n">expected_entries</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">polar_deriv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">atom_label</span><span class="p">,</span> <span class="n">displacement</span><span class="p">),</span> <span class="n">tensor</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">atom_label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">atom_indices</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;CASTEP Raman atomic polar tensor contains unknown atom &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom_label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">atom_label</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">polar_deriv</span><span class="p">[</span><span class="n">atom_indices</span><span class="p">[</span><span class="n">atom_label</span><span class="p">],</span> <span class="n">displacement</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor</span> <span class="o">*</span> <span class="n">angs2bohr</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_raman_polar_derivatives</span><span class="p">(</span><span class="n">polar_deriv</span><span class="p">,</span> <span class="s2">&quot;official&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;_read_raman_atomic_polar_tensors: read derivatives for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="si">}</span><span class="s2"> atoms&quot;</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CastepOutputReader._read_raman_polar_derivatives">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._read_raman_polar_derivatives">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_raman_polar_derivatives</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read CASTEP&#39;s atom-resolved DFPT polarizability derivatives.</span>
+
+<span class="sd">        This legacy fallback reads the optional developer block containing the</span>
+<span class="sd">        internal ``polar_deriv`` array immediately before CASTEP contracts it</span>
+<span class="sd">        with its in-memory phonon eigenvectors. Its layout is</span>
+
+<span class="sd">        ``polar_deriv[atom, displacement, tensor_row, tensor_column]``.</span>
+
+<span class="sd">        Atom, displacement, and tensor-row indices in the output are one-based.</span>
+<span class="sd">        Values are derivatives of the cell polarizability in CASTEP atomic</span>
+<span class="sd">        units and therefore have dimensions of Bohr squared. They are retained</span>
+<span class="sd">        in their native units and projected only after the companion</span>
+<span class="sd">        ``.phonon`` file has supplied the normal modes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The ``BEGIN DFPT RAMAN POLAR_DERIV`` marker.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">line</span>
+        <span class="c1"># Skip the array-description and column-heading lines.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">derivative_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">derivative_line</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;CASTEP DFPT RAMAN POLAR_DERIV block ended unexpectedly&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="s2">&quot;END DFPT RAMAN POLAR_DERIV&quot;</span> <span class="ow">in</span> <span class="n">derivative_line</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">derivative_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ignoring malformed CASTEP POLAR_DERIV row: </span><span class="si">{</span><span class="n">derivative_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">atom</span><span class="p">,</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">tensor_row</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">atom</span><span class="p">,</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">tensor_row</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;CASTEP DFPT RAMAN POLAR_DERIV block contained no derivative data&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">nions</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">atom</span> <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">_displacement</span><span class="p">,</span> <span class="n">_tensor_row</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nions</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;CASTEP POLAR_DERIV block contains </span><span class="si">{</span><span class="n">nions</span><span class="si">}</span><span class="s2"> atoms but the structure contains </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">expected_rows</span> <span class="o">=</span> <span class="n">nions</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">!=</span> <span class="n">expected_rows</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;CASTEP POLAR_DERIV block contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows; expected </span><span class="si">{</span><span class="n">expected_rows</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">polar_deriv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nions</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">tensor_row</span><span class="p">),</span> <span class="n">tensor_columns</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">displacement</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">tensor_row</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;CASTEP POLAR_DERIV block contains an out-of-range Cartesian index&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">polar_deriv</span><span class="p">[</span><span class="n">atom</span><span class="p">,</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">tensor_row</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">tensor_columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_raman_polar_derivatives</span><span class="p">(</span><span class="n">polar_deriv</span><span class="p">,</span> <span class="s2">&quot;developer&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;_read_raman_polar_derivatives: read derivatives for </span><span class="si">{</span><span class="n">nions</span><span class="si">}</span><span class="s2"> atoms&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="CastepOutputReader._calculate_raman_tensors_from_polar_derivatives">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._calculate_raman_tensors_from_polar_derivatives">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_raman_tensors_from_polar_derivatives</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Project CASTEP atomic polarizability derivatives onto current modes.&quot;&quot;&quot;</span>
+        <span class="n">polar_deriv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv</span>
+        <span class="k">if</span> <span class="n">polar_deriv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span> <span class="o">!=</span> <span class="n">polar_deriv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Cannot project CASTEP POLAR_DERIV data: masses and atoms are inconsistent&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Cannot project CASTEP POLAR_DERIV data: unit-cell volume is unavailable&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">masses</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="c1"># polar_deriv is in Bohr^2. CASTEP&#39;s printed mode tensor is obtained by</span>
+        <span class="c1"># converting it to Angstrom^2, projecting with e/sqrt(M_amu), and</span>
+        <span class="c1"># dividing by sqrt(V_A^3). Multiplication by 4*pi then gives PDielec&#39;s</span>
+        <span class="c1"># R_epsilon = sqrt(V) d epsilon / dQ convention.</span>
+        <span class="n">unit_factor</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">)</span> <span class="o">*</span> <span class="n">angs2bohr</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">tensors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+            <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">mass</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">masses</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">displacement</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="n">tensor</span> <span class="o">+=</span> <span class="p">(</span>
+                        <span class="n">polar_deriv</span><span class="p">[</span><span class="n">atom</span><span class="p">,</span> <span class="n">displacement</span><span class="p">]</span>
+                        <span class="o">*</span> <span class="n">mode</span><span class="p">[</span><span class="n">atom</span><span class="p">,</span> <span class="n">displacement</span><span class="p">]</span>
+                        <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span>
+                    <span class="p">)</span>
+            <span class="n">tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tensor</span> <span class="o">*</span> <span class="n">unit_factor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raman_tensors</span> <span class="o">=</span> <span class="n">tensors</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;_calculate_raman_tensors_from_polar_derivatives: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;computed </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span><span class="si">}</span><span class="s2"> mode tensors&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="CastepOutputReader._update_raman_tensors_after_mode_recalculation">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._update_raman_tensors_after_mode_recalculation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_raman_tensors_after_mode_recalculation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_modes</span><span class="p">,</span> <span class="n">old_raman_tensors</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reproject raw CASTEP derivatives after a normal-mode recalculation.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_castep_raman_polar_deriv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_raman_tensors_from_polar_derivatives</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_update_raman_tensors_after_mode_recalculation</span><span class="p">(</span><span class="n">old_modes</span><span class="p">,</span> <span class="n">old_raman_tensors</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="CastepOutputReader._read_raman_tensors">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._read_raman_tensors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_raman_tensors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the Raman susceptibility tensors from the .castep file.</span>
+
+<span class="sd">        CASTEP prints one 3×3 Raman susceptibility tensor per mode in the block</span>
+<span class="sd">        headed ``Raman Susceptibility Tensors ((A/amu)*0.5)``.  CASTEP prints</span>
+<span class="sd">        the polarizability-volume tensor divided by ``sqrt(Vcell)``; CASTEP&#39;s</span>
+<span class="sd">        own ``A**4 amu**(-1)`` activities are recovered as ``Vcell`` times the</span>
+<span class="sd">        rotational invariants of the printed tensor.  PDielec stores the shared</span>
+<span class="sd">        ``R_epsilon = sqrt(Vcell) dε/dQ`` convention, so the printed tensor is</span>
+<span class="sd">        multiplied by ``4*pi``. Precision is limited by CASTEP&#39;s formatted</span>
+<span class="sd">        output.</span>
+
+<span class="sd">        The tensors are stored directly in ``self.raman_tensors`` as a fallback</span>
+<span class="sd">        when neither the official atomic polar-tensor table nor the legacy</span>
+<span class="sd">        developer ``POLAR_DERIV`` block is available. Atom-resolved derivatives</span>
+<span class="sd">        are projected using the companion ``.phonon`` eigenvectors after all</span>
+<span class="sd">        files have been read and replace these pre-projected tensors.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The line that triggered this method (containing</span>
+<span class="sd">            ``&quot;Raman Susceptibility Tensors&quot;``).  Not used directly; reading</span>
+<span class="sd">            continues from the current position of ``self.file_descriptor``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Skip the separator line  +-----...-----+</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raman_tensors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Loop until the closing +---...---+ line (which has no &quot;Mode number&quot;)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">&quot;Mode number&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="c1"># Row 0: three tensor values followed by the depolarisation ratio</span>
+            <span class="n">row0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="c1"># Row 1 and 2: three tensor values only</span>
+            <span class="n">row1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">row2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="c1"># Skip the blank separator line between modes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="c1"># Each line is bordered by &#39;+&#39; tokens; the tensor values are at</span>
+            <span class="c1"># positions [1], [2], [3] after splitting on whitespace.</span>
+            <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row0</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row0</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row0</span><span class="p">[</span><span class="mi">3</span><span class="p">])],</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row1</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row1</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row1</span><span class="p">[</span><span class="mi">3</span><span class="p">])],</span>
+                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">row2</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row2</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">row2</span><span class="p">[</span><span class="mi">3</span><span class="p">])],</span>
+            <span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">raman_tensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tensor</span> <span class="o">*</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_read_raman_tensors: read </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raman_tensors</span><span class="p">)</span><span class="si">}</span><span class="s2"> Raman tensors&quot;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="CastepOutputReader._read_nlo_susceptibility">
+<a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._read_nlo_susceptibility">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_nlo_susceptibility</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the nonlinear optical susceptibility tensor from the .castep file.</span>
+
+<span class="sd">        CASTEP prints the d-tensor (d = χ^(2)/2) in a 3×6 Voigt-format block::</span>
+
+<span class="sd">            Nonlinear Optical Susceptibility (pm/V)</span>
+<span class="sd">            ---------------------------------------</span>
+<span class="sd">              -0.01384    -0.00493     0.00060    -0.00001    21.65509    -0.00057</span>
+<span class="sd">              -0.00057    -0.00261     0.00002    21.65875    -0.00001    -0.00493</span>
+<span class="sd">              21.65509    21.65875   -38.35388     0.00002     0.00060    -0.00001</span>
+
+<span class="sd">        Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),</span>
+<span class="sd">        4→(0,2)=(2,0), 5→(0,1)=(1,0).</span>
+
+<span class="sd">        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d</span>
+<span class="sd">        converted from pm/V to the reader ``R_epsilon`` convention.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        line : str</span>
+<span class="sd">            The trigger line (already consumed by the manage loop).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True on success.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># skip separator line &quot;  ------...&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">voigt_pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+            <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">voigt_pairs</span><span class="p">):</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>   <span class="c1"># symmetrize last two indices</span>
+        <span class="c1"># CASTEP outputs d = χ^(2)/2 in pm/V; convert to χ^(2), then to R_epsilon units.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store_nonlinear_optical_susceptibility_pm_per_v</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;  Nonlinear optical susceptibility tensor read from CASTEP output (χ^(2) = 2d, R_epsilon units)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
 <div class="viewcode-block" id="CastepOutputReader._read_kpoint_grid">
 <a class="viewcode-back" href="../../autoapi/PDielec/CastepOutputReader/index.html#PDielec.CastepOutputReader.CastepOutputReader._read_kpoint_grid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_kpoint_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and set the k-point grid dimensions from the given line.</span>
 
-<span class="sd">        This method updates the `kpoint_grid` attribute of the object with the k-point grid dimensions obtained from parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th positions (1-based indexing) in the line, separated by spaces.</span>
+<span class="sd">        This method updates the `kpoint_grid` attribute of the object with the k-point grid dimensions obtained from</span>
+<span class="sd">        parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th</span>
+<span class="sd">        positions (1-based indexing) in the line, separated by spaces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -567,7 +1064,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the `kpoints` attribute of the class instance.</span>
+<span class="sd">        This function assumes the number of k-points is always located at the 6th position (index 5) when the line is</span>
+<span class="sd">        split by whitespace. It directly updates the `kpoints` attribute of the class instance.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">])</span>
@@ -609,7 +1107,9 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.</span>
+<span class="sd">        This method processes a line from a data file, extracting the species from the sixth (index 5) position in the</span>
+<span class="sd">        whitespace-separated list. The species name is capitalized and stored, and indices related to the species and</span>
+<span class="sd">        ion types are updated accordingly.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">species</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
@@ -709,7 +1209,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and parse masses from a file, categorizing them by species.</span>
 
-<span class="sd">        This method reads lines from an opened file associated with the instance, extracting the species name, its mass, and the number of ions per species. It updates instance attributes to store this information, organizing masses both by type and in total.</span>
+<span class="sd">        This method reads lines from an opened file associated with the instance, extracting the species name, its mass,</span>
+<span class="sd">        and the number of ions per species. It updates instance attributes to store this information, organizing masses</span>
+<span class="sd">        both by type and in total.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -748,7 +1250,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_born_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the born charges from the castep file.</span>
 
-<span class="sd">        This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each column of the output refers to a given field direction, and each row refers to the atomic displacement, organizing the numbers in the format `[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]`. The function then rearranges these numbers into the desired format: `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`, where 1, 2, 3 are the field directions, and x, y, z represent the atomic displacements.</span>
+<span class="sd">        This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each</span>
+<span class="sd">        column of the output refers to a given field direction, and each row refers to the atomic displacement,</span>
+<span class="sd">        organizing the numbers in the format `[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]`. The function then</span>
+<span class="sd">        rearranges these numbers into the desired format: `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`, where 1, 2, 3</span>
+<span class="sd">        are the field directions, and x, y, z represent the atomic displacements.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -757,8 +1263,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ndarray</span>
-<span class="sd">            An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.</span>
+<span class="sd">        ndarray An array where each row represents the born charges for a particular atomic displacement arranged in the</span>
+<span class="sd">        format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -782,7 +1288,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and parse dielectric data from a file.</span>
 
-<span class="sd">        This method reads dielectric data from the currently opened file associated with the object. It updates the object&#39;s properties for zero-frequency optical and static dielectric constants.</span>
+<span class="sd">        This method reads dielectric data from the currently opened file associated with the object. It updates the</span>
+<span class="sd">        object&#39;s properties for zero-frequency optical and static dielectric constants.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -795,9 +1302,13 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        The function assumes that the file&#39;s current position is at the correct start point for reading dielectric data. It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first three numbers of each line are appended to &#39;zerof_optical_dielectric&#39;, and the latter three numbers to &#39;zerof_static_dielectric&#39;. </span>
+<span class="sd">        The function assumes that the file&#39;s current position is at the correct start point for reading dielectric data.</span>
+<span class="sd">        It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first</span>
+<span class="sd">        three numbers of each line are appended to &#39;zerof_optical_dielectric&#39;, and the latter three numbers to</span>
+<span class="sd">        &#39;zerof_static_dielectric&#39;.</span>
 
-<span class="sd">        This method modifies the state of the object by updating the &#39;zerof_optical_dielectric&#39; and &#39;zerof_static_dielectric&#39; lists with new data read from the file. </span>
+<span class="sd">        This method modifies the state of the object by updating the &#39;zerof_optical_dielectric&#39; and</span>
+<span class="sd">        &#39;zerof_static_dielectric&#39; lists with new data read from the file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_descriptor</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -859,7 +1370,9 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.</span>
+<span class="sd">        This function updates the `pressure` attribute of the class instance based on the value parsed from the input</span>
+<span class="sd">        string. The specific use case and format of the input string are not detailed, assuming some domain-specific</span>
+<span class="sd">        knowledge is required.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
@@ -918,7 +1431,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_energy_cutoff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract the energy cutoff value from a given line and store it in the object.</span>
 
-<span class="sd">        This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.</span>
+<span class="sd">        This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a</span>
+<span class="sd">        space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -963,7 +1477,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_nelect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract the number of electrons from a line and assign it.</span>
 
-<span class="sd">        Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable `electrons`.</span>
+<span class="sd">        Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance</span>
+<span class="sd">        variable `electrons`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -984,7 +1499,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read and store energy values from a given line.</span>
 
-<span class="sd">        Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in the given line contains the DFT energy, which is appended to a list, and also set as the final energy without entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.</span>
+<span class="sd">        Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that</span>
+<span class="sd">        the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in</span>
+<span class="sd">        the given line contains the DFT energy, which is appended to a list, and also set as the final energy without</span>
+<span class="sd">        entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -997,7 +1515,10 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This method expects that &#39;line&#39; follows a specific format, where the fifth (index 4) element is the final energy without entropy and, on the subsequent line, the sixth (index 5) element is the final free energy. It further assumes &#39;self.file_descriptor&#39; to be an open file object positioned at the line immediately following the line containing energy information.</span>
+<span class="sd">        This method expects that &#39;line&#39; follows a specific format, where the fifth (index 4) element is the final energy</span>
+<span class="sd">        without entropy and, on the subsequent line, the sixth (index 5) element is the final free energy. It further</span>
+<span class="sd">        assumes &#39;self.file_descriptor&#39; to be an open file object positioned at the line immediately following the line</span>
+<span class="sd">        containing energy information.</span>
 
 <span class="sd">        The method updates four attributes of the object:</span>
 <span class="sd">        - Appends the energy value to &#39;self.energiesDFT&#39;.</span>
@@ -1086,7 +1607,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_convergence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read convergence data from a file and update internal lists.</span>
 
-<span class="sd">        This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.</span>
+<span class="sd">        This internal method reads specific lines from a file that is already opened and updates internal lists for</span>
+<span class="sd">        de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on</span>
+<span class="sd">        the values found in those lines.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1099,7 +1622,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). </span>
+<span class="sd">        This function assumes that the file being read follows a specific format where the required values are found at</span>
+<span class="sd">        known line intervals and in a consistent column position (index 3 after splitting the line).</span>
 
 <span class="sd">        The function does not return any value, but it updates the internal state of the object it is a part of.</span>
 
@@ -1122,7 +1646,6 @@
 
         
             
-
 </pre></div>
         </article>
       </div>
@@ -1155,7 +1678,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="../../_static/documentation_options.js?v=335988e4"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

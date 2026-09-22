@@ -13,4 +13,4 @@
 
 Na2SO42.dynG is used by PDielec to generate the absorption spectrum.
 
-[Back](..)
+[Back](../README.md)

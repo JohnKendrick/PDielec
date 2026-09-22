@@ -1,0 +1,156 @@
+PDielec.FiniteFieldOutputReader
+===============================
+
+.. py:module:: PDielec.FiniteFieldOutputReader
+
+.. autoapi-nested-parse::
+
+   Finite-field Raman JSON output reader.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.FiniteFieldOutputReader.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.FiniteFieldOutputReader.FiniteFieldOutputReader
+
+
+Module Contents
+---------------
+
+.. py:class:: FiniteFieldOutputReader(names)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read PDielec finite-field Raman JSON datasets.
+
+   The reader is code-agnostic: VASP, QE, CASTEP, or other finite-field
+   workflows can write the same consolidated JSON schema.  Program/DFT masses
+   are retained as ``program_mass_dictionary``, but the active masses default
+   to PDielec's built-in average masses.
+
+
+   .. py:method:: _array_or_default(values, shape, as_list=False)
+      :staticmethod:
+
+
+      Return an array-like value or zeros if it is absent.
+
+
+
+   .. py:method:: _deps_dr_from_displacements(data)
+
+      Build d epsilon / d r from central finite-difference displacement records.
+
+
+
+   .. py:method:: _flatten_force_constants(force_constants)
+
+      Flatten Phi[a,k,b,l] to a (3N, 3N) matrix.
+
+
+
+   .. py:method:: _force_constants_from_displacements(data)
+
+      Build a force-constant matrix from central finite-difference forces.
+
+
+
+   .. py:method:: _program_masses(data, symbols)
+
+      Return per-atom program masses from the JSON, if present.
+
+
+
+   .. py:method:: _read_deps_dr(data)
+
+      Read Cartesian dielectric derivatives, if present.
+
+
+
+   .. py:method:: _read_force_constants(data)
+
+      Read unweighted force constants and store the atomic-unit Hessian.
+
+
+
+   .. py:method:: _read_modes(data)
+
+      Read frequencies, JSON normal modes, and projected Raman tensors.
+
+
+
+   .. py:method:: _read_output_files()
+
+      Read the finite-field JSON file.
+
+
+
+   .. py:method:: _read_structure(data)
+
+      Read the structure, species, and active/program masses.
+
+
+
+   .. py:method:: _recalculate_raman_tensors_from_deps_dr()
+
+      Project d epsilon / d r onto the active mass-weighted modes.
+
+
+
+   .. py:method:: _reference_value(data, key)
+      :staticmethod:
+
+
+      Return a top-level value or its lower-level reference-block equivalent.
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Rebuild Raman tensors from raw derivatives when available.
+
+
+
+   .. py:method:: calculate_mass_weighted_normal_modes()
+
+      Regenerate modes from finite-field force constants using active masses.
+
+
+
+   .. py:attribute:: _SUPPORTED_SCHEMAS
+
+
+   .. py:attribute:: _deps_dr
+      :value: None
+
+
+
+   .. py:attribute:: _input_mode_masses
+      :value: None
+
+
+
+   .. py:attribute:: _unproven_raman_masses
+      :value: None
+
+
+
+   .. py:attribute:: type
+      :value: 'Finite field Raman JSON'
+
+
+
+.. py:data:: logger
+

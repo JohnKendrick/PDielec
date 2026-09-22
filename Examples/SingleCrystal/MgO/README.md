@@ -31,4 +31,4 @@ mgo_fit_experiment_transmittance.py
 mgo_comparison_of_incoherent_methods.py
 - Script for comparing the different incoherent methods of operation
 
-[Back](..)
+[Back](../README.md)

@@ -1,16 +1,15 @@
 [build-system]
-requires = [ "setuptools"]
+requires = [ "setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pdielec"
-version = "9.1.1"
+version = "10.0.0"
 dependencies = [
     "setuptools",
     "scipy",
     "numpy",
     "matplotlib",
-    "openpyxl",
     "psutil",
     "PyOpenGL",
     "PyQt6",
@@ -24,8 +23,9 @@ dependencies = [
     "openpyxl",
     "imageio",
     "imageio-ffmpeg",
+    "pytest",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [
   {name = "John Kendrick", email = "john@kendrick.me.uk"},
   {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
@@ -35,16 +35,15 @@ maintainers = [
   {name = "Andrew Burnett", email = "A.D.Burnett@leeds.ac.uk"},
 ]
 
-description = "PDielec package for the calculation of THz and infrared spectra for powders and single crystals"
+description = "PDielec package for the calculation of THz, infrared and Raman spectra for powders and single crystals"
 readme = "README.md"
-license = {file = "LICENSE.txt"}
-keywords = ["Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
+license = "MIT"
+license-files = ["LICENSE.txt", "PDielec/PyMieScatt_LICENSE.md"]
+keywords = ["Raman Spectroscopy","Infrared"," Infrared Spectroscopy","THz Spectroscopy","Terahertz Spectroscopy","Bruggeman","Maxwell-Garnett","Effective Medium","Phonon","Powder","Single Crystal"]
 
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -58,7 +57,7 @@ Homepage      = "https://johnkendrick.github.io/PDielec"
 Documentation = "https://johnkendrick.github.io/PDielec"
 Repository    = "https://github.com/JohnKendrick/PDielec.git"
 "Bug Tracker" = "https://github.com/JohnKendrick/PDielec/issues"
-Changelog     = "https://github.com/JohnKendrick/PDielec/blob/master/CHANGES.txt"
+Changelog     = "https://github.com/JohnKendrick/PDielec/blob/master/CHANGES"
 
 [project.scripts]
 preader              = "PDielec.preader:main"

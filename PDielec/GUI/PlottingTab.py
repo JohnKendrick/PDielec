@@ -15,6 +15,8 @@
 """PlottingTab module."""
 
 # Import plotting requirements
+import logging
+
 import matplotlib
 import matplotlib.figure
 import numpy as np
@@ -24,6 +26,8 @@ from qtpy.QtCore import QCoreApplication, Qt
 from qtpy.QtWidgets import (
     QApplication,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QDoubleSpinBox,
     QFormLayout,
     QHBoxLayout,
@@ -32,16 +36,18 @@ from qtpy.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSpinBox,
+    QTableWidget,
+    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
 from PDielec.Constants import avogadro_si
-from PDielec.Utilities import Debug
 
+logger = logging.getLogger(__name__)
 possible_frequency_units = ["wavenumber","THz","GHz","ang","nm","um","mm","cm","m"]
 
-def isThisAFrequencyUnit(unit):
+def is_this_a_frequency_unit(unit):
     """Return true if this is a frequency unit, false if a wavelength.
 
     Units of frequency are 'wavenumber','THz','GHz'
@@ -59,7 +65,8 @@ def isThisAFrequencyUnit(unit):
 def convert_frequency_units( value, unit_in, unit_out ):
     """Convert between frequency and wavelength units.
 
-    The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+    The input can be either a scalar value or a numpy array of values.
+    The function will return the converted value(s) in the output units specified.
     The unit strings are turned into lower-case so case is irrelevant
 
     Parameters
@@ -67,9 +74,11 @@ def convert_frequency_units( value, unit_in, unit_out ):
     value : scalar or numpy array
         The value(s) for which the conversion is to be made.
     unit_in : str
-        The units of the input value(s). Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
+        The units of the input value(s).
+        Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
     unit_out : str
-        The units of the output value(s). Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
+        The units of the output value(s).
+        Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
 
     Returns
     -------
@@ -98,24 +107,27 @@ def convert_frequency_units( value, unit_in, unit_out ):
         for i,x in enumerate(value):
             if x <= 0:
                 # Problem with negative or zero conversions between wavelength and frequency
-                print("Warning a zero or negative frequency/wavelength is not permitted",i,x,unit_in,unit_out)
+                logger.warning(f"Warning a zero or negative frequency/wavelength is not permitted {i} {x} {unit_in} {unit_out}")
                 x[i] = 1.0E-8
     elif value <= 0 :
         value = 1.0E-8
     scale,operator = wavenumber[unit_in]
-    value = scale * value     
+    value = scale * value
     if operator == "/":
-        value = 1.0 / value  
+        value = 1.0 / value
     # convert the internal value from cm-1 to the output unit
     scale,operator = wavenumber[unit_out]
     if operator == "/":
-        value = 1.0 / value  
+        value = 1.0 / value
     return value / scale
-    
+
 class PlottingTab(QWidget):
     """A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
 
-    This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
+    This class is responsible for handling plotting functionalities like:
+    choosing plot types, setting molar definitions and frequency values,
+    managing interactions with UI components such as:
+    spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
 
     Parameters
     ----------
@@ -127,13 +139,16 @@ class PlottingTab(QWidget):
     Attributes
     ----------
     settings : dict
-        A dictionary containing settings related to plotting such as minimum frequency, maximum frequency, frequency increment, molar definitions, number of atoms, plot type, and frequency unit.
-    refreshRequired : bool
+        A dictionary containing settings related to plotting such as:
+        minimum frequency, maximum frequency, frequency increment,
+        molar definitions, number of atoms, plot type, and frequency unit.
+    refresh_required : bool
         A flag indicating whether the plot needs to be refreshed.
     subplot : matplotlib subplot object
         The subplot used for plotting data.
     vmin, vmax, vinc : float
-        Variables to store current minimum frequency, maximum frequency, and frequency increment values for the plot.
+        Variables to store current minimum frequency,
+        maximum frequency, and frequency increment values for the plot.
     molar_cb_current_index : int
         Tracks the current index of the molar definition combo box to handle changes.
     notebook : QWidget
@@ -151,21 +166,23 @@ class PlottingTab(QWidget):
     -------
     get_total_number_of_frequency_calculations()
         Calculates the total number of frequency calculations required.
-    requestRefresh()
+    request_refresh()
         Requests a refresh for the plotting.
-    requestScenarioRefresh()
+    request_scenario_refresh()
         Requests a refresh for all scenarios in the application.
-    on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value), on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value), on_plot_type_cb_activated(index)
-        Event handlers for UI component changes.
+    on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value)
+        Event handlers for frequency range UI changes.
+    on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value)
+        Event handlers for units and molar definition UI changes.
+    on_plot_type_cb_activated(index)
+        Event handler for plot type selection changes.
     refresh(force=False)
         Refreshes the plot based on current settings and data.
     plot()
         Generates and displays the plot based on the selected plot type and data.
     get_number_of_califications_required()
         Returns the number of calculations needed for updating the plot.
-    greyed_out()
-        Greys out options in the UI that are not available.
-    writeSpreadsheet()
+    write_spreadsheet()
         Writes results to a spreadsheet.
     set_concentrations()
         Sets the concentrations for the plotting based on the molar definition.
@@ -186,12 +203,13 @@ class PlottingTab(QWidget):
         ----------
         settings : dict
             A dictionary to store settings such as frequency range, molar definitions, etc.
-        refreshRequired : bool
+        refresh_required : bool
             Indicates whether the plot needs to be refreshed.
         subplot : NoneType or matplotlib subplot
             Placeholder for a future subplot object, initialized as None.
         molar_definitions : list
-            A list of possible definitions for a mole, including 'Unit cells', 'Atoms', 'Molecules'.
+            A list of possible definitions for a mole, including:
+            'Unit cells', 'Atoms', 'Molecules'.
         legends : list
             A list to store legend entries.
         vs_cm1 : list
@@ -199,7 +217,8 @@ class PlottingTab(QWidget):
         frequency_length : int
             Stores the length of `vs_cm1` list.
         vmin, vmax, vinc : float
-            Variables to store minimum, maximum, and increment values for frequency/wavelength after conversion.
+            Variables to store minimum, maximum, and
+            increment values for frequency/wavelength after conversion.
         molar_cb_current_index : int
             Tracks the currently selected index in the molar definitions combo box.
         notebook : QWidget
@@ -209,15 +228,17 @@ class PlottingTab(QWidget):
 
         Notes
         -----
-        Widget elements such as QDoubleSpinBox, QComboBox, QLabel, QPushButton, QProgressBar, and the matplotlib figure are also initialized and configured within this method. This involves setting up signal-slot connections for interactive behavior, tooltips for user guidance, and incorporating the matplotlib canvas and toolbar for plotting functionality. Additionally, the method is designed for setup within a Qt layout structure, ensuring proper arrangement and display of the interface components.
+        Widget elements such as QDoubleSpinBox, QComboBox, QLabel, QPushButton, QProgressBar, and the matplotlib figure
+        are also initialized and configured within this method. This involves setting up signal-slot connections for
+        interactive behavior, tooltips for user guidance, and incorporating the matplotlib canvas and toolbar for
+        plotting functionality. Additionally, the method is designed for setup within a Qt layout structure, ensuring
+        proper arrangement and display of the interface components.
 
-        """        
+        """
         super(QWidget, self).__init__(parent)
-        global debugger
-        debugger = Debug(debug,"PlottingTab")
-        debugger.print("Start:: Plotting tab initialisation")
+        logger.debug("Start:: Plotting tab initialisation")
         self.settings = {}
-        self.refreshRequired = True
+        self.refresh_required = True
         self.subplot = None
         self.setWindowTitle("Plotting")
         self.settings["Minimum frequency"] = 1.0
@@ -228,8 +249,11 @@ class PlottingTab(QWidget):
         self.settings["Number of atoms"] = 1
         self.settings["Plot type"] = "Powder Molar Absorption"
         self.settings["Frequency unit"] = "wavenumber"
+        self.settings["Spectrum renormalisation"] = "none"
+        self.settings["Scenarios to plot"] = []
         # self.settings['Plot title'] = 'Plot Title'
         self.legends = []
+        self.scenario_lines = {}
         self.vs_cm1 = []
         self.frequency_length = len(self.vs_cm1)
         self.vmin = 0.0
@@ -256,7 +280,7 @@ class PlottingTab(QWidget):
         vinc = (vmax-vmin) / n
         vinc = convert_frequency_units(vinc,"wavenumber",self.settings["Frequency unit"])
         # If dealing with wavelength then swap the order of vmin and vmax
-        if not isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if not is_this_a_frequency_unit(self.settings["Frequency unit"]):
             vmin, vmax = vmax, vmin
         #
         # The minimum frequency
@@ -264,7 +288,7 @@ class PlottingTab(QWidget):
         self.vmin_sb = QDoubleSpinBox(self)
         self.vmin_sb.setRange(0.00000001,900000000000)
         self.vmin_sb.setValue(vmin)
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.vmin_sb.setToolTip("Set the minimum frequency to be considered)")
         else:
             self.vmin_sb.setToolTip("Set the minimum wavelength to be considered)")
@@ -275,7 +299,7 @@ class PlottingTab(QWidget):
         self.vmax_sb = QDoubleSpinBox(self)
         self.vmax_sb.setRange(0.00000001,900000000000)
         self.vmax_sb.setValue(vmax)
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.vmax_sb.setToolTip("Set the maximum frequency to be considered)")
         else:
             self.vmax_sb.setToolTip("Set the maximum wavelength to be considered)")
@@ -287,7 +311,7 @@ class PlottingTab(QWidget):
         self.vinc_sb.setRange(0.0000001,5000000000.0)
         self.vinc_sb.setSingleStep(0.1)
         self.vinc_sb.setDecimals(4)
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.vinc_sb.setToolTip("Choose an increment for the frequency when plotting")
         else:
             self.vinc_sb.setToolTip("Choose an increment for the wavelength when plotting")
@@ -301,7 +325,7 @@ class PlottingTab(QWidget):
         self.funits_cb.activated.connect(self.on_funits_cb_activated)
         index = possible_frequency_units.index(self.settings["Frequency unit"])
         self.funits_cb.setCurrentIndex(index)
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.funits_cb.setToolTip("Set the frequency unit")
             self.frequency_form_label = QLabel("Frequency min, max and increment", self)
             self.frequency_form_label.setToolTip("Choose minimum, maximum and increment for frequency")
@@ -323,7 +347,7 @@ class PlottingTab(QWidget):
         self.molar_cb.addItems(self.molar_definitions)
         try:
             self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
-        except Exception:
+        except ValueError:
             self.molar_cb_current_index = 0
             self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
         self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
@@ -348,19 +372,37 @@ class PlottingTab(QWidget):
         #
         self.plot_type_cb = QComboBox(self)
         self.plot_type_cb.setToolTip("Choose the which data to plot")
-        self.plot_types = [
-                            "Powder Molar Absorption",
-                            "Powder Absorption",
-                            "Powder Real Permittivity",
-                            "Powder Imaginary Permittivity",
-                            "Powder ATR",
-                            "Crystal Reflectance (P polarisation)",
-                            "Crystal Reflectance (S polarisation)",
-                            "Crystal Transmittance (P polarisation)",
-                            "Crystal Transmittance (S polarisation)",
-                            "Crystal Absorbtance (P polarisation)",
-                            "Crystal Absorbtance (S polarisation)",
-                          ]
+        self.plot_types_by_spectroscopy = {
+            "Powder Infrared": [
+                "Powder Molar Absorption",
+                "Powder Absorption",
+                "Powder Real Permittivity",
+                "Powder Imaginary Permittivity",
+            ],
+            "Powder ATR": [
+                "Powder Molar Absorption",
+                "Powder Absorption",
+                "Powder Real Permittivity",
+                "Powder Imaginary Permittivity",
+                "Powder ATR",
+            ],
+            "Powder Raman": [
+                "Powder Raman",
+            ],
+            "Crystal Infrared": [
+                "Crystal Reflectance (P polarisation)",
+                "Crystal Reflectance (S polarisation)",
+                "Crystal Transmittance (P polarisation)",
+                "Crystal Transmittance (S polarisation)",
+                "Crystal Absorbtance (P polarisation)",
+                "Crystal Absorbtance (S polarisation)",
+            ],
+            "Crystal Raman": [
+                "Crystal Raman",
+            ],
+        }
+        initial_spectroscopy = self.notebook.settingsTab.settings.get("Spectroscopy type", "Powder Infrared")
+        self.plot_types = self.plot_types_by_spectroscopy.get(initial_spectroscopy, self.plot_types_by_spectroscopy["Powder Infrared"])
         self.plot_ylabels = {
                      "Powder Molar Absorption": r"Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$",
                            "Powder Absorption": r"Absorption Coefficient $\mathdefault{(cm^{-1})}$",
@@ -373,6 +415,8 @@ class PlottingTab(QWidget):
       "Crystal Transmittance (S polarisation)": r"Fraction of s-polarised transmitted",
         "Crystal Absorbtance (P polarisation)": r"Fraction of p-polarised absorbtance",
         "Crystal Absorbtance (S polarisation)": r"Fraction of s-polarised absorbtance",
+                             "Powder Raman": r"Raman Intensity (arbitrary units)",
+                            "Crystal Raman": r"Raman Intensity (arbitrary units)",
                             }
 
         self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
@@ -388,6 +432,38 @@ class PlottingTab(QWidget):
         hbox.addWidget(self.plot_type_cb)
         hbox.addWidget(plot_button)
         form.addRow(label, hbox)
+        #
+        # Spectrum renormalisation (applied per-curve at plot time)
+        #
+        self.renorm_cb = QComboBox(self)
+        self.renorm_cb.addItems(["none", "max=1", "area=1"])
+        idx = self.renorm_cb.findText(self.settings["Spectrum renormalisation"], Qt.MatchFixedString)
+        if idx >= 0:
+            self.renorm_cb.setCurrentIndex(idx)
+        self.renorm_cb.activated.connect(self.on_renorm_cb_activated)
+        self.renorm_cb.setToolTip("Renormalise each plotted curve:\n'none' — raw units\n'max=1' — divide each curve by its peak\n'area=1' — divide each curve by its integrated area\n'layer depth' — divide by total depth of active layers (Crystal Raman only)")
+        self.renorm_label = QLabel("Spectrum renormalisation", self)
+        self.renorm_label.setToolTip(self.renorm_cb.toolTip())
+        form.addRow(self.renorm_label, self.renorm_cb)
+        # If the GUI was started with a non-default spectroscopy type, the plot type
+        # and renorm options must be updated now that both combo boxes exist.
+        if initial_spectroscopy != "Powder Infrared":
+            self.set_plot_type_for_spectroscopy(initial_spectroscopy)
+        #
+        # Scenario selection
+        #
+        self.select_scenarios_button = QPushButton("Select scenarios...")
+        self.select_scenarios_button.setToolTip("Choose the scenarios included in the plot")
+        self.select_scenarios_button.clicked.connect(self.open_scenario_selection_dialog)
+        self.scenario_selection_label = QLabel("", self)
+        self.scenario_selection_label.setToolTip(self.select_scenarios_button.toolTip())
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.select_scenarios_button)
+        hbox.addWidget(self.scenario_selection_label)
+        label = QLabel("Scenarios to plot", self)
+        label.setToolTip(self.select_scenarios_button.toolTip())
+        form.addRow(label, hbox)
+        self.refresh_scenario_table()
         # Add a progress bar
         self.progressbar = QProgressBar(self)
         self.progressbar.setToolTip("Show the progress of any calculations")
@@ -410,13 +486,15 @@ class PlottingTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         # Create the plot
-        debugger.print("Finished:: Plotting tab initialisation")
+        logger.debug("Finished:: Plotting tab initialisation")
         return
 
     def get_total_number_of_frequency_calculations(self):
         """Calculate and return the total number of frequency calculations required.
 
-        This method computes the total number of frequency calculations based on the current settings for minimum frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the increment has changed since the last update.
+        This method computes the total number of frequency calculations based on the current settings for minimum
+        frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the
+        increment has changed since the last update.
 
         Parameters
         ----------
@@ -425,16 +503,18 @@ class PlottingTab(QWidget):
         Returns
         -------
         int
-            The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range computed.
+            The total number of frequency calculations required, which is the product of the number of calculations
+            required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range
+            computed.
 
-        """        
+        """
         vmin = self.settings["Minimum frequency"]
         vmax = self.settings["Maximum frequency"]
         vinc = self.settings["Frequency increment"]
         self.vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
         new_length = len(self.vs_cm1)
         if self.frequency_length != new_length or self.vmin != vmin or self.vmax != vmax or self.vinc != vinc :
-            self.requestScenarioRefresh()
+            self.request_scenario_refresh()
             self.frequency_length = new_length
             self.vmin = vmin
             self.vmax = vmax
@@ -442,7 +522,7 @@ class PlottingTab(QWidget):
         n = self.get_number_of_calculations_required()
         return n*new_length
 
-    def requestRefresh(self):
+    def request_refresh(self):
         """Initiate a refresh request.
 
         This function flags that a refresh is required
@@ -456,16 +536,16 @@ class PlottingTab(QWidget):
         -------
         None
 
-        """        
-        debugger.print("Start:: requestRefresh")
-        self.refreshRequired = True
-        debugger.print("Finished:: requestRefresh")
+        """
+        logger.debug("Start:: request_refresh")
+        self.refresh_required = True
+        logger.debug("Finished:: request_refresh")
         return
 
-    def requestScenarioRefresh(self):
+    def request_scenario_refresh(self):
         """Request a refresh on all scenarios within a notebook.
 
-        This function triggers a refresh process for the settings tab and all scenarios within the notebook. 
+        This function triggers a refresh process for the settings tab and all scenarios within the notebook.
 
         Parameters
         ----------
@@ -475,20 +555,138 @@ class PlottingTab(QWidget):
         -------
         None
 
-        """        
-        debugger.print("Start:: requestScenarioRefresh")
-        self.notebook.settingsTab.requestRefresh()
+        """
+        logger.debug("Start:: request_scenario_refresh")
+        self.notebook.settingsTab.request_refresh()
         for scenario in self.notebook.scenarios:
-            scenario.requestRefresh()
-        debugger.print("Finished:: requestScenarioRefresh")
+            scenario.request_refresh()
+        logger.debug("Finished:: request_scenario_refresh")
+        return
+
+    def _normalise_scenario_selection(self):
+        """Return a scenario selection list matching the current scenario count."""
+        nscenarios = len(self.notebook.scenarios)
+        selected = list(self.settings.get("Scenarios to plot", []))
+        if len(selected) != nscenarios:
+            selected = [True] * nscenarios
+        else:
+            selected = [bool(value) for value in selected]
+        self.settings["Scenarios to plot"] = selected
+        return selected
+
+    def get_scenarios_to_plot(self):
+        """Return the currently selected scenarios."""
+        selected = self._normalise_scenario_selection()
+        return [
+            scenario
+            for index, scenario in enumerate(self.notebook.scenarios)
+            if selected[index]
+        ]
+
+    def refresh_scenario_table(self):
+        """Refresh scenario selection controls."""
+        logger.debug("Start:: refresh_scenario_table")
+        self._normalise_scenario_selection()
+        self._update_scenario_selection_summary()
+        logger.debug("Finished:: refresh_scenario_table")
+        return
+
+    def _update_scenario_selection_summary(self):
+        """Update the compact scenario selection summary in the plotting tab."""
+        if not hasattr(self, "scenario_selection_label"):
+            return
+        selected = self._normalise_scenario_selection()
+        nselected = sum(selected)
+        nscenarios = len(selected)
+        if nscenarios == 0:
+            text = "No scenarios"
+        elif nselected == nscenarios:
+            text = "All scenarios selected"
+        elif nselected == 0:
+            text = "No scenarios selected"
+        else:
+            text = f"{nselected} of {nscenarios} scenarios selected"
+        self.scenario_selection_label.setText(text)
+        return
+
+    def _update_scenario_line_visibility(self):
+        """Update existing plot lines for scenario selection changes."""
+        if not self.scenario_lines:
+            return False
+        selected = self._normalise_scenario_selection()
+        if any(index not in self.scenario_lines for index in range(len(selected))):
+            return False
+        for index, line in self.scenario_lines.items():
+            line.set_visible(index < len(selected) and selected[index])
+        handles = [
+            self.scenario_lines[index]
+            for index, is_selected in enumerate(selected)
+            if is_selected and index in self.scenario_lines
+        ]
+        labels = [
+            self.notebook.scenarios[index].settings["Legend"]
+            for index, is_selected in enumerate(selected)
+            if is_selected and index in self.scenario_lines
+        ]
+        if self.subplot is not None:
+            legend = self.subplot.get_legend()
+            if legend is not None:
+                legend.remove()
+            if handles:
+                self.subplot.legend(handles, labels, loc="best")
+            self.canvas.draw_idle()
+        return True
+
+    def open_scenario_selection_dialog(self):
+        """Open a dialog to choose which scenarios are included in the plot."""
+        logger.debug("Start:: open_scenario_selection_dialog")
+        selected = self._normalise_scenario_selection()
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Select scenarios to plot")
+        vbox = QVBoxLayout()
+        table = QTableWidget(dialog)
+        table.setToolTip("Choose the scenarios included in the plot")
+        table.setColumnCount(3)
+        table.setHorizontalHeaderLabels(["Plot", "Scenario", "Legend"])
+        table.verticalHeader().setVisible(False)
+        table.setRowCount(len(self.notebook.scenarios))
+        for row, scenario in enumerate(self.notebook.scenarios):
+            plot_item = QTableWidgetItem("")
+            plot_item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            plot_item.setCheckState(Qt.Checked if selected[row] else Qt.Unchecked)
+            scenario_item = QTableWidgetItem(str(row + 1))
+            legend_item = QTableWidgetItem(scenario.settings["Legend"])
+            scenario_item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            legend_item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+            table.setItem(row,0,plot_item)
+            table.setItem(row,1,scenario_item)
+            table.setItem(row,2,legend_item)
+        table.resizeColumnsToContents()
+        vbox.addWidget(table)
+        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, dialog)
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        vbox.addWidget(buttons)
+        dialog.setLayout(vbox)
+        exec_dialog = dialog.exec if hasattr(dialog, "exec") else dialog.exec_
+        if exec_dialog() == QDialog.Accepted:
+            self.settings["Scenarios to plot"] = [
+                table.item(row,0).checkState() == Qt.Checked
+                for row in range(table.rowCount())
+            ]
+            self._update_scenario_selection_summary()
+            if not self._update_scenario_line_visibility():
+                self.plot()
+        logger.debug("Finished:: open_scenario_selection_dialog")
         return
 
     def on_vinc_changed(self,value):
         """Handle the change in frequency increment and update GUI accordingly.
 
-        This function is triggered when there's a change in the frequency increment value. It adjusts the number of GUI elements based on 
-        new values of minimum and maximum frequency and the changed frequency increment. It also updates the settings dict with the 
-        new frequency increment value.
+        This function is triggered when there's a change in the frequency increment value.
+        It adjusts the number of GUI elements based on new values
+        of minimum and maximum frequency and the changed frequency increment.
+        It also updates the settings dict with the new frequency increment value.
 
         Parameters
         ----------
@@ -505,8 +703,8 @@ class PlottingTab(QWidget):
         - Updates 'Frequency increment' in the settings dictionary with the new frequency increment value.
         - Requests a refresh of the fitterTab if needed.
 
-        """        
-        debugger.print("Start:: on_vinc_changed", value)
+        """
+        logger.debug(f"Start:: on_vinc_changed {value}")
         if value <=0 :
             return
         self.vinc_sb.blockSignals(True)
@@ -521,12 +719,11 @@ class PlottingTab(QWidget):
             return
         vinc = (vmax - vmin) / (ngui - 1)
         self.settings["Frequency increment"] = vinc
-        self.notebook.fitterTab.requestRefresh()
-        self.refreshRequired = True
-        debugger.print("on_vinc_change ", self.settings["Frequency increment"])
+        self.notebook.fitterTab.request_refresh()
+        self.refresh_required = True
+        logger.debug(f"on_vinc_change {self.settings['Frequency increment']}")
         self.vinc_sb.blockSignals(False)
-        debugger.print("Finished:: on_vinc_changed", value)
-
+        logger.debug(f"Finished:: on_vinc_changed {value}")
     def on_vmin_changed(self):
         """Handle the change in the minimum frequency setting.
 
@@ -550,26 +747,33 @@ class PlottingTab(QWidget):
         -----
         - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
         - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
-        - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
+        - The effect of this method extends beyond just the internal state changes; it influences the UI and
+          possibly other components' states through the requested refresh.
 
-        """        
-        debugger.print("Start:: on_vmin_changed")
+        """
+        logger.debug("Start:: on_vmin_changed")
         self.vmin_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.settings["Minimum frequency"] = convert_frequency_units(vmin,self.settings["Frequency unit"],"wavenumber")
         else:
             self.settings["Maximum frequency"] = convert_frequency_units(vmin,self.settings["Frequency unit"],"wavenumber")
-        debugger.print("on_vmin_changed setting vmin to", self.settings["Minimum frequency"])
-        self.notebook.fitterTab.requestRefresh()
-        self.refreshRequired = True
+        logger.debug(f"on_vmin_changed setting vmin to {self.settings['Minimum frequency']}")
+        self.notebook.fitterTab.request_refresh()
+        self.refresh_required = True
         self.vmin_sb.blockSignals(False)
-        debugger.print("Finished:: on_vmin_changed")
+        logger.debug("Finished:: on_vmin_changed")
 
     def on_vmax_changed(self):
         """Handle the event when the maximum frequency setting is changed.
 
-        This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the 'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum frequency' with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the `vmax_sb`.
+        This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal
+        emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current
+        minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the
+        specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the
+        'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum
+        frequency' with the converted value. This method also triggers any necessary refresh operations in the user
+        interface and finally unblocks signal emissions from the `vmax_sb`.
 
         Parameters
         ----------
@@ -581,32 +785,41 @@ class PlottingTab(QWidget):
 
         Notes
         -----
-        - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
-        - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
+        - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box
+          GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
+        - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and
+          'Minimum frequency' keys which are updated based on the condition.
 
-        """        
-        debugger.print("Start:: on_vmax_changed")
+        """
+        logger.debug("Start:: on_vmax_changed")
         self.vmax_sb.blockSignals(True)
         vmax = self.vmax_sb.value()
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.settings["Maximum frequency"] = convert_frequency_units(vmax,self.settings["Frequency unit"],"wavenumber")
         else:
             self.settings["Minimum frequency"] = convert_frequency_units(vmax,self.settings["Frequency unit"],"wavenumber")
-        debugger.print("on_vmax_changed setting vmax to ", self.settings["Maximum frequency"])
-        self.notebook.fitterTab.requestRefresh()
-        self.refreshRequired = True
+        logger.debug(f"on_vmax_changed setting vmax to {self.settings['Maximum frequency']}")
+        self.notebook.fitterTab.request_refresh()
+        self.refresh_required = True
         self.vmax_sb.blockSignals(False)
-        debugger.print("Finished:: on_vmax_changed")
+        logger.debug("Finished:: on_vmax_changed")
 
     def refresh(self,force=False):
         """Refresh the current state based on the changes in settings, forces refresh if needed.
 
-        This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.
+        This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment)
+        based on the current settings. It ensures that these settings are within logical limits. The function updates
+        GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion
+        of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization
+        plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to
+        significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to
+        optimize performance.
 
         Parameters
         ----------
         force : bool, optional
-            A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed necessary based on internal conditions. The default is False.
+            A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed
+            necessary based on internal conditions. The default is False.
 
         Returns
         -------
@@ -616,23 +829,23 @@ class PlottingTab(QWidget):
         -----
         - The actual refresh operation involves several steps:
             - Checking if a refresh is required based on the current settings and the 'force' parameter.
-            - Temporarily blocking signals from all child widgets to prevent unintended side effects during settings updates.
+            - Temporarily blocking signals from all child widgets to prevent unintended side effects during
+              settings updates.
             - Verifying and updating frequency settings to maintain logical constraints.
             - Updating GUI components with new settings values and tooltips based on the current frequency unit.
             - Processing and plotting data based on the updated settings.
             - Re-enabling signals for child widgets after modifications are complete.
         - The processEvents call is used to ensure the UI remains responsive during long operations.
 
-        """        
-        debugger.print("Start:: refresh", force)
-        if not self.refreshRequired and not force:
+        """
+        logger.debug(f"Start:: refresh {force}")
+        if not self.refresh_required and not force:
             self.plot()
-            debugger.print("Finished:: refreshing widget not required")
+            logger.debug("Finished:: refreshing widget not required")
             return
         #
         # Block signals during refresh
         #
-        self.greyed_out()
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # Now refresh values
@@ -648,8 +861,7 @@ class PlottingTab(QWidget):
         # Protect the code from over-exuberant choice of parameters
         if (vmax - vmin)/vinc > 90000:
             vinc = (vmax - vmin) / 90000
-            print("Warning - the number data points in a plot has been limited to 9000")
-            print("          this happens if a 0 wavelength or frequency is entered in the GUI")
+            logger.warning("Warning - the number data points in a plot has been limited to 9000 - this happens if a 0 wavelength or frequency is entered in the GUI")
             self.settings["Frequency increment"] = vinc
         ncm1 = len(np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)))
         vmin = convert_frequency_units(self.settings["Minimum frequency"],"wavenumber",self.settings["Frequency unit"])
@@ -663,7 +875,7 @@ class PlottingTab(QWidget):
         self.vmax_sb.setValue(vmax)
         self.vinc_sb.setValue(vinc)
         # Update the tool tips as the frequency unit could be a wavelength
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             self.vmin_sb.setToolTip("Set the minimum frequency to be considered)")
             self.vmax_sb.setToolTip("Set the maximum frequency to be considered)")
             self.vinc_sb.setToolTip("Choose an increment for the frequency when plotting")
@@ -684,11 +896,26 @@ class PlottingTab(QWidget):
         self.plot_type_cb.setCurrentIndex(index)
         try:
             self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
-        except Exception:
+        except ValueError:
             self.molar_cb_current_index = 0
             self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
         self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
         self.natoms_sb.setValue(self.settings["Number of atoms"])
+        # Rebuild renorm combo items to match current spectroscopy, then restore value
+        is_crystal_raman = (self.settings.get("Plot type", "") == "Crystal Raman")
+        current_renorm = self.settings.get("Spectrum renormalisation", "none")
+        self.renorm_cb.clear()
+        if is_crystal_raman:
+            self.renorm_cb.addItems(["none", "max=1", "area=1", "layer depth"])
+        else:
+            self.renorm_cb.addItems(["none", "max=1", "area=1"])
+            if current_renorm == "layer depth":
+                current_renorm = "none"
+                self.settings["Spectrum renormalisation"] = "none"
+        idx = self.renorm_cb.findText(current_renorm, Qt.MatchFixedString)
+        if idx >= 0:
+            self.renorm_cb.setCurrentIndex(idx)
+        self.refresh_scenario_table()
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
@@ -701,16 +928,18 @@ class PlottingTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         QCoreApplication.processEvents()
-        debugger.print("calling plot from refresh")
+        logger.debug("calling plot from refresh")
         self.plot()
-        self.refreshRequired = False
-        debugger.print("Finished:: refresh", force)
+        self.refresh_required = False
+        logger.debug(f"Finished:: refresh {force}")
         return
 
     def on_natoms_changed(self, value):
         """Handle the change in the number of atoms.
 
-        This method is called when the number of atoms changes. It updates the relevant setting in the instance, recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then triggers the refresh process.
+        This method is called when the number of atoms changes. It updates the relevant setting in the instance,
+        recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then
+        triggers the refresh process.
 
         Parameters
         ----------
@@ -719,20 +948,21 @@ class PlottingTab(QWidget):
 
         Notes
         -----
-        - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
-        - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
+        - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of
+          the container and the number of ions, respectively.
+        - The method refreshes `self.notebook.fitterTab` object with a `request_refresh` method to initiate the
+          refresh process.
 
-        """        
-        debugger.print("Start:: on_natoms_changed", value)
+        """
+        logger.debug(f"Start:: on_natoms_changed {value}")
         self.settings["Number of atoms"] = value
-        debugger.print("on natoms changed ", self.settings["Number of atoms"])
+        logger.debug(f"on natoms changed {self.settings['Number of atoms']}")
         self.settings["concentration"] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings["Number of atoms"] / self.reader.nions)
-        debugger.print("The concentration has been set", self.settings["Molar definition"], self.settings["concentration"])
-        self.refreshRequired = True
-        self.notebook.fitterTab.requestRefresh()
+        logger.debug(f"The concentration has been set {self.settings['Molar definition']} {self.settings['concentration']}")
+        self.refresh_required = True
+        self.notebook.fitterTab.request_refresh()
         self.refresh()
-        debugger.print("Finished:: on_natoms_changed", value)
-
+        logger.debug(f"Finished:: on_natoms_changed {value}")
     def on_plot_type_cb_activated(self, index):
         """Handle plot type change from a combo box.
 
@@ -749,19 +979,60 @@ class PlottingTab(QWidget):
         -------
         None
 
-        """        
-        debugger.print("Start:: on_plot_type_cb_activated", index)
+        """
+        logger.debug(f"Start:: on_plot_type_cb_activated {index}")
         self.settings["Plot type"] = self.plot_type_cb.currentText()
-        debugger.print("Changed plot type to ", self.settings["Plot type"])
-        self.refreshRequired = True
-        self.notebook.fitterTab.requestRefresh()
+        logger.debug(f"Changed plot type to {self.settings['Plot type']}")
+        self.refresh_required = True
+        self.notebook.fitterTab.request_refresh()
         self.refresh()
-        debugger.print("Finished:: on_plot_type_cb_activated", index)
+        logger.debug(f"Finished:: on_plot_type_cb_activated {index}")
+
+    def set_plot_type_for_spectroscopy(self, spectroscopy_type):
+        """Set the plot type to an appropriate default for the given spectroscopy type.
+
+        Parameters
+        ----------
+        spectroscopy_type : str
+            One of 'Powder Infrared', 'Powder ATR', 'Powder Raman',
+            'Crystal Infrared', or 'Crystal Raman'.
+
+        Returns
+        -------
+        None
+
+        """
+        logger.debug(f"Start:: set_plot_type_for_spectroscopy {spectroscopy_type}")
+        new_plot_types = self.plot_types_by_spectroscopy.get(spectroscopy_type, [])
+        self.plot_type_cb.clear()
+        self.plot_type_cb.addItems(new_plot_types)
+        self.plot_types = new_plot_types
+        if new_plot_types:
+            self.plot_type_cb.setCurrentIndex(0)
+            self.settings["Plot type"] = new_plot_types[0]
+        # Show "layer depth" renorm option only for Crystal Raman
+        is_crystal_raman = (spectroscopy_type == "Crystal Raman")
+        current_renorm = self.settings.get("Spectrum renormalisation", "none")
+        self.renorm_cb.blockSignals(True)
+        self.renorm_cb.clear()
+        if is_crystal_raman:
+            self.renorm_cb.addItems(["none", "max=1", "area=1", "layer depth"])
+        else:
+            self.renorm_cb.addItems(["none", "max=1", "area=1"])
+            if current_renorm == "layer depth":
+                current_renorm = "none"
+                self.settings["Spectrum renormalisation"] = "none"
+        idx = self.renorm_cb.findText(current_renorm, Qt.MatchFixedString)
+        if idx >= 0:
+            self.renorm_cb.setCurrentIndex(idx)
+        self.renorm_cb.blockSignals(False)
+        logger.debug(f"Finished:: set_plot_type_for_spectroscopy {spectroscopy_type}")
 
     def on_funits_cb_activated(self, index):
         """Handle the activation of a frequency unit combo box item.
 
-        This method updates the active frequency unit in the settings, triggers necessary refresh processes and logs the change.
+        This method updates the active frequency unit in the settings, triggers necessary refresh processes and
+        logs the change.
 
         Parameters
         ----------
@@ -774,40 +1045,50 @@ class PlottingTab(QWidget):
 
         Notes
         -----
-        This method is part of a GUI application where `self` refers to an instance of the application or a relevant widget. It manages updates to the application's settings and GUI components based on the user's selection of a frequency unit from a combo box.
+        This method is part of a GUI application where `self` refers to an instance of the application or a relevant
+        widget. It manages updates to the application's settings and GUI components based on the user's selection of a
+        frequency unit from a combo box.
 
         - `self.settings` is a dictionary where application settings are stored.
-        - `self.refreshRequired` is a boolean flag used to indicate whether a refresh of certain GUI components is necessary.
-        - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of its child tabs.
-        - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its signals blocked/unblocked during the process to avoid unwanted signal emission.
-        - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the existence of a custom logging or debugging utility named `debugger`.
+        - `self.refresh_required` is a boolean flag used to indicate whether a refresh of certain GUI components
+          is necessary.
+        - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of
+          its child tabs.
+        - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its
+          signals blocked/unblocked during the process to avoid unwanted signal emission.
+        - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the
+          existence of a custom logging or debugging utility named `debugger`.
 
-        The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown here, such as `self.refresh()` and `self.notebook.fitterTab.requestRefresh()`.
+        The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown
+        here, such as `self.refresh()` and `self.notebook.fitterTab.request_refresh()`.
 
         Raises
         ------
-        This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of `self` and its attributes.
+        This function does not explicitly raise any exceptions but depends on the proper functioning of the
+        methods it calls and the state of `self` and its attributes.
 
-        """        
-        debugger.print("Start:: on_funits_cb_activated", index)
+        """
+        logger.debug(f"Start:: on_funits_cb_activated {index}")
         self.settings["Frequency unit"] = possible_frequency_units[index]
-        self.refreshRequired = True
-        self.notebook.fitterTab.requestRefresh()
-        self.refreshRequired = True
+        self.refresh_required = True
+        self.notebook.fitterTab.request_refresh()
+        self.refresh_required = True
         self.vmin_sb.blockSignals(False)
         self.refresh()
-        debugger.print("Frequency unit changed to ", self.settings["Frequency unit"])
-        debugger.print("Finished:: on_funits_cb_activated", index)
-
+        logger.debug(f"Frequency unit changed to {self.settings['Frequency unit']}")
+        logger.debug(f"Finished:: on_funits_cb_activated {index}")
     def on_molar_cb_activated(self, index):
         """Handle the activation of the molar combobox option.
 
-        This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the application state, including setting concentrations, refreshing UI elements, and potentially triggering further calculations or refreshes as needed.
+        This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the
+        application state, including setting concentrations, refreshing UI elements, and potentially triggering further
+        calculations or refreshes as needed.
 
         Parameters
         ----------
         index : int
-            The index of the selected item in the molar combobox. This index corresponds to a specific molar definition and is used to update the application settings and state accordingly.
+            The index of the selected item in the molar combobox. This index corresponds to a specific molar
+            definition and is used to update the application settings and state accordingly.
 
         Returns
         -------
@@ -818,24 +1099,26 @@ class PlottingTab(QWidget):
         set_concentrations : A method to update the concentrations based on the selected molar definition.
         refresh : A method to refresh the UI elements.
 
-        """        
-        debugger.print("Start:: on_molar_cb_activated", index)
+        """
+        logger.debug(f"Start:: on_molar_cb_activated {index}")
         self.molar_cb_current_index = index
         self.settings["Molar definition"] = self.molar_definitions[index]
         self.set_concentrations()
-        self.refreshRequired = True
-        self.notebook.fitterTab.requestRefresh()
+        self.refresh_required = True
+        self.notebook.fitterTab.request_refresh()
         self.refresh()
-        debugger.print("The concentration has been set", self.settings["Molar definition"], self.settings["concentration"])
-        debugger.print("Finished:: on_molar_cb_activated", index)
+        logger.debug(f"The concentration has been set {self.settings['Molar definition']} {self.settings['concentration']}")
+        logger.debug(f"Finished:: on_molar_cb_activated {index}")
         return
 
     def set_concentrations(self):
         """Set the concentration based on the molar definition in settings.
 
-        This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
-        """        
-        debugger.print("Start:: set_concentration")
+        This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It
+        calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit
+        cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
+        """
+        logger.debug("Start:: set_concentration")
         if self.settings["Molar definition"] == "Molecules":
             self.settings["concentration"] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings["Number of atoms"] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
@@ -846,13 +1129,17 @@ class PlottingTab(QWidget):
         elif self.settings["Molar definition"] == "Atoms":
             self.settings["concentration"] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
-        debugger.print("Finished:: set_concentration")
+        logger.debug("Finished:: set_concentration")
         return
 
-    def writeSpreadsheet(self):
+    def write_spreadsheet(self):
         """Update and write the results of powder and crystal scenarios to a spreadsheet.
 
-        This function navigates through each scenario defined in the `notebook` attribute, extracts relevant data such as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet object's methods for selecting worksheets, writing rows, and dealing with data transformation. The function also handles the calculation of molar absorption coefficients with unit conversion when necessary.
+        This function navigates through each scenario defined in the `notebook` attribute, extracts relevant data such
+        as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a
+        spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet
+        object's methods for selecting worksheets, writing rows, and dealing with data transformation. The function also
+        handles the calculation of molar absorption coefficients with unit conversion when necessary.
 
         Parameters
         ----------
@@ -862,10 +1149,10 @@ class PlottingTab(QWidget):
         -------
         None
 
-        """        
-        debugger.print("Start::writeSpreadsheet")
+        """
+        logger.debug("Start::write_spreadsheet")
         if self.notebook.spreadsheet is None:
-            debugger.print("Finished::writeSpreadsheet spreadsheet is None")
+            logger.debug("Finished::write_spreadsheet spreadsheet is None")
             return
         # make sure the plottingTab is up to date
         self.refresh()
@@ -875,6 +1162,7 @@ class PlottingTab(QWidget):
         realPermittivities          = []
         imagPermittivities          = []
         sp_atrs                     = []
+        atr_legends                 = []
         R_ps                        = []
         R_ss                        = []
         T_ps                        = []
@@ -883,53 +1171,78 @@ class PlottingTab(QWidget):
         A_ss                        = []
         powder_legends              = []
         crystal_legends             = []
-        # Deal with Scenarios 
+        raman_intensities           = []
+        raman_legends               = []
+        crystal_raman_intensities   = []
+        crystal_raman_legends       = []
+        # Deal with Scenarios
         sp = self.notebook.spreadsheet
-        sp.selectWorkSheet("Scenarios")
+        sp.select_work_sheet("Scenarios")
         sp.delete()
-        sp.writeNextRow(["A list of the scenarios used:"],col=1)
+        sp.write_next_row(["A list of the scenarios used:"],col=1)
         for index,scenario in enumerate(self.notebook.scenarios):
-            if scenario.scenarioType == "Powder":
+            logger.debug(f"write_spreadsheet: scenario {index} spectroscopy={scenario.spectroscopy}")
+            if scenario.spectroscopy in ("Powder Infrared", "Powder ATR"):
                 direction = scenario.direction
                 depolarisation = scenario.depolarisation
-                sp.writeNextRow([""],col=1)
-                sp.writeNextRow(["Scenario "+str(index)],col=1,check=1)
+                sp.write_next_row([""],col=1)
+                sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
                 settings = scenario.settings
                 for key in sorted(settings,key=str.lower):
-                    sp.writeNextRow([key, settings[key]],col=1,check=1)
-                sp.writeNextRow(["Normalised unique direction"]+direction.tolist(), col=1,check=1)
-                sp.writeNextRow(["Depolarisation matrix"], col=1,check=1)
-                sp.writeNextRow(depolarisation[0].tolist(), col=2, check=1)
-                sp.writeNextRow(depolarisation[1].tolist(), col=2, check=1)
-                sp.writeNextRow(depolarisation[2].tolist(), col=2, check=1)
-                molarAbsorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[0] ) )
-                absorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[1] ) )
-                realPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[2] ) )
-                imagPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[3] ) )
-                sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
+                    sp.write_next_row([key, settings[key]],col=1,check=1)
+                sp.write_next_row(["Normalised unique direction"]+direction.tolist(), col=1,check=1)
+                sp.write_next_row(["Depolarisation matrix"], col=1,check=1)
+                sp.write_next_row(depolarisation[0].tolist(), col=2, check=1)
+                sp.write_next_row(depolarisation[1].tolist(), col=2, check=1)
+                sp.write_next_row(depolarisation[2].tolist(), col=2, check=1)
+                molarAbsorptionCoefficients.append( scenario.get_result(self.vs_cm1, "Powder Molar Absorption") )
+                absorptionCoefficients.append( scenario.get_result(self.vs_cm1, "Powder Absorption") )
+                realPermittivities.append( scenario.get_result(self.vs_cm1, "Powder Real Permittivity") )
+                imagPermittivities.append( scenario.get_result(self.vs_cm1, "Powder Imaginary Permittivity") )
                 powder_legends.append(scenario.settings["Legend"])
-            else:
-                sp.writeNextRow([""],col=1)
-                sp.writeNextRow(["Scenario "+str(index)],col=1,check=1)
+                if scenario.spectroscopy == "Powder ATR":
+                    sp_atrs.append( scenario.get_result(self.vs_cm1, "Powder ATR") )
+                    atr_legends.append(scenario.settings["Legend"])
+            elif scenario.spectroscopy == "Crystal Infrared":
+                sp.write_next_row([""],col=1)
+                sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
                 settings = scenario.settings
                 for key in sorted(settings,key=str.lower):
-                    sp.writeNextRow([key, settings[key]],col=1,check=1)
-                dielectricLayerIndex = scenario.getDielectricLayerIndex()
-                if dielectricLayerIndex is not None and scenario.layers[dielectricLayerIndex].isTensor():
-                    sp.writeNextRow("Dielectric layer laboratory frame:")
-                    sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[0].tolist(), col=2, check=1)
-                    sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[1].tolist(), col=2, check=1)
-                    sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[2].tolist(), col=2, check=1)
+                    sp.write_next_row([key, settings[key]],col=1,check=1)
+                dielectricLayerIndex = scenario.get_dielectric_layer_index()
+                if dielectricLayerIndex is not None and scenario.layers[dielectricLayerIndex].is_tensor():
+                    sp.write_next_row("Dielectric layer laboratory frame:")
+                    sp.write_next_row(scenario.layers[dielectricLayerIndex].labframe[0].tolist(), col=2, check=1)
+                    sp.write_next_row(scenario.layers[dielectricLayerIndex].labframe[1].tolist(), col=2, check=1)
+                    sp.write_next_row(scenario.layers[dielectricLayerIndex].labframe[2].tolist(), col=2, check=1)
                 # Store the reflectance and transmittance
-                R_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[5] ) )
-                R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
-                T_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[7] ) )
-                T_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[8] ) )
-                A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
-                A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
+                R_ps.append( scenario.get_result(self.vs_cm1, "Crystal Reflectance (P polarisation)") )
+                R_ss.append( scenario.get_result(self.vs_cm1, "Crystal Reflectance (S polarisation)") )
+                T_ps.append( scenario.get_result(self.vs_cm1, "Crystal Transmittance (P polarisation)") )
+                T_ss.append( scenario.get_result(self.vs_cm1, "Crystal Transmittance (S polarisation)") )
+                A_ps.append( scenario.get_result(self.vs_cm1, "Crystal Absorbtance (P polarisation)") )
+                A_ss.append( scenario.get_result(self.vs_cm1, "Crystal Absorbtance (S polarisation)") )
                 crystal_legends.append(scenario.settings["Legend"])
+            elif scenario.spectroscopy == "Powder Raman":
+                sp.write_next_row([""],col=1)
+                sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
+                settings = scenario.settings
+                for key in sorted(settings,key=str.lower):
+                    sp.write_next_row([key, settings[key]],col=1,check=1)
+                raman_intensities.append( scenario.get_result(self.vs_cm1, "Powder Raman") )
+                raman_legends.append(scenario.settings["Legend"])
+            elif scenario.spectroscopy == "Crystal Raman":
+                sp.write_next_row([""],col=1)
+                sp.write_next_row(["Scenario "+str(index)],col=1,check=1)
+                settings = scenario.settings
+                for key in sorted(settings,key=str.lower):
+                    sp.write_next_row([key, settings[key]],col=1,check=1)
+                crystal_raman_intensities.append( scenario.get_result(self.vs_cm1, "Crystal Raman") )
+                crystal_raman_legends.append(scenario.settings["Legend"])
+            else:
+                logger.error(f"Error in plotting tab: scenario not recognised {scenario.spectroscopy}")
         # Single crystal Permittivity
-        dielecv = self.notebook.settingsTab.getCrystalPermittivity(self.vs_cm1)
+        dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
         # Powder results
         # Work out what molar units we are using
         if len(molarAbsorptionCoefficients) > 0:
@@ -952,7 +1265,8 @@ class PlottingTab(QWidget):
             self.write_powder_results(sp, "Powder Absorption",             self.vs_cm1, powder_legends, absorptionCoefficients)
             self.write_powder_results(sp, "Powder Real Permittivity",      self.vs_cm1, powder_legends, realPermittivities)
             self.write_powder_results(sp, "Powder Imaginary Permittivity", self.vs_cm1, powder_legends, imagPermittivities)
-            self.write_powder_results(sp, "Powder ATR Reflectance",        self.vs_cm1, powder_legends, sp_atrs)
+            if len(sp_atrs) > 0:
+                self.write_powder_results(sp, "Powder ATR Reflectance",    self.vs_cm1, atr_legends, sp_atrs)
         # Single Crystal results
         if len(R_ps) > 0:
             self.write_crystal_results(sp, "Crystal R_p", self.vs_cm1, crystal_legends, R_ps)
@@ -961,10 +1275,16 @@ class PlottingTab(QWidget):
             self.write_crystal_results(sp, "Crystal T_s", self.vs_cm1, crystal_legends, T_ss)
             self.write_crystal_results(sp, "Crystal A_p", self.vs_cm1, crystal_legends, A_ps)
             self.write_crystal_results(sp, "Crystal A_s", self.vs_cm1, crystal_legends, A_ss)
+        # Powder Raman results
+        if len(raman_intensities) > 0:
+            self.write_powder_results(sp, "Powder Raman", self.vs_cm1, raman_legends, raman_intensities)
+        # Crystal Raman results
+        if len(crystal_raman_intensities) > 0:
+            self.write_crystal_results(sp, "Crystal Raman", self.vs_cm1, crystal_raman_legends, crystal_raman_intensities)
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)
-        debugger.print("Finished::writeSpreadsheet")
+        logger.debug("Finished::write_spreadsheet")
         return
 
     def write_eps_results(self, sp, vs, dielecv):
@@ -977,7 +1297,9 @@ class PlottingTab(QWidget):
         vs : list
             A list containing frequency values.
         dielecv : numpy.ndarray
-            A complex numpy array where the real parts represent the real permittivities and the imaginary parts represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.
+            A complex numpy array where the real parts represent the real permittivities and the imaginary parts
+            represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the
+            number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.
 
         Returns
         -------
@@ -986,18 +1308,23 @@ class PlottingTab(QWidget):
         Notes
         -----
         The function does two main tasks:
-        1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts of the permittivity tensor for each frequency along with the frequency values themselves.
-        2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary parts of the permittivity tensor for each frequency along with the frequency values themselves.
 
-        Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz, xy, xz, and yz are components of the permittivity tensor.
+        1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts
+           of the permittivity tensor for each frequency along with the frequency values themselves.
+
+        2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary
+           parts of the permittivity tensor for each frequency along with the frequency values themselves.
+
+        Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz,
+        xy, xz, and yz are components of the permittivity tensor.
         The output data starts from the second column (index 1), and for each row written, a 'check' flag is set to 1.
 
-        """        
-        debugger.print("Start:: write_eps_results length vs",len(vs))
-        sp.selectWorkSheet("Real Crystal Permittivity")
+        """
+        logger.debug(f"Start:: write_eps_results length vs {len(vs)}")
+        sp.select_work_sheet("Real Crystal Permittivity")
         sp.delete()
         headers = ["frequencies (cm-1)", "xx", "yy", "zz", "xy", "xz", "yz" ]
-        sp.writeNextRow(headers,row=0, col=1)
+        sp.write_next_row(headers,row=0, col=1)
         for v,eps in zip(vs,dielecv):
             eps_xx_r = np.real(eps[0][0])
             eps_yy_r = np.real(eps[1][1])
@@ -1006,10 +1333,10 @@ class PlottingTab(QWidget):
             eps_xz_r = np.real(eps[0][2])
             eps_yz_r = np.real(eps[1][2])
             output = [v, eps_xx_r, eps_yy_r, eps_zz_r, eps_xy_r, eps_xz_r, eps_yz_r ]
-            sp.writeNextRow(output, col=1,check=1)
-        sp.selectWorkSheet("Imag Crystal Permittivity")
+            sp.write_next_row(output, col=1,check=1)
+        sp.select_work_sheet("Imag Crystal Permittivity")
         sp.delete()
-        sp.writeNextRow(headers,row=0, col=1)
+        sp.write_next_row(headers,row=0, col=1)
         for v,eps in zip(vs,dielecv):
             eps_xx_i = np.imag(eps[0][0])
             eps_yy_i = np.imag(eps[1][1])
@@ -1018,8 +1345,8 @@ class PlottingTab(QWidget):
             eps_xz_i = np.imag(eps[0][2])
             eps_yz_i = np.imag(eps[1][2])
             output = [v, eps_xx_i, eps_yy_i, eps_zz_i, eps_xy_i, eps_xz_i, eps_yz_i ]
-            sp.writeNextRow(output, col=1,check=1)
-        debugger.print("Finished:: write_eps_results length vs",len(vs))
+            sp.write_next_row(output, col=1,check=1)
+        logger.debug(f"Finished:: write_eps_results length vs {len(vs)}")
         return
 
     def write_crystal_results(self, sp, name, vs, legends, yss):
@@ -1043,21 +1370,21 @@ class PlottingTab(QWidget):
         None
 
         """
-        debugger.print("Start:: write_crystal_results")
-        debugger.print("write_crystal_results name",name)
-        debugger.print("write_crystal_results legends",legends)
-        debugger.print("write_crystal_results length vs",len(vs))
-        sp.selectWorkSheet(name)
+        logger.debug("Start:: write_crystal_results")
+        logger.debug(f"write_crystal_results name {name}")
+        logger.debug(f"write_crystal_results legends {legends}")
+        logger.debug(f"write_crystal_results length vs {len(vs)}")
+        sp.select_work_sheet(name)
         sp.delete()
         headers = ["frequencies (cm-1)"]
         headers.extend(legends)
-        sp.writeNextRow(headers,row=0, col=1)
+        sp.write_next_row(headers,row=0, col=1)
         for iv,v in enumerate(vs):
            output = [v]
            for ys in yss:
                output.append(ys[iv])
-           sp.writeNextRow(output, col=1,check=1)
-        debugger.print("Finished:: write_crystal_results")
+           sp.write_next_row(output, col=1,check=1)
+        logger.debug("Finished:: write_crystal_results")
         return
 
     def write_powder_results(self, sp, name, vs, legends, yss):
@@ -1080,24 +1407,24 @@ class PlottingTab(QWidget):
         -------
         None
 
-        """        
-        debugger.print("Start:: write powder results")
-        debugger.print("write_powder_results name",name)
-        debugger.print("write_powder_results legends",legends)
-        debugger.print("write_powder_results length vs",len(vs))
-        sp.selectWorkSheet(name)
+        """
+        logger.debug("Start:: write powder results")
+        logger.debug(f"write_powder_results name {name}")
+        logger.debug(f"write_powder_results legends {legends}")
+        logger.debug(f"write_powder_results length vs {len(vs)}")
+        sp.select_work_sheet(name)
         sp.delete()
         headers = ["frequencies (cm-1)"]
         #for isc,ys in enumerate(yss):
         #    headers.append('Scenario'+str(isc))
         headers.extend(legends)
-        sp.writeNextRow(headers,row=0, col=1)
+        sp.write_next_row(headers,row=0, col=1)
         for iv,v in enumerate(vs):
            output = [v]
            for ys in yss:
                output.append(ys[iv])
-           sp.writeNextRow(output, col=1,check=1)
-        debugger.print("Finished:: write powder results")
+           sp.write_next_row(output, col=1,check=1)
+        logger.debug("Finished:: write powder results")
         return
 
     def plot(self):
@@ -1123,30 +1450,30 @@ class PlottingTab(QWidget):
         Notes
         -----
         - self.notebook.mainTab.settings: Dictionary containing program settings.
-        - self.notebook.mainTab.getFullFileName(): Method that returns the currently selected filename.
+        - self.notebook.mainTab.get_full_file_name(): Method that returns the currently selected filename.
         - self.notebook.mainTab.reader: Object used for reading data files.
         - self.notebook.settingsTab.CrystalPermittivityObject: Object containing crystal permittivity settings.
         - self.settings: Dictionary containing plot-related settings such as frequency range and plot type.
         - self.notebook.scenarios: List of scenarios to be plotted.
 
-        """        
-        debugger.print("Start:: plot")
+        """
+        logger.debug("Start:: plot")
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings["Program"]
-        filename = self.notebook.mainTab.getFullFileName()
+        filename = self.notebook.mainTab.get_full_file_name()
         reader = self.notebook.mainTab.reader
         if reader is None:
-            debugger.print("Finished:: plot aborting because reader is NONE")
+            logger.debug("Finished:: plot aborting because reader is NONE")
             return
         if program == "":
-            debugger.print("Finished:: plot aborting because program is not set")
+            logger.debug("Finished:: plot aborting because program is not set")
             return
         if filename == "":
-            debugger.print("Finished:: plot aborting because filename is not set")
+            logger.debug("Finished:: plot aborting because filename is not set")
             return
         if self.notebook.settingsTab.CrystalPermittivityObject is None:
-            debugger.print("Finished:: plot aborting because settingTab.CrystalPermittivityObject is not set")
+            logger.debug("Finished:: plot aborting because settingTab.CrystalPermittivityObject is not set")
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings["Minimum frequency"]
@@ -1154,6 +1481,7 @@ class PlottingTab(QWidget):
         vinc = self.settings["Frequency increment"]
         self.vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
         self.subplot = None
+        self.scenario_lines = {}
         self.figure.clf()
         x = np.array(self.vs_cm1)
         removeFirstElement = False
@@ -1162,7 +1490,7 @@ class PlottingTab(QWidget):
             # We can't have a 0 frequency converted to a wavelength
             removeFirstElement = True
             x = x[1:]
-        if isThisAFrequencyUnit(self.settings["Frequency unit"]):
+        if is_this_a_frequency_unit(self.settings["Frequency unit"]):
             x = x[::-1]
             reverseElements = True
         xlabel = self.settings["Frequency unit"]
@@ -1173,12 +1501,33 @@ class PlottingTab(QWidget):
         self.notebook.progressbars_set_maximum(self.get_total_number_of_frequency_calculations())
         self.legends = []
         plots = 0
-        for scenario in self.notebook.scenarios:
+        colour_cycle = matplotlib.rcParams["axes.prop_cycle"].by_key().get("color", [])
+        scenario_colours = [
+            colour_cycle[index % len(colour_cycle)]
+            for index in range(len(self.notebook.scenarios))
+        ] if colour_cycle else [None] * len(self.notebook.scenarios)
+        selected = self._normalise_scenario_selection()
+        for scenario_index, scenario in enumerate(self.notebook.scenarios):
+            if not selected[scenario_index]:
+                continue
             legend = scenario.settings["Legend"]
             self.legends.append(legend)
             y = scenario.get_result(self.vs_cm1,self.settings["Plot type"])
             if y is not None and len(y) > 0:
                 y = np.array(y)
+                norm_mode = self.settings.get("Spectrum renormalisation", "none")
+                if norm_mode == "max=1":
+                    peak = np.max(y) if len(y) else 0.0
+                    if peak > 0.0:
+                        y = y / peak
+                elif norm_mode == "area=1":
+                    area = np.trapezoid(y, self.vs_cm1) if len(y) else 0.0
+                    if area > 0.0:
+                        y = y / area
+                elif norm_mode == "layer depth":
+                    depth = scenario.get_active_layer_depth()
+                    if depth is not None and depth > 0:
+                        y = y / depth
                 if removeFirstElement:
                     y = y[1:]
                 if reverseElements:
@@ -1186,17 +1535,23 @@ class PlottingTab(QWidget):
                 if self.settings["Plot type"] == "Powder Molar Absorption":
                     y = y * self.settings["cell concentration"]/self.settings["concentration"]
                 plots += 1
-                line, = self.subplot.plot(x,y,lw=2, label=legend )
+                line, = self.subplot.plot(x,y,lw=2, label=legend, color=scenario_colours[scenario_index] )
+                self.scenario_lines[scenario_index] = line
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
-            self.subplot.set_ylabel(self.plot_ylabels[self.settings["Plot type"]])
+            if self.settings.get("Spectrum renormalisation", "none") == "layer depth":
+                self.subplot.set_ylabel(r"Raman Intensity per metre depth $\mathdefault{(m^{-1})}$")
+            elif self.settings.get("Spectrum renormalisation", "none") != "none":
+                self.subplot.set_ylabel("Arbitrary units")
+            else:
+                self.subplot.set_ylabel(self.plot_ylabels[self.settings["Plot type"]])
             self.subplot.legend(loc="best")
             self.subplot.set_title(self.settings["Plot type"])
             #self.subplot.set_autoscaley_on(False)
             #self.subplot.set_ylim([0,1])
             self.canvas.draw_idle()
         QApplication.restoreOverrideCursor()
-        debugger.print("Finished:: plot")
+        logger.debug("Finished:: plot")
 
     def get_number_of_calculations_required(self):
         """Return the total number of spectra that need to be calculated.
@@ -1213,66 +1568,27 @@ class PlottingTab(QWidget):
             The total number of spectra that require calculation.
 
         """
-        debugger.print("Start:: get_number_of_calculations_required")
+        logger.debug("Start:: get_number_of_calculations_required")
         n = 0
-        for scenario in self.notebook.scenarios:
-            n += scenario.getNoCalculationsRequired()
-        debugger.print("get_number_of_calculations_required",n)
+        for scenario in self.get_scenarios_to_plot():
+            n += scenario.get_no_calculations_required()
+        logger.debug(f"get_number_of_calculations_required {n}")
         return n
 
-    def greyed_out(self):
-        """Handle items that should be greyed out if they are not needed.
+    def on_renorm_cb_activated(self, index):
+        """Handle a change in the spectrum renormalisation combo box.
 
         Parameters
         ----------
-        None
+        index : int
+            The index of the selected item.
 
         Returns
         -------
-        int
+        None
 
         """
-        debugger.print("Start:: greyed_out")
-        powder_scenarios_present = False
-        crystal_scenarios_present = False
-        for scenario in self.notebook.scenarios:
-            if scenario.scenarioType == "Powder":
-                powder_scenarios_present = True
-            else:
-                crystal_scenarios_present = True
-        # end of for loop
-        # 
-        # Disable any plot types that are not needed
-        #
-        self.plot_type_cb.model().item(0).setEnabled(True)
-        self.plot_type_cb.model().item(1).setEnabled(True)
-        self.plot_type_cb.model().item(2).setEnabled(True)
-        self.plot_type_cb.model().item(3).setEnabled(True)
-        self.plot_type_cb.model().item(4).setEnabled(True)
-        self.plot_type_cb.model().item(5).setEnabled(True)
-        self.plot_type_cb.model().item(6).setEnabled(True)
-        self.plot_type_cb.model().item(7).setEnabled(True)
-        self.plot_type_cb.model().item(8).setEnabled(True)
-        self.plot_type_cb.model().item(9).setEnabled(True)
-        self.plot_type_cb.model().item(10).setEnabled(True)
-        index = self.plot_type_cb.findText(self.settings["Plot type"], Qt.MatchFixedString)
-        if not powder_scenarios_present:
-            self.plot_type_cb.model().item(0).setEnabled(False)
-            self.plot_type_cb.model().item(1).setEnabled(False)
-            self.plot_type_cb.model().item(2).setEnabled(False)
-            self.plot_type_cb.model().item(3).setEnabled(False)
-            self.plot_type_cb.model().item(4).setEnabled(False)
-            if index < 5:
-                self.plot_type_cb.setCurrentIndex(5)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
-        if not crystal_scenarios_present:
-            self.plot_type_cb.model().item(5).setEnabled(False)
-            self.plot_type_cb.model().item(6).setEnabled(False)
-            self.plot_type_cb.model().item(7).setEnabled(False)
-            self.plot_type_cb.model().item(8).setEnabled(False)
-            self.plot_type_cb.model().item(9).setEnabled(False)
-            self.plot_type_cb.model().item(10).setEnabled(False)
-            if index >= 5:
-                self.plot_type_cb.setCurrentIndex(0)
-                self.settings["Plot type"] = self.plot_type_cb.currentText()
-        debugger.print("Finished:: greyed_out")
+        logger.debug(f"Start:: on_renorm_cb_activated {index}")
+        self.settings["Spectrum renormalisation"] = self.renorm_cb.currentText()
+        self.plot()
+        logger.debug(f"Finished:: on_renorm_cb_activated {index}")

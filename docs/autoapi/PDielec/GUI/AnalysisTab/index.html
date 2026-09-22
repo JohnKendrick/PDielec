@@ -197,13 +197,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -211,11 +218,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html">PDielec.Calculator</a></li>
@@ -224,20 +232,23 @@
 <li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,13 +257,92 @@
 <li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -271,6 +361,29 @@
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +434,18 @@
           <section id="module-PDielec.GUI.AnalysisTab">
 <span id="pdielec-gui-analysistab"></span><h1>PDielec.GUI.AnalysisTab<a class="headerlink" href="#module-PDielec.GUI.AnalysisTab" title="Link to this heading">¶</a></h1>
 <p>AnalysisTab Module.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.AnalysisTab.logger" title="PDielec.GUI.AnalysisTab.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
@@ -345,58 +470,32 @@ Key features include plotting vibrational mode decompositions</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>parent<span class="classifier">QObject</span></dt><dd><p>The parent widget or object, typically the main application or main window in which this widget will be embedded.</p>
-</dd>
-<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Indicates if debugging is enabled for this widget. The default is False.</p>
+<dt>parent<span class="classifier">QObject</span></dt><dd><p>The parent widget or object, typically the main application or main window in which this widget will be embedded. debug : bool, optional Indicates if debugging is enabled for this widget. The default is False.</p>
 </dd>
 </dl>
 </section>
-<section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>subplot<span class="classifier">matplotlib subplot</span></dt><dd><p>A subplot attribute for plotting the analysis results.</p>
-</dd>
-<dt>settings<span class="classifier">dict</span></dt><dd><p>A dictionary for storing various settings related to analysis, like radii, frequencies, and plotting configurations.</p>
-</dd>
-<dt>settings[‘Radii’]<span class="classifier">list</span></dt><dd><p>Holds specific radii settings if provided; otherwise, set to None.</p>
-</dd>
-<dt>settings[‘Minimum frequency’]<span class="classifier">int</span></dt><dd><p>The minimum frequency boundary for analysis, initialized to -1.</p>
-</dd>
-<dt>settings[‘Maximum frequency’]<span class="classifier">int</span></dt><dd><p>The maximum frequency boundary for analysis, initialized to 400.</p>
-</dd>
-<dt>settings[‘title’]<span class="classifier">str</span></dt><dd><p>The title for plots generated within the widget. Defaults to ‘Analysis’.</p>
-</dd>
-<dt>settings[‘Covalent radius scaling’]<span class="classifier">float</span></dt><dd><p>A scaling factor for adjusting covalent radii in bonding calculations. Defaults to 1.1.</p>
-</dd>
-<dt>settings[‘Bonding tolerance’]<span class="classifier">float</span></dt><dd><p>The tolerance level used in bonding calculations, determining what is considered a bond. Defaults to 0.1.</p>
-</dd>
-<dt>settings[‘Bar width’]<span class="classifier">float</span></dt><dd><p>Determines the width of bars in bar plots. Defaults to 0.5.</p>
-</dd>
-<dt>refreshRequired<span class="classifier">bool</span></dt><dd><p>A flag indicating whether the widget needs to be refreshed to update the visuals or calculations. Defaults to True.</p>
-</dd>
-<dt>plot_types<span class="classifier">list</span></dt><dd><p>A list of available plot types the user can select from.</p>
-</dd>
-<dt>plot_type_index<span class="classifier">int</span></dt><dd><p>The index of the currently selected plot type in <cite>plot_types</cite> list.</p>
-</dd>
-<dt>number_of_molecules<span class="classifier">int</span></dt><dd><p>The number of molecules identified during the last analysis. Defaults to 0.</p>
-</dd>
-<dt>frequency_units<span class="classifier">str or None</span></dt><dd><p>String representing the units used for frequency measurements. Initially set to None.</p>
-</dd>
-<dt>cell_of_molecules<span class="classifier">object or None</span></dt><dd><p>An object containing information about the cell of molecules, if analysis has been run. Initially set to None.</p>
-</dd>
-<dt>frequencies_cm1<span class="classifier">list</span></dt><dd><p>A list holding frequency values in cm-1 units.</p>
-</dd>
-<dt>mode_energies<span class="classifier">list</span></dt><dd><p>Stores the calculated energies for different vibrational modes.</p>
-</dd>
-<dt>element_radii<span class="classifier">dict</span></dt><dd><p>A dictionary mapping elements to their corresponding covalent radii used in the analysis.</p>
-</dd>
-<dt>species<span class="classifier">list</span></dt><dd><p>A list of species involved in the current analysis.</p>
-</dd>
-<dt>notebook<span class="classifier">object</span></dt><dd><p>A reference to the parent notebook-like structure which hosts this widget.</p>
-</dd>
-<dt>reader<span class="classifier">object</span></dt><dd><p>An object responsible for reading and interpreting molecular data files.</p>
-</dd>
-</dl>
+<section id="id1">
+<h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>subplot : matplotlib subplot A subplot attribute for plotting the analysis results.  settings : dict A dictionary
+for storing various settings related to analysis, like radii, frequencies, and plotting configurations.
+settings[‘Radii’] : list  Holds specific radii settings if provided; otherwise, set to None. settings[‘Minimum
+frequency’] : int The minimum frequency boundary for analysis, initialized to -1. settings[‘Maximum frequency’] :
+int The maximum frequency boundary for analysis, initialized to 400. settings[‘title’] : str The title for plots
+generated within the widget. Defaults to ‘Analysis’. settings[‘Covalent radius scaling’] : float A scaling factor
+for adjusting covalent radii in bonding calculations. Defaults to 1.1. settings[‘Bonding tolerance’] : float The
+tolerance level used in bonding calculations, determining what is considered a bond. Defaults to 0.1. settings[‘Bar
+width’] : float Determines the width of bars in bar plots. Defaults to 0.5. refresh_required : bool A flag
+indicating whether the widget needs to be refreshed to update the visuals or calculations. Defaults to True.
+plot_types : list A list of available plot types the user can select from. plot_type_index : int The index of the
+currently selected plot type in <cite>plot_types</cite> list. number_of_molecules : int The number of molecules identified
+during the last analysis. Defaults to 0. frequency_units : str or None String representing the units used for
+frequency measurements. Initially set to None. cell_of_molecules : object or None An object containing information
+about the cell of molecules, if analysis has been run. Initially set to None. frequencies_cm1 : list A list holding
+frequency values in cm-1 units. mode_energies : list Stores the calculated energies for different vibrational modes.
+element_radii : dict A dictionary mapping elements to their corresponding covalent radii used in the analysis.
+species : list A list of species involved in the current analysis. notebook : object A reference to the parent
+notebook-like structure which hosts this widget. reader : object An object responsible for reading and interpreting
+molecular data files.</p>
 </section>
 <section id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
@@ -407,9 +506,9 @@ Key features include plotting vibrational mode decompositions</p>
 </dd>
 <dt>set_radii_tw(self)</dt><dd><p>Updates the radii table widget based on current settings or data.</p>
 </dd>
-<dt>setCovalentRadius(self, element, radius)</dt><dd><p>Sets the covalent radius for a given element and updates the analysis.</p>
+<dt>set_covalent_radius(self, element, radius)</dt><dd><p>Sets the covalent radius for a given element and updates the analysis.</p>
 </dd>
-<dt>writeSpreadsheet(self)</dt><dd><p>Writes the analysis results to a spreadsheet hosted by the parent structure.</p>
+<dt>write_spreadsheet(self)</dt><dd><p>Writes the analysis results to a spreadsheet hosted by the parent structure.</p>
 </dd>
 <dt>on_width_changed(self, value)</dt><dd><p>Handler for changes in the bar width setting.</p>
 </dd>
@@ -423,7 +522,7 @@ Key features include plotting vibrational mode decompositions</p>
 </dd>
 <dt>on_vmax_changed(self)</dt><dd><p>Handler for changes in the maximum frequency setting.</p>
 </dd>
-<dt>requestRefresh(self)</dt><dd><p>Requests a refresh of the analysis and visualization.</p>
+<dt>request_refresh(self)</dt><dd><p>Requests a refresh of the analysis and visualization.</p>
 </dd>
 <dt>refresh(self, force=False)</dt><dd><p>Refreshes the widget based on current settings, optionally forcing a refresh.</p>
 </dd>
@@ -443,10 +542,11 @@ Key features include plotting vibrational mode decompositions</p>
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.</p>
 <p>This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents
-based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy
-distribution among the modes. It updates the UI and internal state as necessary based on the calculation results.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+based on the provided settings, calculating normal modes and their mass weighting, and finally computing the
+energy distribution among the modes. It updates the UI and internal state as necessary based on the calculation
+results.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="returns">
@@ -455,14 +555,14 @@ distribution among the modes. It updates the UI and internal state as necessary 
 </section>
 <section id="notes">
 <h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
-<p>The function interacts with several attributes of the object it belongs to, including:
-- <cite>self.notebook.mainTab.settings</cite>: Access to settings specific to the main tab.
-- <cite>self.notebook.mainTab.reader</cite>: The reader associated with the main tab for accessing file data.
-- <cite>self.species</cite> and <cite>self.settings[‘Radii’]</cite>: Used for setting up element radii.
-- <cite>self.notebook.settingsTab.settings</cite>, <cite>self.notebook.settingsTab.frequencies_cm1</cite>, and
-- <cite>self.notebook.settingsTab.mass_weighted_normal_modes</cite>: Access to settings and data specific to the settings tab.
-- <cite>self.cell_of_molecules</cite>, <cite>self.number_of_molecules</cite>: Modifies and utilizes these attributes
-- to hold molecular content, and the number of molecules, respectively.</p>
+<p>The function interacts with several attributes of the object it belongs to, including: -
+<cite>self.notebook.mainTab.settings</cite>: Access to settings specific to the main tab. - <cite>self.notebook.mainTab.reader</cite>:
+The reader associated with the main tab for accessing file data. - <cite>self.species</cite> and <cite>self.settings[‘Radii’]</cite>:
+Used for setting up element radii. - <cite>self.notebook.settingsTab.settings</cite>,
+<cite>self.notebook.settingsTab.frequencies_cm1</cite>, and  - <cite>self.notebook.settingsTab.mass_weighted_normal_modes</cite>:
+Access to settings and data specific to the settings tab. - <cite>self.cell_of_molecules</cite>,
+<cite>self.number_of_molecules</cite>: Modifies and utilizes these attributes - to hold molecular content, and the number
+of molecules, respectively.</p>
 </section>
 </dd></dl>
 
@@ -470,15 +570,15 @@ distribution among the modes. It updates the UI and internal state as necessary 
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged">
 <span class="sig-name descname"><span class="pre">on_element_radii_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_element_radii_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged" title="Link to this definition">¶</a></dt>
 <dd><p>Respond to changes in element radii within a widget.</p>
-<section id="id2">
-<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that was changed. This item contains the new radius value as its text, and its column indicates which element’s radius was modified.</p>
 </dd>
 </dl>
 </section>
-<section id="id3">
-<h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -487,19 +587,19 @@ distribution among the modes. It updates the UI and internal state as necessary 
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked">
 <span class="sig-name descname"><span class="pre">on_element_radii_tw_itemClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_element_radii_tw_itemClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the item clicked event for a TableWidget related to element radii.</p>
-<section id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The item from the TableWidget that was clicked.</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h4>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id6">
-<h4>Notes<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<section id="id7">
+<h4>Notes<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
 <p>This function unblocks signals for the <cite>element_radii_tw</cite> TableWidget after an item click
 event has occurred, allowing subsequent events to be processed.</p>
 </section>
@@ -509,15 +609,15 @@ event has occurred, allowing subsequent events to be processed.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed">
 <span class="sig-name descname"><span class="pre">on_plottype_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_plottype_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle a change in plot type selection.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The new index that indicates the selected plot type.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -531,15 +631,15 @@ scaling factor for the covalent radius is adjusted in a graphical user interface
 It updates the stored ‘Covalent radius scaling’ value, marks that a refresh is
 required, calculates necessary data based on new settings, and finally triggers
 a plot update.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<section id="id10">
+<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new scale value for the covalent radius.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -548,15 +648,15 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed">
 <span class="sig-name descname"><span class="pre">on_title_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_title_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle title change events.</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new title text.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -565,16 +665,17 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed">
 <span class="sig-name descname"><span class="pre">on_tolerance_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_tolerance_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event when the tolerance value changes.</p>
-<p>This function updates the ‘Bonding tolerance’ setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<p>This function updates the ‘Bonding tolerance’ setting based on the provided value, marks the system as requiring
+a refresh, and then recalculates and replots the data.</p>
+<section id="id14">
+<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new tolerance value.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<section id="id15">
+<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -583,15 +684,15 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed">
 <span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_vmax_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in maximum value for frequency.</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
+<section id="id16">
+<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new title text.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h4>Returns<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -600,15 +701,15 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed">
 <span class="sig-name descname"><span class="pre">on_vmin_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_vmin_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in minimum value of frequency.</p>
-<section id="id17">
-<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<section id="id18">
+<h4>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new title text.</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<section id="id19">
+<h4>Returns<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -617,16 +718,17 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed">
 <span class="sig-name descname"><span class="pre">on_width_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_width_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes to the width property.</p>
-<p>This method is called when the width property of an object is changed. It updates the stored width value in the object’s settings and then re-plots the object to reflect the new width.</p>
-<section id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<p>This method is called when the width property of an object is changed. It updates the stored width value in the
+object’s settings and then re-plots the object to reflect the new width.</p>
+<section id="id20">
+<h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new value for the width.</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<section id="id21">
+<h4>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -639,16 +741,16 @@ a plot update.</p>
 or ‘molecular’, depending on the state of <cite>plot_type_index</cite>. If no data
 reader is associated with the instance or if there are no frequencies
 to plot, the function will terminate without plotting.</p>
-<section id="id21">
-<h4>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id22">
-<h4>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id23">
-<h4>Notes<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id24">
+<h4>Notes<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
 <p>This method relies on <cite>self.reader</cite> to be non-<cite>None</cite>, <cite>self.frequencies_cm1</cite> to
 contain frequency data, and <cite>self.plot_type_index</cite> to determine the plotting
 strategy. It calls <cite>self.plot_internal_external()</cite> or <cite>self.plot_molecular()</cite>
@@ -660,22 +762,23 @@ based on the value of <cite>self.plot_type_index</cite>.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external">
 <span class="sig-name descname"><span class="pre">plot_internal_external</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.plot_internal_external"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external" title="Link to this definition">¶</a></dt>
 <dd><p>Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.</p>
-<section id="id24">
-<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id25">
-<h4>Returns<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id26">
-<h4>Notes<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id27">
+<h4>Notes<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
 <ul class="simple">
-<li><p>This method modifies the subplot attribute by adding the bar plots for the internal and external energy contributions of different vibrational modes within the specified frequency ranges.</p></li>
-<li><p>This method utilizes the ‘Minimum frequency’ and ‘Maximum frequency’ values from the settings attribute to filter modes for plotting.</p></li>
-<li><p>The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.</p></li>
-<li><p>If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.</p></li>
-<li><p>The method updates the canvas with the newly plotted data.</p></li>
+<li><p>This method modifies the subplot attribute by adding the bar plots for the internal and external energy
+contributions of different vibrational modes within the specified frequency ranges. - This method utilizes the
+‘Minimum frequency’ and ‘Maximum frequency’ values from the settings attribute to filter modes for plotting. -
+The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy. - If the number
+of modes within the specified frequency range is less than 3, the method returns early without performing any
+plotting. - The method updates the canvas with the newly plotted data.</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -687,16 +790,16 @@ based on the value of <cite>self.plot_type_index</cite>.</p>
 <p>This method visualizes the distribution of vibrational energy across different molecules
 within specified frequency limits. It creates a bar chart representing the percentage of
 energy attributed to each molecule per mode within the set frequency range.</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
 <section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="id29">
-<h4>Notes<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id30">
+<h4>Notes<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><cite>self.settings</cite> should contain ‘Minimum frequency’, ‘Maximum frequency’, and ‘Bar width’ keys.</p></li>
 <li><p><cite>self.mode_energies</cite> must be a list where each element is a tuple containing mode energies
@@ -717,41 +820,45 @@ are appropriately imported or accessible within the scope.</p></li>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Refresh the widget state, optionally enforcing refresh.</p>
-<p>This method updates the widgets’ states and values according to the current settings. It first checks if a refresh is required or if the <cite>force</cite> parameter is set to <cite>True</cite>. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.</p>
-<section id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<p>This method updates the widgets’ states and values according to the current settings. It first checks if a
+refresh is required or if the <cite>force</cite> parameter is set to <cite>True</cite>. If neither condition is met, it exits early.
+Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission
+during state update. It then updates various UI components with new settings values, calculates and plots
+according to the updated settings, and finally re-enables signals for all child QWidget instances.</p>
+<section id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>If set to <cite>True</cite>, the widget refresh is forced even if it is deemed not required. Defaults to <cite>False</cite>.</p>
 </dd>
 </dl>
 </section>
-<section id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh" title="Link to this definition">¶</a></dt>
-<dd><p>Mark the instance as requiring a refresh.</p>
-<p>Sets the instance attribute <cite>refreshRequired</cite> to True, indicating that a refresh is necessary.</p>
 <section id="id32">
-<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id33">
-<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius">
-<span class="sig-name descname"><span class="pre">setCovalentRadius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.setCovalentRadius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius" title="Link to this definition">¶</a></dt>
-<dd><p>Set the covalent radius for a given element and update the plot.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.request_refresh">
+<span class="sig-name descname"><span class="pre">request_refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.request_refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.request_refresh" title="Link to this definition">¶</a></dt>
+<dd><p>Mark the instance as requiring a refresh.</p>
+<p>Sets the instance attribute <cite>refresh_required</cite> to True, indicating that a refresh is necessary.</p>
+<section id="id33">
+<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
 <section id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.set_covalent_radius">
+<span class="sig-name descname"><span class="pre">set_covalent_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.set_covalent_radius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.set_covalent_radius" title="Link to this definition">¶</a></dt>
+<dd><p>Set the covalent radius for a given element and update the plot.</p>
+<section id="id35">
+<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>element<span class="classifier">str</span></dt><dd><p>The chemical symbol of the element for which to set the covalent radius.</p>
 </dd>
@@ -759,8 +866,8 @@ are appropriately imported or accessible within the scope.</p></li>
 </dd>
 </dl>
 </section>
-<section id="id35">
-<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id36">
+<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -769,35 +876,35 @@ are appropriately imported or accessible within the scope.</p></li>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw">
 <span class="sig-name descname"><span class="pre">set_radii_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.set_radii_tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw" title="Link to this definition">¶</a></dt>
 <dd><p>Set or update the atomic radii in the GUI’s table widget based on the current settings and active file.</p>
-<p>This method updates the radii configuration within the element radii table widget of the GUI. It first ensures that
-a reader object, a program, and a filename are set and available. If any of these are missing, the process is aborted
-with a message. It then checks if custom radii are set in the settings; if not, it defaults to using pre-defined radii.
-The species and their corresponding radii are then used to populate the table widget. After the table is populated,
-it updates the settings with the possibly new radii values.</p>
-<section id="id36">
-<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<p>This method updates the radii configuration within the element radii table widget of the GUI. It first ensures
+that a reader object, a program, and a filename are set and available. If any of these are missing, the process
+is aborted with a message. It then checks if custom radii are set in the settings; if not, it defaults to using
+pre-defined radii. The species and their corresponding radii are then used to populate the table widget. After
+the table is populated, it updates the settings with the possibly new radii values.</p>
+<section id="id37">
+<h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id37">
-<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<section id="id38">
+<h4>Returns<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet">
-<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.write_spreadsheet">
+<span class="sig-name descname"><span class="pre">write_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.write_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.write_spreadsheet" title="Link to this definition">¶</a></dt>
 <dd><p>Write analysis data into a selected worksheet in the notebook’s spreadsheet.</p>
 <p>This method assumes the existence of a spreadsheet object within the notebook
 attribute of the class instance. It selects a worksheet named ‘Analysis’,
 writes a header row and data rows containing calculated percentages of
 vibrational mode contributions for molecules and internal/external modes.</p>
-<section id="id38">
-<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<section id="id39">
+<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id39">
-<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<section id="id40">
+<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -878,8 +985,8 @@ vibrational mode contributions for molecules and internal/external modes.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.refreshRequired">
-<span class="sig-name descname"><span class="pre">refreshRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refreshRequired" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.refresh_required">
+<span class="sig-name descname"><span class="pre">refresh_required</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh_required" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -934,6 +1041,11 @@ vibrational mode contributions for molecules and internal/external modes.</p>
 
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.AnalysisTab.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.GUI.AnalysisTab.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -994,6 +1106,7 @@ vibrational mode contributions for molecules and internal/external modes.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.GUI.AnalysisTab</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab"><code class="docutils literal notranslate"><span class="pre">AnalysisTab</span></code></a><ul>
@@ -1011,10 +1124,10 @@ vibrational mode contributions for molecules and internal/external modes.</p>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.plot_internal_external()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_molecular"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.plot_molecular()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.refresh()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.requestRefresh()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.setCovalentRadius()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.request_refresh"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.request_refresh()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.set_covalent_radius"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.set_covalent_radius()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.set_radii_tw"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.set_radii_tw()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.writeSpreadsheet"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.writeSpreadsheet()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.write_spreadsheet"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.write_spreadsheet()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.canvas"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.canvas</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.cell_of_molecules"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.cell_of_molecules</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.element_radii"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.element_radii</span></code></a></li>
@@ -1030,7 +1143,7 @@ vibrational mode contributions for molecules and internal/external modes.</p>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_types"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.plot_types</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plottype_cb"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.plottype_cb</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.reader"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.reader</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refreshRequired"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.refreshRequired</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh_required"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.refresh_required</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.scale_sp"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.scale_sp</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.settings"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.settings</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.species"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.species</span></code></a></li>
@@ -1043,6 +1156,7 @@ vibrational mode contributions for molecules and internal/external modes.</p>
 <li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.AnalysisTab.width_sp"><code class="docutils literal notranslate"><span class="pre">AnalysisTab.width_sp</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.GUI.AnalysisTab.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1056,7 +1170,7 @@ vibrational mode contributions for molecules and internal/external modes.</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

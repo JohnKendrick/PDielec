@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix."""
+import logging
 import math
 import re
 import xml.etree.ElementTree as ET
@@ -23,6 +24,9 @@ import numpy as np
 from PDielec.Constants import amu, angs2bohr, au2GPa, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class QEOutputReader(GenericOutputReader):
@@ -60,7 +64,24 @@ class QEOutputReader(GenericOutputReader):
         self.type                    = "QE output"
         self._alat                   = None
         self._alat_from_xml          = False
+        self._qe_raman_suscept       = None
+        self._qe_raman_suscept_units = None
+        self._qe_raman_suscept_priority = -1
+        self._nlo_susceptibility_from_xml = False
         return
+
+    def _store_qe_raman_susceptibility(self, dchi, units, priority):
+        """Store QE Raman derivatives, keeping the highest-precision source."""
+        if self._qe_raman_suscept is not None and priority < self._qe_raman_suscept_priority:
+            if self.debug:
+                logger.debug(
+                    "_store_qe_raman_susceptibility: ignoring lower-priority "
+                    f"QE Raman source {units}"
+                )
+            return
+        self._qe_raman_suscept = dchi
+        self._qe_raman_suscept_units = units
+        self._qe_raman_suscept_priority = priority
 
     def _read_output_files(self):
         """Process the QE files.
@@ -90,11 +111,18 @@ class QEOutputReader(GenericOutputReader):
         self.manage["celldm1"]  = (re.compile("^ *celldm.1. ="), self._read_celldm1)
         self.manage["pressure"]  = (re.compile("^ *total *stress *.Ry"), self._read_pressure)
         self.manage["nions"]  = (re.compile("^ *number of atoms/cell"), self._read_nions)
+        self.manage["nlo_susceptibility"] = (
+            re.compile(r"\s*Electro-optic tensor in cartesian axis:\s*$"),
+            self._read_nlo_susceptibility,
+        )
+        self.manage["ramanTensors"] = (re.compile(r"\s*Raman tensor \(A\^2\)"), self._read_raman_tensors_log)
         for f in self._outputfiles:
             if f.lower().endswith(".xml"):
                 self._read_xml(f)
             else:
                 self._read_output_file(f)
+        # For Raman calculate the Raman tensor
+        self._calculate_raman_tensors()
         return
 
     def _read_nions(self, line):
@@ -121,7 +149,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.nions = int(line.split()[4])
         if self.debug:
-            print(f"_read_nions: nions={self.nions}" )
+            logger.debug(f"_read_nions: nions={self.nions}")
         return
 
     def _read_pressure(self, line):
@@ -140,13 +168,75 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
+        This function updates the pressure attribute of the object it is called on and optionally prints the updated
+        pressure value if the object's `debug` attribute is set to True.
 
         """
         self.pressure = float(line.split()[5])/10.0
         if self.debug:
-            print(f"_read_pressure: pressure={self.pressure}" )
+            logger.debug(f"_read_pressure: pressure={self.pressure}")
         return
+
+    def _read_nlo_susceptibility(self, line):
+        """Read the nonlinear optical susceptibility tensor from QE ph.x output.
+
+        QE prints the electro-optic tensor as three 3x3 Cartesian matrices::
+
+            Electro-optic tensor in cartesian axis:
+
+            ( ... )
+            ( ... )
+            ( ... )
+
+            ( ... )
+            ...
+
+        The three matrices are the derivatives of the dielectric tensor with
+        respect to electric fields along x, y, and z, respectively.  QE states
+        that this Rydberg-a.u. electro-optic tensor should be multiplied by
+        1/2 to obtain static chi^2, and by 2.7502 to convert to pm/V.
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is chi^2
+        converted to the reader ``R_epsilon`` convention, with layout
+        ``chi2[i, j, k]``.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (already consumed by the manage loop).
+
+        Returns
+        -------
+        bool
+            True on success.
+
+        """
+        if self._nlo_susceptibility_from_xml:
+            return True
+
+        float_re = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[EeDd][-+]?\d+)?")
+        electro_optic = np.zeros((3, 3, 3))
+
+        for ifield in range(3):
+            rows_read = 0
+            while rows_read < 3:
+                data_line = self.file_descriptor.readline()
+                if data_line == "":
+                    logger.warning("  Incomplete QE electro-optic tensor block")
+                    return False
+                if "(" not in data_line:
+                    continue
+                values = [float(v.replace("D", "E").replace("d", "e")) for v in float_re.findall(data_line)]
+                if len(values) < 3:
+                    continue
+                electro_optic[rows_read, :, ifield] = values[:3]
+                rows_read += 1
+
+        # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
+        # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
+        self._store_nonlinear_optical_susceptibility_pm_per_v(0.5 * 2.7502 * electro_optic)
+        logger.info("  Nonlinear optical susceptibility tensor read from QE output (χ^(2) in R_epsilon units)")
+        return True
 
     def _read_celldm1(self, line):
         #
@@ -154,7 +244,9 @@ class QEOutputReader(GenericOutputReader):
         #
         """Process and update the class attribute _alat based on a line from a file.
 
-        This function is intended to read and process a line that contains a unit of length. It updates the class attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug` is set to True in the class, it also prints the updated `_alat` value.
+        This function is intended to read and process a line that contains a unit of length. It updates the class
+        attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug`
+        is set to True in the class, it also prints the updated `_alat` value.
 
         Parameters
         ----------
@@ -167,10 +259,11 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - Presumes the existence of a class attribute `_alat` which is updated by this function.
-        - Assumes `angs2bohr` is a predefined constant available within the scope of this method for conversion or comparison purposes.
-        - Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it precisely sets `_alat` to `angs2bohr`.
-        - The `debug` attribute of the class controls whether an update operation is printed or not.
+        - Presumes the existence of a class attribute `_alat` which is updated by this function. - Assumes `angs2bohr`
+          is a predefined constant available within the scope of this method for conversion or comparison purposes. -
+          Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it
+          precisely sets `_alat` to `angs2bohr`. - The `debug` attribute of the class controls whether an update
+          operation is printed or not.
 
         """
         string = line.split()[2]
@@ -183,7 +276,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
-            print(f"_read_celldm1: _alat={self._alat}" )
+            logger.debug(f"_read_celldm1: _alat={self._alat}")
         return
 
     def _read_alat(self, line):
@@ -224,7 +317,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
-            print(f"_read_alat: _alat={self._alat}" )
+            logger.debug(f"_read_alat: _alat={self._alat}")
         return
 
     def _read_alat2(self, line):
@@ -244,12 +337,13 @@ class QEOutputReader(GenericOutputReader):
 
         Attributes Modified
         -------------------
-        _alat
-            The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
+        _alat The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is
+        adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
 
         Notes
         -----
-        This method does not return any value. It updates the `_alat` attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.
+        This method does not return any value. It updates the `_alat` attribute of the class instance with the value
+        read from the input line, after applying necessary conversions and checks.
 
         """
         t = float(line.split()[2])
@@ -260,7 +354,7 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml and self._alat is None:
             self._alat = t
         if self.debug:
-            print(f"_read_alat2: _alat={self._alat}" )
+            logger.debug(f"_read_alat2: _alat={self._alat}")
         return
 
     def _read_electrons(self, line):
@@ -292,7 +386,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.electrons = float(line.split()[4])
         if self.debug:
-            print(f"_read_electrons: electrons={self.electrons}" )
+            logger.debug(f"_read_electrons: electrons={self.electrons}")
         return
 
     def _read_energy(self, line):
@@ -301,7 +395,9 @@ class QEOutputReader(GenericOutputReader):
         #
         """Parse the energy values from a given line and set them to the instance variables.
 
-        This function extracts energy-related values from a provided line of text, then calculates and assigns these values (in electron volts) to instance attributes for final energy without entropy and final free energy, while considering conversion factors. If debugging is enabled, it prints the final free energy.
+        This function extracts energy-related values from a provided line of text, then calculates and assigns these
+        values (in electron volts) to instance attributes for final energy without entropy and final free energy, while
+        considering conversion factors. If debugging is enabled, it prints the final free energy.
 
         Parameters
         ----------
@@ -318,16 +414,17 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is defined.
-        - Utilizes the fourth element in the whitespace-separated list from the input string, after splitting, for the relevant energy-related value.
-        - The energy value is converted to electron volts, halved, and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object.
-        - If the 'debug' attribute of the object is True, the final free energy is printed.
+        - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is
+          defined. - Utilizes the fourth element in the whitespace-separated list from the input string, after
+          splitting, for the relevant energy-related value. - The energy value is converted to electron volts, halved,
+          and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object. -
+          If the 'debug' attribute of the object is True, the final free energy is printed.
 
         """
         self.final_energy_without_entropy = float(line.split()[3]) * hartree2ev / 2.0
         self.final_free_energy = float(line.split()[3]) * hartree2ev / 2.0
         if self.debug:
-            print(f"_read_energy: energy={self.final_free_energy}" )
+            logger.debug(f"_read_energy: energy={self.final_free_energy}")
         return
 
     def _read_energy_cutoff(self, line):
@@ -360,7 +457,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.energy_cutoff = float(line.split()[3]) * hartree2ev / 2.0
         if self.debug:
-            print(f"_read_energy_cutoff: energy_cutoff={self.energy_cutoff}" )
+            logger.debug(f"_read_energy_cutoff: energy_cutoff={self.energy_cutoff}")
         return
 
     def _read_kpoints(self, line):
@@ -369,7 +466,9 @@ class QEOutputReader(GenericOutputReader):
         #
         """Read and store the number of k-points from a given line.
 
-        This is an internal method that extracts the number of k-points from a provided line (assumed to contain this information in a predefined format) and stores it in the class instance. Optionally, it prints debug information if the debug mode is activated.
+        This is an internal method that extracts the number of k-points from a provided line (assumed to contain this
+        information in a predefined format) and stores it in the class instance. Optionally, it prints debug information
+        if the debug mode is activated.
 
         Parameters
         ----------
@@ -387,7 +486,7 @@ class QEOutputReader(GenericOutputReader):
         """
         self.kpoints = int(line.split()[4])
         if self.debug:
-            print(f"_read_kpoints: kpoints={self.kpoints}" )
+            logger.debug(f"_read_kpoints: kpoints={self.kpoints}")
         return
 
     def _read_kpoint_grid(self, line):
@@ -396,7 +495,9 @@ class QEOutputReader(GenericOutputReader):
         #
         """Read and set the k-point grid from a line in a file.
 
-        This method reads a line from the file associated with the file_descriptor attribute, parses the first three elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set to True, it prints the k-point grid.
+        This method reads a line from the file associated with the file_descriptor attribute, parses the first three
+        elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set
+        to True, it prints the k-point grid.
 
         Parameters
         ----------
@@ -409,19 +510,22 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid values.
+        This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid
+        values.
 
         """
         line = self.file_descriptor.readline()
         self.kpoint_grid = [ int(f) for f in line.split()[0:3] ]
         if self.debug:
-            print(f"_read_kpoint_grid kpoint_grid={self.kpoint_grid}" )
+            logger.debug(f"_read_kpoint_grid kpoint_grid={self.kpoint_grid}")
         return
 
     def _read_dyng_header(self):
         """Read and process the header line from the dynG file.
 
-        This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
+        This method updates the object's state by reading the header line from the set file descriptor and parsing it to
+        extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after
+        converting it to Bohr units if it is within a tolerance range of the conversion factor.
 
         Parameters
         ----------
@@ -433,9 +537,16 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
+        The function assumes that the file has been opened and that the file descriptor is stored in
+        `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the
+        first, second, and fourth values being integers representing the number of species, the number of ions, and a
+        float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined
+        elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the
+        `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or
+        identification.
 
-        This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+        This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents
+        of the header line.
 
         """
         # Skip a couple of lines
@@ -450,13 +561,16 @@ class QEOutputReader(GenericOutputReader):
         if not self._alat_from_xml:
              self._alat = t
         if self.debug:
-            print(f"_read_dyng_header alat={self._alat}" )
+            logger.debug(f"_read_dyng_header alat={self._alat}")
         return
 
     def _read_dyng_epsilon(self, line):
         """Read and process zero frequency optical permittivity data from the dynG file.
 
-        This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
+        This method reads the next four lines from a file, processes them to extract optical dielectric constant data,
+        and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first
+        line, then reads three lines of numeric values, where each line contains at least three numeric values which are
+        converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
 
         Parameters
         ----------
@@ -470,7 +584,8 @@ class QEOutputReader(GenericOutputReader):
         Notes
         -----
         - This method modifies the instance attribute `zerof_optical_dielectric` directly.
-        - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+        - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute
+          after it is updated.
 
         """
         self.file_descriptor.readline()
@@ -482,13 +597,17 @@ class QEOutputReader(GenericOutputReader):
         linea = self.file_descriptor.readline().split()
         self.zerof_optical_dielectric.append([float(f) for f in linea[0:3]])
         if self.debug:
-            print(f"_read_espilon zerof_optical_dielectric={self.zerof_optical_dielectric}" )
+            logger.debug(f"_read_espilon zerof_optical_dielectric={self.zerof_optical_dielectric}")
         return
 
     def _read_dyng_masses(self):
         """Read the masses of species from an dynG file and populate mass and species lists.
 
-        This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
+        This method parses lines from an already opened file object (`file_descriptor`), extracting species names and
+        their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit
+        (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their
+        respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls
+        `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
 
         Parameters
         ----------
@@ -507,8 +626,8 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - The atomic mass unit (`amu`) is defined elsewhere
-        - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
+        - The atomic mass unit (`amu`) is defined elsewhere - It's assumed that `_read_dyng_coordinates` is a method
+          within the same class that takes a single string argument.
 
         """
         self.masses_per_type = []
@@ -519,8 +638,8 @@ class QEOutputReader(GenericOutputReader):
             # The factor of two is because au in pwscf are half mass of electron
             self.masses_per_type.append(float(linea[2])*2/amu)
         if self.debug:
-            print(f"_read_dyng_masses masses={self.masses_per_type}" )
-            print(f"_read_dyng_masses species={self.species}" )
+            logger.debug(f"_read_dyng_masses masses={self.masses_per_type}")
+            logger.debug(f"_read_dyng_masses species={self.species}")
         return
 
     def _read_dyng_dynamical(self,line):
@@ -567,13 +686,14 @@ class QEOutputReader(GenericOutputReader):
         # end for a
         self._dynamical_matrix(hessian)
         if self.debug:
-            print("_read_dyng_dynamical")
+            logger.debug("_read_dyng_dynamical")
         return
 
     def _read_born_charges(self, line):
         """Read and parse Born charges from a file.
 
-        This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and updates the `born_charges` attribute of the class instance.
+        This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and
+        updates the `born_charges` attribute of the class instance.
 
         Parameters
         ----------
@@ -588,9 +708,12 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates (x, y, z). It expects each line to contain three space-separated values, which represent the components of the Born charge tensor for that direction.
+        This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates
+        (x, y, z). It expects each line to contain three space-separated values, which represent the components of the
+        Born charge tensor for that direction.
 
-        This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list (representing the Born charge tensor) for each ion.
+        This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list
+        (representing the Born charge tensor) for each ion.
 
         If `self.debug` is True, it prints a debug message upon completion.
 
@@ -608,7 +731,7 @@ class QEOutputReader(GenericOutputReader):
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
             self.born_charges.append(b)
         if self.debug:
-            print("_read_born_charges")
+            logger.debug("_read_born_charges")
         return
 
     def _read_cell_parameters(self, line):
@@ -629,10 +752,11 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The function expects the `line` input to contain the lattice parameter as its third value after removing parentheses.
-        Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
-        scaled by the lattice parameter and converted from Angstroms to Bohr radii.
-        The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+        The function expects the `line` input to contain the lattice parameter as its third value after removing
+        parentheses. Each subsequent line read from the input file (after the parameter line) is expected to represent
+        the lattice vectors, scaled by the lattice parameter and converted from Angstroms to Bohr radii. The method
+        directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+
 
         """
         line = line.replace( "(", " ")
@@ -649,15 +773,19 @@ class QEOutputReader(GenericOutputReader):
         cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_cell_parameters: volume={self.volume}")
+            logger.debug(f"_read_cell_parameters: volume={self.volume}")
         return
 
     def _read_dyng_basis_vectors(self):
         """Read and process lattice vectors from a dynG file, then updates unit cell information.
 
-        This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
+        This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a
+        unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from
+        Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these
+        vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit
+        cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
 
         Parameters
         ----------
@@ -669,12 +797,12 @@ class QEOutputReader(GenericOutputReader):
 
         Attributes Updated
         ------------------
-        unit_cells : list
-            A list of `UnitCell` objects representing the unit cells read from the file. Updated by appending a new `UnitCell`.
-        ncells : int
-            The total number of unit cells, updated after reading new lattice vectors.
-        volume : float
-            The volume of the last read unit cell, updated after appending a new `UnitCell`.
+        unit_cells : list A list of `UnitCell` objects representing the unit cells read from the file. Updated by
+        appending a new `UnitCell`. ncells : int The total number of unit cells, updated after reading new lattice
+        vectors. volume : float The volume of the last read unit cell, updated after appending a new `UnitCell`.
+
+
+
 
         """
         linea = self.file_descriptor.readline().split()
@@ -687,20 +815,24 @@ class QEOutputReader(GenericOutputReader):
         cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_lattic_vectors: volume={self.volume}")
+            logger.debug(f"_read_lattic_vectors: volume={self.volume}")
         return
 
     def _read_fractional_coordinates(self,line):
         """Read the log file and sets the fractional coordinates and element names for the last unit cell in the object.
 
-        This function iterates over a specified number of lines (defined by `self.nions`) from the object's file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
+        This function iterates over a specified number of lines (defined by `self.nions`) from the object's file
+        descriptor, parsing each line into species names and their fractional coordinates. These species names and
+        coordinates are then used to set the corresponding properties for the last unit cell managed by the object.
+        Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the
+        last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
 
         Parameters
         ----------
         line : str
-            The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading. 
+            The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading.
 
         Returns
         -------
@@ -708,16 +840,17 @@ class QEOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
-        - Only operates if `self.nions` is greater than 0.
-        - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
+        - The function directly modifies the object's state by setting properties of the last unit cell
+          (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`. - Only operates if `self.nions` is
+          greater than 0. - The function is intended to be called in a context where `self.file_descriptor` is already
+          open and positioned correctly.
 
         """
         if self.nions <= 0 or len(self.unit_cells) <=0 :
             if self.debug:
-                print(f"_read_fractional_coordinates: nions={self.nions}")
-                print(f"_read_fractional_coordinates: number of cells={len(self.unit_cells)}")
-                print("_read_fractional_coordinates: Unable to store fractional coordinates aborting")
+                logger.debug(f"_read_fractional_coordinates: nions={self.nions}")
+                logger.debug(f"_read_fractional_coordinates: number of cells={len(self.unit_cells)}")
+                logger.error("_read_fractional_coordinates: Unable to store fractional coordinates aborting")
             return
         species_list = []
         fractional_coordinates = []
@@ -728,15 +861,17 @@ class QEOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
         self.unit_cells[-1].set_element_names(species_list)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_fractional_coordinates: volume={self.volume}")
+            logger.debug(f"_read_fractional_coordinates: volume={self.volume}")
         return
 
     def _read_dyng_coordinates(self):
         """Read dynamic coordinates from a dynG file and update related properties.
 
-        This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding `unit_cells` properties.
+        This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species
+        list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the
+        corresponding `unit_cells` properties.
 
         Parameters
         ----------
@@ -748,18 +883,18 @@ class QEOutputReader(GenericOutputReader):
 
         Attributes Updated
         ------------------
-        self.masses : list
-            Updated list of masses based on the atomic positions read.
-        self.atom_type_list : list
-            Updated list of atom types corresponding to each atom based on the read positions.
-        self.ions_per_type : list
-            Updated list with the count of ions per type.
-        self.unit_cells : list
-            List of unit cells, where the last one is updated with new xyz coordinates and element names based on read data.
-        self.ncells : int
-            Updated count of unit cells.
-        self.volume : float
-            Updated volume of the last unit cell in the list.
+        self.masses : list Updated list of masses based on the atomic positions read. self.atom_type_list : list Updated
+        list of atom types corresponding to each atom based on the read positions. self.ions_per_type : list Updated
+        list with the count of ions per type. self.unit_cells : list List of unit cells, where the last one is updated
+        with new xyz coordinates and element names based on read data. self.ncells : int Updated count of unit cells.
+        self.volume : float Updated volume of the last unit cell in the list.
+
+
+
+
+
+
+
     
         See Also
         --------
@@ -785,9 +920,9 @@ class QEOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_xyz_coordinates(xyz_coordinates,units="Angstrom")
         self.unit_cells[-1].set_element_names(species_list)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         if self.debug:
-            print(f"_read_dyng_coordinates: volume={self.volume}")
+            logger.debug(f"_read_dyng_coordinates: volume={self.volume}")
         return
 
     def _read_xml(self, filename):
@@ -810,9 +945,9 @@ class QEOutputReader(GenericOutputReader):
         tree = ET.parse(filename)
         root = tree.getroot()
         if self.debug:
-            print("QEOutputReader _read_xml: filename = ",filename)
-            print("QEOutputReader _read_xml: tree = ",tree)
-            print("QEOutputReader _read_xml: root = ",root)
+            logger.debug(f"QEOutputReader _read_xml: filename = {filename}")
+            logger.debug(f"QEOutputReader _read_xml: tree = {tree}")
+            logger.debug(f"QEOutputReader _read_xml: root = {root}")
         inputxml = root.find("input")
         outputxml = root.find("output")
         stepsxml = None
@@ -822,19 +957,21 @@ class QEOutputReader(GenericOutputReader):
         use_this_xml = stepsxml if stepsxml is not None else outputxml
         tensorsxml = root.find("EF_TENSORS")
         if self.debug:
-            print("QEOutputReader _read_xml: inputxml = ",inputxml)
-            print("QEOutputReader _read_xml: outputxml = ",outputxml)
-            print("QEOutputReader _read_xml: stepsxml = ",stepsxml)
-            print("QEOutputReader _read_xml: use_this_xml = ",use_this_xml)
-            print("QEOutputReader _read_xml: tensorsxml = ",tensorsxml)
+            logger.debug(f"QEOutputReader _read_xml: inputxml = {inputxml}")
+            logger.debug(f"QEOutputReader _read_xml: outputxml = {outputxml}")
+            logger.debug(f"QEOutputReader _read_xml: stepsxml = {stepsxml}")
+            logger.debug(f"QEOutputReader _read_xml: use_this_xml = {use_this_xml}")
+            logger.debug(f"QEOutputReader _read_xml: tensorsxml = {tensorsxml}")
         # Handle input
         if inputxml is not None:
             self._basis(inputxml.findall("basis")[-1])
             self._atomic_species(inputxml.findall("atomic_species")[-1])
             self._kpoints(inputxml.findall("k_points_IBZ")[-1])
-        # Handle output 
+        # Handle output
         if outputxml is not None:
-            self._pressure(outputxml.findall("stress")[-1])
+            stress_list = outputxml.findall("stress")
+            if stress_list:
+                self._pressure(stress_list[-1])
             self._band_structure(outputxml.findall("band_structure")[-1])
         # Handle the case of optimisation
         if use_this_xml is not None:
@@ -844,7 +981,51 @@ class QEOutputReader(GenericOutputReader):
         if tensorsxml is not None:
             self._dielectric_constant(tensorsxml.find("DIELECTRIC_CONSTANT"))
             self._effective_charges(tensorsxml.find("EFFECTIVE_CHARGES_EU"))
+            raman_tns_list = tensorsxml.findall("RAMAN_TNS")
+            if raman_tns_list:
+                self._read_raman_tensors_xml(raman_tns_list)
+            self._read_nlo_susceptibility_xml(tensorsxml.find("ELOP_TNS"))
         return
+
+    def _read_nlo_susceptibility_xml(self, elop_tns_xml):
+        """Read the nonlinear optical susceptibility tensor from QE ``tensors.xml``.
+
+        The ``ELOP_TNS`` element stores the same electro-optic tensor printed
+        in the ph.x output log, but with the full XML precision.  Values are
+        arranged as three consecutive 3x3 matrices for electric fields along
+        x, y, and z.  The stored attribute is chi^2 converted to the reader
+        ``R_epsilon`` convention, with layout ``chi2[i, j, k]``.
+
+        Parameters
+        ----------
+        elop_tns_xml : xml.etree.ElementTree.Element or None
+            The ``ELOP_TNS`` element from the ``EF_TENSORS`` block.
+
+        Returns
+        -------
+        bool
+            True if the tensor was read, False otherwise.
+
+        """
+        if elop_tns_xml is None or elop_tns_xml.text is None:
+            return False
+
+        values = [float(f) for f in elop_tns_xml.text.split()]
+        if len(values) != 27:
+            logger.warning(f"  QE ELOP_TNS block contains {len(values)} values; expected 27")
+            return False
+
+        electro_optic = np.zeros((3, 3, 3))
+        rows = np.array(values).reshape(9, 3)
+        for ifield in range(3):
+            electro_optic[:, :, ifield] = rows[ifield * 3:(ifield + 1) * 3, :]
+
+        # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
+        # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
+        self._store_nonlinear_optical_susceptibility_pm_per_v(0.5 * 2.7502 * electro_optic)
+        self._nlo_susceptibility_from_xml = True
+        logger.info("  Nonlinear optical susceptibility tensor read from QE tensors.xml (χ^(2) in R_epsilon units)")
+        return True
 
     def _effective_charges(self,effective_charges_xml):
         """Process the effective_charges element(s).
@@ -882,7 +1063,7 @@ class QEOutputReader(GenericOutputReader):
             index = index + 9
             self.born_charges.append(b)
         if self.debug:
-            print(f"_basis: born_charges={self.born_charges}")
+            logger.debug(f"_basis: born_charges={self.born_charges}")
         return
 
     def _dielectric_constant(self,dielectric_constant_xml):
@@ -904,7 +1085,7 @@ class QEOutputReader(GenericOutputReader):
         eps = np.array(eps).reshape(3,3)
         self.zerof_optical_dielectric = eps.tolist()
         if self.debug:
-            print(f"_basis: zerof_optical_dielectric={self.zerof_optical_dielectric}")
+            logger.debug(f"_basis: zerof_optical_dielectric={self.zerof_optical_dielectric}")
         return
 
     def _basis(self,basis_xml):
@@ -930,8 +1111,8 @@ class QEOutputReader(GenericOutputReader):
         self.energy_cutoff = float( ecutwfc_xml.text )
         self.rho_cutoff    = float( ecutrho_xml.text )
         if self.debug:
-            print(f"_basis: energy_cutoff={self.energy_cutoff}")
-            print(f"_basis: rho_cutoff={self.rho_cutoff}")
+            logger.debug(f"_basis: energy_cutoff={self.energy_cutoff}")
+            logger.debug(f"_basis: rho_cutoff={self.rho_cutoff}")
         return
 
     def _total_energy(self,total_energy_xml):
@@ -941,7 +1122,7 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        total_energy_xml : a list of xml element
+        total_energy_xml : list
             A list of total_energy elements
 
         Set
@@ -962,9 +1143,9 @@ class QEOutputReader(GenericOutputReader):
             self.final_free_energies.append(self.final_free_energy)
             self.final_energies_without_entropy.append(self.final_free_energy)
         if self.debug:
-            print(f"_total_energy: final_energy_without_entropy={self.final_energy_without_entropy}")
-            print(f"_total_energy: final_free_energy={self.final_free_energy}")
-            print(f"_total_energy: energies={self.energies}")
+            logger.debug(f"_total_energy: final_energy_without_entropy={self.final_energy_without_entropy}")
+            logger.debug(f"_total_energy: final_free_energy={self.final_free_energy}")
+            logger.debug(f"_total_energy: energies={self.energies}")
         return
 
     def _band_structure(self,band_structure_xml):
@@ -984,7 +1165,7 @@ class QEOutputReader(GenericOutputReader):
         nelec_xml = band_structure_xml.find("nelec")
         self.electrons = int(float(nelec_xml.text)+0.00000001)
         if self.debug:
-            print(f"_band_structure: electrons={self.electrons}")
+            logger.debug(f"_band_structure: electrons={self.electrons}")
         return
 
     def _atomic_structure(self,atomic_structure_xml):
@@ -992,7 +1173,7 @@ class QEOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        atomic_structure_xml : a list of xml elements
+        atomic_structure_xml : list
             A list of atomic structure elements
 
         Set
@@ -1035,9 +1216,9 @@ class QEOutputReader(GenericOutputReader):
             self.unit_cells[-1].set_element_names(species_list)
             # Book keeping
             self.ncells = len(self.unit_cells)
-            self.volume = self.unit_cells[-1].getVolume("Angstrom")
+            self.volume = self.unit_cells[-1].get_volume("Angstrom")
             if self.debug:
-                print(f"_atomic_structure: volume={self.volume}")
+                logger.debug(f"_atomic_structure: volume={self.volume}")
         return
             
     def _atomic_species(self,atomic_species_xml):
@@ -1065,9 +1246,9 @@ class QEOutputReader(GenericOutputReader):
             self.species.append( child.attrib["name"] )
             self.masses_per_type.append ( float(child.find("mass").text) )
         if self.debug:
-            print(f"_atomic_species: nspecies={self.nspecies}")
-            print(f"_atomic_species: species={self.species}")
-            print(f"_atomic_species: masses_per_type={self.masses_per_type}")
+            logger.debug(f"_atomic_species: nspecies={self.nspecies}")
+            logger.debug(f"_atomic_species: species={self.species}")
+            logger.debug(f"_atomic_species: masses_per_type={self.masses_per_type}")
         return
             
 
@@ -1090,7 +1271,7 @@ class QEOutputReader(GenericOutputReader):
         self.kpoint_grid[1] = int(kpt_dict["nk2"])
         self.kpoint_grid[2] = int(kpt_dict["nk3"])
         if self.debug:
-            print(f"_read_kpoints: kpoint_grid={self.kpoint_grid}" )
+            logger.debug(f"_read_kpoints: kpoint_grid={self.kpoint_grid}")
         return
 
     def _pressure(self,pressure_xml):
@@ -1113,7 +1294,179 @@ class QEOutputReader(GenericOutputReader):
         # Take the trace of the (flat) matrix and convert from atomic units to GPa
         self.pressure = au2GPa * (stress[0] + stress[4] + stress[8]) / 3.0 
         if self.debug:
-            print(f"_pressure: pressure={self.pressure}" )
+            logger.debug(f"_pressure: pressure={self.pressure}")
+        return
+
+    def _read_raman_tensors_log(self, line):
+        """Read the Raman susceptibility tensors from the QE phonon log file.
+
+        QE ph.x prints per-atom per-direction 3×3 derivatives of the
+        macroscopic polarisability-volume tensor under the heading
+        ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
+        one per atom per Cartesian displacement direction, each labeled
+        ``atom # K    pol.  J``.
+
+        The "A^2" tensors represent::
+
+            A2_{κ,γ}[α,β] = ∂α_vol,αβ/∂u_{κγ}
+
+        where ``α_vol = V(ε−I)/(4π)`` is the per-cell polarisability volume in
+        Å³ and ``u`` is an atomic displacement in Å.  The volume-dependent
+        conversion to PDielec's ``R_epsilon = sqrt(V) dε/dQ`` convention is
+        deferred until all companion files have been read, so the final cell
+        volume and normal modes are used consistently.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (containing ``"Raman tensor (A^2)"``).
+            Not used directly; reading continues from ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        nions = self.nions
+        # dchi[κ, γ, α, β] = dα_vol,αβ/du_κγ in Å².
+        dchi = np.zeros((nions, 3, 3, 3))
+        # Skip the blank line that follows the heading
+        self.file_descriptor.readline()
+        for iatom in range(nions):
+            for idir in range(3):
+                # Skip "atom # K    pol.  J" header line
+                self.file_descriptor.readline()
+                for irow in range(3):
+                    tokens = self.file_descriptor.readline().split()
+                    dchi[iatom, idir, irow, :] = [float(t) for t in tokens[0:3]]
+        self._store_qe_raman_susceptibility(dchi, "log_a2", priority=1)
+        return
+
+    def _read_raman_tensors_xml(self, raman_tns_list):
+        """Read Raman susceptibility tensors from ``tensors.xml`` RAMAN_TNS elements.
+
+        Each ``<RAMAN_TNS atom="N">`` element contains 9 rows of 3 values,
+        arranged as three consecutive 3×3 blocks corresponding to the x, y,
+        and z Cartesian displacement directions respectively::
+
+            rows 0-2  → dε_{αβ}/du_{κ,x}
+            rows 3-5  → dε_{αβ}/du_{κ,y}
+            rows 6-8  → dε_{αβ}/du_{κ,z}
+
+        The XML values are ``dε/du`` in ``bohr^-1``.  The result is stored in
+        ``self._qe_raman_suscept`` in the same ``dchi[iatom, idir, irow, icol]``
+        layout used by :meth:`_read_raman_tensors_log`; unit conversion is
+        handled by :meth:`_calculate_raman_tensors`.
+
+        Parameters
+        ----------
+        raman_tns_list : list of xml.etree.ElementTree.Element
+            List of ``RAMAN_TNS`` elements from the ``EF_TENSORS`` block of
+            ``tensors.xml``.
+
+        Returns
+        -------
+        None
+
+        """
+        nions = len(raman_tns_list)
+        # dchi[κ, γ, α, β] in tensors.xml is stored in au^-1 units:
+        #   dε_{αβ}/du_{κγ} where ε is dimensionless and u is in bohr.
+        dchi = np.zeros((nions, 3, 3, 3))
+        for atom_xml in raman_tns_list:
+            iatom = int(atom_xml.attrib["atom"]) - 1  # XML is 1-indexed
+            values = [float(f) for f in atom_xml.text.split()]
+            # 9 rows × 3 cols per atom; rows 0-2 = x dir, 3-5 = y dir, 6-8 = z dir
+            for idir in range(3):
+                for irow in range(3):
+                    idx = idir * 9 + irow * 3
+                    dchi[iatom, idir, irow, :] = values[idx:idx + 3]
+        self._store_qe_raman_susceptibility(dchi, "xml_epsilon_per_bohr", priority=2)
+        if self.debug:
+            logger.debug(f"_read_raman_tensors_xml: read Raman tensors for {nions} atoms")
+        return
+
+    def _calculate_raman_tensors(self):
+        """Calculate the Raman tensors from the susceptibility tensors.
+
+        QE ph.x prints per-atom per-direction 3×3 derivatives of the
+        macroscopic polarisability-volume tensor under the heading
+        ``Raman tensor (A^2)``.  The block contains ``nions × 3`` sub-blocks,
+        one per atom per Cartesian displacement direction, each labeled
+        ``atom # K    pol.  J``.
+
+        The "A^2" tensors represent::
+
+            A2_{κ,γ}[α,β] = ∂α_vol,αβ/∂u_{κγ}
+
+        where ``α_vol = V(ε−I)/(4π)``.  The log reader stores this native
+        ``A^2`` derivative and the XML reader stores native ``dε/du_bohr``.
+        This routine converts either source to the PDielec convention
+        ``sqrt(V) dε/du_Å`` before projection.
+
+        To obtain the physical per-mode bulk Raman tensor ``R_epsilon``, the
+        raw derivatives are projected onto the mass-weighted phonon eigenvectors::
+
+            R_n[α,β] = Σ_{κ,γ}  sqrt(V) dε_{αβ}/du_{κγ}
+                         × mwm[n,κ,γ] / √m_κ
+
+        where mwm = ``mass_weighted_normal_modes``, m_κ is in amu, and
+        ``u`` is in Å.  The stored tensor is ``R_epsilon = sqrt(V) dε/dQ``.
+
+        The normal modes must be available before this method is called;
+        they are read from the ``.dynG`` file by :meth:`_read_dyng_file`.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (containing ``"Raman tensor (A^2)"``).
+            Not used directly; reading continues from ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        if self._qe_raman_suscept is None:
+            return
+        dchi = self._qe_raman_suscept
+        if self.volume <= 0:
+            logger.warning("_calculate_raman_tensors: QE Raman tensors are present but the unit-cell volume is not")
+            return
+        if self._qe_raman_suscept_units == "log_a2":
+            dchi = dchi * (4.0 * math.pi / math.sqrt(self.volume))
+        elif self._qe_raman_suscept_units == "xml_epsilon_per_bohr":
+            dchi = dchi * (math.sqrt(self.volume) * angs2bohr)
+        else:
+            logger.warning(
+                "_calculate_raman_tensors: unknown QE Raman tensor units "
+                f"{self._qe_raman_suscept_units!r}; assuming sqrt(V) dε/du_Å"
+            )
+        nions = self.nions
+        if self.mass_weighted_normal_modes:
+            nmodes = nions * 3
+            self.raman_tensors = []
+            for n in range(nmodes):
+                tensor = np.zeros((3, 3))
+                for iatom in range(nions):
+                    sqrt_mass = math.sqrt(self.masses[iatom])
+                    for idir in range(3):
+                        eigvec = self.mass_weighted_normal_modes[n][iatom][idir]
+                        tensor += dchi[iatom, idir] * (eigvec / sqrt_mass)
+                self.raman_tensors.append(tensor)
+            if self.debug:
+                logger.debug(f"_read_raman_tensors_log: computed {len(self.raman_tensors)} Raman tensors")
+        else:
+            logger.warning("_read_raman_tensors_log: normal modes not yet available; "
+                           "raw derivatives stored in self._qe_raman_suscept")
+        return
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Rebuild QE Raman tensors exactly from stored displacement derivatives."""
+        if self._qe_raman_suscept is not None:
+            self._calculate_raman_tensors()
+        else:
+            super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
         return
 
     def _read_dyng_file(self,line):
@@ -1140,7 +1493,7 @@ class QEOutputReader(GenericOutputReader):
 
         """
         if self.debug:
-            print("_read_dyng:" )
+            logger.debug("_read_dyng:")
         # Read the header
         self._read_dyng_header()
         # Read the basis vectors

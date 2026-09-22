@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE" name="keywords" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Applications of Effective Medium Theory" href="application_notes_1.html"><link rel="prev" title="Theory for Single Crystal Optics" href="theory_single_crystal.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Applications of Effective Medium Theory" href="application_notes_1.html"><link rel="prev" title="Theory for Crystal Layer Raman" href="CrystalRaman.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>Phonon Analysis - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -199,13 +199,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -213,11 +220,12 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
@@ -226,20 +234,23 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -248,13 +259,92 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -273,6 +363,29 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
@@ -323,7 +436,7 @@
           <section id="phonon-analysis">
 <h1>Phonon Analysis<a class="headerlink" href="#phonon-analysis" title="Link to this heading">¶</a></h1>
 <p>PDGui performs an analysis of a phonon mode in terms of the percentage
-of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id65" title="Peter Uhd Jepsen and Stewart J. Clark. Precise ab-initio prediction of terahertz vibrational modes in crystalline systems. Chemical Physics Letters, 442(4-6):275–280, Jul 2007. doi:10.1016/j.cplett.2007.05.112.">55</a>]</span>).  In addition, for those systems with more than one formula unit in the unit-cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
+of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id65" title="Peter Uhd Jepsen and Stewart J. Clark. Precise ab-initio prediction of terahertz vibrational modes in crystalline systems. Chemical Physics Letters, 442(4-6):275–280, Jul 2007. doi:10.1016/j.cplett.2007.05.112.">54</a>]</span>).  In addition, for those systems with more than one formula unit in the unit-cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
 <section id="molecular-systems">
 <h2>Molecular Systems<a class="headerlink" href="#molecular-systems" title="Link to this heading">¶</a></h2>
 <p>It is common in molecular calculations of
@@ -333,45 +446,45 @@ the second derivative matrix to a set of coordinates that no longer include cent
 <p>Defining a projection operator as;</p>
 <div class="math-wrapper docutils container" id="equation-eq-projectionop">
 <div class="math notranslate nohighlight" id="equation-eq-projectionop">
-<span class="eqno">(75)<a class="headerlink" href="#equation-eq-projectionop" title="Link to this equation">¶</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
+<span class="eqno">(111)<a class="headerlink" href="#equation-eq-projectionop" title="Link to this equation">¶</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
 </div>
 <p>where <span class="math notranslate nohighlight">\(\fieldbf{V}\)</span> is an orthonormal column vector with length <span class="math notranslate nohighlight">\(3N\)</span> (<span class="math notranslate nohighlight">\(N\)</span> is the number of atoms), the centre-of-mass motion
 can be described in Cartesian space as all atoms moving along the x, y or
 z axis with the same displacement. So considering the projection of the centre-of-mass motion along the x-axis, for each atom <span class="math notranslate nohighlight">\(a\)</span> we can write;</p>
 <div class="math-wrapper docutils container" id="equation-eq-cmx1">
 <div class="math notranslate nohighlight" id="equation-eq-cmx1">
-<span class="eqno">(76)<a class="headerlink" href="#equation-eq-cmx1" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x}_{a} = \left(\begin{matrix} 1 \\ 0 \\ 0 \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(112)<a class="headerlink" href="#equation-eq-cmx1" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x}_{a} = \left(\begin{matrix} 1 \\ 0 \\ 0 \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>For the projection operator which will project out all components of translation along the x-axis for every atom in the molecule we have;</p>
 <div class="math-wrapper docutils container" id="equation-eq-cmx2">
 <div class="math notranslate nohighlight" id="equation-eq-cmx2">
-<span class="eqno">(77)<a class="headerlink" href="#equation-eq-cmx2" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
+<span class="eqno">(113)<a class="headerlink" href="#equation-eq-cmx2" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 </div>
 <p>There are two other projection operators describing translation along the y- and z-axis.</p>
 <p>In a similar fashion, it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.  If the coordinates of atom <span class="math notranslate nohighlight">\(a\)</span> relative to the centre-of-mass of the molecule are <span class="math notranslate nohighlight">\(x, y \text{ and } z\)</span>, the component of the projection vector, <span class="math notranslate nohighlight">\(\tensorbf{V}\)</span> representing rotation about the x-axis in the yz-plane is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotyz">
 <div class="math notranslate nohighlight" id="equation-eq-rotyz">
-<span class="eqno">(78)<a class="headerlink" href="#equation-eq-rotyz" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(114)<a class="headerlink" href="#equation-eq-rotyz" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>In a similar fashion rotations about the y- and z-axis are respectively;</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotxz">
 <div class="math notranslate nohighlight" id="equation-eq-rotxz">
-<span class="eqno">(79)<a class="headerlink" href="#equation-eq-rotxz" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xz}_{a} = \left(\begin{matrix} +z \\ 0 \\ -x \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(115)<a class="headerlink" href="#equation-eq-rotxz" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xz}_{a} = \left(\begin{matrix} +z \\ 0 \\ -x \end{matrix}\right)\end{split}\]</div>
 </div>
 <p>and</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotxy">
 <div class="math notranslate nohighlight" id="equation-eq-rotxy">
-<span class="eqno">(80)<a class="headerlink" href="#equation-eq-rotxy" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xy}_{a} = \left(\begin{matrix} -y \\ +x \\ 0 \end{matrix}\right)\end{split}\]</div>
+<span class="eqno">(116)<a class="headerlink" href="#equation-eq-rotxy" title="Link to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{xy}_{a} = \left(\begin{matrix} -y \\ +x \\ 0 \end{matrix}\right)\end{split}\]</div>
 </div>
-<p>In a similar fashion to Equation <a class="reference internal" href="#equation-eq-cmx2">(77)</a> the complete projection operators for the 3 rotational modes can be assembled (using rotation about the x-axis as an example)</p>
+<p>In a similar fashion to Equation <a class="reference internal" href="#equation-eq-cmx2">(113)</a> the complete projection operators for the 3 rotational modes can be assembled (using rotation about the x-axis as an example)</p>
 <div class="math-wrapper docutils container" id="equation-eq-rotyz2">
 <div class="math notranslate nohighlight" id="equation-eq-rotyz2">
-<span class="eqno">(81)<a class="headerlink" href="#equation-eq-rotyz2" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
+<span class="eqno">(117)<a class="headerlink" href="#equation-eq-rotyz2" title="Link to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 </div>
 <p>In practice, the projection operators will be defined using mass-weighted cartesian coordinates as this simplifies the expressions used later.  As an example the transformation to mass-weighted coordinates for atom <span class="math notranslate nohighlight">\(a\)</span> translating along the x-axis is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-mass-weight">
 <div class="math notranslate nohighlight" id="equation-eq-mass-weight">
-<span class="eqno">(82)<a class="headerlink" href="#equation-eq-mass-weight" title="Link to this equation">¶</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
+<span class="eqno">(118)<a class="headerlink" href="#equation-eq-mass-weight" title="Link to this equation">¶</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
 </div>
 </section>
 <section id="periodic-systems">
@@ -383,10 +496,10 @@ molecule in the unit-cell, which will project out the motion of
 each molecular translational and rotational degree of freedom.
 Such projection operators will be used to separate the external from the internal modes and there will therefore
 be a projection operator for each external mode in the system.</p>
-<p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id66" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">56</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
+<p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id66" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">55</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kep">
 <div class="math notranslate nohighlight" id="equation-eq-kep">
-<span class="eqno">(83)<a class="headerlink" href="#equation-eq-kep" title="Link to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
+<span class="eqno">(119)<a class="headerlink" href="#equation-eq-kep" title="Link to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
 \sum\limits_{a}{T_{a,p}} =
 \frac{1}{2}\sum\limits_{a}{m_a \fieldbf{\Delta\dot{x}}^T_{a,p}\fieldbf{\Delta \dot{x}}_{a,p} } =
 \frac{1}{2} \dot{Q^2_p} \sum\limits_{a} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
@@ -401,9 +514,9 @@ Derivation of this expression has made use of the following
 relationship between the mass-weighted normal mode;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy">
-<span class="eqno">(84)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Link to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
+<span class="eqno">(120)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Link to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
 </div>
-<p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id66" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">56</a>]</span>, since the kinetic energy can be expressed as
+<p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id66" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">55</a>]</span>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the Virial theorem indicates that
 this is true also for the potential energy. Using mass-weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
@@ -412,31 +525,31 @@ mode, <span class="math notranslate nohighlight">\(p\)</span>,  will have its to
 molecules in the unit-cell according to;</p>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy-total">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-total">
-<span class="eqno">(85)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Link to this equation">¶</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
+<span class="eqno">(121)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Link to this equation">¶</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
 </div>
 <div class="math-wrapper docutils container" id="equation-eq-kinetic-energy-molecular">
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-molecular">
-<span class="eqno">(86)<a class="headerlink" href="#equation-eq-kinetic-energy-molecular" title="Link to this equation">¶</a></span>\[E^{mol}_p = \dot{Q^2_p} \sum\limits_{a \in mol} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
+<span class="eqno">(122)<a class="headerlink" href="#equation-eq-kinetic-energy-molecular" title="Link to this equation">¶</a></span>\[E^{mol}_p = \dot{Q^2_p} \sum\limits_{a \in mol} { \fieldbf{L}^T_{a,p} \fieldbf{L}_{a,p} }\]</div>
 </div>
-<p>To calculate the contribution a particular mode has to the centre-of-mass kinetic energy we use the projection operators given in Equation <a class="reference internal" href="#equation-eq-cmx2">(77)</a> (now in mass-weighted Cartesian coordinates) where only the atoms in that molecule are used to construct the operator;</p>
+<p>To calculate the contribution a particular mode has to the centre-of-mass kinetic energy we use the projection operators given in Equation <a class="reference internal" href="#equation-eq-cmx2">(113)</a> (now in mass-weighted Cartesian coordinates) where only the atoms in that molecule are used to construct the operator;</p>
 <div class="math-wrapper docutils container" id="equation-eq-finaloperator">
 <div class="math notranslate nohighlight" id="equation-eq-finaloperator">
-<span class="eqno">(87)<a class="headerlink" href="#equation-eq-finaloperator" title="Link to this equation">¶</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
+<span class="eqno">(123)<a class="headerlink" href="#equation-eq-finaloperator" title="Link to this equation">¶</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
 </div>
 <p>This approach is used to define  6 projection operators for each molecule. The centre-of-mass energy contained in the <span class="math notranslate nohighlight">\(p_{th}\)</span> mode can be written as;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-cm">
 <div class="math notranslate nohighlight" id="equation-eq-energy-cm">
-<span class="eqno">(88)<a class="headerlink" href="#equation-eq-energy-cm" title="Link to this equation">¶</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
+<span class="eqno">(124)<a class="headerlink" href="#equation-eq-energy-cm" title="Link to this equation">¶</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 </div>
 <p>and the rigid-body rotational energy associated with the mode is;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-rot">
 <div class="math notranslate nohighlight" id="equation-eq-energy-rot">
-<span class="eqno">(89)<a class="headerlink" href="#equation-eq-energy-rot" title="Link to this equation">¶</a></span>\[E^{rot}_p = \dot{Q^2_p} \sum\limits_{i=xy,yz,xz}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
+<span class="eqno">(125)<a class="headerlink" href="#equation-eq-energy-rot" title="Link to this equation">¶</a></span>\[E^{rot}_p = \dot{Q^2_p} \sum\limits_{i=xy,yz,xz}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 </div>
 <p>The molecular vibrational contribution, which can be used to classify the internal modes of the system, can be obtained by subtracting the centre-of-mass and rigid-body rotational; energies from the total;</p>
 <div class="math-wrapper docutils container" id="equation-eq-energy-vib">
 <div class="math notranslate nohighlight" id="equation-eq-energy-vib">
-<span class="eqno">(90)<a class="headerlink" href="#equation-eq-energy-vib" title="Link to this equation">¶</a></span>\[E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p\]</div>
+<span class="eqno">(126)<a class="headerlink" href="#equation-eq-energy-vib" title="Link to this equation">¶</a></span>\[E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p\]</div>
 </div>
 <p>Since all of the energy terms depend in the same way on <span class="math notranslate nohighlight">\(\dot{Q}_p\)</span>, it is not required in the calculation of the relative contributions to the energy coming from the external (molecular centre-of-mass and rigid-body rotation) and the internal modes (vibrational contributions)</p>
 </section>
@@ -445,12 +558,12 @@ molecules in the unit-cell according to;</p>
 <p>In order to calculate the relative internal and external contributions to each phonon mode it is first necessary to identify the molecules in the crystal.  In many cases, the unit-cell is packed with atoms in such a way that the cell is filled, rather than in a way reflecting the bondedness of the molecules.  The program first replicates the atoms in all cells neighbouring the central unit-cell.  Within this supercell the bonds are determined by calculating the distances between all atoms in the supercell.  In practice, an order N method is used whereby instead of searching all the supercell only the space around each atom is searched for potentially bonded partners.  The criterion of the presence of a bond between atoms <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> is given by the requirement that the distance between the atoms <span class="math notranslate nohighlight">\(r{ij}\)</span> is less than the bonding requirement;</p>
 <div class="math-wrapper docutils container" id="equation-eq-bond">
 <div class="math notranslate nohighlight" id="equation-eq-bond">
-<span class="eqno">(91)<a class="headerlink" href="#equation-eq-bond" title="Link to this equation">¶</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
+<span class="eqno">(127)<a class="headerlink" href="#equation-eq-bond" title="Link to this equation">¶</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
 </div>
 <p>Here <span class="math notranslate nohighlight">\(radius_i\)</span> is the covalent radius of atom <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(scale\)</span> and <span class="math notranslate nohighlight">\(toler\)</span> are factors that can be altered when running the program.</p>
 <p>Once the bonding in the supercell has been determined the program starts with the first atom in the central cell and determines all atoms which are connected to the molecule that it is in.  If there are any remaining atoms in the central cell which are not bonded yet then further molecules are added until all atoms in the central cell have been allocated to a molecule.</p>
 <p>Finally a new cell with the same dimensions as the original is constructed.  Where necessary each molecule is shifted into the cell so that the molecule’s centre-of-mass lies within it.</p>
-<p>The projection operators, Equation <a class="reference internal" href="#equation-eq-finaloperator">(87)</a>, can now be constructed and the relative energies calculated using Equations <a class="reference internal" href="#equation-eq-energy-cm">(88)</a>, <a class="reference internal" href="#equation-eq-energy-rot">(89)</a> and <a class="reference internal" href="#equation-eq-energy-vib">(90)</a>.</p>
+<p>The projection operators, Equation <a class="reference internal" href="#equation-eq-finaloperator">(123)</a>, can now be constructed and the relative energies calculated using Equations <a class="reference internal" href="#equation-eq-energy-cm">(124)</a>, <a class="reference internal" href="#equation-eq-energy-rot">(125)</a> and <a class="reference internal" href="#equation-eq-energy-vib">(126)</a>.</p>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
 </section>
@@ -458,10 +571,10 @@ molecules in the unit-cell according to;</p>
 <section id="isoleucine">
 <h2>Isoleucine<a class="headerlink" href="#isoleucine" title="Link to this heading">¶</a></h2>
 <p>The example of a calculation on isoleucine using Castep is available in the Examples/Castep/Isoleucine directory of the distribution.  The analysis was performed using PDGui.
-The program first finds the four molecules of isoleucine in the unit-cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 6</span></a>.</p>
+The program first finds the four molecules of isoleucine in the unit-cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 13</span></a>.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-isoleucine-mols">
 <table class="styled-table docutils align-center" id="tab-isoleucine-mols">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 20.0%" />
@@ -505,11 +618,11 @@ The program first finds the four molecules of isoleucine in the unit-cell of the
 </tbody>
 </table>
 </div>
-<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 7</span></a> shows the results of the analysis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be seen under the column %mol-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32.81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.
+<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 14</span></a> shows the results of the analysis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be seen under the column %mol-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32.81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.
 However, for this latter mode there is a considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and the contribution from vibrational modes (see the %vib column) increases.  The total contribution from molecular motion is summarised in the last four columns.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-isoleucine-results">
 <table class="styled-table docutils align-center" id="tab-isoleucine-results">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 12.5%" />
 <col style="width: 12.5%" />
@@ -722,10 +835,10 @@ However, for this latter mode there is a considerable contribution from rigid-bo
 BaTiO<sub>3</sub>
 can be found in Example/AbInit/BaTiO3 in the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using PDGui.
 For this example, the default covalent radius of the Barium atoms has been changed to 0.3 Å, so this atom will be treated as though it is not bonded to anything else in the cell.  This results in 2 ‘molecules’ being found in the cell; a TiO<sub>3</sub> moiety and the Ba<sup>2+</sup> ion.</p>
-<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 8</span></a> below.  In this example, the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moiety. Above 200 cm<sup>-1</sup> there is a much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
+<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 15</span></a> below.  In this example, the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moiety. Above 200 cm<sup>-1</sup> there is a much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-batio3-results">
 <table class="styled-table docutils align-center" id="tab-batio3-results">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 16.7%" />
 <col style="width: 16.7%" />
@@ -852,12 +965,12 @@ For this example, the default covalent radius of the Barium atoms has been chang
 </tbody>
 </table>
 </div>
-<p>The visualisation of the internal and external contributions to the phonon modes is shown in the <a class="reference internal" href="#fig-batio3-analysis"><span class="std std-numref">Fig. 17</span></a></p>
+<p>The visualisation of the internal and external contributions to the phonon modes is shown in the <a class="reference internal" href="#fig-batio3-analysis"><span class="std std-numref">Fig. 56</span></a></p>
 <figure class="align-default" id="id4">
 <span id="fig-batio3-analysis"></span><a class="reference internal image-reference" href="_images/batio3_internal_external.png"><img alt="_images/batio3_internal_external.png" src="_images/batio3_internal_external.png" style="width: 612.0px; height: 846.9px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Internal and external contributions to the phonon modes of BaTiO<sub>3</sub></span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 56 </span><span class="caption-text">Internal and external contributions to the phonon modes of BaTiO<sub>3</sub></span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -877,14 +990,14 @@ For this example, the default covalent radius of the Barium atoms has been chang
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="theory_single_crystal.html">
+          <a class="prev-page" href="CrystalRaman.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Theory for Single Crystal Optics</div>
+                <div class="title">Theory for Crystal Layer Raman</div>
                 
               </div>
             </a>
@@ -938,7 +1051,7 @@ For this example, the default covalent radius of the Barium atoms has been chang
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="_static/documentation_options.js?v=335988e4"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

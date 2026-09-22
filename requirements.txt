@@ -1,13 +1,13 @@
-pip
+# Keep aligned with [project].dependencies in pyproject.toml.
 numpy
 scipy
-pyqt6
+PyQt6
 QtPy
 matplotlib
 psutil
 PyOpenGL
-PyYaml
-scikit_learn
+PyYAML
+scikit-learn
 setuptools
 spglib
 termcolor
@@ -16,3 +16,4 @@ xlsxwriter
 imageio
 imageio-ffmpeg
 dill
+pytest

@@ -9,6 +9,14 @@ PDielec.GUI.AnalysisTab
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.AnalysisTab.logger
+
+
 Classes
 -------
 
@@ -33,54 +41,32 @@ Module Contents
    Parameters
    ----------
    parent : QObject
-       The parent widget or object, typically the main application or main window in which this widget will be embedded.
-   debug : bool, optional
-       Indicates if debugging is enabled for this widget. The default is False.
+       The parent widget or object, typically the main application or main window in which this widget will be embedded. debug : bool, optional Indicates if debugging is enabled for this widget. The default is False.
+
 
    Attributes
    ----------
-   subplot : matplotlib subplot
-       A subplot attribute for plotting the analysis results. 
-   settings : dict
-       A dictionary for storing various settings related to analysis, like radii, frequencies, and plotting configurations.
-   settings['Radii'] : list 
-       Holds specific radii settings if provided; otherwise, set to None.
-   settings['Minimum frequency'] : int
-       The minimum frequency boundary for analysis, initialized to -1.
-   settings['Maximum frequency'] : int
-       The maximum frequency boundary for analysis, initialized to 400.
-   settings['title'] : str
-       The title for plots generated within the widget. Defaults to 'Analysis'.
-   settings['Covalent radius scaling'] : float
-       A scaling factor for adjusting covalent radii in bonding calculations. Defaults to 1.1.
-   settings['Bonding tolerance'] : float
-       The tolerance level used in bonding calculations, determining what is considered a bond. Defaults to 0.1.
-   settings['Bar width'] : float
-       Determines the width of bars in bar plots. Defaults to 0.5.
-   refreshRequired : bool
-       A flag indicating whether the widget needs to be refreshed to update the visuals or calculations. Defaults to True.
-   plot_types : list
-       A list of available plot types the user can select from.
-   plot_type_index : int
-       The index of the currently selected plot type in `plot_types` list.
-   number_of_molecules : int
-       The number of molecules identified during the last analysis. Defaults to 0.
-   frequency_units : str or None
-       String representing the units used for frequency measurements. Initially set to None.
-   cell_of_molecules : object or None
-       An object containing information about the cell of molecules, if analysis has been run. Initially set to None.
-   frequencies_cm1 : list
-       A list holding frequency values in cm-1 units.
-   mode_energies : list
-       Stores the calculated energies for different vibrational modes.
-   element_radii : dict
-       A dictionary mapping elements to their corresponding covalent radii used in the analysis.
-   species : list
-       A list of species involved in the current analysis.
-   notebook : object
-       A reference to the parent notebook-like structure which hosts this widget.
-   reader : object
-       An object responsible for reading and interpreting molecular data files.
+   subplot : matplotlib subplot A subplot attribute for plotting the analysis results.  settings : dict A dictionary
+   for storing various settings related to analysis, like radii, frequencies, and plotting configurations.
+   settings['Radii'] : list  Holds specific radii settings if provided; otherwise, set to None. settings['Minimum
+   frequency'] : int The minimum frequency boundary for analysis, initialized to -1. settings['Maximum frequency'] :
+   int The maximum frequency boundary for analysis, initialized to 400. settings['title'] : str The title for plots
+   generated within the widget. Defaults to 'Analysis'. settings['Covalent radius scaling'] : float A scaling factor
+   for adjusting covalent radii in bonding calculations. Defaults to 1.1. settings['Bonding tolerance'] : float The
+   tolerance level used in bonding calculations, determining what is considered a bond. Defaults to 0.1. settings['Bar
+   width'] : float Determines the width of bars in bar plots. Defaults to 0.5. refresh_required : bool A flag
+   indicating whether the widget needs to be refreshed to update the visuals or calculations. Defaults to True.
+   plot_types : list A list of available plot types the user can select from. plot_type_index : int The index of the
+   currently selected plot type in `plot_types` list. number_of_molecules : int The number of molecules identified
+   during the last analysis. Defaults to 0. frequency_units : str or None String representing the units used for
+   frequency measurements. Initially set to None. cell_of_molecules : object or None An object containing information
+   about the cell of molecules, if analysis has been run. Initially set to None. frequencies_cm1 : list A list holding
+   frequency values in cm-1 units. mode_energies : list Stores the calculated energies for different vibrational modes.
+   element_radii : dict A dictionary mapping elements to their corresponding covalent radii used in the analysis.
+   species : list A list of species involved in the current analysis. notebook : object A reference to the parent
+   notebook-like structure which hosts this widget. reader : object An object responsible for reading and interpreting
+   molecular data files.
+
 
    Methods
    -------
@@ -90,9 +76,9 @@ Module Contents
        Handler for changes in the table widget items related to element radii.
    set_radii_tw(self)
        Updates the radii table widget based on current settings or data.
-   setCovalentRadius(self, element, radius)
+   set_covalent_radius(self, element, radius)
        Sets the covalent radius for a given element and updates the analysis.
-   writeSpreadsheet(self)
+   write_spreadsheet(self)
        Writes the analysis results to a spreadsheet hosted by the parent structure.
    on_width_changed(self, value)
        Handler for changes in the bar width setting.
@@ -106,7 +92,7 @@ Module Contents
        Handler for changes in the minimum frequency setting.
    on_vmax_changed(self)
        Handler for changes in the maximum frequency setting.
-   requestRefresh(self)
+   request_refresh(self)
        Requests a refresh of the analysis and visualization.
    refresh(self, force=False)
        Refreshes the widget based on current settings, optionally forcing a refresh.
@@ -128,8 +114,9 @@ Module Contents
       Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
 
       This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents
-      based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy
-      distribution among the modes. It updates the UI and internal state as necessary based on the calculation results.
+      based on the provided settings, calculating normal modes and their mass weighting, and finally computing the
+      energy distribution among the modes. It updates the UI and internal state as necessary based on the calculation
+      results.
 
       Parameters
       ----------
@@ -141,14 +128,14 @@ Module Contents
 
       Notes
       -----
-      The function interacts with several attributes of the object it belongs to, including:
-      - `self.notebook.mainTab.settings`: Access to settings specific to the main tab.
-      - `self.notebook.mainTab.reader`: The reader associated with the main tab for accessing file data.
-      - `self.species` and `self.settings['Radii']`: Used for setting up element radii.
-      - `self.notebook.settingsTab.settings`, `self.notebook.settingsTab.frequencies_cm1`, and 
-      - `self.notebook.settingsTab.mass_weighted_normal_modes`: Access to settings and data specific to the settings tab.
-      - `self.cell_of_molecules`, `self.number_of_molecules`: Modifies and utilizes these attributes
-      - to hold molecular content, and the number of molecules, respectively.
+      The function interacts with several attributes of the object it belongs to, including: -
+      `self.notebook.mainTab.settings`: Access to settings specific to the main tab. - `self.notebook.mainTab.reader`:
+      The reader associated with the main tab for accessing file data. - `self.species` and `self.settings['Radii']`:
+      Used for setting up element radii. - `self.notebook.settingsTab.settings`,
+      `self.notebook.settingsTab.frequencies_cm1`, and  - `self.notebook.settingsTab.mass_weighted_normal_modes`:
+      Access to settings and data specific to the settings tab. - `self.cell_of_molecules`,
+      `self.number_of_molecules`: Modifies and utilizes these attributes - to hold molecular content, and the number
+      of molecules, respectively.
 
 
 
@@ -248,7 +235,8 @@ Module Contents
 
       Handle the event when the tolerance value changes.
 
-      This function updates the 'Bonding tolerance' setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.
+      This function updates the 'Bonding tolerance' setting based on the provided value, marks the system as requiring
+      a refresh, and then recalculates and replots the data.
 
       Parameters
       ----------
@@ -298,7 +286,8 @@ Module Contents
 
       Handle changes to the width property.
 
-      This method is called when the width property of an object is changed. It updates the stored width value in the object's settings and then re-plots the object to reflect the new width.
+      This method is called when the width property of an object is changed. It updates the stored width value in the
+      object's settings and then re-plots the object to reflect the new width.
 
       Parameters
       ----------
@@ -353,11 +342,12 @@ Module Contents
 
       Notes
       -----
-      - This method modifies the subplot attribute by adding the bar plots for the internal and external energy contributions of different vibrational modes within the specified frequency ranges.
-      - This method utilizes the 'Minimum frequency' and 'Maximum frequency' values from the settings attribute to filter modes for plotting.
-      - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
-      - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
-      - The method updates the canvas with the newly plotted data.
+      - This method modifies the subplot attribute by adding the bar plots for the internal and external energy
+        contributions of different vibrational modes within the specified frequency ranges. - This method utilizes the
+        'Minimum frequency' and 'Maximum frequency' values from the settings attribute to filter modes for plotting. -
+        The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy. - If the number
+        of modes within the specified frequency range is less than 3, the method returns early without performing any
+        plotting. - The method updates the canvas with the newly plotted data.
 
 
 
@@ -400,7 +390,11 @@ Module Contents
 
       Refresh the widget state, optionally enforcing refresh.
 
-      This method updates the widgets' states and values according to the current settings. It first checks if a refresh is required or if the `force` parameter is set to `True`. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.
+      This method updates the widgets' states and values according to the current settings. It first checks if a
+      refresh is required or if the `force` parameter is set to `True`. If neither condition is met, it exits early.
+      Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission
+      during state update. It then updates various UI components with new settings values, calculates and plots
+      according to the updated settings, and finally re-enables signals for all child QWidget instances.
 
       Parameters
       ----------
@@ -414,11 +408,11 @@ Module Contents
 
 
 
-   .. py:method:: requestRefresh()
+   .. py:method:: request_refresh()
 
       Mark the instance as requiring a refresh.
 
-      Sets the instance attribute `refreshRequired` to True, indicating that a refresh is necessary.
+      Sets the instance attribute `refresh_required` to True, indicating that a refresh is necessary.
 
       Parameters
       ----------
@@ -431,7 +425,7 @@ Module Contents
 
 
 
-   .. py:method:: setCovalentRadius(element, radius)
+   .. py:method:: set_covalent_radius(element, radius)
 
       Set the covalent radius for a given element and update the plot.
 
@@ -453,11 +447,11 @@ Module Contents
 
       Set or update the atomic radii in the GUI's table widget based on the current settings and active file.
 
-      This method updates the radii configuration within the element radii table widget of the GUI. It first ensures that
-      a reader object, a program, and a filename are set and available. If any of these are missing, the process is aborted
-      with a message. It then checks if custom radii are set in the settings; if not, it defaults to using pre-defined radii.
-      The species and their corresponding radii are then used to populate the table widget. After the table is populated,
-      it updates the settings with the possibly new radii values.
+      This method updates the radii configuration within the element radii table widget of the GUI. It first ensures
+      that a reader object, a program, and a filename are set and available. If any of these are missing, the process
+      is aborted with a message. It then checks if custom radii are set in the settings; if not, it defaults to using
+      pre-defined radii. The species and their corresponding radii are then used to populate the table widget. After
+      the table is populated, it updates the settings with the possibly new radii values.
 
       Parameters
       ----------
@@ -470,7 +464,7 @@ Module Contents
 
 
 
-   .. py:method:: writeSpreadsheet()
+   .. py:method:: write_spreadsheet()
 
       Write analysis data into a selected worksheet in the notebook's spreadsheet.
 
@@ -549,7 +543,7 @@ Module Contents
    .. py:attribute:: reader
 
 
-   .. py:attribute:: refreshRequired
+   .. py:attribute:: refresh_required
       :value: True
 
 
@@ -587,4 +581,6 @@ Module Contents
 
    .. py:attribute:: width_sp
 
+
+.. py:data:: logger
 

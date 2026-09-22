@@ -1,0 +1,281 @@
+PDielec.RamanPolarCalculator
+============================
+
+.. py:module:: PDielec.RamanPolarCalculator
+
+.. autoapi-nested-parse::
+
+   Tensor-level Raman polar plot calculations.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.RamanPolarCalculator.ACOUSTIC_THRESHOLD_CM1
+   PDielec.RamanPolarCalculator.POLAR_GEOMETRIES
+   PDielec.RamanPolarCalculator.RAMAN_ACTIVE_THRESHOLD
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.RamanPolarCalculator.apply_eo_correction
+   PDielec.RamanPolarCalculator.apply_particle_eo_correction
+   PDielec.RamanPolarCalculator.build_Z_mat
+   PDielec.RamanPolarCalculator.build_eigvecs_from_normal_modes
+   PDielec.RamanPolarCalculator.build_polarisation_basis
+   PDielec.RamanPolarCalculator.calculate_polar_curves
+   PDielec.RamanPolarCalculator.compute_lo_frequencies
+   PDielec.RamanPolarCalculator.compute_lo_modes
+   PDielec.RamanPolarCalculator.intensity_for_modes
+   PDielec.RamanPolarCalculator.normalise_vector
+   PDielec.RamanPolarCalculator.polarisation_vectors
+   PDielec.RamanPolarCalculator.raman_active_mode_indices
+   PDielec.RamanPolarCalculator.rotate_around_axis
+
+
+Module Contents
+---------------
+
+.. py:function:: apply_eo_correction(tensors, chi2_repsilon, q_hat_crystal, Z_mat, eigvecs, eps_inf)
+
+   Apply the electro-optic (EO) q-dependent correction to Raman tensors.
+
+   Implements the electro-optic term in ``eq-nonanalytic`` and ``eq-nac_ramantensor``.
+   For each mode *p* the correction is::
+
+       ΔR_p = −8π · f(q̂) · [Z^mw(q̂) · u_p] / (q̂ᵀ ε_∞ q̂)
+
+   where ``f_ij(q̂) = Σ_l χ^(2)_ijl q̂_l`` and
+   ``Z^mw(q̂)[n] = (Z_mat^T q̂)[n]``.
+
+   Parameters
+   ----------
+   tensors : list of ndarray, each (3, 3)
+       Input physical bulk Raman tensors ``R_epsilon`` (not modified; corrected
+       copies are returned).
+   chi2_repsilon : ndarray, shape (3, 3, 3)
+       Second-order NLO susceptibility χ^(2), already converted by the
+       readers to the same Angstrom-based internal convention as
+       ``R_epsilon`` Raman tensors.
+   q_hat_crystal : ndarray, shape (3,)
+       Unit phonon wavevector in the crystal frame.
+   Z_mat : ndarray, shape (3, 3N)
+       Mass-weighted Born charge matrix from :func:`build_Z_mat`.
+   eigvecs : ndarray, shape (3N, n_modes)
+       Eigenvector matrix — columns are the mode eigenvectors.  For TO modes
+       pass ``U_TO.T`` (i.e. the output of
+       :func:`build_eigvecs_from_normal_modes`); for NAC modes pass the
+       ``eig_vec`` returned by ``numpy.linalg.eigh``.
+   eps_inf : ndarray, shape (3, 3)
+       High-frequency optical dielectric tensor in the crystal frame.
+
+   Returns
+   -------
+   list of ndarray, each (3, 3)
+       EO-corrected copies of *tensors*.
+
+   Notes
+   -----
+   Reader Raman tensors and reader χ^(2) tensors use the Angstrom-based
+   ``R_epsilon`` convention used by
+   :func:`PDielec.Calculator.raman_intensities`.  The Gaussian-unit
+   nonanalytic electro-optic term contributes the explicit ``4π`` factor.
+
+
+
+.. py:function:: apply_particle_eo_correction(tensors, chi2_repsilon, K_particle, Z_mat, eigvecs)
+
+   Apply the finite-particle macroscopic EO correction to Raman tensors.
+
+   Implements ``eq-particle-eo-raman-correction`` using the same electrostatic
+   kernel as the particle dynamical matrix.  For particle mode *m*::
+
+       z_m = Z_mat @ eigvecs[:, m]
+       Delta R_m = -8π chi2_repsilon : (K_particle @ z_m)
+
+   ``chi2_repsilon`` is already converted by the output readers to the
+   internal ``R_epsilon`` convention.  As in :func:`apply_eo_correction`, the
+   Gaussian-unit electrostatic term contributes the explicit ``4π`` factor.
+   Unlike the bulk correction, this function has no propagation direction.
+
+   Parameters
+   ----------
+   tensors : sequence of array_like, each shape (3, 3)
+       Zero-field Raman tensors in the particle-mode basis.
+   chi2_repsilon : array_like, shape (3, 3, 3)
+       Second-order susceptibility in the reader ``R_epsilon`` convention.
+   K_particle : array_like, shape (3, 3)
+       Finite-particle kernel ``N_bg @ L / epsilon_e_b``.
+   Z_mat : array_like, shape (3, n_dof)
+       Mass-weighted Born-charge matrix.
+   eigvecs : array_like, shape (n_dof, n_modes)
+       Particle eigenvectors as columns.
+
+   Returns
+   -------
+   list of ndarray
+       EO-corrected tensor copies, one per particle mode.
+
+
+
+.. py:function:: build_Z_mat(born_charges, masses_au)
+
+   Build the mass-weighted Born charge matrix.
+
+   Parameters
+   ----------
+   born_charges : ndarray, shape (N, 3, 3)
+       Born effective charge tensors.
+   masses_au : ndarray, shape (N,)
+       Atomic masses in atomic units (a.u.).
+
+   Returns
+   -------
+   Z_mat : ndarray, shape (3, 3N)
+       Mass-weighted Born charges: ``Z_mat[α, κβ] = Z*[κ, α, β] / √M_κ``.
+
+
+
+.. py:function:: build_eigvecs_from_normal_modes(mass_weighted_normal_modes)
+
+   Convert ``reader.mass_weighted_normal_modes`` to an eigenvector matrix.
+
+   Parameters
+   ----------
+   mass_weighted_normal_modes : list of array_like, each shape (N, 3)
+       Mass-weighted TO normal modes as stored by the output readers.
+
+   Returns
+   -------
+   eigvecs : ndarray, shape (3N, n_to_modes)
+       Columns are the TO eigenvectors (convention consistent with
+       ``numpy.linalg.eigh`` output), ready for use in
+       :func:`apply_eo_correction`.
+
+
+
+.. py:function:: build_polarisation_basis(rotation_axis, zero_angle_polarisation)
+
+   Build the polar plot basis from the light direction and zero-angle polarisation.
+
+   Parameters
+   ----------
+   rotation_axis : array_like, shape (3,)
+       Light propagation direction.
+   zero_angle_polarisation : array_like, shape (3,)
+       Incoming polarisation direction at zero polar angle.
+
+   Returns
+   -------
+   tuple
+       ``(rz, pza, pp, orthogonality)`` where all vectors are normalised and
+       ``orthogonality = dot(rz, pza_input_normalised)``.
+
+
+
+.. py:function:: calculate_polar_curves(raman_tensors, mode_indices, rotation_axis=(0.0, 0.0, 1.0), zero_angle_polarisation=(1.0, 0.0, 0.0), angles_rad=None, geometries=POLAR_GEOMETRIES, normalise=True)
+
+   Calculate Raman polar curves for selected modes and geometries.
+
+   Returns
+   -------
+   dict
+       Keys are ``angles_rad``, ``raw_curves``, ``curves``,
+       ``raw_max_intensity`` and ``orthogonality``.
+
+
+
+.. py:function:: compute_lo_frequencies(q_hat_crystal, hessian, U_TO, Z_mat, eps_inf, volume_au)
+
+   Return the LO frequency (cm⁻¹) for each TO mode at phonon wavevector q̂.
+
+   Diagonalises ``D_NAC(q̂) = D_TO + ΔD(q̂)`` and maps each NAC eigenmode back
+   to the TO mode with the highest overlap ``C[n,m] = ⟨u_n^TO | u_m^NAC⟩``.
+
+   Parameters
+   ----------
+   q_hat_crystal : ndarray, shape (3,)
+       Unit phonon wavevector in the crystal frame (must be normalised).
+   hessian : ndarray, shape (3N, 3N)
+       Mass-weighted TO dynamical (Hessian) matrix.
+   U_TO : ndarray, shape (n_to_modes, 3N)
+       TO eigenvectors as rows (e.g. ``build_eigvecs_from_normal_modes(...).T``).
+   Z_mat : ndarray, shape (3, 3N)
+       Mass-weighted Born charge matrix from :func:`build_Z_mat`.
+   eps_inf : ndarray, shape (3, 3)
+       High-frequency optical dielectric tensor in the crystal frame.
+   volume_au : float
+       Unit-cell volume in Bohr³.
+
+   Returns
+   -------
+   lo_freqs : ndarray, shape (n_to_modes,)
+       LO frequency in cm⁻¹ for each TO mode (matched by dominant overlap
+       with the NAC eigenmodes).  Modes unaffected by NAC (zero Born-charge
+       projection onto q̂) return a frequency very close to their TO value.
+
+
+
+.. py:function:: compute_lo_modes(q_hat_crystal, hessian, U_TO, Z_mat, eps_inf, volume_au)
+
+   Like :func:`compute_lo_frequencies` but also returns matched LO eigenvectors.
+
+   Parameters
+   ----------
+   q_hat_crystal, hessian, U_TO, Z_mat, eps_inf, volume_au
+       Same as :func:`compute_lo_frequencies`.
+
+   Returns
+   -------
+   lo_freqs : ndarray, shape (n_to_modes,)
+       LO frequency in cm⁻¹ for each TO mode.
+   lo_eigvecs : ndarray, shape (3N, n_to_modes)
+       Columns are the mass-weighted LO eigenvectors best-matched to each TO mode.
+
+
+
+.. py:function:: intensity_for_modes(raman_tensors, mode_indices, rotation_axis, zero_angle_polarisation, angles_rad, geometry)
+
+   Calculate a polar intensity curve for selected Raman modes.
+
+   Contributions from multiple modes are summed incoherently.
+
+
+.. py:function:: normalise_vector(vector, name='vector')
+
+   Return a normalised 3-vector.
+
+
+.. py:function:: polarisation_vectors(rotation_axis, zero_angle_polarisation, angle_rad, geometry)
+
+   Return incident and scattered polarisation vectors for one polar angle.
+
+
+.. py:function:: raman_active_mode_indices(frequencies_cm1, raman_activities, raman_tensors, threshold=RAMAN_ACTIVE_THRESHOLD)
+
+   Return zero-based indices for Raman-active modes, preserving table order.
+
+
+.. py:function:: rotate_around_axis(vector, axis, angle_rad)
+
+   Rotate a vector around an axis using Rodrigues' rotation formula.
+
+
+.. py:data:: ACOUSTIC_THRESHOLD_CM1
+   :value: 10.0
+
+
+.. py:data:: POLAR_GEOMETRIES
+   :value: ('VV', 'HV', 'Theta')
+
+
+.. py:data:: RAMAN_ACTIVE_THRESHOLD
+   :value: 1e-06
+
+

@@ -12,4 +12,4 @@ phonon.dynG is used by PDielec to generate the absorption spectrum.
 
 Warning: the PWSCF output indicates that the mass of Cl is 1.0.  
 
-[Back](..)
+[Back](../README.md)

@@ -11,12 +11,12 @@ PDielec.Utilities
 
 
 
-Classes
--------
+Attributes
+----------
 
 .. autoapisummary::
 
-   PDielec.Utilities.Debug
+   PDielec.Utilities.logger
 
 
 Functions
@@ -31,69 +31,6 @@ Functions
 
 Module Contents
 ---------------
-
-.. py:class:: Debug(debug, text, level=0)
-
-   A class aimed at providing a structured way to include debug messages in code.
-
-   Methods
-   -------
-   print(args, level=0)
-       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
-   state()
-       Returns the current state (enabled or disabled) of debugging.
-
-   Notes
-   -----
-   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-
-
-
-   .. py:method:: print(*args, level=0)
-
-      Print message if debugging level allows.
-
-      Parameters
-      ----------
-      args
-          Variable length argument list for the message to be printed.
-      level : int, optional
-          The level of the message that determines if it gets printed or not,
-          based on the instance's `level`. Default value is 0.
-
-      Notes
-      -----
-      This method will only print the message if the instance's `debug` flag is True
-      and the provided `level` is less than or equal to the instance's `level`.
-
-
-
-
-   .. py:method:: state()
-
-      Get the debug state.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      The current debug state.
-
-
-
-
-   .. py:attribute:: debug
-
-
-   .. py:attribute:: level
-      :value: 0
-
-
-
-   .. py:attribute:: text
-
 
 .. py:function:: find_program_from_name(filename)
 
@@ -111,7 +48,9 @@ Module Contents
 
    Notes
    -----
-   This function examines the file extension and, in some cases, the presence of specific files in the same directory, to determine the associated simulation program. It recognizes files from several popular materials simulation programs, such as 'phonopy', 'gulp', 'vasp', and others.
+   This function examines the file extension and, in some cases, the presence of specific files in the same directory,
+   to determine the associated simulation program. It recognizes files from several popular materials simulation
+   programs, such as 'phonopy', 'gulp', 'vasp', and others.
 
    Examples
    --------
@@ -127,20 +66,21 @@ Module Contents
 
 
 
-.. py:function:: get_reader(name, program, debug=False)
+.. py:function:: get_reader(name, program)
 
    Get the appropriate output reader based on the simulation program and, if specified, the quantum mechanical program.
 
-   This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP, etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the specified quantum mechanical program.
+   This function is designed to create an output reader object for various simulation programs (like CASTEP, VASP,
+   etc.) and, for phonopy simulations, it can additionally create a quantum mechanical output reader based on the
+   specified quantum mechanical program.
 
    Parameters
    ----------
    name : str
        The primary filepath or name associated with the output file(s).
    program : str
-       The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit', 'qe', and 'phonopy'.
-   debug : boolean
-       Optional.  If true print debug information.  Default is false
+       The name of the simulation program. Supported values are 'castep', 'vasp', 'gulp', 'crystal', 'abinit',
+       'qe', and 'phonopy'.
 
    Returns
    -------
@@ -174,4 +114,6 @@ Module Contents
    None
 
 
+
+.. py:data:: logger
 

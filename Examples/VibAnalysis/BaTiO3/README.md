@@ -17,4 +17,4 @@ vibanalysis BaTiO3.out
 | command.pdmake    | pdmake commands for testing     |
 | BaTiO3.nma.ref    | reference vibanlysis output     |
 
-[Back](..)
+[Back](../README.md)

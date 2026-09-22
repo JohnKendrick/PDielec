@@ -12,4 +12,4 @@ An FPSQ model for the permittivity of alpha-Quartz is taken from Winta, Wolf and
 | results.ref.xlsx      | Reference results                           |
 | script.py             | Script used to generate reference results   |
 
-[Back](..)
+[Back](../README.md)

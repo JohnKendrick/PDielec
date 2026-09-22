@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Single crystal")
+self.notebook.switch_scenario(0,scenarioType="Crystal Infrared")
 #
 #
 #
@@ -25,7 +25,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5]
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = '(11-20)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0
@@ -46,10 +46,10 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = '(1-210)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0
@@ -70,10 +70,10 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = '(-2110)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0
@@ -94,10 +94,10 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = '(-1-120)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0
@@ -118,10 +118,10 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = '(-12-10)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0
@@ -142,10 +142,10 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = '(2-1-10)'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0
@@ -166,10 +166,10 @@ tab.settings['Slice thickness'] =  0
 tab.settings['Slice thickness unit'] = 'um'
 #
 #
-self.notebook.addScenario(scenarioType="Single crystal")
+self.notebook.add_scenario(scenarioType="Crystal Infrared")
 tab = self.notebook.scenarios[6]
 tab.settings['Legend'] = 'c-plane'
-tab.settings['Scenario type'] = 'Single crystal'
+tab.settings['Scenario type'] = 'Crystal Infrared'
 tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  16.0

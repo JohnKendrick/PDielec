@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.Utilities" href="../Utilities/index.html"><link rel="prev" title="PDielec.SuperCell" href="../SuperCell/index.html">
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="PDielec.Utilities" href="../Utilities/index.html"><link rel="prev" title="PDielec.Tests.Powder_Raman.test_N_missing_polar_data" href="../Tests/Powder_Raman/test_N_missing_polar_data/index.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>PDielec.UnitCell - PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -197,13 +197,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -211,11 +218,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
@@ -224,20 +232,23 @@
 <li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,13 +257,92 @@
 <li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -271,6 +361,29 @@
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +434,18 @@
           <section id="module-PDielec.UnitCell">
 <span id="pdielec-unitcell"></span><h1>PDielec.UnitCell<a class="headerlink" href="#module-PDielec.UnitCell" title="Link to this heading">¶</a></h1>
 <p>Hold unit cell information and its associated calculated properties.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.UnitCell.logger" title="PDielec.UnitCell.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
@@ -354,19 +479,19 @@
 <p>Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>a, b, c<span class="classifier">float or array, optional</span></dt><dd><p>Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.</p>
-</dd>
-<dt>alpha, beta, gamma<span class="classifier">float, optional</span></dt><dd><p>Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.</p>
-</dd>
-<dt>units<span class="classifier">str</span></dt><dd><p>An optional unit such as ‘a.u., au bohr angs angstrom Angs Angstrom or nm’  The default is Angstrom.
-The internal unit is always the angstrom</p>
-</dd>
-</dl>
+<p>a, b, c : float or array, optional Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0,
+0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively. alpha, beta, gamma : float, optional Lattice angles (in
+degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is
+used. units : str An optional unit such as ‘a.u., au bohr angs angstrom Angs Angstrom or nm’  The default is
+Angstrom. The internal unit is always the angstrom</p>
 </section>
 <section id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
-<p>This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.</p>
+<p>This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element
+names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total
+mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a,
+b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors.
+Finally, it calculates and sets the reciprocal lattice for the instance.</p>
 </section>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
@@ -402,8 +527,8 @@ The internal unit is always the angstrom</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.calculateCentreOfMass">
-<span class="sig-name descname"><span class="pre">calculateCentreOfMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.calculateCentreOfMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.calculateCentreOfMass" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.calculate_centre_of_mass">
+<span class="sig-name descname"><span class="pre">calculate_centre_of_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.calculate_centre_of_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.calculate_centre_of_mass" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the centre of mass for a given set of atoms.</p>
 <section id="id2">
 <h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
@@ -421,14 +546,11 @@ If not specified, ‘xyz’ is used as default.</p>
 </section>
 <section id="id3">
 <h4>Returns<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>numpy.ndarray or float or tuple</dt><dd><p>The centre of mass as requested by output:
-- If ‘xyz’, returns a numpy array with the x, y, z coordinates of the centre of mass.
-- If ‘mass’, returns a float representing the total mass of the specified atoms.
-- If ‘abc’, returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-- If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.</p>
-</dd>
-</dl>
+<p>numpy.ndarray or float or tuple The centre of mass as requested by output: - If ‘xyz’, returns a numpy array
+with the x, y, z coordinates of the centre of mass. - If ‘mass’, returns a float representing the total mass of
+the specified atoms. - If ‘abc’, returns a numpy array with the a, b, c fractional coordinates of the centre of
+mass. - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and
+fractional coordinates of the centre of mass is returned.</p>
 </section>
 <section id="see-also">
 <h4>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h4>
@@ -436,11 +558,11 @@ If not specified, ‘xyz’ is used as default.</p>
 </section>
 <section id="id4">
 <h4>Examples<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculateCentreOfMass</span><span class="p">(</span><span class="n">atom_list</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_centre_of_mass</span><span class="p">(</span><span class="n">atom_list</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
 <span class="go">array([0.1, 0.2, 0.3])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">calculateCentreOfMass</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mass&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_centre_of_mass</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;mass&#39;</span><span class="p">)</span>
 <span class="go">50.2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">calculateCentreOfMass</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;abc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_centre_of_mass</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;abc&#39;</span><span class="p">)</span>
 <span class="go">array([0.4, 0.5, 0.6])</span>
 </pre></div>
 </div>
@@ -451,17 +573,19 @@ If not specified, ‘xyz’ is used as default.</p>
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.calculate_molecular_contents">
 <span class="sig-name descname"><span class="pre">calculate_molecular_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.calculate_molecular_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.calculate_molecular_contents" title="Link to this definition">¶</a></dt>
 <dd><p>Find whole molecules in the unit cell.</p>
-<p>Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
-A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-The routine returns the the number of moleculess.</p>
+<p>Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the
+adjacent cell A new unit cell is created containing whole molecules, the order of the atoms in the new cell is
+different. The routine returns the the number of moleculess.</p>
 <section id="id5">
 <h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>scale<span class="classifier">float, optional</span></dt><dd><p>The scale factor applied to the covalent radii. Default is 1.1</p>
+<dt>scale<span class="classifier">float, optional</span></dt><dd><p>The scale factor applied to the covalent radii. Default is 1.1.</p>
 </dd>
-<dt>tolerance<span class="classifier">float, optional. Default is 0.1</span></dt><dd><p>The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.</p>
+<dt>tolerance<span class="classifier">float, optional</span></dt><dd><p>The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms
+i and j for them to be considered bonded. Default is 0.1.</p>
 </dd>
-<dt>radii<span class="classifier">a dictionary, optional</span></dt><dd><p>A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants</p>
+<dt>radii<span class="classifier">dict, optional</span></dt><dd><p>A dictionary of covalent radii for the atoms, keyed by element name. If not given the package radii from
+PDielec.Constants are used.</p>
 </dd>
 </dl>
 </section>
@@ -671,93 +795,19 @@ element_names</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.getBoundingBox">
-<span class="sig-name descname"><span class="pre">getBoundingBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">originXYZ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">originABC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Angstrom'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.getBoundingBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.getBoundingBox" title="Link to this definition">¶</a></dt>
-<dd><p>Generate the corners and edges of a bounding box.</p>
-<p>This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.</p>
-<section id="id28">
-<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>originABC<span class="classifier">a list of 3 floats</span></dt><dd><p>Defines the centre about which the box is centred
-The basis for the coordinates are abc</p>
-</dd>
-<dt>originXYZ<span class="classifier">a list of 3 floats</span></dt><dd><p>Defines the centre about which the box is centred
-The basis for the coordinates are xyz</p>
-</dd>
-<dt>units<span class="classifier">str</span></dt><dd><p>An optional unit of length required for output, default is Angstrom</p>
-</dd>
-</dl>
-</section>
-<section id="id29">
-<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>tuple of list</dt><dd><p>A tuple containing two elements:
-- The first element is a list of corners’ coordinates after conversion (<cite>list</cite> of <cite>np.ndarray</cite>).
-- The second element is a list of tuples, each consisting of a pair of corners representing an edge (<cite>list</cite> of <cite>tuple</cite>).</p>
-</dd>
-</dl>
-</section>
-<section id="example">
-<h4>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h4>
-<p>To fetch the bounding box coordinates and edges, simply call:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">corners_xyz</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">getBoundingBox</span><span class="p">()</span>
-</pre></div>
-</div>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.getDensity">
-<span class="sig-name descname"><span class="pre">getDensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.getDensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.getDensity" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the density of the crystal.</p>
-<p>Returns the density in g/cc.  If the mass is not known, then returns 1.0</p>
-<section id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>units<span class="classifier">str</span></dt><dd><p>Optional parameter giving the output unit of length, default is cm, so volume will be cm3</p>
-</dd>
-</dl>
-</section>
-<section id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>float</dt><dd><p>The density in gms/cc</p>
-</dd>
-</dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.getVolume">
-<span class="sig-name descname"><span class="pre">getVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.getVolume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.getVolume" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the volume.</p>
-<section id="id32">
-<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>units<span class="classifier">str</span></dt><dd><p>An optional string indicating the required unit of length for the output value, default is cm</p>
-</dd>
-</dl>
-</section>
-<section id="id33">
-<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
-<p>volume : float</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_atom_labels">
 <span class="sig-name descname"><span class="pre">get_atom_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_atom_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_atom_labels" title="Link to this definition">¶</a></dt>
 <dd><p>Get the atom labels for a molecule.</p>
 <p>If the labels have not been set, then a list of labels is created from the element names</p>
-<section id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<section id="id28">
+<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>None</dt><dd><p>A list containing the labels of atoms.</p>
 </dd>
 </dl>
 </section>
-<section id="id35">
-<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id29">
+<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
 <p>A list of atom labels</p>
 </section>
 </dd></dl>
@@ -766,12 +816,12 @@ The basis for the coordinates are xyz</p>
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_atomic_masses">
 <span class="sig-name descname"><span class="pre">get_atomic_masses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_atomic_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_atomic_masses" title="Link to this definition">¶</a></dt>
 <dd><p>Get the atomic masses for the elements.</p>
-<section id="id36">
-<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id37">
-<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>masses<span class="classifier">list</span></dt><dd><p>The atomic masses</p>
 </dd>
@@ -783,12 +833,12 @@ The basis for the coordinates are xyz</p>
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_atomic_numbers">
 <span class="sig-name descname"><span class="pre">get_atomic_numbers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_atomic_numbers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_atomic_numbers" title="Link to this definition">¶</a></dt>
 <dd><p>Get the atomic numbers for the elements.</p>
-<section id="id38">
-<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id39">
-<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>list of ints</dt><dd><p>The atomic numbers</p>
 </dd>
@@ -801,12 +851,12 @@ The basis for the coordinates are xyz</p>
 <span class="sig-name descname"><span class="pre">get_bond_angles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_bond_angles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_bond_angles" title="Link to this definition">¶</a></dt>
 <dd><p>Return a list of atoms that form bonded angles for the unit cell.</p>
 <p>It also returns a list of the angles in degrees</p>
-<section id="id40">
-<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id41">
-<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>(list of 3 integer tuples, list of bond angles)</dt><dd><p>list of angles is a list of 3 integers denoting involved in the angle
 list of angles is a list of floats</p>
@@ -820,12 +870,12 @@ list of angles is a list of floats</p>
 <span class="sig-name descname"><span class="pre">get_bonds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_bonds" title="Link to this definition">¶</a></dt>
 <dd><p>Return a list of bonds for the unit cell.</p>
 <p>It also returns a list of the bond lengths in angstrom</p>
-<section id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<section id="id37">
+<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>(list of bonds, list of bondlengths)</dt><dd><p>list of bonds is a list of pairs of integers denoting a bond
 list of bond lengths is a list of floats</p>
@@ -835,15 +885,70 @@ list of bond lengths is a list of floats</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_bounding_box">
+<span class="sig-name descname"><span class="pre">get_bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">originXYZ</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">originABC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Angstrom'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_bounding_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_bounding_box" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the corners and edges of a bounding box.</p>
+<p>This method calculates the corners and edges of a bounding box based on predefined coordinates. These
+coordinates are transformed using a conversion method before being paired into edges.</p>
+<section id="id38">
+<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>originABC<span class="classifier">a list of 3 floats</span></dt><dd><p>Defines the centre about which the box is centred
+The basis for the coordinates are abc</p>
+</dd>
+<dt>originXYZ<span class="classifier">a list of 3 floats</span></dt><dd><p>Defines the centre about which the box is centred
+The basis for the coordinates are xyz</p>
+</dd>
+<dt>units<span class="classifier">str</span></dt><dd><p>An optional unit of length required for output, default is Angstrom</p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<p>tuple of list A tuple containing two elements: - The first element is a list of corners’ coordinates after
+conversion (<cite>list</cite> of <cite>np.ndarray</cite>). - The second element is a list of tuples, each consisting of a pair of
+corners representing an edge (<cite>list</cite> of <cite>tuple</cite>).</p>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h4>
+<p>To fetch the bounding box coordinates and edges, simply call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">corners_xyz</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">get_bounding_box</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_density">
+<span class="sig-name descname"><span class="pre">get_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_density" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the density of the crystal.</p>
+<p>Returns the density in g/cc.  If the mass is not known, then returns 1.0</p>
+<section id="id40">
+<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>units<span class="classifier">str</span></dt><dd><p>Optional parameter giving the output unit of length, default is cm, so volume will be cm3</p>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>float</dt><dd><p>The density in gms/cc</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_element_names">
 <span class="sig-name descname"><span class="pre">get_element_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_element_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_element_names" title="Link to this definition">¶</a></dt>
 <dd><p>Get the names of elements in the cell.</p>
-<section id="id44">
-<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<section id="id42">
+<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id45">
-<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<section id="id43">
+<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>element_names<span class="classifier">list</span></dt><dd><p>A list of strings representing element names to be cleaned and stored.</p>
 </dd>
@@ -855,12 +960,12 @@ list of bond lengths is a list of floats</p>
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_number_of_atoms">
 <span class="sig-name descname"><span class="pre">get_number_of_atoms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_number_of_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_number_of_atoms" title="Link to this definition">¶</a></dt>
 <dd><p>Get the number of atoms.</p>
-<section id="id46">
-<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<section id="id44">
+<h4>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id47">
-<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<section id="id45">
+<h4>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>int</dt><dd><p>The number of atoms</p>
 </dd>
@@ -872,12 +977,12 @@ list of bond lengths is a list of floats</p>
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_number_of_molecules">
 <span class="sig-name descname"><span class="pre">get_number_of_molecules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_number_of_molecules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_number_of_molecules" title="Link to this definition">¶</a></dt>
 <dd><p>Get the number of molecules.</p>
-<section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<section id="id46">
+<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<section id="id47">
+<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>int</dt><dd><p>The number of molecules</p>
 </dd>
@@ -890,12 +995,12 @@ list of bond lengths is a list of floats</p>
 <span class="sig-name descname"><span class="pre">get_species</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_species" title="Link to this definition">¶</a></dt>
 <dd><p>Return a list of the unique species in the cell.</p>
 <p>The unique list needs to maintain the order seen in the original list</p>
-<section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<section id="id48">
+<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<section id="id49">
+<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
 <p>A list of strings</p>
 </section>
 </dd></dl>
@@ -905,17 +1010,34 @@ list of bond lengths is a list of floats</p>
 <span class="sig-name descname"><span class="pre">get_torsions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_torsions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_torsions" title="Link to this definition">¶</a></dt>
 <dd><p>Return a list of atoms that form torsion angles for the unit cell.</p>
 <p>It also returns a list of the angles in degrees</p>
-<section id="id52">
-<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<section id="id50">
+<h4>Parameters<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id53">
-<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<section id="id51">
+<h4>Returns<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>(list of 4 integer tuples, list of torsion angles)</dt><dd><p>list of torsions is a list of 4 integers denoting involved in the angle
 list of angles is a list of floats</p>
 </dd>
 </dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.get_volume">
+<span class="sig-name descname"><span class="pre">get_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.get_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.get_volume" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the volume.</p>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>units<span class="classifier">str</span></dt><dd><p>An optional string indicating the required unit of length for the output value, default is cm</p>
+</dd>
+</dl>
+</section>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<p>volume : float</p>
 </section>
 </dd></dl>
 
@@ -941,7 +1063,9 @@ list of angles is a list of floats</p>
 <dt class="sig sig-object py" id="PDielec.UnitCell.UnitCell.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/UnitCell.html#UnitCell.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.UnitCell.UnitCell.print" title="Link to this definition">¶</a></dt>
 <dd><p>Print the details of the given unit cell.</p>
-<p>This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.</p>
+<p>This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha,
+beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular
+information if any molecules are defined within the unit cell.</p>
 <section id="id56">
 <h4>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -1301,9 +1425,15 @@ The unit strings are made lowercase, so case should be irrelevant</p>
 </section>
 <section id="id91">
 <h3>Notes<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h3>
-<p>The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.</p>
+<p>The input can be either a scalar value, a list or a numpy array of values. The function will return the converted
+value(s) in the output units specified.</p>
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.UnitCell.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.UnitCell.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.UnitCell.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -1322,14 +1452,14 @@ The unit strings are made lowercase, so case should be irrelevant</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../SuperCell/index.html">
+          <a class="prev-page" href="../Tests/Powder_Raman/test_N_missing_polar_data/index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PDielec.SuperCell</div>
+                <div class="title">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</div>
                 
               </div>
             </a>
@@ -1364,12 +1494,13 @@ The unit strings are made lowercase, so case should be irrelevant</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.UnitCell</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell"><code class="docutils literal notranslate"><span class="pre">UnitCell</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell._calculate_reciprocal_lattice"><code class="docutils literal notranslate"><span class="pre">UnitCell._calculate_reciprocal_lattice()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.calculateCentreOfMass"><code class="docutils literal notranslate"><span class="pre">UnitCell.calculateCentreOfMass()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.calculate_centre_of_mass"><code class="docutils literal notranslate"><span class="pre">UnitCell.calculate_centre_of_mass()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.calculate_molecular_contents"><code class="docutils literal notranslate"><span class="pre">UnitCell.calculate_molecular_contents()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.convert_abc_to_unitcell"><code class="docutils literal notranslate"><span class="pre">UnitCell.convert_abc_to_unitcell()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.convert_abc_to_xyz"><code class="docutils literal notranslate"><span class="pre">UnitCell.convert_abc_to_xyz()</span></code></a></li>
@@ -1380,19 +1511,19 @@ The unit strings are made lowercase, so case should be irrelevant</p>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.find_lcd"><code class="docutils literal notranslate"><span class="pre">UnitCell.find_lcd()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.find_symmetry"><code class="docutils literal notranslate"><span class="pre">UnitCell.find_symmetry()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.fold_cell"><code class="docutils literal notranslate"><span class="pre">UnitCell.fold_cell()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.getBoundingBox"><code class="docutils literal notranslate"><span class="pre">UnitCell.getBoundingBox()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.getDensity"><code class="docutils literal notranslate"><span class="pre">UnitCell.getDensity()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.getVolume"><code class="docutils literal notranslate"><span class="pre">UnitCell.getVolume()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_atom_labels"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_atom_labels()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_atomic_masses"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_atomic_masses()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_atomic_numbers"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_atomic_numbers()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_bond_angles"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_bond_angles()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_bonds"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_bonds()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_bounding_box"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_bounding_box()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_density"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_density()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_element_names"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_element_names()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_number_of_atoms"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_number_of_atoms()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_number_of_molecules"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_number_of_molecules()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_species"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_species()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_torsions"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_torsions()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.get_volume"><code class="docutils literal notranslate"><span class="pre">UnitCell.get_volume()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.guess_primitive_transform"><code class="docutils literal notranslate"><span class="pre">UnitCell.guess_primitive_transform()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.print"><code class="docutils literal notranslate"><span class="pre">UnitCell.print()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.UnitCell.UnitCell.set_atom_labels"><code class="docutils literal notranslate"><span class="pre">UnitCell.set_atom_labels()</span></code></a></li>
@@ -1421,6 +1552,7 @@ The unit strings are made lowercase, so case should be irrelevant</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.UnitCell.convert_length_units"><code class="docutils literal notranslate"><span class="pre">convert_length_units()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.UnitCell.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1434,7 +1566,7 @@ The unit strings are made lowercase, so case should be irrelevant</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

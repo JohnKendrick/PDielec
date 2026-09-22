@@ -1,0 +1,14 @@
+# Illustrative constant dielectric, not measured data.
+lattice
+1.0
+5.0 0.0 0.0
+0.0 5.0 0.0
+0.0 0.0 5.0
+species 1
+Si 28.0855
+unitcell 1
+Si 0.0 0.0 0.0
+constant
+2.0+0.1j 0.0 0.0
+0.0 2.0+0.1j 0.0
+0.0 0.0 2.0+0.1j

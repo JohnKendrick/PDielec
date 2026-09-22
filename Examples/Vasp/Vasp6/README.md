@@ -14,4 +14,4 @@ The VASP 6 calculation for this test was provided by David Santos-Carballal.
 | script.py                  | pdgui script to create the reference results              |
 
 
-[Back](..)
+[Back](../README.md)

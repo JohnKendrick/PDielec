@@ -1,0 +1,29 @@
+data_GaN_wurtzite_Schulz_Thiemann_1977
+_audit_creation_method              'Transcribed from Schulz and Thiemann (1977)'
+_chemical_formula_sum               'Ga N'
+_cell_length_a                      3.190
+_cell_length_b                      3.190
+_cell_length_c                      5.189
+_cell_angle_alpha                   90
+_cell_angle_beta                    90
+_cell_angle_gamma                   120
+_space_group_name_H-M_alt           'P 63 m c'
+_space_group_IT_number              186
+_publ_author_name                   'Schulz, H.; Thiemann, K. H.'
+_publ_section_title                 'Crystal structure refinement of AlN and GaN'
+_journal_name_full                  'Solid State Communications'
+_journal_year                       1977
+_journal_volume                     23
+_journal_page_first                 815
+_journal_page_last                  819
+_journal_paper_doi                  '10.1016/0038-1098(77)90959-0'
+
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_occupancy
+Ga1 Ga 0.333333333333333 0.666666666666667 0.000000000000000 1.0
+N1  N  0.333333333333333 0.666666666666667 0.377000000000000 1.0

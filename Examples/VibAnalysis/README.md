@@ -10,4 +10,4 @@
 | [Isoleucine/](./Isoleucine/README.md)   | Isoleucine, CASTEP          |
 | [Leucine/](./Leucine/README.md)      | Leucine CRYSTAL14          |
 
-[Back](..)
+[Back](../README.md)

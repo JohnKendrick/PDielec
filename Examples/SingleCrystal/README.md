@@ -9,4 +9,4 @@
 | [MgO/](./MgO/README.md) | MgO example               |
 | [ScatteringMatrix/](./ScatteringMatrix/README.md) | Scattering Matrix example |
 
-[Back](..)
+[Back](../README.md)

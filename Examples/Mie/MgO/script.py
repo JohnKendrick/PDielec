@@ -38,7 +38,7 @@ for method in methods:
     for shape,hkl in zip(shapes,hkls):
         for vf in vfs:
             for size in sizes:
-                self.notebook.addScenario()
+                self.notebook.add_scenario()
                 tab = self.notebook.scenarios[-1]
                 tab.settings['Volume fraction'] = vf
                 tab.settings['Particle shape'] = shape

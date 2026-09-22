@@ -15,10 +15,15 @@
 #
 """The PrimitiveCell module."""
 
+import logging
+
 import numpy as np
 import spglib
 
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class PrimitiveCell(UnitCell):
@@ -119,10 +124,6 @@ class PrimitiveCell(UnitCell):
         self.set_atom_labels(aUnitCell.get_atom_labels())
         self.set_atomic_masses(aUnitCell.get_atomic_masses())
         self.set_element_names(aUnitCell.get_element_names())
-        #jk print('JK1 ---------------------------------------')
-        #jk print(new_lattice)
-        #jk self.print()
-        #jk print('JK1 ---------------------------------------')
         #
         # Trim this new cell so that any atoms outside the cell boundaries are removed
         # Atoms, labels, masses and element names are removed if the atom is not unique
@@ -130,6 +131,3 @@ class PrimitiveCell(UnitCell):
         #
         #self.fold_cell()
         self.map_old_to_new, self.map_new_to_old = self.fold_cell()
-        #jk print('JK2 ----After trim-------------------------')
-        #jk self.print()
-        #jk print('JK2 ---------------------------------------')

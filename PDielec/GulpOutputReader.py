@@ -15,6 +15,7 @@
 #
 """Module to read the contents of a Gulp output file."""
 
+import logging
 import os
 import re
 import sys
@@ -23,6 +24,9 @@ import numpy as np
 
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class GulpOutputReader(GenericOutputReader):
@@ -127,7 +131,8 @@ class GulpOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp output files.
+        This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp
+        output files.
 
         """        
         GenericOutputReader.__init__(self, names)
@@ -197,8 +202,8 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
         self.elastic_constant_tensor = np.array(elastic)
         if self.debug:
-            print("Elastic constant tensor")
-            print(self.elastic_constant_tensor)
+            logger.debug("Elastic constant tensor")
+            logger.debug(self.elastic_constant_tensor)
         return
 
     def _read_frequencies(self, line):
@@ -312,7 +317,7 @@ class GulpOutputReader(GenericOutputReader):
         # Convert fractional coordinates to cartesians
         if len(self._cartesian_coordinates) == 0:
             if len(self._fractional_coordinates) == 0:
-                print("Error no coordinates fraction or cartesian found")
+                logger.error("Error no coordinates fraction or cartesian found")
                 sys.exit()
             for atom_frac in self._fractional_coordinates:
                 atom_cart = cell.convert_abc_to_xyz(atom_frac)
@@ -322,7 +327,7 @@ class GulpOutputReader(GenericOutputReader):
         cell.set_fractional_coordinates(self._fractional_coordinates)
         cell.set_element_names(self._atom_types)
         self.unit_cells.append(cell)
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         self.ncells = len(self.unit_cells)
 
     def _read_cellcontents(self, line):

@@ -40,7 +40,7 @@ for method in methods:
     for shape,hkl in zip(shapes,hkls):
         for vf in vfs:
             for size,sigma in zip(sizes,sigmas):
-                self.notebook.addScenario()
+                self.notebook.add_scenario()
                 tab = self.notebook.scenarios[-1]
                 tab.settings['Mass or volume fraction'] = 'volume'
                 tab.settings['Volume fraction'] = vf

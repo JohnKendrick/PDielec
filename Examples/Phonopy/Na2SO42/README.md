@@ -57,4 +57,8 @@ phononwebsite at http://henriquemiranda.github.io/phononwebsite/
 | script.py          | pdmake commands for test suite                            |
 
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [VASP](VASP/README.md)

@@ -12,9 +12,9 @@
 
 .. _Single-Crystal-Theory:
 
-================================
-Theory for Single Crystal Optics
-================================
+=========================================
+Theory for Single Crystal Infrared Optics
+=========================================
 
 The *SingleCrystal tab* enables the calculation of the optical behaviour of a layer of crystalline films.
 The methods used are based on the pyGTM code available on GitHub :cite:`pygtm`.

@@ -9,6 +9,14 @@ PDielec.GulpOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GulpOutputReader.logger
+
+
 Classes
 -------
 
@@ -406,4 +414,6 @@ Module Contents
       :value: 'Gulp output'
 
 
+
+.. py:data:: logger
 

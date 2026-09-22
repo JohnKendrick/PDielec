@@ -5,6 +5,12 @@ __pycache__/
 # C extensions
 *.so
 
+# Private Development an independent git repo
+Examples/Crystal_Raman/Castep_project
+Examples/Crystal_Raman/Crystal_project
+Examples/Crystal_Raman/BaTiO3
+Raman-Documentation
+
 # Distribution / packaging
 .Python
 Output/
@@ -55,6 +61,13 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+docs/**/.doctrees/
+docs/**/*.doctree
+docs/**/environment.pickle
+docs/**/*.bak
+Sphinx/**/.doctrees/
+Sphinx/**/*.doctree
+Sphinx/**/environment.pickle
 
 # PyBuilder
 target/
@@ -74,10 +87,35 @@ jquery-3.5.1.js
 *.nma
 *.qti~
 ~$*
+.claude
 Sphinx/autoapi
+graphify-out
+Raman-Theory.pdf
+crystal_raman_changes.md
+crystal_raman_notes.md
+layered_raman_pygtm_implementation_plan_marktext.md
+abinit_raman_tensor_unit_audit.md
+AGENTS.md
+CLAUDE.md
+crystal_raman_coherence_gui_plan.md
+crystal_raman_notes.md
+GEMINI.md
+LICENSE.md
+package_installation.md
+raman_audit_traceability_report.md
+raman_implementation_conventions.md
+raman_notes.md
+Raman-Units.md
+README.md
+tensor_unit_summary.md
 
 # Andrew Burnett
 Data/
 *test*
+!PDielec/Tests/
+!PDielec/Tests/**
+PDielec/Tests/**/__pycache__/
 *.code-workspace
 
+# Example documentation (private development directories above remain ignored)
+!Examples/**/README.md

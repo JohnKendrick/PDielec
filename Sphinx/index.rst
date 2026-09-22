@@ -14,7 +14,7 @@
 PDielec
 =======
 
-This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material's infrared and terahertz response.  
+This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material's infrared, terahertz and Raman response.
 For single crystals (thin films or slabs), a generalized transfer matrix or a scattering matrix method is used.  For powdered material in a support matrix, an effective medium theory is used which can take into account the effect of shape and particle size.
 
 .. toctree::
@@ -23,6 +23,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 
    introduction
    installation
+   migration
    pdgui
    software
 
@@ -32,6 +33,8 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 
    theory_powder
    theory_single_crystal
+   PowderRaman
+   CrystalRaman
    analysis
 
 .. toctree::
@@ -41,6 +44,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
    application_notes_1
    application_notes_2
    application_notes_3
+   application_notes_gan
 
 .. toctree::
    :caption: API

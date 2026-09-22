@@ -1,0 +1,64 @@
+PDielec.RamanSpectrum
+=====================
+
+.. py:module:: PDielec.RamanSpectrum
+
+.. autoapi-nested-parse::
+
+   Shared harmonic Stokes frequency policy and spectral weighting.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.RamanSpectrum.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.RamanSpectrum.bose_factor
+   PDielec.RamanSpectrum.stokes_prefactor
+   PDielec.RamanSpectrum.valid_stokes_mode
+   PDielec.RamanSpectrum.validate_laser_frequency
+   PDielec.RamanSpectrum.validate_laser_wavelength
+
+
+Module Contents
+---------------
+
+.. py:function:: bose_factor(nu_cm1, temperature_K)
+
+   Return (n+1)/nu for a stable mode, including the zero-temperature limit (eq-bose).
+
+
+.. py:function:: stokes_prefactor(nu_cm1, laser_cm1, temperature_K)
+
+   Return nu_scattered**4 * (n+1)/nu (eq-ramanefficiency_depolarised).
+
+   Wavenumbers are in cm^-1, consistently for powder and crystal spectra.
+   Absolute collection/cross-section constants remain outside this factor.
+
+
+.. py:function:: valid_stokes_mode(nu_cm1, laser_cm1, acoustic_cutoff=0.0)
+
+   Accept stable modes with a positive outgoing photon, regardless of field approximation.
+
+
+.. py:function:: validate_laser_frequency(laser_cm1)
+
+   Require a finite positive excitation wavenumber before evaluating optics.
+
+
+.. py:function:: validate_laser_wavelength(laser_nm)
+
+   Require a finite positive excitation wavelength in nm before conversion.
+
+
+.. py:data:: logger
+

@@ -12,4 +12,8 @@
  | [ZnO/Default/](./ZnO/Default/README.md) | ZnO using CRYSTAL14 (Default method)                       |
  | [ZnO/NoEckart/](./ZnO/NoEckart/README.md) | ZnO using CRYSTAL14 (Default method & no Eckart projection |
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [ZnO](ZnO/README.md)

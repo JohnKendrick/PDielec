@@ -197,13 +197,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../../pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -211,11 +218,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html">PDielec.Calculator</a></li>
@@ -224,20 +232,23 @@
 <li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,13 +257,92 @@
 <li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -271,6 +361,29 @@
 <li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
@@ -326,7 +439,10 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.PlottingTab.possible_frequency_units" title="PDielec.GUI.PlottingTab.possible_frequency_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_frequency_units</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.PlottingTab.logger" title="PDielec.GUI.PlottingTab.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.PlottingTab.possible_frequency_units" title="PDielec.GUI.PlottingTab.possible_frequency_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">possible_frequency_units</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -353,7 +469,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.PlottingTab.convert_frequency_units" title="PDielec.GUI.PlottingTab.convert_frequency_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_frequency_units</span></code></a>(value, unit_in, unit_out)</p></td>
 <td><p>Convert between frequency and wavelength units.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.PlottingTab.isThisAFrequencyUnit" title="PDielec.GUI.PlottingTab.isThisAFrequencyUnit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isThisAFrequencyUnit</span></code></a>(unit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.PlottingTab.is_this_a_frequency_unit" title="PDielec.GUI.PlottingTab.is_this_a_frequency_unit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_this_a_frequency_unit</span></code></a>(unit)</p></td>
 <td><p>Return true if this is a frequency unit, false if a wavelength.</p></td>
 </tr>
 </tbody>
@@ -367,7 +483,10 @@
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">PlottingTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">qtpy.QtWidgets.QWidget</span></code></p>
 <p>A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.</p>
-<p>This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.</p>
+<p>This class is responsible for handling plotting functionalities like:
+choosing plot types, setting molar definitions and frequency values,
+managing interactions with UI components such as:
+spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.</p>
 <section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
 <dl class="simple">
@@ -380,13 +499,16 @@
 <section id="id1">
 <h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>settings<span class="classifier">dict</span></dt><dd><p>A dictionary containing settings related to plotting such as minimum frequency, maximum frequency, frequency increment, molar definitions, number of atoms, plot type, and frequency unit.</p>
+<dt>settings<span class="classifier">dict</span></dt><dd><p>A dictionary containing settings related to plotting such as:
+minimum frequency, maximum frequency, frequency increment,
+molar definitions, number of atoms, plot type, and frequency unit.</p>
 </dd>
-<dt>refreshRequired<span class="classifier">bool</span></dt><dd><p>A flag indicating whether the plot needs to be refreshed.</p>
+<dt>refresh_required<span class="classifier">bool</span></dt><dd><p>A flag indicating whether the plot needs to be refreshed.</p>
 </dd>
 <dt>subplot<span class="classifier">matplotlib subplot object</span></dt><dd><p>The subplot used for plotting data.</p>
 </dd>
-<dt>vmin, vmax, vinc<span class="classifier">float</span></dt><dd><p>Variables to store current minimum frequency, maximum frequency, and frequency increment values for the plot.</p>
+<dt>vmin, vmax, vinc<span class="classifier">float</span></dt><dd><p>Variables to store current minimum frequency,
+maximum frequency, and frequency increment values for the plot.</p>
 </dd>
 <dt>molar_cb_current_index<span class="classifier">int</span></dt><dd><p>Tracks the current index of the molar definition combo box to handle changes.</p>
 </dd>
@@ -407,11 +529,15 @@
 <dl class="simple">
 <dt>get_total_number_of_frequency_calculations()</dt><dd><p>Calculates the total number of frequency calculations required.</p>
 </dd>
-<dt>requestRefresh()</dt><dd><p>Requests a refresh for the plotting.</p>
+<dt>request_refresh()</dt><dd><p>Requests a refresh for the plotting.</p>
 </dd>
-<dt>requestScenarioRefresh()</dt><dd><p>Requests a refresh for all scenarios in the application.</p>
+<dt>request_scenario_refresh()</dt><dd><p>Requests a refresh for all scenarios in the application.</p>
 </dd>
-<dt>on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value), on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value), on_plot_type_cb_activated(index)</dt><dd><p>Event handlers for UI component changes.</p>
+<dt>on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value)</dt><dd><p>Event handlers for frequency range UI changes.</p>
+</dd>
+<dt>on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value)</dt><dd><p>Event handlers for units and molar definition UI changes.</p>
+</dd>
+<dt>on_plot_type_cb_activated(index)</dt><dd><p>Event handler for plot type selection changes.</p>
 </dd>
 <dt>refresh(force=False)</dt><dd><p>Refreshes the plot based on current settings and data.</p>
 </dd>
@@ -419,13 +545,29 @@
 </dd>
 <dt>get_number_of_califications_required()</dt><dd><p>Returns the number of calculations needed for updating the plot.</p>
 </dd>
-<dt>greyed_out()</dt><dd><p>Greys out options in the UI that are not available.</p>
-</dd>
-<dt>writeSpreadsheet()</dt><dd><p>Writes results to a spreadsheet.</p>
+<dt>write_spreadsheet()</dt><dd><p>Writes results to a spreadsheet.</p>
 </dd>
 <dt>set_concentrations()</dt><dd><p>Sets the concentrations for the plotting based on the molar definition.</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab._normalise_scenario_selection">
+<span class="sig-name descname"><span class="pre">_normalise_scenario_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab._normalise_scenario_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab._normalise_scenario_selection" title="Link to this definition">¶</a></dt>
+<dd><p>Return a scenario selection list matching the current scenario count.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab._update_scenario_line_visibility">
+<span class="sig-name descname"><span class="pre">_update_scenario_line_visibility</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab._update_scenario_line_visibility"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab._update_scenario_line_visibility" title="Link to this definition">¶</a></dt>
+<dd><p>Update existing plot lines for scenario selection changes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab._update_scenario_selection_summary">
+<span class="sig-name descname"><span class="pre">_update_scenario_selection_summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab._update_scenario_selection_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab._update_scenario_selection_summary" title="Link to this definition">¶</a></dt>
+<dd><p>Update the compact scenario selection summary in the plotting tab.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required">
 <span class="sig-name descname"><span class="pre">get_number_of_calculations_required</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.get_number_of_calculations_required"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required" title="Link to this definition">¶</a></dt>
@@ -445,10 +587,18 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.get_scenarios_to_plot">
+<span class="sig-name descname"><span class="pre">get_scenarios_to_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.get_scenarios_to_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_scenarios_to_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Return the currently selected scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.get_total_number_of_frequency_calculations">
 <span class="sig-name descname"><span class="pre">get_total_number_of_frequency_calculations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.get_total_number_of_frequency_calculations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.get_total_number_of_frequency_calculations" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate and return the total number of frequency calculations required.</p>
-<p>This method computes the total number of frequency calculations based on the current settings for minimum frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the increment has changed since the last update.</p>
+<p>This method computes the total number of frequency calculations based on the current settings for minimum
+frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the
+increment has changed since the last update.</p>
 <section id="id3">
 <h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -456,23 +606,11 @@
 <section id="id4">
 <h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>int</dt><dd><p>The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from <cite>get_number_of_calculations_required</cite>) and the new length of frequency range computed.</p>
+<dt>int</dt><dd><p>The total number of frequency calculations required, which is the product of the number of calculations
+required (as obtained from <cite>get_number_of_calculations_required</cite>) and the new length of frequency range
+computed.</p>
 </dd>
 </dl>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.greyed_out">
-<span class="sig-name descname"><span class="pre">greyed_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.greyed_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.greyed_out" title="Link to this definition">¶</a></dt>
-<dd><p>Handle items that should be greyed out if they are not needed.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
-<p>int</p>
 </section>
 </dd></dl>
 
@@ -480,33 +618,42 @@
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_funits_cb_activated">
 <span class="sig-name descname"><span class="pre">on_funits_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_funits_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_funits_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the activation of a frequency unit combo box item.</p>
-<p>This method updates the active frequency unit in the settings, triggers necessary refresh processes and logs the change.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<p>This method updates the active frequency unit in the settings, triggers necessary refresh processes and
+logs the change.</p>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the activated item in the frequency units combo box.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="notes">
 <h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
-<p>This method is part of a GUI application where <cite>self</cite> refers to an instance of the application or a relevant widget. It manages updates to the application’s settings and GUI components based on the user’s selection of a frequency unit from a combo box.</p>
+<p>This method is part of a GUI application where <cite>self</cite> refers to an instance of the application or a relevant
+widget. It manages updates to the application’s settings and GUI components based on the user’s selection of a
+frequency unit from a combo box.</p>
 <ul class="simple">
 <li><p><cite>self.settings</cite> is a dictionary where application settings are stored.</p></li>
-<li><p><cite>self.refreshRequired</cite> is a boolean flag used to indicate whether a refresh of certain GUI components is necessary.</p></li>
-<li><p><cite>self.notebook</cite> appears to be a widget container (like a tab widget), with <cite>fitterTab</cite> being one of its child tabs.</p></li>
-<li><p><cite>self.vmin_sb</cite> is another component (likely a spin box or similar input widget) that may need its signals blocked/unblocked during the process to avoid unwanted signal emission.</p></li>
-<li><p>The <cite>debugger.print</cite> calls are used for logging and are not a standard Python function; they imply the existence of a custom logging or debugging utility named <cite>debugger</cite>.</p></li>
+<li><p><cite>self.refresh_required</cite> is a boolean flag used to indicate whether a refresh of certain GUI components
+is necessary.</p></li>
+<li><p><cite>self.notebook</cite> appears to be a widget container (like a tab widget), with <cite>fitterTab</cite> being one of
+its child tabs.</p></li>
+<li><p><cite>self.vmin_sb</cite> is another component (likely a spin box or similar input widget) that may need its
+signals blocked/unblocked during the process to avoid unwanted signal emission.</p></li>
+<li><p>The <cite>debugger.print</cite> calls are used for logging and are not a standard Python function; they imply the
+existence of a custom logging or debugging utility named <cite>debugger</cite>.</p></li>
 </ul>
-<p>The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown here, such as <cite>self.refresh()</cite> and <cite>self.notebook.fitterTab.requestRefresh()</cite>.</p>
+<p>The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown
+here, such as <cite>self.refresh()</cite> and <cite>self.notebook.fitterTab.request_refresh()</cite>.</p>
 </section>
 <section id="raises">
 <h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h4>
-<p>This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of <cite>self</cite> and its attributes.</p>
+<p>This function does not explicitly raise any exceptions but depends on the proper functioning of the
+methods it calls and the state of <cite>self</cite> and its attributes.</p>
 </section>
 </dd></dl>
 
@@ -514,16 +661,19 @@
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_molar_cb_activated">
 <span class="sig-name descname"><span class="pre">on_molar_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_molar_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_molar_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the activation of the molar combobox option.</p>
-<p>This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the application state, including setting concentrations, refreshing UI elements, and potentially triggering further calculations or refreshes as needed.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<p>This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the
+application state, including setting concentrations, refreshing UI elements, and potentially triggering further
+calculations or refreshes as needed.</p>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item in the molar combobox. This index corresponds to a specific molar definition and is used to update the application settings and state accordingly.</p>
+<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item in the molar combobox. This index corresponds to a specific molar
+definition and is used to update the application settings and state accordingly.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="id8">
+<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="see-also">
@@ -537,19 +687,23 @@ refresh : A method to refresh the UI elements.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_natoms_changed">
 <span class="sig-name descname"><span class="pre">on_natoms_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_natoms_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_natoms_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in the number of atoms.</p>
-<p>This method is called when the number of atoms changes. It updates the relevant setting in the instance, recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then triggers the refresh process.</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<p>This method is called when the number of atoms changes. It updates the relevant setting in the instance,
+recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then
+triggers the refresh process.</p>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new number of atoms. This value is used to update settings and recalculate concentrations.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h4>Notes<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<section id="id10">
+<h4>Notes<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <ul class="simple">
-<li><p><cite>self.reader.volume</cite> and <cite>self.reader.nions</cite> are expected to be available and contain the volume of the container and the number of ions, respectively.</p></li>
-<li><p>The method refreshes <cite>self.notebook.fitterTab</cite> object with a <cite>requestRefresh</cite> method to initiate the refresh process.</p></li>
+<li><p><cite>self.reader.volume</cite> and <cite>self.reader.nions</cite> are expected to be available and contain the volume of
+the container and the number of ions, respectively.</p></li>
+<li><p>The method refreshes <cite>self.notebook.fitterTab</cite> object with a <cite>request_refresh</cite> method to initiate the
+refresh process.</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -561,10 +715,27 @@ refresh : A method to refresh the UI elements.</p>
 <p>This method gets triggered when the plot type in a combo box is changed.
 It updates the plot type in the settings, marks the current state as needing a refresh,
 requests the fitter tab to refresh, and finally refreshes the current view.</p>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item in the combo box.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_renorm_cb_activated">
+<span class="sig-name descname"><span class="pre">on_renorm_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_renorm_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_renorm_cb_activated" title="Link to this definition">¶</a></dt>
+<dd><p>Handle a change in the spectrum renormalisation combo box.</p>
 <section id="id13">
 <h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item in the combo box.</p>
+<dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item.</p>
 </dd>
 </dl>
 </section>
@@ -578,9 +749,10 @@ requests the fitter tab to refresh, and finally refreshes the current view.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_vinc_changed">
 <span class="sig-name descname"><span class="pre">on_vinc_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_vinc_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vinc_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the change in frequency increment and update GUI accordingly.</p>
-<p>This function is triggered when there’s a change in the frequency increment value. It adjusts the number of GUI elements based on
-new values of minimum and maximum frequency and the changed frequency increment. It also updates the settings dict with the
-new frequency increment value.</p>
+<p>This function is triggered when there’s a change in the frequency increment value.
+It adjusts the number of GUI elements based on new values
+of minimum and maximum frequency and the changed frequency increment.
+It also updates the settings dict with the new frequency increment value.</p>
 <section id="id15">
 <h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <dl class="simple">
@@ -606,7 +778,13 @@ new frequency increment value.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.on_vmax_changed">
 <span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.on_vmax_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmax_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event when the maximum frequency setting is changed.</p>
-<p>This method is triggered whenever there is a change in the maximum frequency setting (<cite>vmax</cite>). It blocks signal emission from the <cite>vmax_sb</cite> spinner box (presumably, a GUI element for setting <cite>vmax</cite>), reads the current minimum (<cite>vmin</cite>) and maximum (<cite>vmax</cite>) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, <cite>vmax</cite> is converted and stored as the ‘Maximum frequency’ in the settings dictionary in the ‘wavenumber’ unit. Otherwise, it updates the ‘Minimum frequency’ with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the <cite>vmax_sb</cite>.</p>
+<p>This method is triggered whenever there is a change in the maximum frequency setting (<cite>vmax</cite>). It blocks signal
+emission from the <cite>vmax_sb</cite> spinner box (presumably, a GUI element for setting <cite>vmax</cite>), reads the current
+minimum (<cite>vmin</cite>) and maximum (<cite>vmax</cite>) frequency settings, and updates the corresponding setting based on the
+specified frequency unit. If the frequency unit denotes a frequency, <cite>vmax</cite> is converted and stored as the
+‘Maximum frequency’ in the settings dictionary in the ‘wavenumber’ unit. Otherwise, it updates the ‘Minimum
+frequency’ with the converted value. This method also triggers any necessary refresh operations in the user
+interface and finally unblocks signal emissions from the <cite>vmax_sb</cite>.</p>
 <section id="id17">
 <h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <p>None</p>
@@ -618,8 +796,10 @@ new frequency increment value.</p>
 <section id="id19">
 <h4>Notes<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <ul class="simple">
-<li><p>This method assumes the existence of <cite>vmin_sb</cite> and <cite>vmax_sb</cite> attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.</p></li>
-<li><p>The <cite>settings</cite> dictionary must have a ‘Frequency unit’ key, and possibly ‘Maximum frequency’ and ‘Minimum frequency’ keys which are updated based on the condition.</p></li>
+<li><p>This method assumes the existence of <cite>vmin_sb</cite> and <cite>vmax_sb</cite> attributes, which should be spinner box
+GUI elements (or similar) for setting minimum and maximum frequencies, respectively.</p></li>
+<li><p>The <cite>settings</cite> dictionary must have a ‘Frequency unit’ key, and possibly ‘Maximum frequency’ and
+‘Minimum frequency’ keys which are updated based on the condition.</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -648,9 +828,16 @@ the minimum frequency spinbox and logs the completion of the process.</p>
 <ul class="simple">
 <li><p>Uses the <cite>blockSignals</cite> method on <cite>self.vmin_sb</cite> to prevent signal-slot recursion.</p></li>
 <li><p>Adjusts settings based on a unit conversion utility function, <cite>convert_frequency_units</cite>.</p></li>
-<li><p>The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components’ states through the requested refresh.</p></li>
+<li><p>The effect of this method extends beyond just the internal state changes; it influences the UI and
+possibly other components’ states through the requested refresh.</p></li>
 </ul>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.open_scenario_selection_dialog">
+<span class="sig-name descname"><span class="pre">open_scenario_selection_dialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.open_scenario_selection_dialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.open_scenario_selection_dialog" title="Link to this definition">¶</a></dt>
+<dd><p>Open a dialog to choose which scenarios are included in the plot.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -675,7 +862,7 @@ are dynamically set based on the configuration.</p>
 <h4>Notes<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>self.notebook.mainTab.settings: Dictionary containing program settings.</p></li>
-<li><p>self.notebook.mainTab.getFullFileName(): Method that returns the currently selected filename.</p></li>
+<li><p>self.notebook.mainTab.get_full_file_name(): Method that returns the currently selected filename.</p></li>
 <li><p>self.notebook.mainTab.reader: Object used for reading data files.</p></li>
 <li><p>self.notebook.settingsTab.CrystalPermittivityObject: Object containing crystal permittivity settings.</p></li>
 <li><p>self.settings: Dictionary containing plot-related settings such as frequency range and plot type.</p></li>
@@ -688,11 +875,18 @@ are dynamically set based on the configuration.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Refresh the current state based on the changes in settings, forces refresh if needed.</p>
-<p>This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the ‘force’ flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.</p>
+<p>This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment)
+based on the current settings. It ensures that these settings are within logical limits. The function updates
+GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion
+of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization
+plot based on the refreshed data. If the ‘force’ flag is set or if a refresh is deemed necessary due to
+significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to
+optimize performance.</p>
 <section id="id26">
 <h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>force<span class="classifier">bool, optional</span></dt><dd><p>A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed necessary based on internal conditions. The default is False.</p>
+<dt>force<span class="classifier">bool, optional</span></dt><dd><p>A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed
+necessary based on internal conditions. The default is False.</p>
 </dd>
 </dl>
 </section>
@@ -706,7 +900,8 @@ are dynamically set based on the configuration.</p>
 <li><dl class="simple">
 <dt>The actual refresh operation involves several steps:</dt><dd><ul>
 <li><p>Checking if a refresh is required based on the current settings and the ‘force’ parameter.</p></li>
-<li><p>Temporarily blocking signals from all child widgets to prevent unintended side effects during settings updates.</p></li>
+<li><p>Temporarily blocking signals from all child widgets to prevent unintended side effects during
+settings updates.</p></li>
 <li><p>Verifying and updating frequency settings to maintain logical constraints.</p></li>
 <li><p>Updating GUI components with new settings values and tooltips based on the current frequency unit.</p></li>
 <li><p>Processing and plotting data based on the updated settings.</p></li>
@@ -721,8 +916,14 @@ are dynamically set based on the configuration.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.requestRefresh" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.refresh_scenario_table">
+<span class="sig-name descname"><span class="pre">refresh_scenario_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.refresh_scenario_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh_scenario_table" title="Link to this definition">¶</a></dt>
+<dd><p>Refresh scenario selection controls.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.request_refresh">
+<span class="sig-name descname"><span class="pre">request_refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.request_refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.request_refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Initiate a refresh request.</p>
 <p>This function flags that a refresh is required
 It doesn’t return any value.</p>
@@ -737,8 +938,8 @@ It doesn’t return any value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.requestScenarioRefresh">
-<span class="sig-name descname"><span class="pre">requestScenarioRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.requestScenarioRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.requestScenarioRefresh" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.request_scenario_refresh">
+<span class="sig-name descname"><span class="pre">request_scenario_refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.request_scenario_refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.request_scenario_refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Request a refresh on all scenarios within a notebook.</p>
 <p>This function triggers a refresh process for the settings tab and all scenarios within the notebook.</p>
 <section id="id31">
@@ -755,17 +956,22 @@ It doesn’t return any value.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.set_concentrations">
 <span class="sig-name descname"><span class="pre">set_concentrations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.set_concentrations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.set_concentrations" title="Link to this definition">¶</a></dt>
 <dd><p>Set the concentration based on the molar definition in settings.</p>
-<p>This method updates the concentration value in the settings dictionary based on the ‘Molar definition’ key. It calculates concentration values differently based on whether the molar definition is set to ‘Molecules’, ‘Unit cells’, or ‘Atoms’. It also enables or disables the <cite>natoms_sb</cite> spin box accordingly.</p>
+<p>This method updates the concentration value in the settings dictionary based on the ‘Molar definition’ key. It
+calculates concentration values differently based on whether the molar definition is set to ‘Molecules’, ‘Unit
+cells’, or ‘Atoms’. It also enables or disables the <cite>natoms_sb</cite> spin box accordingly.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.writeSpreadsheet">
-<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
-<dd><p>Update and write the results of powder and crystal scenarios to a spreadsheet.</p>
-<p>This function navigates through each scenario defined in the <cite>notebook</cite> attribute, extracts relevant data such as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet object’s methods for selecting worksheets, writing rows, and dealing with data transformation. The function also handles the calculation of molar absorption coefficients with unit conversion when necessary.</p>
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.set_plot_type_for_spectroscopy">
+<span class="sig-name descname"><span class="pre">set_plot_type_for_spectroscopy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectroscopy_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.set_plot_type_for_spectroscopy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.set_plot_type_for_spectroscopy" title="Link to this definition">¶</a></dt>
+<dd><p>Set the plot type to an appropriate default for the given spectroscopy type.</p>
 <section id="id33">
 <h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
-<p>None</p>
+<dl class="simple">
+<dt>spectroscopy_type<span class="classifier">str</span></dt><dd><p>One of ‘Powder Infrared’, ‘Powder ATR’, ‘Powder Raman’,
+‘Crystal Infrared’, or ‘Crystal Raman’.</p>
+</dd>
+</dl>
 </section>
 <section id="id34">
 <h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
@@ -809,7 +1015,9 @@ It doesn’t return any value.</p>
 </dd>
 <dt>vs<span class="classifier">list</span></dt><dd><p>A list containing frequency values.</p>
 </dd>
-<dt>dielecv<span class="classifier">numpy.ndarray</span></dt><dd><p>A complex numpy array where the real parts represent the real permittivities and the imaginary parts represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.</p>
+<dt>dielecv<span class="classifier">numpy.ndarray</span></dt><dd><p>A complex numpy array where the real parts represent the real permittivities and the imaginary parts
+represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the
+number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.</p>
 </dd>
 </dl>
 </section>
@@ -819,10 +1027,15 @@ It doesn’t return any value.</p>
 </section>
 <section id="id39">
 <h4>Notes<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
-<p>The function does two main tasks:
-1. Selects the ‘Real Crystal Permittivity’ sheet, deletes its current content if any, and writes the real parts of the permittivity tensor for each frequency along with the frequency values themselves.
-2. Selects the ‘Imag Crystal Permittivity’ sheet, deletes its current content if any, and writes the imaginary parts of the permittivity tensor for each frequency along with the frequency values themselves.</p>
-<p>Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz, xy, xz, and yz are components of the permittivity tensor.
+<p>The function does two main tasks:</p>
+<ol class="arabic simple">
+<li><p>Selects the ‘Real Crystal Permittivity’ sheet, deletes its current content if any, and writes the real parts
+of the permittivity tensor for each frequency along with the frequency values themselves.</p></li>
+<li><p>Selects the ‘Imag Crystal Permittivity’ sheet, deletes its current content if any, and writes the imaginary
+parts of the permittivity tensor for each frequency along with the frequency values themselves.</p></li>
+</ol>
+<p>Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz,
+xy, xz, and yz are components of the permittivity tensor.
 The output data starts from the second column (index 1), and for each row written, a ‘check’ flag is set to 1.</p>
 </section>
 </dd></dl>
@@ -848,6 +1061,25 @@ The output data starts from the second column (index 1), and for each row writte
 </section>
 <section id="id41">
 <h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.write_spreadsheet">
+<span class="sig-name descname"><span class="pre">write_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#PlottingTab.write_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.write_spreadsheet" title="Link to this definition">¶</a></dt>
+<dd><p>Update and write the results of powder and crystal scenarios to a spreadsheet.</p>
+<p>This function navigates through each scenario defined in the <cite>notebook</cite> attribute, extracts relevant data such
+as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a
+spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet
+object’s methods for selecting worksheets, writing rows, and dealing with data transformation. The function also
+handles the calculation of molar absorption coefficients with unit conversion when necessary.</p>
+<section id="id42">
+<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id43">
+<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -909,7 +1141,12 @@ The output data starts from the second column (index 1), and for each row writte
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.plot_types">
-<span class="sig-name descname"><span class="pre">plot_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Powder</span> <span class="pre">Molar</span> <span class="pre">Absorption',</span> <span class="pre">'Powder</span> <span class="pre">Absorption',</span> <span class="pre">'Powder</span> <span class="pre">Real</span> <span class="pre">Permittivity',</span> <span class="pre">'Powder</span> <span class="pre">Imaginary...</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_types" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_types</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_types" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.plot_types_by_spectroscopy">
+<span class="sig-name descname"><span class="pre">plot_types_by_spectroscopy</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_types_by_spectroscopy" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -928,8 +1165,33 @@ The output data starts from the second column (index 1), and for each row writte
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.refreshRequired">
-<span class="sig-name descname"><span class="pre">refreshRequired</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refreshRequired" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.refresh_required">
+<span class="sig-name descname"><span class="pre">refresh_required</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh_required" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.renorm_cb">
+<span class="sig-name descname"><span class="pre">renorm_cb</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.renorm_cb" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.renorm_label">
+<span class="sig-name descname"><span class="pre">renorm_label</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.renorm_label" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.scenario_lines">
+<span class="sig-name descname"><span class="pre">scenario_lines</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.scenario_lines" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.scenario_selection_label">
+<span class="sig-name descname"><span class="pre">scenario_selection_label</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.scenario_selection_label" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.PlottingTab.select_scenarios_button">
+<span class="sig-name descname"><span class="pre">select_scenarios_button</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.PlottingTab.select_scenarios_button" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -989,21 +1251,24 @@ The output data starts from the second column (index 1), and for each row writte
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.convert_frequency_units">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">convert_frequency_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#convert_frequency_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.convert_frequency_units" title="Link to this definition">¶</a></dt>
 <dd><p>Convert between frequency and wavelength units.</p>
-<p>The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+<p>The input can be either a scalar value or a numpy array of values.
+The function will return the converted value(s) in the output units specified.
 The unit strings are turned into lower-case so case is irrelevant</p>
-<section id="id42">
-<h3>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h3>
+<section id="id44">
+<h3>Parameters<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>value<span class="classifier">scalar or numpy array</span></dt><dd><p>The value(s) for which the conversion is to be made.</p>
 </dd>
-<dt>unit_in<span class="classifier">str</span></dt><dd><p>The units of the input value(s). Can be one of ‘cm-1’ (or ‘wavenumber’), ‘GHz’, ‘THz’, ‘nm’, ‘um’, ‘mm’, ‘cm’, ‘m’.</p>
+<dt>unit_in<span class="classifier">str</span></dt><dd><p>The units of the input value(s).
+Can be one of ‘cm-1’ (or ‘wavenumber’), ‘GHz’, ‘THz’, ‘nm’, ‘um’, ‘mm’, ‘cm’, ‘m’.</p>
 </dd>
-<dt>unit_out<span class="classifier">str</span></dt><dd><p>The units of the output value(s). Must be one of ‘cm-1’ (or ‘wavenumber’), ‘GHz’, ‘THz’, ‘nm’, ‘um’, ‘mm’, ‘cm’, ‘m’.</p>
+<dt>unit_out<span class="classifier">str</span></dt><dd><p>The units of the output value(s).
+Must be one of ‘cm-1’ (or ‘wavenumber’), ‘GHz’, ‘THz’, ‘nm’, ‘um’, ‘mm’, ‘cm’, ‘m’.</p>
 </dd>
 </dl>
 </section>
-<section id="id43">
-<h3>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h3>
+<section id="id45">
+<h3>Returns<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>scalar or numpy array</dt><dd><p>The converted value(s) in the output units specified.</p>
 </dd>
@@ -1012,19 +1277,24 @@ The unit strings are turned into lower-case so case is irrelevant</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.isThisAFrequencyUnit">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">isThisAFrequencyUnit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#isThisAFrequencyUnit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.isThisAFrequencyUnit" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.is_this_a_frequency_unit">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">is_this_a_frequency_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#is_this_a_frequency_unit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.is_this_a_frequency_unit" title="Link to this definition">¶</a></dt>
 <dd><p>Return true if this is a frequency unit, false if a wavelength.</p>
 <p>Units of frequency are ‘wavenumber’,’THz’,’GHz’
 Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’</p>
-<section id="id44">
-<h3>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
+<section id="id46">
+<h3>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if this is a frequency unit, False if a wavelength.</p>
 </dd>
 </dl>
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.GUI.PlottingTab.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.possible_frequency_units">
@@ -1095,25 +1365,32 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab"><code class="docutils literal notranslate"><span class="pre">PlottingTab</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab._normalise_scenario_selection"><code class="docutils literal notranslate"><span class="pre">PlottingTab._normalise_scenario_selection()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab._update_scenario_line_visibility"><code class="docutils literal notranslate"><span class="pre">PlottingTab._update_scenario_line_visibility()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab._update_scenario_selection_summary"><code class="docutils literal notranslate"><span class="pre">PlottingTab._update_scenario_selection_summary()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.get_number_of_calculations_required"><code class="docutils literal notranslate"><span class="pre">PlottingTab.get_number_of_calculations_required()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.get_scenarios_to_plot"><code class="docutils literal notranslate"><span class="pre">PlottingTab.get_scenarios_to_plot()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.get_total_number_of_frequency_calculations"><code class="docutils literal notranslate"><span class="pre">PlottingTab.get_total_number_of_frequency_calculations()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.greyed_out"><code class="docutils literal notranslate"><span class="pre">PlottingTab.greyed_out()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_funits_cb_activated"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_funits_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_molar_cb_activated"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_molar_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_natoms_changed"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_natoms_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_plot_type_cb_activated"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_plot_type_cb_activated()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_renorm_cb_activated"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_renorm_cb_activated()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vinc_changed"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_vinc_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmax_changed"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_vmax_changed()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.on_vmin_changed"><code class="docutils literal notranslate"><span class="pre">PlottingTab.on_vmin_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.open_scenario_selection_dialog"><code class="docutils literal notranslate"><span class="pre">PlottingTab.open_scenario_selection_dialog()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.plot"><code class="docutils literal notranslate"><span class="pre">PlottingTab.plot()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh"><code class="docutils literal notranslate"><span class="pre">PlottingTab.refresh()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.requestRefresh"><code class="docutils literal notranslate"><span class="pre">PlottingTab.requestRefresh()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.requestScenarioRefresh"><code class="docutils literal notranslate"><span class="pre">PlottingTab.requestScenarioRefresh()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh_scenario_table"><code class="docutils literal notranslate"><span class="pre">PlottingTab.refresh_scenario_table()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.request_refresh"><code class="docutils literal notranslate"><span class="pre">PlottingTab.request_refresh()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.request_scenario_refresh"><code class="docutils literal notranslate"><span class="pre">PlottingTab.request_scenario_refresh()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.set_concentrations"><code class="docutils literal notranslate"><span class="pre">PlottingTab.set_concentrations()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.writeSpreadsheet"><code class="docutils literal notranslate"><span class="pre">PlottingTab.writeSpreadsheet()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.set_plot_type_for_spectroscopy"><code class="docutils literal notranslate"><span class="pre">PlottingTab.set_plot_type_for_spectroscopy()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.write_crystal_results"><code class="docutils literal notranslate"><span class="pre">PlottingTab.write_crystal_results()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.write_eps_results"><code class="docutils literal notranslate"><span class="pre">PlottingTab.write_eps_results()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.write_powder_results"><code class="docutils literal notranslate"><span class="pre">PlottingTab.write_powder_results()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.write_spreadsheet"><code class="docutils literal notranslate"><span class="pre">PlottingTab.write_spreadsheet()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.canvas"><code class="docutils literal notranslate"><span class="pre">PlottingTab.canvas</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.figure"><code class="docutils literal notranslate"><span class="pre">PlottingTab.figure</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.frequency_length"><code class="docutils literal notranslate"><span class="pre">PlottingTab.frequency_length</span></code></a></li>
@@ -1126,10 +1403,16 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.notebook"><code class="docutils literal notranslate"><span class="pre">PlottingTab.notebook</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_type_cb"><code class="docutils literal notranslate"><span class="pre">PlottingTab.plot_type_cb</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_types"><code class="docutils literal notranslate"><span class="pre">PlottingTab.plot_types</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_types_by_spectroscopy"><code class="docutils literal notranslate"><span class="pre">PlottingTab.plot_types_by_spectroscopy</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.plot_ylabels"><code class="docutils literal notranslate"><span class="pre">PlottingTab.plot_ylabels</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.progressbar"><code class="docutils literal notranslate"><span class="pre">PlottingTab.progressbar</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.reader"><code class="docutils literal notranslate"><span class="pre">PlottingTab.reader</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.refreshRequired"><code class="docutils literal notranslate"><span class="pre">PlottingTab.refreshRequired</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.refresh_required"><code class="docutils literal notranslate"><span class="pre">PlottingTab.refresh_required</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.renorm_cb"><code class="docutils literal notranslate"><span class="pre">PlottingTab.renorm_cb</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.renorm_label"><code class="docutils literal notranslate"><span class="pre">PlottingTab.renorm_label</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.scenario_lines"><code class="docutils literal notranslate"><span class="pre">PlottingTab.scenario_lines</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.scenario_selection_label"><code class="docutils literal notranslate"><span class="pre">PlottingTab.scenario_selection_label</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.select_scenarios_button"><code class="docutils literal notranslate"><span class="pre">PlottingTab.select_scenarios_button</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.settings"><code class="docutils literal notranslate"><span class="pre">PlottingTab.settings</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.subplot"><code class="docutils literal notranslate"><span class="pre">PlottingTab.subplot</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.PlottingTab.toolbar"><code class="docutils literal notranslate"><span class="pre">PlottingTab.toolbar</span></code></a></li>
@@ -1143,7 +1426,8 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.convert_frequency_units"><code class="docutils literal notranslate"><span class="pre">convert_frequency_units()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.isThisAFrequencyUnit"><code class="docutils literal notranslate"><span class="pre">isThisAFrequencyUnit()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.is_this_a_frequency_unit"><code class="docutils literal notranslate"><span class="pre">is_this_a_frequency_unit()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PlottingTab.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.PlottingTab.possible_frequency_units"><code class="docutils literal notranslate"><span class="pre">possible_frequency_units</span></code></a></li>
 </ul>
 </li>
@@ -1158,7 +1442,7 @@ Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="../../../../_static/documentation_options.js?v=335988e4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -50,4 +50,4 @@ Physical Review Letters Vol130, 226901 (2023)
 | transfer_matrix.py | Calculations using Transfer Matrix theory |
 | unpol-experimental.xlsx | Unpolarised experimental results |
 
-[Back](..)
+[Back](../README.md)

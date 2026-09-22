@@ -19,8 +19,16 @@ html:
 	rm -rf autoapi
 	rm -rf _build
 	sphinx-build -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
-	# touch ../docs/.nojekyll
-	rsync -r _build/html/* ../docs
+	# Mirror generated output, preserving GitHub Pages configuration and excluding caches.
+	rsync -r --delete --exclude='.nojekyll' --exclude='.doctrees/' \
+	    --exclude='*.doctree' --exclude='environment.pickle' --exclude='*.bak' \
+	    "$(BUILDDIR)/html/" ../docs/
+
+.PHONY: pdf
+# Build the PDF before copying it; a failed build must not publish an old manual.
+pdf:
+	$(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	cp "$(BUILDDIR)/latex/PDielec.pdf" ../PDielec.pdf
 
 .PHONY: help Makefile
 # Catch-all target: route all unknown targets to Sphinx using the new
@@ -30,4 +38,3 @@ html:
 
 livehtml:
 	sphinx-autobuild -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) 
-

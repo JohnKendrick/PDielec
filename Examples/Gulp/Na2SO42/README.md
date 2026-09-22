@@ -25,4 +25,4 @@ The sulphur and sodium atoms where represented by non-polarisable atoms.
 | results.ref.xlsx           | Reference results for the test suite |
 | script.py                  | PDGui script to create the reference results |
 
-[Back](..)
+[Back](../README.md)

@@ -9,6 +9,14 @@ PDielec.GUI.SingleCrystalLayer
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.SingleCrystalLayer.logger
+
+
 Classes
 -------
 
@@ -52,17 +60,17 @@ Module Contents
 
    Methods
    -------
-   getLayer()
+   get_layer()
        Return the :class:`SingleCrystalLayer` instance being edited or displayed.
-   drawLayerWidget()
+   draw_layer_widget()
        Create a QWidget displaying all information about the layer.
-   drawLayerWidgetLine1()
+   draw_layer_widget_line1()
        Add widgets to display the first line of layer properties.
-   drawLayerWidgetLine2()
+   draw_layer_widget_line2()
        Add widgets to display the second line of layer properties related to the crystallographic direction (hkl).
-   drawLayerWidgetLine3()
+   draw_layer_widget_line3()
        Add widgets for displaying the third line of layer properties related to lab frame information.
-   changeLabFrameInfo()
+   change_lab_frame_info()
        Update the displayed lab frame information based on the layer's current state.
    on_film_thickness_sb_changed(value)
        Respond to changes in the film thickness spin box.
@@ -75,7 +83,7 @@ Module Contents
 
 
 
-   .. py:method:: changeLabFrameInfo()
+   .. py:method:: change_lab_frame_info()
 
       Update the lab frame information in the labframe widget.
 
@@ -92,7 +100,7 @@ Module Contents
 
 
 
-   .. py:method:: drawLayerWidget()
+   .. py:method:: draw_layer_widget()
 
       Create a layer widget showing all the information about the layer.
 
@@ -107,7 +115,7 @@ Module Contents
 
 
 
-   .. py:method:: drawLayerWidgetLine1()
+   .. py:method:: draw_layer_widget_line1()
 
       Add the first line of the layer description.
 
@@ -124,7 +132,7 @@ Module Contents
 
 
 
-   .. py:method:: drawLayerWidgetLine2()
+   .. py:method:: draw_layer_widget_line2()
 
       Add the second line of the layer description.
 
@@ -141,7 +149,7 @@ Module Contents
 
 
 
-   .. py:method:: drawLayerWidgetLine3()
+   .. py:method:: draw_layer_widget_line3()
 
       Add the third line of the layer description.
 
@@ -158,7 +166,7 @@ Module Contents
 
 
 
-   .. py:method:: getLayer()
+   .. py:method:: get_layer()
 
       Return the edited layer.
 
@@ -254,7 +262,7 @@ Module Contents
 
 
 
-.. py:class:: SingleCrystalLayer(material, hkl=None, azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
+.. py:class:: SingleCrystalLayer(material, hkl=None, azimuthal=0.0, thickness=0.0, thickness_unit='nm', incoherentOption='Coherent', dielectricFlag=False)
 
    A class representing a single crystal layer.
 
@@ -281,87 +289,41 @@ Module Contents
 
    Attributes
    ----------
-   material : Material
-       The material of the layer. (See :class:`~PDielec.Materials.Material`)
-   hkl : list of int
-       The Miller indices of the plane of interest in the crystal.
-   incoherentOption : str
-       The incoherent option for the layer.
-   azimuthal : float
-       The azimuthal angle of rotation of the crystal about the z-axis, in degrees.
-   thickness : float
-       The thickness of the layer in the specified units.
-   thicknessUnit : str
-       The units used for the thickness measurement.
-   dielectricFlag : bool
-       A flag indicating if the layer material is the dielectric material.
-   euler : ndarray
-       The Euler rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with `dtype=np.longdouble`.
-   euler_inverse : ndarray
-       The inverse of the Euler rotation matrix, stored as a 3x3 numpy array with `dtype=np.longdouble`.
-   labframe_w : 
-       Placeholder attribute for GUI interactions, not initialized within the class definition.
-   labframe : ndarray
-       The lattice vectors of the crystal in the laboratory frame, stored as a numpy array.
-   phaseShift : float
-       The phase shift for the layer.
+   material : Material The material of the layer. (See :class:`~PDielec.Materials.Material`) hkl : list of int The
+   Miller indices of the plane of interest in the crystal. incoherentOption : str The incoherent option for the layer.
+   azimuthal : float The azimuthal angle of rotation of the crystal about the z-axis, in degrees. thickness : float The
+   thickness of the layer in the specified units. thickness_unit : str The units used for the thickness measurement.
+   dielectricFlag : bool A flag indicating if the layer material is the dielectric material. euler : ndarray The Euler
+   rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with
+   `dtype=np.longdouble`. euler_inverse : ndarray The inverse of the Euler rotation matrix, stored as a 3x3 numpy array
+   with `dtype=np.longdouble`. labframe_w :  Placeholder attribute for GUI interactions, not initialized within the
+   class definition. labframe : ndarray The lattice vectors of the crystal in the laboratory frame, stored as a numpy
+   array. phaseShift : float The phase shift for the layer.
+
 
    Methods
    -------
-   print()
-       Prints the main attributes of the layer.
-   getPhaseShift()
-       Returns the phase shift for the layer.
-   setPhaseShift(phaseShift)
-       Sets the phase shift for the layer.
-   setAzimuthal(angle)
-       Sets the azimuthal angle of the layer and recalculates the Euler matrix.
-   isCoherent()
-       Returns True if the layer is coherent, False otherwise.
-   getIncoherentOption()
-       Returns the incoherent interaction option for the layer.
-   setIncoherentOption(option)
-       Sets the incoherent interaction option for the layer.
-   getAzimuthal()
-       Returns the azimuthal angle.
-   setThickness(thickness)
-       Sets the thickness of the layer.
-   getThickness()
-       Returns the thickness of the layer.
-   getThicknessInMetres()
-       Converts and returns the thickness of the layer in meters.
-   setThicknessUnit(thicknessUnit)
-       Sets the unit of thickness measurement.
-   getThicknessUnit()
-       Returns the unit of thickness measurement.
-   setHKL(hkl)
-       Sets the Miller indices for the plane of interest in the crystal.
-   getHKL()
-       Returns the Miller indices of the plane of interest.
-   getName()
-       Returns the name of the material.
-   getMaterial()
-       Returns the material object associated with the layer.
-   getPermittivityFunction()
-       Returns the permittivity tensor for the crystal at the surface and azimuthal angle specified.
-   isTensor()
-       Returns True if the material of the layer is a tensor material, False otherwise.
-   isScalar()
-       Returns True if the material of the layer is a scalar material, False otherwise.
-   isDielectric()
-       Returns True if the material of the layer is the dielectric being studied.
-   calculate_euler_matrix()
-       Calculates the Euler angles for the crystal to lab frame transformation.
-   azimuthalRotationMatrix(angle)
-       Calculates a rotation matrix for the azimuthal angle.
-   changeLabFrameInfo()
-       Changes the Lab Frame Information, used with GUI interactions.
-   getLabFrame()
-       Returns the information of the crystal axes in the laboratory frame.
-   calculateLabFrameEpsilon(v)
-       Computes the permittivity tensor for the material at a given frequency and transforms it to the laboratory frame.
-   invert(m)
-       Calculates the inverse of a given 3x3 complex matrix.
+   print() Prints the main attributes of the layer. get_phase_shift() Returns the phase shift for the layer.
+   set_phase_shift(phaseShift) Sets the phase shift for the layer. set_azimuthal(angle) Sets the azimuthal angle of the
+   layer and recalculates the Euler matrix. is_coherent() Returns True if the layer is coherent, False otherwise.
+   get_incoherent_option() Returns the incoherent interaction option for the layer. set_incoherent_option(option) Sets
+   the incoherent interaction option for the layer. get_azimuthal() Returns the azimuthal angle.
+   set_thickness(thickness) Sets the thickness of the layer. get_thickness() Returns the thickness of the layer.
+   get_thickness_in_metres() Converts and returns the thickness of the layer in meters.
+   set_thickness_unit(thickness_unit) Sets the unit of thickness measurement. get_thickness_unit() Returns the unit of
+   thickness measurement. set_hkl(hkl) Sets the Miller indices for the plane of interest in the crystal. get_hkl()
+   Returns the Miller indices of the plane of interest. get_name() Returns the name of the material. get_material()
+   Returns the material object associated with the layer. get_permittivity_function() Returns the permittivity tensor
+   for the crystal at the surface and azimuthal angle specified. is_tensor() Returns True if the material of the layer
+   is a tensor material, False otherwise. is_scalar() Returns True if the material of the layer is a scalar material,
+   False otherwise. is_dielectric() Returns True if the material of the layer is the dielectric being studied.
+   calculate_euler_matrix() Calculates the Euler angles for the crystal to lab frame transformation.
+   azimuthal_rotation_matrix(angle) Calculates a rotation matrix for the azimuthal angle. change_lab_frame_info()
+   Changes the Lab Frame Information, used with GUI interactions. get_lab_frame() Returns the information of the
+   crystal axes in the laboratory frame. calculate_lab_frame_epsilon(v) Computes the permittivity tensor for the
+   material at a given frequency and transforms it to the laboratory frame. invert(m) Calculates the inverse of a given
+   3x3 complex matrix.
+
 
    Notes
    -----
@@ -369,7 +331,7 @@ Module Contents
 
 
 
-   .. py:method:: azimuthalRotationMatrix(angle)
+   .. py:method:: azimuthal_rotation_matrix(angle)
 
       Calculate a rotation matrix for the azimuthal angle (in degrees).
 
@@ -382,23 +344,6 @@ Module Contents
       -------
       ndarray 3x3
           The rotation matrix for the given azimuthal angle.
-
-
-
-
-   .. py:method:: calculateLabFrameEpsilon(v)
-
-      Get the permittivity for this material at frequency v and transform it to the laboratory frame.
-
-      Parameters
-      ----------
-      v : float
-          Frequency at which the permittivity is evaluated.
-
-      Returns
-      -------
-      float
-          The permittivity of the material in the laboratory frame.
 
 
 
@@ -418,7 +363,24 @@ Module Contents
 
 
 
-   .. py:method:: changeLabFrameInfo()
+   .. py:method:: calculate_lab_frame_epsilon(v)
+
+      Get the permittivity for this material at frequency v and transform it to the laboratory frame.
+
+      Parameters
+      ----------
+      v : float
+          Frequency at which the permittivity is evaluated.
+
+      Returns
+      -------
+      float
+          The permittivity of the material in the laboratory frame.
+
+
+
+
+   .. py:method:: change_lab_frame_info()
 
       Change the Lab Frame Info panel.
 
@@ -426,7 +388,7 @@ Module Contents
 
 
 
-   .. py:method:: getAzimuthal()
+   .. py:method:: get_azimuthal()
 
       Get the azimuthal angle.
 
@@ -442,7 +404,7 @@ Module Contents
 
 
 
-   .. py:method:: getHKL()
+   .. py:method:: get_hkl()
 
       Get the hkl.
 
@@ -457,7 +419,7 @@ Module Contents
 
 
 
-   .. py:method:: getIncoherentOption()
+   .. py:method:: get_incoherent_option()
 
       Return the value of the incoherent option attribute.
 
@@ -475,7 +437,7 @@ Module Contents
 
 
 
-   .. py:method:: getLabFrame()
+   .. py:method:: get_lab_frame()
 
       Return the a, b, and c cell axes in the laboratory frame coordinates.
 
@@ -493,7 +455,7 @@ Module Contents
 
 
 
-   .. py:method:: getMaterial()
+   .. py:method:: get_material()
 
       Return the material.
 
@@ -508,7 +470,7 @@ Module Contents
 
 
 
-   .. py:method:: getName()
+   .. py:method:: get_name()
 
       Return the material name.
 
@@ -524,7 +486,7 @@ Module Contents
 
 
 
-   .. py:method:: getPermittivityFunction()
+   .. py:method:: get_permittivity_function()
 
       Return the permittivity function associated with this material.
 
@@ -539,7 +501,7 @@ Module Contents
 
 
 
-   .. py:method:: getPhaseShift()
+   .. py:method:: get_phase_shift()
 
       Get the phase shift for the layer.
 
@@ -555,7 +517,7 @@ Module Contents
 
 
 
-   .. py:method:: getThickness()
+   .. py:method:: get_thickness()
 
       Get the thickness.
 
@@ -570,7 +532,7 @@ Module Contents
 
 
 
-   .. py:method:: getThicknessInMetres()
+   .. py:method:: get_thickness_in_metres()
 
       Get the thickness in metres.
 
@@ -585,7 +547,7 @@ Module Contents
 
 
 
-   .. py:method:: getThicknessUnit()
+   .. py:method:: get_thickness_unit()
 
       Get the thickness unit.
 
@@ -617,7 +579,7 @@ Module Contents
 
 
 
-   .. py:method:: isCoherent()
+   .. py:method:: is_coherent()
 
       Return True if this is a coherent layer, False otherwise.
 
@@ -633,7 +595,7 @@ Module Contents
 
 
 
-   .. py:method:: isDielectric()
+   .. py:method:: is_dielectric()
 
       Return true if the material of the layer is the dielectric material.
 
@@ -649,7 +611,7 @@ Module Contents
 
 
 
-   .. py:method:: isScalar()
+   .. py:method:: is_scalar()
 
       Return true if the material of the layer is a scalar material.
 
@@ -665,7 +627,7 @@ Module Contents
 
 
 
-   .. py:method:: isTensor()
+   .. py:method:: is_tensor()
 
       Return true if the material of the layer is a tensor material.
 
@@ -692,7 +654,7 @@ Module Contents
 
 
 
-   .. py:method:: setAzimuthal(angle)
+   .. py:method:: set_azimuthal(angle)
 
       Set the azimuthal angle of the layer and calculate the Euler matrix.
 
@@ -708,7 +670,7 @@ Module Contents
 
 
 
-   .. py:method:: setHKL(hkl)
+   .. py:method:: set_hkl(hkl)
 
       Set the hkl and recalculate the Euler matrix.
 
@@ -724,7 +686,7 @@ Module Contents
 
 
 
-   .. py:method:: setIncoherentOption(option)
+   .. py:method:: set_incoherent_option(option)
 
       Set the incoherent option.
 
@@ -745,7 +707,7 @@ Module Contents
 
 
 
-   .. py:method:: setPhaseShift(phaseShift)
+   .. py:method:: set_phase_shift(phaseShift)
 
       Set the phase shift for the layer.
 
@@ -761,7 +723,7 @@ Module Contents
 
 
 
-   .. py:method:: setThickness(thickness)
+   .. py:method:: set_thickness(thickness)
 
       Set the thickness.
 
@@ -777,13 +739,13 @@ Module Contents
 
 
 
-   .. py:method:: setThicknessUnit(thicknessUnit)
+   .. py:method:: set_thickness_unit(thickness_unit)
 
       Set the thickness unit.
 
       Parameters
       ----------
-      thicknessUnit : str
+      thickness_unit : str
           The unit of thickness. Can be one of "ang", "nm", "um", "mm", or "cm"
 
       Returns
@@ -842,8 +804,10 @@ Module Contents
 
 
 
-   .. py:attribute:: thicknessUnit
+   .. py:attribute:: thickness_unit
       :value: 'nm'
 
 
+
+.. py:data:: logger
 

@@ -15,4 +15,4 @@ Maxwell-Garnett calculations including size effects of 0, 1 and 2 microns of the
 | results.ref.xlsx  | Reference results used by the test suite              |
 | script.py         | script to create reference results                    |
 
-[Back](..)
+[Back](../README.md)

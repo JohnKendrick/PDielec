@@ -18,4 +18,4 @@ vibanalysis -autosel vasp OUTCAR
  | command.pdmake    | pdmake commands for testing   |
  | phonon.nma.ref    | reference vibanlysis output   |
 
-[Back](..)
+[Back](../README.md)

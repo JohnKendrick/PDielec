@@ -105,4 +105,8 @@ For the PDGui calculations, a 10% volume fraction of Na2(SO4)2 is supported in a
 | Dielectric/aims.out          | The AIMS output containing epsilon infinity               |
 | Vasp_FHI-Aims_Comparison.qti |                                                           |
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [Dielectric](Dielectric/README.md)

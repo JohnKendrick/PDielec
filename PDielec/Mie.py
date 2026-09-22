@@ -43,7 +43,7 @@ import warnings
 
 import numpy as np
 
-#jk from scipy.integrate import trapz
+#jk from scipy.integrate import trapezoid
 from scipy.special import jv, yv
 
 # Parameter to determine wavelength crossover between methods for treating
@@ -693,12 +693,12 @@ def Mie_SD(m, wavelength, dp, ndp, nMedium=1.0, SMPS=True, interpolate=False, as
     bigG = np.sum(g*Q_sca*aSDn)/np.sum(Q_sca*aSDn)
     Bpr = Bext - bigG*Bsca
   else:
-    Bext = np.trapz(Q_ext*aSDn,dp)
-    Bsca = np.trapz(Q_sca*aSDn,dp)
+    Bext = np.trapezoid(Q_ext*aSDn,dp)
+    Bsca = np.trapezoid(Q_sca*aSDn,dp)
     Babs = Bext-Bsca
-    Bback = np.trapz(Q_back*aSDn,dp)
-    Bratio = np.trapz(Q_ratio*aSDn,dp)
-    bigG = np.trapz(g*Q_sca*aSDn,dp)/np.trapz(Q_sca*aSDn,dp)
+    Bback = np.trapezoid(Q_back*aSDn,dp)
+    Bratio = np.trapezoid(Q_ratio*aSDn,dp)
+    bigG = np.trapezoid(g*Q_sca*aSDn,dp)/np.trapezoid(Q_sca*aSDn,dp)
     Bpr = Bext - bigG*Bsca
 
   if asDict:
@@ -806,9 +806,9 @@ def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngl
     SR /= np.max(SR)
     SU /= np.max(SU)
   elif normalization in ["t","T","total","TOTAL"]:
-    SL /= np.trapz(SL,measure)
-    SR /= np.trapz(SR,measure)
-    SU /= np.trapz(SU,measure)
+    SL /= np.trapezoid(SL,measure)
+    SR /= np.trapezoid(SR,measure)
+    SU /= np.trapezoid(SU,measure)
   if _q:
     measure = (4*np.pi/wavelength)*np.sin(measure/2)*(diameter/2)
   return measure,SL,SR,SU
@@ -882,7 +882,7 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
     SR += r*n
     SU += u*n
   if normalization in ["n","N","number","particles"]:
-    _n = np.trapz(ndp,dp)
+    _n = np.trapezoid(ndp,dp)
     SL /= _n
     SR /= _n
     SU /= _n
@@ -891,9 +891,9 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
     SR /= np.max(SR)
     SU /= np.max(SU)
   elif normalization in ["t","T","total","TOTAL"]:
-    SL /= np.trapz(SL,measure)
-    SR /= np.trapz(SR,measure)
-    SU /= np.trapz(SU,measure)
+    SL /= np.trapezoid(SL,measure)
+    SR /= np.trapezoid(SR,measure)
+    SU /= np.trapezoid(SU,measure)
   return measure,SL,SR,SU
 
 def MieS1S2(m,x,mu):

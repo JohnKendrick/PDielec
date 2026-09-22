@@ -1,0 +1,61 @@
+PDielec.NACDiagnostics
+======================
+
+.. py:module:: PDielec.NACDiagnostics
+
+.. autoapi-nested-parse::
+
+   Direction-dependent non-analytic phonon diagnostics and branch tracking.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.NACDiagnostics._normalised_q
+   PDielec.NACDiagnostics.compute_nac_direction_diagnostics
+   PDielec.NACDiagnostics.group_degenerate_modes
+   PDielec.NACDiagnostics.track_nac_branches
+
+
+Module Contents
+---------------
+
+.. py:function:: _normalised_q(q_hat_crystal)
+
+   Return a finite unit Cartesian direction.
+
+
+.. py:function:: compute_nac_direction_diagnostics(q_hat_crystal, hessian, born_charges, eps_inf, volume_au, masses_au, u_to, raman_tensors, to_sigmas, chi2_repsilon=None, degeneracy_tolerance_cm1=0.05)
+
+   Calculate a complete NAC eigensystem and its TO/Raman diagnostics.
+
+   The overlap convention is ``C[n, m] = <u_n(TO)|u_m(NAC)>``. Raman tensors
+   without the electro-optic term are obtained by transforming the complete TO
+   tensor basis with ``C``. When ``chi2_repsilon`` is supplied, a second tensor
+   set and activity table containing the EO correction are returned.
+
+   Parameters are equivalent to
+   :func:`PDielec.GUI.CrystalScenarioTab._compute_nac_dynamical_matrix_standalone`.
+
+   Returns
+   -------
+   dict
+       NumPy-backed diagnostic record containing frequencies, eigenvectors,
+       full overlaps, effective charges, tensors, activities, linewidths, and
+       degenerate-subspace groups.
+
+
+
+.. py:function:: group_degenerate_modes(frequencies_cm1, tolerance_cm1=0.05)
+
+   Return contiguous mode-index groups degenerate within ``tolerance_cm1``.
+
+
+.. py:function:: track_nac_branches(direction_diagnostics, degeneracy_tolerance_cm1=0.05)
+
+   Track NAC branches by mode overlaps and degenerate-subspace projectors.
+
+

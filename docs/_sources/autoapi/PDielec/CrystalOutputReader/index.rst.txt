@@ -9,6 +9,14 @@ PDielec.CrystalOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.CrystalOutputReader.logger
+
+
 Classes
 -------
 
@@ -36,7 +44,15 @@ Module Contents
 
    Notes
    -----
-   This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+   This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It
+   initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian
+   symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+
+
+
+   .. py:method:: _calculate_raman_tensors_from_tens_raman_dat()
+
+      Project stored CRYSTAL polarizability derivatives onto current modes.
 
 
 
@@ -51,8 +67,8 @@ Module Contents
 
       Returns
       -------
-      numpy.ndarray
-          A 3x3 array where each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as: ::
+      numpy.ndarray A 3x3 array where each row of the output refers to a given field direction and each column in the
+      row refers to the atomic displacement. The output is arranged as: ::
 
               [[a1x a1y a1z]
                [a2x a2y a2z]
@@ -87,7 +103,9 @@ Module Contents
 
       Read Born charges from output file.
 
-      This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the `born_charges` list attribute.
+      This method is responsible for parsing and reading Born effective charges from a given output file, beginning
+      from the current line position of the file descriptor. It stores the read charges into the `born_charges` list
+      attribute.
 
       Parameters
       ----------
@@ -100,8 +118,56 @@ Module Contents
 
       Note
       ----
-      This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's formatted in a specific way expected by the logic of this method.
+      This method directly modifies the `born_charges` attribute of the class instance by appending the read Born
+      charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's
+      formatted in a specific way expected by the logic of this method.
 
+
+
+
+   .. py:method:: _read_chi2_block(fd, source)
+
+      Read a CRYSTAL second-order susceptibility table from an open file.
+
+
+
+   .. py:method:: _read_chi2_dat(filename)
+
+      Read the second-order nonlinear optical susceptibility χ^(2) from CHI2.DAT.
+
+      Crystal23's CPHF chi(2) calculation writes the 10 independent components of
+      the d-tensor (d = χ^(2)/2) as three-character Cartesian labels (e.g. ``XXZ``)
+      together with BETA (a.u.), CHI(2) (a.u.), d(MKS) (pm/V) and d(CGS) columns::
+
+          COMPONENT      BETA                        CHI(2)       d(MKS)       d(cgs)
+          *****...
+              XXZ    6.1371E+02  (  6.1372E+02)   1.2024E+01   1.1691E+01   2.7892E-01
+              ...
+          *****...
+
+      The 10 independent components assume full Kleinman symmetry (all index
+      permutations equivalent).  ``d(MKS)`` is already in pm/V and satisfies
+      d = χ^(2)/2.
+
+      The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+      converted from pm/V to the reader ``R_epsilon`` convention, consistent
+      with the Abinit and CASTEP readers.
+
+      Parameters
+      ----------
+      filename : str
+          Path to the CHI2.DAT file.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_chi2_output(line)
+
+      Read the second-order susceptibility block embedded in a CRYSTAL output file.
 
 
 
@@ -212,7 +278,11 @@ Module Contents
 
       Read epsilon values from a formatted file and update the optical dielectric matrix.
 
-      This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in the file. The method expects the values in a specific format and parses them accordingly.
+      This internal method reads lines from a previously opened file (using the file_descriptor attribute of the
+      object), interpreting data that specifies the components of the optical dielectric tensor. The method updates
+      the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric
+      values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in
+      the file. The method expects the values in a specific format and parses them accordingly.
 
 
       Parameters
@@ -226,11 +296,15 @@ Module Contents
 
       Notes
       -----
-      - The method does not return any value but instead updates the `zerof_optical_dielectric` attribute of the object.
-      - This method assumes that the file being read is opened and managed elsewhere in the class and that the `file_descriptor` attribute contains a valid file object.
-      - The method reads lines sequentially from the `file_descriptor` and expects the file to be formatted in a specific way, with optical dielectric components starting from a certain line.
-      - Each line read corresponds to a different component of the optical dielectric tensor, and the method parses these lines to identify the component and its value.
-      - After reading and storing the components' values, the method also updates the symmetric components of the tensor (i.e., sets optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding symmetric values).
+      - The method does not return any value but instead updates the `zerof_optical_dielectric` attribute of the
+        object. - This method assumes that the file being read is opened and managed elsewhere in the class and that
+        the `file_descriptor` attribute contains a valid file object. - The method reads lines sequentially from the
+        `file_descriptor` and expects the file to be formatted in a specific way, with optical dielectric components
+        starting from a certain line. - Each line read corresponds to a different component of the optical dielectric
+        tensor, and the method parses these lines to identify the component and its value. - After reading and storing
+        the components' values, the method also updates the symmetric components of the tensor (i.e., sets
+        optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding
+        symmetric values).
 
 
 
@@ -283,7 +357,8 @@ Module Contents
 
       Notes
       -----
-      This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and then updates the dynamical matrix of the system. 
+      This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and
+      then updates the dynamical matrix of the system.
 
       See Also
       --------
@@ -326,7 +401,8 @@ Module Contents
 
       Parse a line of text to extract k-point grid dimensions and the total number of k-points.
 
-      The function sets the object's kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.
+      The function sets the object's kpoint_grid attribute to a list of three integers representing the grid
+      dimensions, and the kpoints attribute to an integer representing the total number of k-points.
 
       Parameters
       ----------
@@ -344,13 +420,31 @@ Module Contents
 
       Read lattice vectors from a file and update the corresponding properties.
 
-      This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the last unit cell based on existing class attributes.
+      This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates
+      a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates
+      the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the
+      last unit cell based on existing class attributes.
 
       Modifications to the instance attributes include:
       - Appending a new `UnitCell` object to the `unit_cells` list.
       - Updating the `ncells` attribute to match the length of the `unit_cells` list.
       - Setting the volume of the last unit cell in `unit_cells`.
       - Updating the fractional coordinates and element names of the last unit cell.
+
+      Parameters
+      ----------
+      line : str
+          The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the `line` parameter could be omitted or revised.
+
+
+
+
+   .. py:method:: _read_lattice_vectors2(line)
+
+      Read lattice vectors and fractional coordinates.
+
+      This method is used to read the intermediate coordinates and cell of an optimisation.
+      This method reads the cell as a,b,c,alpha,bet,gamm
 
       Parameters
       ----------
@@ -399,7 +493,8 @@ Module Contents
 
       Read and process output eigenvectors from a file descriptor.
 
-      This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom's masses to generate mass-weighted normal modes, and normalizes these modes.
+      This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the
+      square root of the atom's masses to generate mass-weighted normal modes, and normalizes these modes.
 
       Parameters
       ----------
@@ -412,9 +507,9 @@ Module Contents
 
       Notes
       -----
-      - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class instance.
-      - Atoms' masses are used to compute mass-weighted normal modes
-      - Normalization of each mass-weighted mode is performed at the end of the method.
+      - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class
+        instance. - Atoms' masses are used to compute mass-weighted normal modes - Normalization of each mass-weighted
+        mode is performed at the end of the method.
 
 
 
@@ -432,6 +527,58 @@ Module Contents
 
 
 
+   .. py:method:: _read_tens_raman_dat(filename)
+
+      Read Raman polarizability derivatives from TENS_RAMAN.DAT and compute mode Raman tensors.
+
+      TENS_RAMAN.DAT contains the derivative of the unit-cell polarizability tensor
+      (in atomic units, Bohr²) with respect to each atomic Cartesian displacement (Bohr).
+      There is one line per (atom, displacement-direction) pair, ordered as
+      ``(atom1_x, atom1_y, atom1_z, atom2_x, …, atomN_z)``, and each line holds
+      six values::
+
+          ∂α_xx/∂u   ∂α_xy/∂u   ∂α_xz/∂u   ∂α_yy/∂u   ∂α_yz/∂u   ∂α_zz/∂u
+
+      The raw projected tensors are polarizability-volume derivatives
+      ``R_alpha = dα_vol/dQ``.  PDielec stores the AbInit-style bulk Raman
+      convention ``R_epsilon = sqrt(V) dε/dQ``.  Since
+      ``α_vol = V(ε−I)/(4π)``, the final conversion is::
+
+          R_epsilon = (4π / sqrt(Vcell)) R_alpha
+
+      The projection is::
+
+          R_alpha[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
+                             / angs2bohr²
+
+      where ``mwm[n,k,β]`` is the mass-weighted eigenvector component for mode *n*,
+      atom *k*, Cartesian direction *β*, and ``M_k`` is the atomic mass in amu.
+      The ``1 / angs2bohr²`` factor maps Crystal's Bohr² amu⁻¹/² to
+      Å² amu⁻¹/² before the polarizability-to-``R_epsilon`` conversion.
+
+      Parameters
+      ----------
+      filename : str
+          Path to the TENS_RAMAN.DAT file.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+
+      Rebuild CRYSTAL Raman tensors exactly from TENS_RAMAN.DAT derivatives.
+
+
+
+   .. py:attribute:: _crystal_raman_dalpha
+      :value: None
+
+
+
    .. py:attribute:: _fractional_coordinates
       :value: []
 
@@ -446,4 +593,6 @@ Module Contents
       :value: 'Crystal output'
 
 
+
+.. py:data:: logger
 

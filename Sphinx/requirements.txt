@@ -1,6 +1,8 @@
 sphinx
+sphinx-autobuild
 sphinx-autoapi
 sphinxcontrib.bibtex
 cloud_sptheme
 furo
 ghp-import
+beautifulsoup4

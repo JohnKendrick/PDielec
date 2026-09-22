@@ -12,4 +12,4 @@
 | [Na2SO42/](./Na2SO42/README.md) | Na2(SO4)2 powder calculations using Castep 24.1|
 | [preader/](./preader/README.md) | Test for preader|
 
-[Back](..)
+[Back](../README.md)

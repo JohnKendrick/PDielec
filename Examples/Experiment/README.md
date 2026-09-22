@@ -12,4 +12,8 @@
  | [Mayerhofer/](./Mayerhofer/README.md) | A toy model is used to reproduce published reflectance spectra |
  | [Sapphire/](./Sapphire/README.md) | An FPSQ model of Sapphire is used for single crystal calculations |
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [cp2k](cp2k/README.md)

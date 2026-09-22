@@ -1,0 +1,2 @@
+Finite-difference VASP ZnO preader infrared (Eckart)
+preader -program "finite_field" -eckart ../../Powder_Raman/Finite_difference/finite_difference.json

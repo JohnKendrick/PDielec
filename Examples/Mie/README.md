@@ -6,4 +6,8 @@
 | [MgO/](./MgO/README.md) | Single particle size Mie calculation for MgO                  |
 | [MgO_lognormal/](./MgO/README.md) | Log normal particle size distribution Mie calculation for MgO |
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [MgO_lognormal](MgO_lognormal/README.md)

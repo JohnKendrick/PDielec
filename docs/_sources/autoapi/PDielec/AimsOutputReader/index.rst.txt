@@ -9,6 +9,14 @@ PDielec.AimsOutputReader
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.AimsOutputReader.logger
+
+
 Classes
 -------
 
@@ -106,6 +114,27 @@ Module Contents
 
 
 
+   .. py:method:: read_energy(file)
+
+      Read and process the aims log file.
+
+      Parameters
+      ----------
+      file : str
+          The aims log file, usually aims.out
+
+      Returns
+      -------
+      None
+
+      Modifies
+      --------
+      self.final_energy_without_entropy float
+      self.final_energies_without_entropy float
+
+
+
+
    .. py:method:: read_geometry(masses_file, geometry_file)
 
       Read and process the FHI-AIMS masses.*.dat and geometry.in file.
@@ -135,4 +164,6 @@ Module Contents
 
    .. py:attribute:: units
 
+
+.. py:data:: logger
 

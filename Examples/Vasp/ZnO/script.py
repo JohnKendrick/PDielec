@@ -37,7 +37,7 @@ for method in methods:
     for shape,hkl in zip(shapes,hkls):
         for mf in mfs:
             for size in sizes:
-                self.notebook.addScenario()
+                self.notebook.add_scenario()
                 tab = self.notebook.scenarios[-1]
                 tab.settings['Mass fraction'] = mf
                 tab.settings['Mass or volume fraction'] = 'mass'

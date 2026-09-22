@@ -11,6 +11,10 @@ Introduction
 ============
 
 The Python package, PDielec, calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium and the absorption of single crystals (thin films or thick slabs) of absorbing material at different orientations. 
+The package also calculates powder and crystal Raman spectra from Raman tensors,
+with polarisation, collection geometry and optional NAC/EO corrections.
+See :doc:`PowderRaman`, :doc:`CrystalRaman` and the :doc:`migration` guide.
+
 PDielec post-processes the output of solid-state quantum mechanical and molecular mechanics (MM) based codes such as VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, FHI-Aims :cite:`Blum2009`, Quantum Espresso :cite:`Giannozzi2009`, Phonopy :cite:`Togo2015`, and GULP :cite:`Gale2003`.
 The infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation is calculated using effective medium theory. The package is suited for the calculation of the complex, frequency-dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low-loss dielectric medium such as KBr or Polytetrafluoroethylene (PTFE). A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape of the material of interest through an effective medium theory. 
 

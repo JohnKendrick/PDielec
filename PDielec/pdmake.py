@@ -15,16 +15,29 @@
 #
 """A Makefile style system for testing and installing PDGui and PDielec.
 
-This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
+This script accepts various command-line arguments to perform different actions such as running tests, benchmarks,
+cleaning build directories, and installing scripts.
 
 Command line options
 --------------------
-    - `test` or `tests`: Runs all test cases.
-    - `test-singlecrystal`: Runs tests for single crystal analysis.
+    - `test` or `tests`: Runs all pytest suites first, then the example tests.
+    - `test-crystal_infrared`: Runs tests for crystal infrared analysis.
+    - `test-crystal_raman`: Runs tests for crystal raman analysis.
+    - `test-powder_raman`: Runs tests for powder raman analysis.
+    - `test-powder_infrared`: Runs tests for powder infrared analysis.
+    - `test-powder_atr`: Runs tests for powder atr analysis.
     - `test-preader`: Runs tests for the preader component.
     - `test-p2cif`: Runs tests for the p2cif component.
     - `test-pdgui`: Runs tests for the PDGUI component.
     - `test-vibanalysis`: Runs tests for vibrational analysis.
+    - `test-pytest-powder_raman`: Runs pytest suite in PDielec/Tests/Powder_Raman/.
+    - `test-pytest-crystal_raman`: Runs pytest suite in PDielec/Tests/Crystal_Raman/.
+    - `test-pytest-materials`: Runs pytest suite in PDielec/Tests/Materials/.
+    - `test-pytest-calculator`: Runs pytest suite in PDielec/Tests/Calculator/.
+    - `test-pytest-unitcell`: Runs pytest suite in PDielec/Tests/UnitCell/.
+    - `test-pytest-gtmcore`: Runs pytest suite in PDielec/Tests/GTMcore/.
+    - `test-pytest-constants`: Runs pytest suite in PDielec/Tests/Constants/.
+    - `test-pytests`: Runs all pytest suites.
     - `benchmarks`: Executes benchmark tests.
     - `pypi`: Runs commands for PyPI distribution.
     - `clean`: Cleans up directories.
@@ -32,17 +45,20 @@ Command line options
     - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
     - `-root` or `--root`: Specifies the root directory to operate in.
     - `-debug` or `--debug` or `-d`: Enables debug mode.
-    - `-usesystem`: Use system installed binaries rather than local ones.
+    - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.
     - `-view` or `--view` or `-v`: Enables viewing mode.
     - `-regenerate`: Forces regeneration of test data.
     - `-padding`: Sets padding for some operation (expects an integer value next).
-    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+    - `-directory` or `--directory`: Display directory names when listing tests (takes no value).
     - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 """
 
 import contextlib
 import functools
+import io
+import logging
 import os
+import shlex
 import subprocess
 import sys
 import time
@@ -52,6 +68,9 @@ import numpy as np
 
 from PDielec.checkcsv import main as main_checkcsv
 from PDielec.checkexcel import main as main_checkexcel
+
+logger = logging.getLogger(__name__)
+
 
 # Force a flush on print, needed for Windows
 print = functools.partial(print, flush=True)
@@ -73,6 +92,8 @@ test_preader = [
 	"Crystal/preader",
 	"AbInit/preader",
 	"QE/preader",
+	"Finite_difference/preader",
+	"Finite_difference/preader_raman",
     ]
 
 test_p2cif = [
@@ -80,6 +101,7 @@ test_p2cif = [
     ]
 
 test_pdgui = [
+	"Powder_Raman/Finite_difference",
 	"ATR/AlAs",
 	"ATR/Na2SO42",
 	"ATR/Na2SO42_fit",
@@ -139,7 +161,61 @@ test_pdgui = [
 	"Vasp/ZnO",
     ]
 
-test_singlecrystal = [
+test_powder_atr = [
+	"ATR/AlAs",
+	"ATR/Na2SO42",
+	"ATR/Na2SO42_fit",
+    ]
+
+test_powder_raman = [
+	"Powder_Raman/Finite_difference",
+	"Powder_Raman/AbInit",
+	"Powder_Raman/Castep",
+	"Powder_Raman/Crystal23",
+	"Powder_Raman/QE",
+	"Powder_Raman/Vasp",
+    ]
+
+test_crystal_raman = [
+	"Crystal_Raman/Castep",
+	"Crystal_Raman/Crystal23",
+    ]
+
+test_powder_infrared = [
+	"AbInit/AlAs",
+	"AbInit/BaTiO3",
+	"AbInit/Na2SO42",
+	"FHI-Aims/Na2SO42",
+	"Castep/AsparticAcid",
+	"Castep/Bubbles",
+	"Castep/Castep17",
+	"Castep/Isoleucine",
+	"Castep/MgO",
+	"Castep/Na2SO42",
+	"Gulp/Na2SO42",
+	"Gulp/calcite",
+	"Mie/MgO",
+	"Mie/MgO_lognormal",
+	"Phonopy/Na2SO42",
+	"Phonopy/QE",
+	"Phonopy/Vasp",
+	"QE/Cocaine",
+	"QE/Na2SO42",
+	"QE/Na2SO42-v7",
+	"QE/Urea",
+	"QE/ZnO",
+	"SizeEffects/BaTiO3",
+	"SizeEffects/MgO",
+	"SizeEffects/ZnO",
+	"Vasp/F-Apatite",
+	"Vasp/Na2SO42",
+	"Vasp/Na2SO42_v",
+	"Vasp/Vasp6",
+	"Vasp/Urea",
+	"Vasp/ZnO",
+    ]
+
+test_crystal_infrared = [
 	"Experiment/fpsq",
 	"Experiment/Mayerhofer",
 	"SingleCrystal/Bi2Se3",
@@ -195,7 +271,8 @@ benchmarks = [
 def usage():
     """Print usage instructions for the command line tool.
 
-    This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.
+    This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and
+    options. It also handles platform-specific instructions for Linux systems.
 
     SystemExit
         This function will terminate the program after displaying the usage message.
@@ -203,13 +280,37 @@ def usage():
     print("pdmake:", file=sys.stderr)
     print("  test" , file=sys.stderr)
     print("  tests" , file=sys.stderr)
-    print("           run all the tests               " , file=sys.stderr)
+    print("           run all pytest suites first, then the example tests" , file=sys.stderr)
     print("  test-preader" , file=sys.stderr)
     print("           run all the preader tests" , file=sys.stderr)
     print("  test-pdgui" , file=sys.stderr)
     print("           run all the pdgui tests" , file=sys.stderr)
-    print("  test-singlecrystal" , file=sys.stderr)
-    print("           run all the singlecrystal tests" , file=sys.stderr)
+    print("  test-crystal_ir" , file=sys.stderr)
+    print("           run all the crystal infrared tests" , file=sys.stderr)
+    print("  test-crystal_raman" , file=sys.stderr)
+    print("           run all the crystal raman tests" , file=sys.stderr)
+    print("  test-powder_ir" , file=sys.stderr)
+    print("           run all the powder infrared tests" , file=sys.stderr)
+    print("  test-powder_raman" , file=sys.stderr)
+    print("           run all the powder raman tests" , file=sys.stderr)
+    print("  test-pytest-powder_raman" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Powder_Raman/" , file=sys.stderr)
+    print("  test-pytest-crystal_raman" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Crystal_Raman/" , file=sys.stderr)
+    print("  test-pytest-materials" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Materials/" , file=sys.stderr)
+    print("  test-pytest-calculator" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Calculator/" , file=sys.stderr)
+    print("  test-pytest-unitcell" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/UnitCell/" , file=sys.stderr)
+    print("  test-pytest-gtmcore" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/GTMcore/" , file=sys.stderr)
+    print("  test-pytest-constants" , file=sys.stderr)
+    print("           run the pytest suite in PDielec/Tests/Constants/" , file=sys.stderr)
+    print("  test-pytests" , file=sys.stderr)
+    print("           run all pytest suites" , file=sys.stderr)
+    print("  test-atr" , file=sys.stderr)
+    print("           run all the powder atr tests" , file=sys.stderr)
     print("  test-p2cif" , file=sys.stderr)
     print("           run all the p2cif tests" , file=sys.stderr)
     print("  test-vibanalysis" , file=sys.stderr)
@@ -246,7 +347,7 @@ def usage():
         print("           the default is ~/bin                       " , file=sys.stderr)
     sys.exit()
 
-def checkLocalExecutables():
+def check_local_executables():
     """Check to see if the rootDirectory has the executables we need.
 
     Parameters
@@ -385,7 +486,7 @@ def redirect(file):
         if not debug:
             sys.stderr = sys.__stderr__
 
-def readNmaFile(file):
+def read_nma_file(file):
     """Read and extract data from an NMA file.
 
     Parameters
@@ -442,7 +543,7 @@ def readNmaFile(file):
     e = np.array(explained[3:])
     return np.sum(f),np.sum(r),np.sum(e)
 
-def compareNmaFiles(file1,file2):
+def compare_nma_files(file1,file2):
     """Compare two NMA files for differences within a tolerance.
 
     Parameters
@@ -460,14 +561,14 @@ def compareNmaFiles(file1,file2):
 
     Notes
     -----
-    This function reads two NMA files using the `readNmaFile` function, 
+    This function reads two NMA files using the `read_nma_file` function, 
     which returns the frequency (f), redox (r), and energy (e) values 
     for each file. The comparison is done based on a tolerance of 1e-06, 
     and the total number of differences in these values are counted and returned.
 
     """    
-    f1,r1,e1 = readNmaFile(file1)
-    f2,r2,e2 = readNmaFile(file2)
+    f1,r1,e1 = read_nma_file(file1)
+    f2,r2,e2 = read_nma_file(file2)
     nerrors = 0
     if abs(f1 - f2) > 1.0e-6:
         nerrors += 1
@@ -477,7 +578,7 @@ def compareNmaFiles(file1,file2):
         nerrors += 1
     return nerrors
 
-def compareFiles(file1,file2):
+def compare_files(file1,file2):
     """Compare two text files for differences.
 
     This function opens and reads two text files line by line and then compares them word by word,
@@ -536,7 +637,7 @@ def compareFiles(file1,file2):
                             print("Line 1",line1)
                             print("Line 2",line2)
                         nerrors += 1
-                except Exception:
+                except ValueError:
                     if word1 != word2:
                         if debug:
                             print("Word difference",word1,word2)
@@ -546,7 +647,7 @@ def compareFiles(file1,file2):
     return nerrors
 
 
-def runP2CifTest(title, instructions, regenerate):
+def run_p2cif_test(title, instructions, regenerate):
     """Run a test on p2cif.
 
     Parameters
@@ -582,7 +683,7 @@ def runP2CifTest(title, instructions, regenerate):
     # end with open
     # If not doing a regeneration perform a check
     if not regenerate:
-        nerrors = compareFiles("all.cif", "all.ref.cif")
+        nerrors = compare_files("all.cif", "all.ref.cif")
         if nerrors > 0:
             print(f" {nerrors} ERRORS:")
         else:
@@ -593,7 +694,7 @@ def runP2CifTest(title, instructions, regenerate):
     # end if
     return
 
-def runVibAnalysis(title, instructions, regenerate):
+def run_vib_analysis(title, instructions, regenerate):
     """Run a vibanalysis test.
 
     Parameters
@@ -622,7 +723,7 @@ def runVibAnalysis(title, instructions, regenerate):
         # end if
     # end for
     if filename is None:
-        print("Error in runVibAnalysis: there is no filename specified")
+        print("Error in run_vib_analysis: there is no filename specified")
     header = os.path.splitext(filename)[0]
     nmafile = header+".nma"
     reffile = header+".nma.ref"
@@ -632,7 +733,7 @@ def runVibAnalysis(title, instructions, regenerate):
         subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     # If not doing a regeneration perform a check
     if not regenerate:
-        nerrors = compareNmaFiles(nmafile, reffile)
+        nerrors = compare_nma_files(nmafile, reffile)
         if nerrors > 0:
             print(f" {nerrors} ERRORS:")
         else:
@@ -644,7 +745,7 @@ def runVibAnalysis(title, instructions, regenerate):
     # end if
     return
 
-def runPreaderTest(title, instructions, regenerate):
+def run_preader_test(title, instructions, regenerate):
     """Run a preader test.
 
     Parameters
@@ -662,7 +763,7 @@ def runPreaderTest(title, instructions, regenerate):
     global useLocal
     global debug
     if debug:
-        print("runPreaderTest:",title,instructions)
+        print("run_preader_test:",title,instructions)
     print(title,end="",flush=True)
     if useLocal:
         sys.argv = ["python"]
@@ -697,7 +798,7 @@ def runPreaderTest(title, instructions, regenerate):
     # end if
     return
 
-def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
+def run_pdgui_test(title, instructions, regenerate, benchmarks=False):
     """Run a pdgui test.
 
     Parameters
@@ -738,12 +839,14 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     if not viewing:
         # If not doing a regeneration perform a check
         if not regenerate and not benchmarks:
-            sys.argv = ["checkexcel", "results.ref.xlsx","results.xlsx"]
-            with redirect(os.devnull):
+            sys.argv = ["checkexcel", "results.ref.xlsx", "results.xlsx", "-settings"]
+            comparison_output = io.StringIO()
+            with contextlib.redirect_stdout(comparison_output):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
-                print(f"{nerrors} ERRORS:"+f"{sheet}@{row},{col} - max %error={max_percentage_error}")
+                print(f"{nerrors} ERRORS:")
+                print(comparison_output.getvalue(), end="")
             else:
                 print(" OK:"+f" - max %error={max_percentage_error}")
             # end if
@@ -760,7 +863,7 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     #end if not viewing
     return
 
-def changePadding(all):
+def change_padding(all):
     """Change the padding based on the maximum length of elements in a list or the predefined setting.
 
     Parameters
@@ -787,7 +890,30 @@ def changePadding(all):
         maxlen = max(maxlen,len(d))
     return max(maxlen, settings["padding"])
 
-def runTests(testlist, testType, regenerate):
+def run_pytest_suite(suite_dir, label):
+    """Run pytest on a directory relative to the project root.
+
+    Parameters
+    ----------
+    suite_dir : str
+        Path to the pytest directory, relative to rootDirectory.
+    label : str
+        Human-readable label used in progress output.
+
+    """
+    global start_time
+    print("")
+    print("--------------------------------------------------")
+    print(label, "starting")
+    start_time = time.time()
+    target = os.path.join(rootDirectory, suite_dir)
+    result = subprocess.run([sys.executable, "-m", "pytest", target], check=False)
+    elapsed_time = time.time() - start_time
+    print("--------------------------------------------------")
+    status = "completed" if result.returncode == 0 else "FAILED"
+    print(label, f"{status} in {elapsed_time:.3f}s")
+
+def run_tests(testlist, testType, regenerate):
     """Run the tests given in the directories stored in testlist.
 
     Parameters
@@ -810,7 +936,11 @@ def runTests(testlist, testType, regenerate):
     convertTestType["preader"] = "PReader tests"
     convertTestType["p2cif"] = "P2Cif tests"
     convertTestType["benchmarks"] = "BenchMarks"
-    convertTestType["singlecrystal"] = "Single Crystals"
+    convertTestType["crystal_infrared"] = "Crystal Infrared"
+    convertTestType["crystal_raman"] = "Crystal Raman"
+    convertTestType["powder_infrared"] = "Powder Infrared"
+    convertTestType["powder_raman"] = "Powder Raman"
+    convertTestType["powder_atr"] = "Powder ATR"
     print("")
     print("--------------------------------------------------")
     print(convertTestType[testType],"starting" )
@@ -828,15 +958,15 @@ def runTests(testlist, testType, regenerate):
             print(f"       required directory is {directory}")
             sys.exit()
         if testType == "benchmarks":
-            runPdMakefile(directory,pdmakefile,regenerate,benchmarks=True)
+            run_pd_makefile(directory,pdmakefile,regenerate,benchmarks=True)
         else:
-            runPdMakefile(directory,pdmakefile,regenerate)
+            run_pd_makefile(directory,pdmakefile,regenerate)
     # end for
     elapsed_time = time.time() - test_start_time
     print("--------------------------------------------------")
     print(convertTestType[testType],f"completed in {elapsed_time:.3f}s")
 
-def readPdMakefile(directory,filename):
+def read_pd_makefile(directory,filename):
     # The first word is the dictionary key, the rest is its value
     """Read a custom makefile and return the title and instructions.
 
@@ -851,10 +981,10 @@ def readPdMakefile(directory,filename):
 
     Returns
     -------
-    tuple
-        A tuple returning a dictionary of instructions
-        - title (str): The title for the makefile, determined based on the `settings['title']` value or the directory name, or the current working directory.
-        - instructions (dict): A dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for that instruction.
+    tuple A tuple returning a dictionary of instructions - title (str): The title for the makefile, determined based on
+    the `settings['title']` value or the directory name, or the current working directory. - instructions (dict): A
+    dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for
+    that instruction.
 
     Raises
     ------
@@ -871,6 +1001,8 @@ def readPdMakefile(directory,filename):
           about the function's operation will be printed to the standard output.
 
     - The function removes line continuation characters and treats the continued lines as a single line.
+
+    - Shell-style quotes preserve arguments containing spaces, such as ``"ZnO data/finite_difference.json"``.
 
     - Lines starting with `#` are treated as comments and ignored.
 
@@ -898,7 +1030,7 @@ def readPdMakefile(directory,filename):
                 while line.endswith("\\"):
                     line = fd.readline()[:-1]
                     full_line += line.replace("\\","")
-                splits = full_line.split()
+                splits = shlex.split(full_line)
                 key = splits[0]
                 value = splits[1:]
                 instructions[key] = value
@@ -927,7 +1059,7 @@ def mychdir(directory):
     # end if
     return
 
-def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
+def run_pd_makefile(directory,pdmakefile,regenerate,benchmarks=False):
     """Run a specific pdMakefile.
 
     Parameters
@@ -954,18 +1086,18 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
         print("RunPdMakefile: pdmakefile =",pdmakefile)
         print("RunPdMakefile: cwd =",homedir)
     mychdir(directory)
-    title,instructions = readPdMakefile(directory,pdmakefile)
+    title,instructions = read_pd_makefile(directory,pdmakefile)
     if debug:
         print("RunPdMakefile: title =",title)
         print("RunPdMakefile: instructions =",instructions)
     for key in instructions:
         parameters = instructions[key]
         if key == "preader":
-            runPreaderTest(title,parameters,regenerate)
+            run_preader_test(title,parameters,regenerate)
         elif key == "vibanalysis":
-            runVibAnalysis(title,parameters,regenerate)
+            run_vib_analysis(title,parameters,regenerate)
         elif key == "p2cif":
-            runP2CifTest(title,parameters,regenerate)
+            run_p2cif_test(title,parameters,regenerate)
         elif key == "pdgui":
             if viewing:
                 parameters.extend(["-script", "script.py"])
@@ -975,20 +1107,23 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
                 parameters.extend(["-nosplash", "results.xlsx", "-exit", "-script", "script.py"])
             if debug:
                 parameters.append("-d")
-            runPDGuiTest(title,parameters,regenerate,benchmarks=benchmarks)
+            run_pdgui_test(title,parameters,regenerate,benchmarks=benchmarks)
     mychdir(homedir)
 
-def runClean():
+def run_clean():
     """Clean old results from the Examples directory.
 
-    This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.
+    This function navigates to the root directory and removes specific file types related to old results. Supported file
+    types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms
+    and will return immediately if attempted.
 
     Notes
     -----
-    - The function checks the operating system and will not execute on Windows systems (`os.name == 'nt'`).
-    - It navigates to a directory specified by a global variable `rootDirectory`.
-    - Uses `subprocess.run` with `shell=True` to execute shell commands for deleting files. This operation involves running `find` commands to locate and remove files with specified extensions.
-    - It assumes that the `rootDirectory` global variable and necessary imports (`os`, `subprocess`) are correctly defined elsewhere.
+    - The function checks the operating system and will not execute on Windows systems (`os.name == 'nt'`). - It
+      navigates to a directory specified by a global variable `rootDirectory`. - Uses `subprocess.run` with `shell=True`
+      to execute shell commands for deleting files. This operation involves running `find` commands to locate and remove
+      files with specified extensions. - It assumes that the `rootDirectory` global variable and necessary imports
+      (`os`, `subprocess`) are correctly defined elsewhere.
 
     Raises
     ------
@@ -1008,7 +1143,7 @@ def runClean():
     subprocess.run("find . -name \\*.pyc -exec rm -f {} \\;",shell=True)
     print("Cleaning complete")
 
-def runPyPi():
+def run_pypi():
     """Create PyPi distribution files, restricted by OS.
 
     This function changes the current working directory to `rootDirectory` 
@@ -1025,7 +1160,7 @@ def runPyPi():
     # pip install setuptools
     subprocess.run("rm -rf build dist PDielec.egg-info; python -m build ",shell=True)
 
-def testForRootDirectory(path):
+def test_for_root_directory(path):
     """Test if a given path contains a subdirectory named 'Examples'.
 
     This function checks if the given path has a direct subdirectory
@@ -1046,7 +1181,7 @@ def testForRootDirectory(path):
     test = os.path.join(path,"Examples")
     return os.path.isdir(test)
 
-def findRootDirectory(start):
+def find_root_directory(start):
     """Find the root directory starting from start.
 
     Parameters
@@ -1065,7 +1200,7 @@ def findRootDirectory(start):
     while path != lastpath:
         lastpath = path
         path,tail=os.path.split(path)
-        if testForRootDirectory(path):
+        if test_for_root_directory(path):
             return path
     print("Unable to locate root directory")
     sys.exit()
@@ -1073,16 +1208,29 @@ def findRootDirectory(start):
 def main():
     """Process command line arguments and execute actions (main routine).
 
-    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
+    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks,
+    cleaning build directories, and installing scripts.
 
     Command line options
     --------------------
-    - `test` or `tests`: Runs all test cases.
-    - `test-singlecrystal`: Runs tests for single crystal analysis.
+    - `test` or `tests`: Runs all pytest suites first, then the example tests.
+    - `test-crystal_ir`: Runs tests for crystal infrared analysis.
+    - `test-powder_ir`: Runs tests for powder infrared analysis.
+    - `test-crystal_raman`: Runs tests for crystal raman analysis.
+    - `test-powder_raman`: Runs tests for powder raman analysis.
+    - `test-atr`: Runs tests for powder atr analysis.
     - `test-preader`: Runs tests for the preader component.
     - `test-p2cif`: Runs tests for the p2cif component.
     - `test-pdgui`: Runs tests for the PDGUI component.
     - `test-vibanalysis`: Runs tests for vibrational analysis.
+    - `test-pytest-powder_raman`: Runs pytest suite in PDielec/Tests/Powder_Raman/.
+    - `test-pytest-crystal_raman`: Runs pytest suite in PDielec/Tests/Crystal_Raman/.
+    - `test-pytest-materials`: Runs pytest suite in PDielec/Tests/Materials/.
+    - `test-pytest-calculator`: Runs pytest suite in PDielec/Tests/Calculator/.
+    - `test-pytest-unitcell`: Runs pytest suite in PDielec/Tests/UnitCell/.
+    - `test-pytest-gtmcore`: Runs pytest suite in PDielec/Tests/GTMcore/.
+    - `test-pytest-constants`: Runs pytest suite in PDielec/Tests/Constants/.
+    - `test-pytests`: Runs all pytest suites.
     - `benchmarks`: Executes benchmark tests.
     - `pypi`: Runs commands for PyPI distribution.
     - `clean`: Cleans up directories.
@@ -1090,23 +1238,23 @@ def main():
     - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
     - `-root` or `--root`: Specifies the root directory to operate in.
     - `-debug` or `--debug` or `-d`: Enables debug mode.
-    - `-usesystem`: Use system installed binaries rather than local ones.
+    - `-usesystem` or `--usesystem`: Use system installed binaries rather than local ones.
     - `-view` or `--view` or `-v`: Enables viewing mode.
     - `-regenerate`: Forces regeneration of test data.
     - `-padding`: Sets padding for some operation (expects an integer value next).
-    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+    - `-directory` or `--directory`: Display directory names when listing tests (takes no value).
     - `<filename>.pdmake`: Specifies a PDMakefile to execute.
 
     Raises
     ------
-    SystemExit
-        If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root directory, command not executed in the PDielec home directory).
+    SystemExit If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root
+    directory, command not executed in the PDielec home directory).
 
     Notes
     -----
-    - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and `useLocal`.
-    - Requires the `os`, `sys`, and specific project function imports to function.
-    - The script changes the current working directory multiple times, which affects relative path usage.
+    - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and
+      `useLocal`. - Requires the `os`, `sys`, and specific project function imports to function. - The script changes
+      the current working directory multiple times, which affects relative path usage.
 
     """    
     global debug
@@ -1124,7 +1272,7 @@ def main():
     regenerate = False
     scriptsDirectory="~/bin"
     rootDirectory = originalDirectory
-    rootDirectory = findRootDirectory(rootDirectory)
+    rootDirectory = find_root_directory(rootDirectory)
     actions = []
     pdmakefiles = []
     pdgui_tokens = []
@@ -1132,10 +1280,34 @@ def main():
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
-        if token in ( "test", "tests" ):
-            actions.append("test all")
-        elif token == "test-singlecrystal":
-            actions.append("test singlecrystal")
+        if token in ("test", "tests", "test-pytests"):
+            actions.append("test pytests")
+            if token != "test-pytests":
+                actions.append("test all")
+        elif token == "test-crystal_ir":
+            actions.append("test crystal_infrared")
+        elif token == "test-crystal_raman":
+            actions.append("test crystal_raman")
+        elif token == "test-powder_ir":
+            actions.append("test powder_infrared")
+        elif token == "test-powder_raman":
+            actions.append("test powder_raman")
+        elif token == "test-pytest-powder_raman":
+            actions.append("test pytest_powder_raman")
+        elif token == "test-pytest-crystal_raman":
+            actions.append("test pytest_crystal_raman")
+        elif token == "test-pytest-materials":
+            actions.append("test pytest_materials")
+        elif token == "test-pytest-calculator":
+            actions.append("test pytest_calculator")
+        elif token == "test-pytest-unitcell":
+            actions.append("test pytest_unitcell")
+        elif token == "test-pytest-gtmcore":
+            actions.append("test pytest_gtmcore")
+        elif token == "test-pytest-constants":
+            actions.append("test pytest_constants")
+        elif token == "test-atr":
+            actions.append("test powder_atr")
         elif token == "test-preader":
             actions.append("test preader")
         elif token == "test-p2cif":
@@ -1151,7 +1323,7 @@ def main():
             rootDirectory = tokens[itoken]
         elif token in ( "-debug", "--debug", "-d" ):
             debug = True
-        elif token == "-usesystem":
+        elif token in ("-usesystem", "--usesystem"):
             useLocal = False
         elif token in ( "-view", "--view", "-v" ):
             viewing = True
@@ -1161,7 +1333,6 @@ def main():
             itoken += 1
             settings["padding"] = int(tokens[itoken])
         elif token in ( "-directory", "--directory" ):
-            itoken += 1
             settings["title"] = "directory"
         elif token == "pypi":
             actions.append("run pypi")
@@ -1201,7 +1372,7 @@ def main():
     # If the are then use them
     # 
     if useLocal:
-        useLocal = checkLocalExecutables()
+        useLocal = check_local_executables()
     # Change directory to the Examples directory
     if not os.path.isdir("Examples"):
         print("Error: command needs to be executed in the PDielec home directory")
@@ -1211,7 +1382,7 @@ def main():
     #
     for pdmakefile in pdmakefiles:
         directory = originalDirectory
-        runPdMakefile(directory,pdmakefile,regenerate)
+        run_pd_makefile(directory,pdmakefile,regenerate)
     #
     # Now loop over the actions
     #
@@ -1221,30 +1392,60 @@ def main():
         test_all.extend(test_p2cif)
         test_all.extend(test_preader)
         test_all.extend(test_pdgui)
+        test_all.extend(test_powder_raman)
+        test_all.extend(test_crystal_raman)
         test_all.extend(test_vibanalysis)
-        settings["padding"] = changePadding(test_all)
+        settings["padding"] = change_padding(test_all)
     for action in actions:
         if action == "test all":
-            runTests(test_p2cif      ,"p2cif"      ,regenerate)
-            runTests(test_preader    ,"preader"    ,regenerate)
-            runTests(test_pdgui      ,"pdgui"      ,regenerate)
-            runTests(test_vibanalysis,"vibanalysis",regenerate)
+            run_tests(test_p2cif      ,"p2cif"      ,regenerate)
+            run_tests(test_preader    ,"preader"    ,regenerate)
+            raman_examples = set(test_powder_raman + test_crystal_raman)
+            gui_examples = [directory for directory in test_pdgui if directory not in raman_examples]
+            run_tests(gui_examples    ,"pdgui"      ,regenerate)
+            run_tests(test_powder_raman,"powder_raman",regenerate)
+            run_tests(test_crystal_raman,"crystal_raman",regenerate)
+            run_tests(test_vibanalysis,"vibanalysis",regenerate)
         elif action == "test preader":
-            runTests(test_preader    ,"preader"    ,regenerate)
+            run_tests(test_preader    ,"preader"    ,regenerate)
         elif action == "test p2cif":
-            runTests(test_p2cif      ,"p2cif"      ,regenerate)
+            run_tests(test_p2cif      ,"p2cif"      ,regenerate)
         elif action == "test pdgui":
-            runTests(test_pdgui      ,"pdgui"      ,regenerate)
-        elif action == "test singlecrystal":
-            runTests(test_singlecrystal      ,"singlecrystal"      ,regenerate)
+            run_tests(test_pdgui      ,"pdgui"      ,regenerate)
+        elif action == "test crystal_infrared":
+            run_tests(test_crystal_infrared      ,"crystal_infrared"      ,regenerate)
+        elif action == "test crystal_raman":
+            run_tests(test_crystal_raman      ,"crystal_raman"      ,regenerate)
+        elif action == "test powder_infrared":
+            run_tests(test_powder_infrared      ,"powder_infrared"      ,regenerate)
+        elif action == "test powder_raman":
+            run_tests(test_powder_raman      ,"powder_raman"      ,regenerate)
+        elif action == "test pytests":
+            run_pytest_suite(os.path.join("PDielec", "Tests"), "Pytest All")
+        elif action == "test pytest_powder_raman":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Powder_Raman"), "Pytest Powder Raman")
+        elif action == "test pytest_crystal_raman":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Crystal_Raman"), "Pytest Crystal Raman")
+        elif action == "test pytest_materials":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Materials"), "Pytest Materials")
+        elif action == "test pytest_calculator":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Calculator"), "Pytest Calculator")
+        elif action == "test pytest_unitcell":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "UnitCell"), "Pytest UnitCell")
+        elif action == "test pytest_gtmcore":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "GTMcore"), "Pytest GTMcore")
+        elif action == "test pytest_constants":
+            run_pytest_suite(os.path.join("PDielec", "Tests", "Constants"), "Pytest Constants")
+        elif action == "test powder_atr":
+            run_tests(test_powder_atr      ,"powder_atr"      ,regenerate)
         elif action == "test vibanalysis":
-            runTests(test_vibanalysis,"vibanalysis",regenerate)
+            run_tests(test_vibanalysis,"vibanalysis",regenerate)
         elif action == "run benchmarks":
-            runTests(benchmarks,"benchmarks",regenerate)
+            run_tests(benchmarks,"benchmarks",regenerate)
         elif action == "run pypi":
-            runPyPi()
+            run_pypi()
         elif action == "run clean":
-            runClean()
+            run_clean()
         elif action == "install":
             install(scriptsDirectory)
         else:

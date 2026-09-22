@@ -46,6 +46,19 @@ preamble = r'''
 \usepackage{float}
 \usepackage{parskip}
 \usepackage{amsmath}
+% Scientific Unicode in prose; HTML continues to use the original characters.
+\DeclareUnicodeCharacter{207B}{\ensuremath{^{-}}}
+\DeclareUnicodeCharacter{207D}{\ensuremath{^{(}}}
+\DeclareUnicodeCharacter{207E}{\ensuremath{^{)}}}
+\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{03C7}{\ensuremath{\chi}}
+\DeclareUnicodeCharacter{03B1}{\ensuremath{\alpha}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03C0}{\ensuremath{\pi}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\DeclareUnicodeCharacter{2010}{-}
+\setlength{\headheight}{14pt}
 \newcommand{\water}{H_{2}O}
 \newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
 \newcommand{\tensorbf}[1]{\bar{\bar{\boldsymbol{#1}}}}
@@ -102,6 +115,7 @@ autoapi_template_dir="_template/autoapi"
 autoapi_keep_files = True
 autoapi_add_toctree_entry = True
 autoapi_ignore = [
+                  '*conf.py*',
                   '*test_qdialog*',
                   '*error_with_QForm*',
                   '*test_ttm*',
@@ -127,8 +141,17 @@ def skip_member(app, what, name, obj, skip, options):
     if obj.name in skipping_list:
         skip = True
     return skip
+def enable_pdf_image_conversion(app):
+    """Load the optional converter only for PDF/LaTeX builds."""
+    if app.builder.format == "latex":
+        app.setup_extension("sphinxcontrib.rsvgconverter")
+
+
 def setup(sphinx):
+    sphinx.connect("builder-inited", enable_pdf_image_conversion)
     sphinx.connect("autoapi-skip-member", skip_member)
+    sphinx.connect('html-page-context', add_pdgui_section_navigation, priority=800)
+    sphinx.connect('html-page-context', filter_unavailable_source_pages)
 
 # Autoapi stuff ends here
 
@@ -169,7 +192,7 @@ language = 'en'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = ["_build", "index-latex.rst", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'default'
@@ -285,3 +308,57 @@ texinfo_documents = [
 
 
 # -- Extension configuration -------------------------------------------------
+
+def filter_unavailable_source_pages(app, pagename, templatename, context, doctree):
+    """Keep the viewcode index limited to source pages that were generated."""
+    if pagename != '_modules/index':
+        return
+    from pathlib import Path
+    from bs4 import BeautifulSoup
+
+    # Sphinx can retain failed source lookups (including compiled Qt modules)
+    # in its index. viewcode emits its source pages before this index page.
+    output_directory = Path(app.builder.get_outfilename(pagename)).parent
+    body = BeautifulSoup(context.get('body', ''), 'html.parser')
+    for item in body.find_all('li'):
+        link = item.find('a', href=True, recursive=False)
+        if link is None:
+            continue
+        target = output_directory / link['href']
+        if not target.is_file() and not (target / 'index.html').is_file():
+            item.decompose()
+    context['body'] = str(body)
+
+
+def add_pdgui_section_navigation(app, pagename, templatename, context, doctree):
+    """Add the main PDGui sections to Furo's page-based navigation tree."""
+    from bs4 import BeautifulSoup
+    from furo.navigation import get_navigation_tree
+
+    if app.config.html_theme != 'furo' or 'toctree' not in context:
+        return
+
+    options = dict(collapse=False, includehidden=True)
+    navigation = BeautifulSoup(
+        context['toctree'](titles_only=True, maxdepth=-1, **options), 'html.parser')
+    sections = BeautifulSoup(
+        context['toctree'](titles_only=False, maxdepth=2, **options), 'html.parser')
+    pdgui_url = context['pathto']('pdgui')
+    page_link = navigation.find('a', href=pdgui_url)
+    if page_link is None:
+        return
+
+    children = page_link.parent.find('ul', recursive=False)
+    if children is None:
+        children = navigation.new_tag('ul')
+        page_link.parent.append(children)
+
+    anchors = ('main-tab', 'settings-tab', 'scenario-tabs', 'plotting-tab',
+               'analysis-tab', 'd-viewer-tab', 'fitter-tab')
+    section_url = '' if pdgui_url == '#' else pdgui_url
+    for position, anchor in enumerate(anchors):
+        link = sections.find('a', href=section_url + '#' + anchor)
+        if link is not None:
+            children.insert(position, link.parent.extract())
+
+    context['furo_navigation_tree'] = get_navigation_tree(str(navigation))

@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
 #
 #
 #
@@ -24,7 +24,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Needle [001]'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -46,10 +46,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Needle'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Plate (001)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
@@ -71,10 +71,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Plate'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Sphere'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0

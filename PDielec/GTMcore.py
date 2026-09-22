@@ -1,7 +1,6 @@
 """The pyGTM module.
 
 It has been heavily modified by John Kendrick for inclusion in the PDielec library
-Quite a lot has been removed as the fields spatial distribution was not needed
 Thanks to the authors of the original code for all their hard work
 
 This program is free software: you can redistribute it and/or modify
@@ -31,8 +30,8 @@ https://github.com/ddietze/FSRStools
 
 Please cite the relevant associated publications if you use this code.
 
-Author:
-    - Mathieu Jeannin math.jeannin@free.fr (permanent)
+Author: 
+    - Mathieu Jeannin mathieu.jeannin@c2n.upsaclay.fr  math.jeannin@free.fr (permanent)
 
 Affiliations:
     - Laboratoire de Physique de l'Ecole Normale Superieure (2019)
@@ -46,7 +45,7 @@ The optical system is assembled using the :py:class:`System` class.
 **Change log:**
 
     *01-10-2024*:
-        - Moving back to 63 bit arithmetic as scattering formalism is stable
+        - Moving back to 64 bit arithmetic as scattering formalism is stable
 
     *01-01-2023*: 
         
@@ -58,8 +57,8 @@ The optical system is assembled using the :py:class:`System` class.
     
     *15-10-2021*:
         
-        - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary parts of the wavevectors
-        - Corrected a sign error in gamma32 that lead to field discontinuities
+        - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary
+          parts of the wavevectors - Corrected a sign error in gamma32 that lead to field discontinuities
 
     *23 June 2021*:
         - integrated the code into pdielec and pdgui
@@ -90,6 +89,7 @@ The optical system is assembled using the :py:class:`System` class.
 ######## general utilities
 
 import copy
+import logging
 import sys
 
 import numpy as np
@@ -97,8 +97,9 @@ import scipy.linalg as lag
 
 from PDielec.Constants import epsilon_0_si, speed_light_si
 
-#jk c_const = 299792458 # m/s
-#jk eps0 = 8.854e-12 ## vacuum permittivity
+logger = logging.getLogger(__name__)
+
+
 #
 # JK using PDielec constants
 #
@@ -121,7 +122,7 @@ def vacuum_eps(f):
     """
     try:
         return np.ones(len(f))
-    except Exception:
+    except TypeError:
         return 1.0 + 0.0j
     
 def exact_inv_2x2(M):
@@ -182,11 +183,8 @@ def exact_inv_4x4(M):
 
     Notes
     -----
-    This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. 
-
-    See Also
-    --------
-    http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche23.html : For mathematical background related to this computation.
+    This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in
+    `FSRStools <https://github.com/ddietze/FSRStools>`_.
 
     """
     assert M.shape == (4, 4)
@@ -206,10 +204,10 @@ def exact_inv_4x4(M):
 
     if detA == 0:
         try:
-            print("Warning 4x4 inversion problem 1")
+            logger.warning("Warning 4x4 inversion problem 1")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
-        except Exception:
-            print("Warning 4x4 inversion problem 2")
+        except (ValueError, np.linalg.LinAlgError):
+            logger.warning("Warning 4x4 inversion problem 2")
             result = np.cdouble(lag.pinv(np.cdouble(M)))
         return result
 
@@ -354,6 +352,10 @@ class Layer:
         self.largest_exponent = 0.0
         self.exponent_threshold = exponent_threshold
         self.coherent = True
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = False
 
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.cdouble)                  # constitutive relations
@@ -376,7 +378,7 @@ class Layer:
         self.set_epsilon(epsilon)              # set epsilon, vacuum by default (JK change)
         self.set_euler(theta, phi, psi)        # set orientation of crystal axis w/ respect to the lab frame
 
-    def isCoherent(self):
+    def is_coherent(self):
         """Return True if the layer is a coherent layer.
 
         Parameters
@@ -412,7 +414,8 @@ class Layer:
 
         Parameters
         ----------
-        epsilon_function : complex function
+        epsilon_function : complex
+            function
             A function representing the complex dielectric function.
 
         Returns
@@ -448,7 +451,6 @@ class Layer:
         epsilon_xstal = self.epsilon_tensor_function(f)
         if not isinstance(epsilon_xstal,np.ndarray):
             epsilon_xstal = np.eye(3,dtype=np.cdouble)*epsilon_xstal
-        #JK Changed the order of the transformation to a transformation of basis vectors
         # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
         # rather than a transformation of the coordinates active->passive
         self.epsilon = np.matmul(self.euler, np.matmul(epsilon_xstal,self.euler_inverse))
@@ -485,8 +487,6 @@ class Layer:
         self.euler[2, 0] = np.sin(theta) * np.sin(psi)
         self.euler[2, 1] = np.sin(theta) * np.cos(psi)
         self.euler[2, 2] = np.cos(theta)
-        #JK Added the inverse calculation here so it is only done once
-        #JK self.euler_inverse = np.cdouble(lag.pinv(np.cdouble(self.euler)))
         self.euler_inverse = exact_inv_3x3(self.euler)
 
     def calculate_matrices(self, zeta):
@@ -605,28 +605,19 @@ class Layer:
                 
         Berreman_unsorted = np.zeros((4,3), dtype=np.cdouble)
         
-        kt = 0 
-        kr = 0
         ## sort berremann qi's according to (12)
-        ##JK small modification to fix problems when qs are nearly real
-        ##JK if any(np.abs(np.imag(qsunsorted))):
-        if any(np.abs(np.imag(qsunsorted))>1.0E-16):
-            for km in range(0,4):
-                if np.imag(qsunsorted[km])>=0 :
-                    transmode[kt] = km
-                    kt = kt + 1
-                else:
-                    reflmode[kr] = km
-                    kr = kr +1
-        else:
-            for km in range(0,4):
-                ##JK if np.real(qsunsorted[km])>0:
-                if np.real(qsunsorted[km])>=0 and kt < 2  :
-                    transmode[kt] = km
-                    kt = kt + 1
-                else:
-                    reflmode[kr] = km
-                    kr = kr +1
+        imag_q = np.imag(qsunsorted)
+        imag_thr = 1.0E-16
+        trans_candidates = [km for km in range(4) if imag_q[km] > imag_thr]
+        refl_candidates = [km for km in range(4) if imag_q[km] < -imag_thr]
+        if len(trans_candidates) != 2 or len(refl_candidates) != 2:
+            trans_candidates = [km for km in range(4) if np.real(qsunsorted[km]) >= 0]
+            trans_candidates = trans_candidates[:2]
+            refl_candidates = [km for km in range(4) if km not in trans_candidates]
+            while len(trans_candidates) < 2:
+                trans_candidates.append(refl_candidates.pop(0))
+        transmode[:] = trans_candidates[:2]
+        reflmode[:] = refl_candidates[:2]
         ## Calculate the Poynting vector for each Psi using (16-18)
         for km in range(0,4):
             Ex = psiunsorted[0,km]
@@ -977,8 +968,8 @@ class CoherentLayer(Layer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
         self.inCoherentIntensity = False
@@ -1076,8 +1067,8 @@ class SemiInfiniteLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
         self.inCoherentIntensity = False
@@ -1122,8 +1113,9 @@ class SemiInfiniteLayer(CoherentLayer):
 
         """
         self.calculate_propagation_exponents(f)
-        return np.eye( 4, dtype=np.cdouble)
-        
+        self.Ki = np.eye(4, dtype=np.cdouble)
+        return self.Ki
+
 class IncoherentIntensityLayer(CoherentLayer):
     """Define an incoherent layer using intensity transfer matrices.
 
@@ -1147,8 +1139,8 @@ class IncoherentIntensityLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = True
@@ -1184,15 +1176,15 @@ class IncoherentAveragePhaseLayer(CoherentLayer):
             The number of samples to be used in averages (default is 4)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
         self.inCoherentPhase = False
         self.inCoherentAveragePhase = True
         self.inCoherentThick = False
-        self.phaseShift = layer.getPhaseShift()
+        self.phaseShift = layer.get_phase_shift()
         return
 
     def calculate_propagation_exponents(self,f):
@@ -1242,8 +1234,8 @@ class IncoherentPhaseLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
@@ -1310,8 +1302,8 @@ class IncoherentThickLayer(CoherentLayer):
             Prevent calculation of large exponents (default is 700)
 
         """
-        thickness = layer.getThicknessInMetres()
-        epsilon = layer.getPermittivityFunction()
+        thickness = layer.get_thickness_in_metres()
+        epsilon = layer.get_permittivity_function()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
@@ -1361,7 +1353,7 @@ class IncoherentThickLayer(CoherentLayer):
         super().calculate_scattering_matrix(b)
         # Now manually set the backwards reflections for both s and p to zero
         self.SMatrix.S11 = np.zeros( (2,2) )
-        self.SMatrix.calculateS()
+        self.SMatrix.calculate_s()
         return
 
 ###########################
@@ -1392,7 +1384,10 @@ class System:
     -----
     Layers can be added and removed (not inserted).
 
-    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
+    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls
+    :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they
+    require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of
+    an incident plane wave using :py:func:`calculate_Efield`.
 
     """
 
@@ -1557,7 +1552,7 @@ class System:
         if pos >= 0 and pos < len(self.layers):
             self.layers.pop(pos)
         else:
-            print("Wrong position given. No layer deleted")
+            logger.error("Wrong position given. No layer deleted")
 
     def initialize_sys(self, f):
         """Set the values of epsilon at the given frequency in all the layers.
@@ -1665,9 +1660,14 @@ class System:
         -----
         **IMPORTANT**
 
-        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions. The new definition of this function **BREAKS compatibility** with the previous one.
+        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+          mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
+          The new definition of this function **BREAKS compatibility** with the previous one.
 
-        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well defined. The intensity reflection coefficient is also correct. However, the intensity transmission coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity coefficients.
+        - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well
+          defined. The intensity reflection coefficient is also correct. However, the intensity transmission
+          coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity
+          coefficients.
 
         Note also the different ordering of the coefficients, for consistency with Passler's matlab code.
 
@@ -1757,7 +1757,514 @@ class System:
 
         return r_out, R_out, t_out, T_out
 
-    def overflowErrors(self):
+    def calculate_Efield(self, f, zeta_sys, z_vect=None, x=0.0,
+                         magnetic=False, dz=None):
+        """Calculate the electric field profiles for both s-pol and p-pol excitation.
+
+        Parameters
+        ----------
+        f : float
+            Frequency (Hz).
+        zeta_sys : complex
+            In-plane normalised wavevector kx/k0.
+        z_vect : 1D array, optional
+            Coordinates at which the calculation is done. If None, the layer
+            boundaries are used.
+        x : float or 1D array, optional
+            x-coordinates (reserved for future 2D field plots). Default is 0.0.
+        magnetic : bool, optional
+            If True, also compute and return the magnetic field vector.
+            Default is False.
+        dz : float, optional
+            Spatial resolution along the propagation (z) axis. Supersedes
+            `z_vect` when provided.
+
+        Returns
+        -------
+        z : 1D array
+            z-coordinates at which the fields were evaluated.
+        E_out : ndarray, shape (6, len(z))
+            Total electric field in the structure (rows 0–2: p-pol in,
+            rows 3–5: s-pol in).
+        H_out : ndarray, shape (6, len(z)), optional
+            Total magnetic field (only returned when ``magnetic=True``).
+        zn : 1D array
+            Positions of the layer interfaces.
+
+        Notes
+        -----
+        Adapted from the original pyGTM ``calculate_Efield`` (v19-03-2020).
+        All calls to ``exact_inv`` updated to ``exact_inv_4x4``.
+        """
+        self.calculate_GammaStar(f, zeta_sys)
+        r_out, R_out, t, T = self.calculate_r_t(zeta_sys)
+
+        ## Nb of layers
+        laynum = len(self.layers)
+        zn = np.zeros(laynum+2) ## superstrate+layers+substrate
+
+        ## 4-components field tensor at the front and back interfaces of the layer
+        ## correspond to E0 and E1
+        ## defined by (37*)
+        # E0 (E^(p/o)_t, E^(s/e)_t, E^(p/o)_r, E^(s/e)_r) twice for p-pol in and s-pol in
+        F_ft = np.zeros((laynum+2, 8), dtype=np.complex128)
+        # E1 (E^(p/o)_t, E^(s/e)_t, E^(p/o)_r, E^(s/e)_r) twice for p-pol in and s-pol in
+        F_bk = np.zeros((laynum+2, 8), dtype=np.complex128)
+
+        zn[-1] = 0.0 ## initially with the substrate
+
+        ####### First step of the algorithm starts from the top of the substrate
+        ## (37*) with p-pol excitation
+        F_ft[-1,0] = t[0] # t_pp
+        F_ft[-1,1] = t[1] # t_ps
+        ## (37*) with s-pol excitation
+        F_ft[-1,4] = t[2] # t_sp
+        F_ft[-1,5] = t[3] # t_ss
+
+        ## propagate to the "end" of the substrate
+        F_bk[-1,:4] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1,:4])
+        F_bk[-1,4:] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1,4:])
+
+        def _efield_Ki(layer):
+            """Return the effective propagation matrix for the field recursion.
+
+            For IncoherentIntensityLayer, phase must not propagate backward through
+            the incoherent medium into the Raman source layer.  Only the attenuation
+            (real part of the exponent) is retained so the substrate etalon is
+            suppressed.  For a lossless material this returns the identity matrix.
+            For all other layer types the full Ki is returned unchanged.
+            """
+            if getattr(layer, 'inCoherentIntensity', False):
+                return np.diag([np.exp(np.real(e)) for e in layer.propagation_exponents]).astype(np.complex128)
+            return layer.Ki
+
+        if laynum > 0:
+            ## First layer is a special case to handle System.substrate
+            zn[-2] = zn[-1]-self.substrate.thick
+            Aim1 = self.layers[-1].Ai
+            Ai = self.substrate.Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[-2,:4] = np.matmul(Li, F_ft[-1,:4])
+            F_bk[-2,4:] = np.matmul(Li, F_ft[-1,4:])
+            Ki_last = _efield_Ki(self.layers[-1])
+            F_ft[-2,:4] = np.matmul(Ki_last, F_bk[-2,:4])
+            F_ft[-2,4:] = np.matmul(Ki_last, F_bk[-2,4:])
+
+            ## Recursively compute the fields from here
+            for kl in range(1, laynum)[::-1]:
+                zn[kl] = zn[kl+1]-self.layers[kl].thick
+                Aim1 = self.layers[kl-1].Ai
+                Ai = self.layers[kl].Ai
+                Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+                # F_ft == E0  //  F_bk == E1
+                F_bk[kl,:4] = np.matmul(Li, F_ft[kl+1,:4])
+                F_bk[kl,4:] = np.matmul(Li, F_ft[kl+1,4:])
+                Ki_kl = _efield_Ki(self.layers[kl-1])
+                F_ft[kl,:4] = np.matmul(Ki_kl, F_bk[kl,:4])
+                F_ft[kl,4:] = np.matmul(Ki_kl, F_bk[kl,4:])
+
+            zn[0] = zn[1]-self.layers[0].thick
+            Aim1 = self.superstrate.Ai
+            Ai = self.layers[0].Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            # F_ft == E0  //  F_bk == E1
+            F_bk[0,:4] = np.matmul(Li, F_ft[1,:4])
+            F_bk[0,4:] = np.matmul(Li, F_ft[1,4:])
+            F_ft[0,:4] = np.matmul(self.superstrate.Ki, F_bk[0,:4])
+            F_ft[0,4:] = np.matmul(self.superstrate.Ki, F_bk[0,4:])
+
+        else:
+            zn[0] = -self.substrate.thick
+            Aim1 = self.superstrate.Ai
+            Ai = self.substrate.Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            # F_ft == E0  //  F_bk == E1
+            F_bk[0,:4] = np.matmul(Li, F_ft[1,:4])
+            F_bk[0,4:] = np.matmul(Li, F_ft[1,4:])
+            F_ft[0,:4] = np.matmul(self.superstrate.Ki, F_bk[0,:4])
+            F_ft[0,4:] = np.matmul(self.superstrate.Ki, F_bk[0,4:])
+
+        ### shift everything so that the incident boundary is at z=0
+        zn = zn-zn[0]
+
+        ## define the spatial points where the computation is performed
+        if dz is None:
+            if z_vect is None:
+                z = self.get_layers_boundaries()
+            else:
+                z = z_vect
+        else:
+            z = np.arange(-self.superstrate.thick, zn[-1], dz)
+
+        # 2x4-component field tensor propagated from the front surface
+        Eprop = np.empty((8), dtype=np.complex128)
+        # 4-component field tensor for each direction and polarisation
+        F_tens = np.zeros((24, len(z)), dtype=np.complex128)
+        if magnetic:
+            H_tens = np.zeros((24, len(z)), dtype=np.complex128)
+        # final electric field E_out = (Ex, Ey, Ez) for p-pol and s-pol excitation
+        E_out = np.zeros((6, len(z)), dtype=np.complex128)
+        if magnetic:
+            H_out = np.zeros((6, len(z)), dtype=np.complex128)
+
+        ### Elementary propagation matrix
+        dKiz = np.zeros((4, 4), dtype=np.complex128)
+
+        ## starting from the superstrate:
+        current_layer = 0
+        L = self.superstrate
+        for ii, zc in enumerate(z):
+
+            while current_layer < laynum+1 and zc > zn[current_layer]:
+                current_layer += 1
+                if current_layer == laynum+1: ## reached substrate
+                    L = self.substrate
+                else:
+                    L = self.layers[current_layer-1]
+
+            for kk in range(4):
+                if getattr(L, 'coherent', False):
+                    # Coherent layers: negate the propagation exponent so that
+                    # exp(+i ω qs (zc - zn) / c) is used instead of exp(-i ...).
+                    # This gives continuous, physically correct fields at every
+                    # layer boundary (both real interfaces and artificial subdivision
+                    # boundaries), ensuring subdivision invariance for the coherent
+                    # Raman source integral.
+                    partial_exponent = -L.propagation_exponents[kk] * (zc - zn[current_layer]) / L.thick
+                else:
+                    # Incoherent layers keep the original formula so that the
+                    # intentional averaging / phase shifts in propagation_exponents
+                    # are preserved.
+                    partial_exponent = L.propagation_exponents[kk] * (zc - zn[current_layer]) / L.thick
+                dKiz[kk, kk] = np.exp(partial_exponent)
+            # IncoherentThickLayer suppresses backward modes entirely in its Ki; apply the
+            # same suppression to the partial-depth propagator for consistency.
+            if getattr(L, 'inCoherentThick', False):
+                dKiz[2,2] = 0.0
+                dKiz[3,3] = 0.0
+            # IncoherentIntensityLayer: use only attenuation (Re of exponent), discard phase.
+            # This makes the E-field propagation consistent with the intensity-based GammaStar
+            # treatment (element-wise |T|² in TransferMatrixSystem.calculate_GammaStar).
+            # For a transparent layer Re(exponent)=0 so dKiz → identity (no phase accumulated).
+            if getattr(L, 'inCoherentIntensity', False):
+                for kk in range(4):
+                    dKiz[kk, kk] = np.exp(
+                        np.real(L.propagation_exponents[kk]) * (zc - zn[current_layer]) / L.thick
+                    )
+
+            #### Eprop propagated from front surface to back of next layer
+            Eprop[:4] = np.matmul(dKiz, F_bk[current_layer,:4])
+            Eprop[4:] = np.matmul(dKiz, F_bk[current_layer,4:])
+
+            ## wave vector for each mode in layer L
+            k_lay = np.zeros((4, 3), dtype=np.complex128)
+            k_lay[:,0] = zeta_sys
+            for jj, qj in enumerate(L.qs):
+                k_lay[jj,2] = qj
+
+            ## p-pol in
+            # forward, o/p
+            F_tens[:3,ii] = Eprop[0]*L.gamma[0,:]
+            if magnetic:
+                H_tens[:3,ii] = (1./L.mu)*np.cross(k_lay[0,:], F_tens[:3,ii])
+            # forward, e/s
+            F_tens[3:6,ii] = Eprop[1]*L.gamma[1,:]
+            if magnetic:
+                H_tens[3:6,ii] = (1./L.mu)*np.cross(k_lay[1,:], F_tens[3:6,ii])
+            # backward, o/p
+            F_tens[6:9,ii] = Eprop[2]*L.gamma[2,:]
+            if magnetic:
+                H_tens[6:9,ii] = (1./L.mu)*np.cross(k_lay[2,:], F_tens[6:9,ii])
+            # backward, e/s
+            F_tens[9:12,ii] = Eprop[3]*L.gamma[3,:]
+            if magnetic:
+                H_tens[9:12,ii] = (1./L.mu)*np.cross(k_lay[3,:], F_tens[9:12,ii])
+            ## s-pol in
+            # forward, o/p
+            F_tens[12:15,ii] = Eprop[4]*L.gamma[0,:]
+            if magnetic:
+                H_tens[12:15,ii] = (1./L.mu)*np.cross(k_lay[0,:], F_tens[12:15,ii])
+            # forward, e/s
+            F_tens[15:18,ii] = Eprop[5]*L.gamma[1,:]
+            if magnetic:
+                H_tens[15:18,ii] = (1./L.mu)*np.cross(k_lay[1,:], F_tens[15:18,ii])
+            # backward, o/p
+            F_tens[18:21,ii] = Eprop[6]*L.gamma[2,:]
+            if magnetic:
+                H_tens[18:21,ii] = (1./L.mu)*np.cross(k_lay[2,:], F_tens[18:21,ii])
+            # backward, e/s
+            F_tens[21:,ii] = Eprop[7]*L.gamma[3,:]
+            if magnetic:
+                H_tens[21:,ii] = (1./L.mu)*np.cross(k_lay[3,:], F_tens[21:,ii])
+
+            ### Total electric field (sign flip for backward propagation is in gamma)
+            # p in
+            E_out[:3,ii] = F_tens[:3,ii]+F_tens[3:6,ii]+F_tens[6:9,ii]+F_tens[9:12,ii]
+            if magnetic:
+                H_out[:3,ii] = H_tens[:3,ii]+H_tens[3:6,ii]+H_tens[6:9,ii]+H_tens[9:12,ii]
+            # s in
+            E_out[3:6,ii] = F_tens[12:15,ii]+F_tens[15:18,ii]+F_tens[18:21,ii]+F_tens[21:,ii]
+            if magnetic:
+                H_out[3:6,ii] = H_tens[12:15,ii]+H_tens[15:18,ii]+H_tens[18:21,ii]+H_tens[21:,ii]
+
+        if magnetic:
+            return z, E_out, H_out, zn[:-1]  # last interface is useless (substrate=infinite)
+        else:
+            return z, E_out, zn[:-1]
+
+    def calculate_Poynting_Absorption_vs_z(self, z, E, H, R):
+        """Calculate the z-dependent Poynting vector and cumulated absorption.
+
+        Parameters
+        ----------
+        z : 1D array
+            Spatial coordinate for the fields.
+        E : ndarray, shape (6, len(z))
+            Electric field vector (p- and s-pol in) along z.
+        H : ndarray, shape (6, len(z))
+            Magnetic field vector (p- and s-pol in) along z.
+        R : array_like, shape (4,)
+            Intensity reflectivity from :py:func:`calculate_r_t`.
+
+        Returns
+        -------
+        S_out : ndarray, shape (6, len(z))
+            Six-component (p//s) Poynting vector along z.
+        A_out : ndarray, shape (2, len(z))
+            Two-component (p//s) cumulated absorption along z.
+        """
+        S_out = np.zeros((6, len(z))) ## Poynting vector
+        A_out = np.zeros((2, len(z))) ## z-dependent absorption
+
+        ## S = 0.5 * Re(E x H*)
+        S_out[:3,:] = 0.5*np.real(np.cross(E[:3,:], np.conj(H[:3,:]),
+                                             axisa=0, axisb=0, axisc=0))
+        S_out[3:6,:] = 0.5*np.real(np.cross(E[3:6,:], np.conj(H[3:6,:]),
+                                              axisa=0, axisb=0, axisc=0))
+
+        z1 = np.abs(z).argmin()+1  ### index where z>0, first interface
+        Tp_z = S_out[2,:]/S_out[2,0]*(1.0-(R[0]+R[2])) ## layer-resolved transmittance p-pol
+        Ts_z = S_out[5,:]/S_out[5,0]*(1.0-(R[1]+R[3])) ## layer-resolved transmittance s-pol
+        A_out[0,z1:] = 1.0-(R[0]+R[2])-Tp_z[z1:]
+        A_out[1,z1:] = 1.0-(R[1]+R[3])-Ts_z[z1:]
+
+        return S_out, A_out
+
+    def get_layers_boundaries(self):
+        """Return the z-position of all boundaries, including superstrate top and substrate bottom.
+
+        This gives the minimum set of z-positions needed to sample the fields.
+
+        Returns
+        -------
+        zn : 1D array
+            Array of layer boundary positions.
+        """
+        laynum = len(self.layers)
+        zn = np.zeros(laynum+3) ## superstrate + layers + substrate
+        zn[0] = -self.superstrate.thick
+        zn[1] = 0
+        for ii, li in enumerate(self.layers):
+            zn[ii+2] = zn[ii+1]+li.thick
+        zn[-1] = zn[-2]+self.substrate.thick
+        return np.array(zn)
+
+    def reversed_system(self):
+        """Return a new system with the propagation direction reversed.
+
+        The returned system has the original substrate as the new superstrate,
+        the original superstrate as the new substrate, and the finite layers in
+        reversed order.  This is used to compute the reciprocal (E_S) field for
+        forward-scattering Raman: launching the time-reversed scattered field
+        from the substrate side is equivalent to running the same
+        ``calculate_Efield`` on the reversed stack.
+
+        Returns
+        -------
+        System
+            New system of the same concrete type (``TransferMatrixSystem`` or
+            ``ScatteringMatrixSystem``) with superstrate ↔ substrate swapped
+            and ``self.layers`` reversed.
+
+        Notes
+        -----
+        The returned system shares the same ``Layer`` objects as the original
+        (shallow copy).  Euler angles and permittivity functions are preserved
+        unchanged.  z = 0 in the returned system corresponds to the
+        original substrate/last-layer interface, so z-coordinates must be
+        remapped by ``z_rev = total_thickness - z_orig`` before calling
+        ``calculate_Efield`` on the reversed system.
+        """
+        return type(self)(
+            substrate=self.superstrate,
+            superstrate=self.substrate,
+            layers=list(reversed(self.layers)),
+        )
+
+    def get_spatial_permittivity(self, z):
+        """Extract the permittivity tensor at given z-positions in the structure.
+
+        Parameters
+        ----------
+        z : 1D array
+            Points at which to sample the permittivity.
+
+        Returns
+        -------
+        eps : ndarray, shape (3, 3, len(z))
+            Complex permittivity tensor as a function of z.
+        """
+        laynum = len(self.layers)
+        zn = np.zeros(laynum+2) ## superstrate+layers+substrate
+        zn[-1] = 0.0 ## initially with the substrate
+        if laynum > 0:
+            zn[-2] = zn[-1]-self.substrate.thick
+            for kl in range(1, laynum)[::-1]:
+                zn[kl] = zn[kl+1]-self.layers[kl].thick
+            zn[0] = zn[1]-self.layers[0].thick
+        else:
+            zn[0] = -self.substrate.thick
+        zn = zn-zn[0]
+        ## starting from the superstrate:
+        current_layer = 0
+        L = self.superstrate
+        eps = np.ones((3, 3, len(z)), dtype=np.complex128)
+        for ii, zc in enumerate(z):
+            if zc > zn[current_layer]:
+                current_layer += 1
+                if current_layer == laynum+1: ## reached substrate
+                    L = self.substrate
+                else:
+                    L = self.layers[current_layer-1]
+            eps[:,:,ii] = L.epsilon
+        return eps
+
+    def calculate_modal_amplitudes(self, f, zeta_sys):
+        """Expose the per-layer Berreman modal amplitudes at the front of each layer.
+
+        Extracts the F_bk bookkeeping from ``calculate_Efield`` and returns the
+        four complex modal amplitudes (for p-pol and s-pol incidence) at the
+        front interface of every finite-thickness layer.  The field at any depth z
+        inside layer k is then ``dKiz(z) @ F_bk[k+1, :]`` where dKiz is the
+        partial-depth propagation matrix, exactly as used inside
+        ``calculate_Efield``.
+
+        Both ``TransferMatrixSystem`` and ``ScatteringMatrixSystem`` are
+        supported.  For the scattering-matrix path, ``layer.Ki`` is rebuilt by
+        calling ``layer.calculate_propagation_matrix()`` before the F_bk
+        propagation (the same approach used in
+        ``ScatteringMatrixSystem.calculate_Efield``).
+
+        Parameters
+        ----------
+        f : float
+            Frequency in Hz.
+        zeta_sys : complex
+            Normalised in-plane wavevector (sin θ × √ε_superstrate).
+
+        Returns
+        -------
+        modal_amps : dict of {int: ndarray(8,)}
+            Keyed by finite-layer index k (0-based into ``self.layers``).
+            ``modal_amps[k][0:4]`` = modal amplitudes for p-pol incidence;
+            ``modal_amps[k][4:8]`` = modal amplitudes for s-pol incidence.
+            Mode ordering matches ``layer.qs``: [trans-p, trans-s, refl-p, refl-s].
+        zn : ndarray, shape (laynum+2,)
+            Layer boundary positions in metres, shifted so z=0 is the
+            incident (superstrate/first-layer) interface.
+        """
+        # Populate GammaStar, Ai, qs, gamma for all layers.
+        # ScatteringMatrixSystem overrides this with the SM version.
+        self.calculate_GammaStar(f, zeta_sys)
+        # Populate Ki on every layer.  ScatteringMatrixSystem.update_sm skips Ki
+        # to avoid overflow in global propagation; we need it here for the
+        # interface-boundary step — same approach as in
+        # ScatteringMatrixSystem.calculate_Efield.
+        self.superstrate.calculate_propagation_matrix(f)
+        for layer in self.layers:
+            layer.calculate_propagation_matrix(f)
+        self.substrate.calculate_propagation_matrix(f)
+
+        r_out, R_out, t, T = self.calculate_r_t(zeta_sys)
+
+        laynum = len(self.layers)
+        zn = np.zeros(laynum + 2, dtype=float)
+        # 8-component amplitude vectors: [0:4] p-pol incidence, [4:8] s-pol incidence
+        F_ft = np.zeros((laynum + 2, 8), dtype=np.complex128)
+        F_bk = np.zeros((laynum + 2, 8), dtype=np.complex128)
+
+        zn[-1] = 0.0  # initially with the substrate
+
+        # Initialise at the substrate surface (mirrors calculate_Efield lines 1822–1831)
+        F_ft[-1, 0] = t[0]   # t_pp
+        F_ft[-1, 1] = t[1]   # t_ps
+        F_ft[-1, 4] = t[2]   # t_sp
+        F_ft[-1, 5] = t[3]   # t_ss
+
+        F_bk[-1, :4] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1, :4])
+        F_bk[-1, 4:] = np.matmul(exact_inv_4x4(self.substrate.Ki), F_ft[-1, 4:])
+
+        def _efield_Ki_amp(layer):
+            """Attenuation-only Ki for IncoherentIntensityLayer (mirrors _efield_Ki in calculate_Efield).
+
+            Phase must not propagate backward through an incoherent medium into the
+            Raman source layer — only the attenuation (real part of the exponent) is
+            retained.  For a lossless material this returns the identity matrix.
+            """
+            if getattr(layer, 'inCoherentIntensity', False):
+                return np.diag([np.exp(np.real(e)) for e in layer.propagation_exponents]).astype(np.complex128)
+            return layer.Ki
+
+        if laynum > 0:
+            zn[-2] = zn[-1] - self.substrate.thick
+            Aim1 = self.layers[-1].Ai
+            Ai = self.substrate.Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[-2, :4] = np.matmul(Li, F_ft[-1, :4])
+            F_bk[-2, 4:] = np.matmul(Li, F_ft[-1, 4:])
+            Ki_last = _efield_Ki_amp(self.layers[-1])
+            F_ft[-2, :4] = np.matmul(Ki_last, F_bk[-2, :4])
+            F_ft[-2, 4:] = np.matmul(Ki_last, F_bk[-2, 4:])
+
+            for kl in range(1, laynum)[::-1]:
+                zn[kl] = zn[kl + 1] - self.layers[kl].thick
+                Aim1 = self.layers[kl - 1].Ai
+                Ai = self.layers[kl].Ai
+                Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+                F_bk[kl, :4] = np.matmul(Li, F_ft[kl + 1, :4])
+                F_bk[kl, 4:] = np.matmul(Li, F_ft[kl + 1, 4:])
+                Ki_kl = _efield_Ki_amp(self.layers[kl - 1])
+                F_ft[kl, :4] = np.matmul(Ki_kl, F_bk[kl, :4])
+                F_ft[kl, 4:] = np.matmul(Ki_kl, F_bk[kl, 4:])
+
+            zn[0] = zn[1] - self.layers[0].thick
+            Aim1 = self.superstrate.Ai
+            Ai = self.layers[0].Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[0, :4] = np.matmul(Li, F_ft[1, :4])
+            F_bk[0, 4:] = np.matmul(Li, F_ft[1, 4:])
+            F_ft[0, :4] = np.matmul(self.superstrate.Ki, F_bk[0, :4])
+            F_ft[0, 4:] = np.matmul(self.superstrate.Ki, F_bk[0, 4:])
+        else:
+            zn[0] = -self.substrate.thick
+            Aim1 = self.superstrate.Ai
+            Ai = self.substrate.Ai
+            Li = np.matmul(exact_inv_4x4(Aim1), Ai)
+            F_bk[0, :4] = np.matmul(Li, F_ft[1, :4])
+            F_bk[0, 4:] = np.matmul(Li, F_ft[1, 4:])
+            F_ft[0, :4] = np.matmul(self.superstrate.Ki, F_bk[0, :4])
+            F_ft[0, 4:] = np.matmul(self.superstrate.Ki, F_bk[0, 4:])
+
+        # Shift so that z=0 is the superstrate/first-layer interface
+        zn = zn - zn[0]
+
+        # modal_amps[k] = F_bk[k+1, :] — the amplitude vector at the front of layer k.
+        # At any depth z in layer k: Eprop = dKiz(z) @ F_bk[k+1, :4] (p-pol)
+        #                                           @ F_bk[k+1, 4:] (s-pol)
+        modal_amps = {k: F_bk[k + 1, :].copy() for k in range(laynum)}
+        return modal_amps, zn
+
+    def overflow_errors(self):
         """Return the total number of overflow errors encountered.
 
         Parameters
@@ -1899,7 +2406,8 @@ class ScatteringMatrixSystem(System):
     def calculate_r_t(self, zeta_sys):
         """Calculate the reflectance and transmittance coefficients using scattering matrix information.
 
-        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+        Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector
+        of transmitted field.
 
         Parameters
         ----------
@@ -1924,8 +2432,8 @@ class ScatteringMatrixSystem(System):
         # field reflection coefficients
         rpp = S[0,0]
         rss = S[1,1]
-        rps = S[0,1]
-        rsp = S[1,0]
+        rps = S[1,0]
+        rsp = S[0,1]
 
         # Intensity reflection coefficients are just square moduli
         Rpp = np.abs(rpp)**2
@@ -1938,8 +2446,8 @@ class ScatteringMatrixSystem(System):
         # field transmission coefficients
         tpp = S[2,0]
         tss = S[3,1]
-        tps = S[2,1]
-        tsp = S[3,0]
+        tps = S[3,0]
+        tsp = S[2,1]
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.cdouble)
 
         # Intensity transmission using Poynting vector analysis
@@ -1979,6 +2487,67 @@ class ScatteringMatrixSystem(System):
 
         return r_out, R_out, t_out, T_out
 
+    def calculate_Efield(self, f, zeta_sys, z_vect=None, x=0.0,
+                         magnetic=False, dz=None):
+        """Calculate the electric field profiles using the scattering matrix method.
+
+        Overrides :py:meth:`System.calculate_Efield` to ensure ``Ki`` is populated
+        for all layers before the field propagation.
+
+        The scattering matrix variant of :py:meth:`Layer.update_sm` deliberately
+        skips building ``Ki`` (the full-layer propagation matrix) to avoid numerical
+        overflow in electrically thick layers.  :py:meth:`System.calculate_Efield`
+        requires ``Ki`` at every interface for its boundary propagation step, so
+        this override calls :py:meth:`Layer.calculate_propagation_matrix` on every
+        layer after the scattering-matrix setup.  The partial-layer exponents used
+        inside the field propagation (proportional to ``z - zn[current_layer]``)
+        are always smaller than full-layer exponents, so overflow is not a concern.
+
+        Parameters
+        ----------
+        f : float
+            Frequency (Hz).
+        zeta_sys : complex
+            In-plane normalised wavevector kx/k0.
+        z_vect : 1D array, optional
+            Coordinates at which the calculation is done. If None, the layer
+            boundaries are used.
+        x : float or 1D array, optional
+            x-coordinates (reserved for future 2D field plots). Default is 0.0.
+        magnetic : bool, optional
+            If True, also compute and return the magnetic field vector.
+            Default is False.
+        dz : float, optional
+            Spatial resolution along the propagation (z) axis. Supersedes
+            ``z_vect`` when provided.
+
+        Returns
+        -------
+        z : 1D array
+            z-coordinates at which the fields were evaluated.
+        E_out : ndarray, shape (6, len(z))
+            Total electric field in the structure (rows 0–2: p-pol in,
+            rows 3–5: s-pol in).
+        H_out : ndarray, shape (6, len(z)), optional
+            Total magnetic field (only returned when ``magnetic=True``).
+        zn : 1D array
+            Positions of the layer interfaces.
+        """
+        # Run the scattering-matrix setup: populates Ai, qs, gamma for all layers
+        # via update_sm, but does NOT compute Ki.
+        self.calculate_GammaStar(f, zeta_sys)
+        # Populate Ki on every layer using the propagation exponents already stored
+        # by update_sm.  System.calculate_Efield needs Ki at every interface.
+        self.superstrate.calculate_propagation_matrix(f)
+        for layer in self.layers:
+            layer.calculate_propagation_matrix(f)
+        self.substrate.calculate_propagation_matrix(f)
+        # Delegate to the parent implementation.  It calls self.calculate_GammaStar
+        # internally (SM version), which re-runs update_sm on all layers.  update_sm
+        # does not touch Ki, so the values populated above are preserved.
+        return System.calculate_Efield(self, f, zeta_sys, z_vect=z_vect, x=x,
+                                       magnetic=magnetic, dz=dz)
+
 class SMatrix:
     """A class for storing and manipulating scattering matrices.
 
@@ -2001,12 +2570,12 @@ class SMatrix:
 
     Methods
     -------
-    unitMatrix()
+    unit_matrix()
         Initializes the S-matrix to a unit matrix with appropriate S11, S22, S21, and S12.
     redheffer(b)
         Performs the Redheffer star product, a specialized matrix multiplication for S-matrices, 
         with another SMatrix instance `b`.
-    calculateS()
+    calculate_s()
         Reconstructs the composite 4x4 S-matrix from its constituent submatrices (S11, S22, S21, S12).
 
     Examples
@@ -2035,19 +2604,21 @@ class SMatrix:
 
         """
         if S is None:
-            self.unitMatrix()
+            self.unit_matrix()
         else:
             self.S11 = S[0:2,0:2]
             self.S22 = S[2:4,2:4]
             self.S21 = S[2:4,0:2]
             self.S12 = S[0:2,2:4]
-            self.calculateS()
+            self.calculate_s()
         return
 
-    def unitMatrix(self):
+    def unit_matrix(self):
         """Reset the scattering parameters to form a unit matrix.
 
-        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11 and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the scattering parameters through `calculateS`.
+        Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11
+        and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the
+        scattering parameters through `calculate_s`.
 
         Parameters
         ----------
@@ -2059,14 +2630,15 @@ class SMatrix:
 
         Notes
         -----
-        This method is typically used to initialize or reset the scattering parameters in a two-port network representation to a known state before performing further operations or calculations.
+        This method is typically used to initialize or reset the scattering parameters in a two-port network
+        representation to a known state before performing further operations or calculations.
 
         """        
         self.S11 = np.zeros( (2,2) )
         self.S22 = np.zeros( (2,2) )
         self.S21 = np.eye( 2 )
         self.S12 = np.eye( 2 )
-        self.calculateS()
+        self.calculate_s()
         return
 
     def redheffer(self,b):
@@ -2096,13 +2668,14 @@ class SMatrix:
         Sab.S12 = a.S12.dot(C).dot(b.S12)
         Sab.S21 = b.S21.dot(D).dot(a.S21)
         Sab.S22 = b.S22+b.S21.dot(D).dot(a.S22).dot(b.S12)
-        Sab.calculateS()
+        Sab.calculate_s()
         return Sab
 
-    def calculateS(self):
+    def calculate_s(self):
         """Calculate and assign the scattering parameter matrix, S.
 
-        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
+        Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering
+        parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
 
         - `S11` is placed in the top-left quadrant.
         - `S22` is placed in the bottom-right quadrant.
@@ -2120,7 +2693,8 @@ class SMatrix:
 
         Notes
         -----
-        The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before calling this method.
+        The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before
+        calling this method.
 
         """        
         self.S = np.zeros( (4,4),dtype=np.cdouble )

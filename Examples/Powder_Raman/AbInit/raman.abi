@@ -1,0 +1,113 @@
+# Linear and nonlinear response calculation for ZnO
+# Perturbations: electric fields & atomic displacements
+
+# --------------------------------------------------
+# Structure: wurtzite ZnO primitive cell
+# Optimised structure 
+# --------------------------------------------------
+acell 6.0106439675E+00  6.0106439676E+00  9.7269585749E+00 Bohr
+
+rprim
+  0.86602540378 -0.50000000000  0.00000000000
+  0.00000000000  1.00000000000  0.00000000000
+  0.00000000000  0.00000000000  1.00000000000
+
+natom  4
+ntypat 2
+znucl  30 8
+typat  1 1 2 2
+
+xred     3.3333333333E-01  6.6666666667E-01  2.2137450670E-03
+         6.6666666667E-01  3.3333333333E-01  5.0221374507E-01
+         3.3333333333E-01  6.6666666667E-01  3.8028625493E-01
+         6.6666666667E-01  3.3333333333E-01  8.8028625493E-01
+
+# --------------------------------------------------
+# SCF / basis
+# --------------------------------------------------
+ixc      7
+nstep    200
+occopt   1
+
+# Check nband against your pseudo valence setup
+nband     26
+nbdbuf     0  # Band buffer is restricted to 0
+
+# Starting values only
+ecut      40
+ecutsm     0.1
+
+# suppress printing of density, wavefunctions, etc except what is
+# explicitly requested above in the ndtset section
+prtwf 0
+prtden 0
+prteig 0
+
+# --------------------------------------------------
+# K mesh
+# --------------------------------------------------
+ngkpt    6 6 4
+nshiftk  1
+shiftk   0.0 0.0 0.5
+
+# --------------------------------------------------
+# Replace with your actual Zn/O LDA PSeudo names   
+# --------------------------------------------------
+pp_dirpath "."
+pseudos "Zn.psp8, O.psp8"
+
+
+ndtset 5
+
+#DATASET1 : scf calculation: GS WF in the IBZ
+#********************************************
+   prtden1    1        # save density on disk, will be used in other datasets
+    prtwf1    1        # save WF on disk, will be used in other datasets
+   kptopt1    1        # use Irreducible Brillouin Zone (all symmetry taken into account)
+   toldfe1    1.0d-12  # SCF convergence criteria (could be tolwfr or tolvrs)
+
+#DATASET2 : non scf calculation: GS WF in half BZ
+#*****************************************************
+   getden2    1        # use density from dataset 1
+   kptopt2    2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   getwfk2    1        # use GS WF from dataset 1 (as input)
+     iscf2   -2        # non-self-consistent calculation
+   tolwfr2    1.0d-22  # convergence criteria on WF, need high precision for response
+    prtwf2    1        # save WF on disk, will be used in other datasets
+
+#DATASET3 : derivative of WF with respect to k points (d/dk)
+#**********************************************************
+   getwfk3    2        # use GS WF from dataset 2
+   kptopt3    2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   rfelfd3    2        # compute 1st-order WF derivatives (d/dk)
+   tolwfr3    1.0d-22  # convergence criteria on 1st-order WF
+    prtwf3    1        # save 1st-order WF on disk, will be used in other datasets
+
+#DATASET4 : response functions (2nd derivatives of E)
+#           and corresponding 1st order WF derivatives
+#           phonons, electric fields, and strains are all done
+#**************************************************************
+   getwfk4    2        # use GS WF from dataset 2
+   kptopt4    2        # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+   getddk4    3        # use ddk WF from dataset 3 (needed for electric field)
+   rfphon4    1        # compute 1st-order WF derivatives with respect to atomic displacements...
+   rfelfd4    3        # compute 1st-order WF derivatives with respect to electric field
+   rfstrs4    3        # compute 1st-order WF derivatives with respect to strains
+   tolvrs4    1.0d-12  # SCF convergence criteria (could be tolwfr)
+  prepanl4    1        # make sure that response functions are correctly prepared for a non-linear computation
+    prtwf4    1        # save 1st-order WF on disk, will be used in other datasets
+   prtden4    1        # save 1st-order density on disk, will be used in other datasets
+
+#DATASET5 : 3rd derivatives of E
+#*********************************
+   getwfk5           2     # use GS WF from dataset 2
+  get1den5           4     # use 1st-order densities from dataset 4
+   get1wf5           4     # use 1st-order WFs from dataset 4
+   kptopt5           2     # use Half Brillouin Zone (only time-reversal symmetry taken into account)
+optdriver5           5     # compute 3rd order derivatives of the energy
+  d3e_pert1_elfd5    1     # activate electric field for 1st perturbation...
+  d3e_pert1_phon5    1     # ...and also atomic displacements...
+ d3e_pert1_atpol5    1 4   # ...for all atoms (so here only 1 and 4)...
+  d3e_pert2_elfd5    1     # activate electric field for 2nd perturbation...
+  d3e_pert3_elfd5    1     # activate electric field for 3rd perturbation...
+

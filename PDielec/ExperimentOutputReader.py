@@ -14,14 +14,20 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Read the contents of a directory containing Experiment input and output files."""
+import logging
+import math
 import re
 
 import numpy as np
 
 from PDielec import DielectricFunction
-from PDielec.Calculator import initialise_diagonal_tensor
+from PDielec.Calculator import initialise_diagonal_tensor, normal_modes, oscillator_strengths
+from PDielec.Constants import amu, wavenumber
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class ExperimentOutputReader(GenericOutputReader):
@@ -31,7 +37,7 @@ class ExperimentOutputReader(GenericOutputReader):
 
     Parameters
     ----------
-    names : Various types
+    names : Various
         Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
 
     Attributes
@@ -56,7 +62,7 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Parameters
         ----------
-        names : Various types
+        names : Various
             Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
 
         Attributes
@@ -77,6 +83,9 @@ class ExperimentOutputReader(GenericOutputReader):
         """        
         GenericOutputReader.__init__(self, names)
         self.type                    = "Experimental output"
+        # Experimental files may use nominal or redundant structural data that
+        # do not describe the symmetry of the measured dielectric tensor.
+        self.default_symmetrise_optical_permittivity = False
         self._ion_type_index = {}
         self.CrystalPermittivity = None
         self.zerof_optical_dielectric = None
@@ -139,8 +148,13 @@ class ExperimentOutputReader(GenericOutputReader):
         self.manage["interpolate3"]  = (re.compile("interpolate_3"),    self._read_interpolate3_model)
         self.manage["interpolate6"]  = (re.compile("interpolate_6"),    self._read_interpolate6_model)
         self.manage["interpolate"]   = (re.compile("interpolate"),      self._read_interpolate1_model)
+        self.manage["raman_tensors"] = (re.compile("raman_tensors"),    self._read_raman_tensors)
+        self.manage["normal_modes"]  = (re.compile("normal_modes"),     self._read_normal_modes)
+        self.manage["born_charges"]  = (re.compile("born_charges"),     self._read_born_charges)
+        self.manage["frequencies"]   = (re.compile("frequencies"),      self._read_frequencies)
         for f in self._outputfiles:
             self._read_output_file(f)
+        self._calculate_oscillator_strengths_from_born_charges()
         return
 
     def _read_constant_model(self, line):
@@ -171,9 +185,9 @@ class ExperimentOutputReader(GenericOutputReader):
             odc = np.real(odc)
         self.CrystalPermittivity = DielectricFunction.ConstantScalar(odc)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_interpolate1_model(self, line):
@@ -211,9 +225,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.Tabulate1(omegas,eps)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_interpolate3_model(self, line):
@@ -259,9 +273,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.Tabulate3(omegas,epsxx,epsyy,epszz)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_interpolate6_model(self, line):
@@ -319,9 +333,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.Tablulate6(omegas,epsxx,epsyy,epszz,epsxy,epsxz,epsyz)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_drude_lorentz_model(self, line):
@@ -373,9 +387,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.DrudeLorentz(omegas_all,strengths_all,gammas_all)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_fpsq_model(self, line):
@@ -448,9 +462,9 @@ class ExperimentOutputReader(GenericOutputReader):
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction.FPSQ(omega_tos_all,gamma_tos_all,omega_los_all,gamma_los_all)
         if self.zerof_optical_dielectric:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
         if self.volume:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_frequencies(self, line):
@@ -467,15 +481,16 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method reads the 'nfreq' (number of frequencies) from the initial given line. Then, for each frequency, it reads
-        the corresponding line to extract the frequency and its oscillator strength. These values are stored in the object's
-        'frequencies' and 'oscillator_strengths' lists, respectively. Each oscillator strength is initialized as a diagonal
-        tensor with identical values across the diagonal.
+        This method reads the 'nfreq' (number of frequencies) from the initial given line. Then, for each frequency, it
+        reads the corresponding line to extract the frequency and its oscillator strength. These values are stored in
+        the object's 'frequencies' and 'oscillator_strengths' lists, respectively. Each oscillator strength is
+        initialized as a diagonal tensor with identical values across the diagonal.
 
-        The method assumes 'line' is in a specific format, where the first entry in a line after splitting is the frequency
-        and the second entry is the oscillator strength. It also uses '_read_line' method, which is not defined in the snippet,
-        to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, 'initialise_diagonal_tensor'
-        is used to convert the scalar strength values into tensor form, which is not detailed here.
+        The method assumes 'line' is in a specific format, where the first entry in a line after splitting is the
+        frequency and the second entry is the oscillator strength. It also uses '_read_line' method, which is not
+        defined in the snippet, to read each subsequent line for the frequencies and their oscillator strengths.
+        Furthermore, 'initialise_diagonal_tensor' is used to convert the scalar strength values into tensor form, which
+        is not detailed here.
 
         """        
         nfreq = int(line.split()[1])
@@ -483,9 +498,89 @@ class ExperimentOutputReader(GenericOutputReader):
         self.oscillator_strengths = []
         for _i in range(nfreq):
             line = self._read_line()
-            self.frequencies.append(float(line.split()[0]))
-            strength = float(line.split()[1])
-            self.oscillator_strengths.append(initialise_diagonal_tensor( [strength, strength, strength] ) )
+            parts = line.split("#", maxsplit=1)[0].split()
+            self.frequencies.append(float(parts[0]))
+            if len(parts) >= 4:
+                sxx, syy, szz = float(parts[1]), float(parts[2]), float(parts[3])
+            elif len(parts) == 2:
+                sxx = syy = szz = float(parts[1])
+            else:
+                sxx = syy = szz = 0.0
+            self.oscillator_strengths.append(initialise_diagonal_tensor( [sxx, syy, szz] ) )
+        return
+
+    def _read_born_charges(self, line):
+        """Read Born effective charge tensors.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line, expected format: ``born_charges N`` where
+            ``N`` is the number of atom tensors to read.
+
+        Notes
+        -----
+        Each atom tensor is read from three non-comment lines containing
+        the 3x3 Born effective charge matrix in electron units.  An optional
+        atom label line may precede each tensor; labels are ignored.
+
+        Example::
+
+            born_charges 2
+            # Cd1
+              2.172 -0.052 -0.077
+              0.064  2.024 -0.004
+              0.059  0.065  2.244
+            # N1
+             -2.713  0.415  0.133
+              0.402 -3.058  0.114
+              0.218  0.069 -2.376
+
+        """
+        n = int(line.split()[1])
+        charges = []
+        while len(charges) < n:
+            first = self._read_line()
+            parts = first.split()
+            try:
+                row0 = [float(x) for x in parts[:3]]
+            except ValueError:
+                row0 = [float(x) for x in self._read_line().split()[:3]]
+            row1 = [float(x) for x in self._read_line().split()[:3]]
+            row2 = [float(x) for x in self._read_line().split()[:3]]
+            charges.append([row0, row1, row2])
+        self.born_charges = charges
+        return
+
+    def _calculate_oscillator_strengths_from_born_charges(self):
+        """Calculate oscillator strengths when Born charges and normal modes are present."""
+        if len(self.born_charges) != self.nions:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray):
+            return
+        if self.mass_weighted_normal_modes.shape != (3*self.nions, self.nions, 3):
+            return
+        if not np.any(self.mass_weighted_normal_modes):
+            return
+        masses = np.array(self.masses) * amu
+        xyz_normal_modes = normal_modes(masses, self.mass_weighted_normal_modes)
+        self.oscillator_strengths = oscillator_strengths(xyz_normal_modes, np.array(self.born_charges))
+        self._calculate_hessian_from_frequencies_and_normal_modes()
+        return
+
+    def _calculate_hessian_from_frequencies_and_normal_modes(self):
+        """Reconstruct a mass-weighted Hessian from read frequencies and normal modes."""
+        if len(self.frequencies) != 3*self.nions:
+            return
+        if self.mass_weighted_normal_modes.shape != (3*self.nions, self.nions, 3):
+            return
+        ncoords = 3*self.nions
+        ut = np.zeros((ncoords, ncoords))
+        for imode, mode in enumerate(self.mass_weighted_normal_modes):
+            ut[imode, :] = np.array(mode, dtype=float).reshape(ncoords)
+        frequencies_au = np.array(self.frequencies, dtype=float) * wavenumber
+        f2 = np.diag(np.sign(frequencies_au) * np.real(frequencies_au * frequencies_au))
+        self.hessian = np.real(ut.T @ f2 @ ut)
         return
 
     def _read_species(self, line):
@@ -502,7 +597,11 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists, respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The `nspecies` attribute is updated with the current number of species after each iteration.
+        This function updates the object's `species`, `masses_per_type`, and `ion_type_index` attributes with the
+        information read from the input line(s). Initially, it reads the total number of species from the first line.
+        Then, for each species, it reads its name and mass, appends these to the `species` and `masses_per_type` lists,
+        respectively, and updates the `ion_type_index` dictionary to map the species name to its type index. The
+        `nspecies` attribute is updated with the current number of species after each iteration.
 
         """        
         nspecies = int(line.split()[1])
@@ -554,16 +653,17 @@ class ExperimentOutputReader(GenericOutputReader):
         cell = UnitCell(a,b,c,alpha,beta,gamma,units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume(units="Angstrom")
+        self.volume = cell.get_volume(units="Angstrom")
         if self.CrystalPermittivity:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_lattice_vectors(self, line):
         """Read and process lattice vectors from an input line, then updates internal structures with the new unit cell.
 
-        This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
-        The lattice vectors are assumed to be in Angstrom
+        This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and
+        update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal
+        permittivity. The lattice vectors are assumed to be in Angstrom
 
         Parameters
         ----------
@@ -590,9 +690,9 @@ class ExperimentOutputReader(GenericOutputReader):
         cell = UnitCell(avector, bvector, cvector, units="Angstrom")
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.getVolume("Angstrom")
+        self.volume = cell.get_volume("Angstrom")
         if self.CrystalPermittivity:
-            self.CrystalPermittivity.setVolume(self.volume)
+            self.CrystalPermittivity.set_volume(self.volume)
         return
 
     def _read_cpk_coords(self, line):
@@ -674,7 +774,9 @@ class ExperimentOutputReader(GenericOutputReader):
     def _read_fractional_coordinates(self, line):
         """Read and process fractional coordinates from a string line.
 
-        This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions' type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
+        This method reads a string representing a line containing the number of ions followed by the fractional
+        coordinates and species of each ion. It updates the instance variables associated with the ions' type, position,
+        mass, and further initializes oscillator strengths and frequencies arrays if they haven't been initialized yet.
 
         Parameters
         ----------
@@ -687,15 +789,16 @@ class ExperimentOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method updates several instance variables:
-        - `nions`: The total number of ions as determined from `line`.
-        - `ions_per_type`: A list that tracks the number of ions per species.
-        - `masses`: A list of masses for each ion, ordered accordingly.
-        - `atom_type_list`: A list mapping each ion to its species index.
-        - `unit_cells[-1]`: The coordinates and element names for ions in the most recent unit cell are set based on the processed line.
-        - Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays if they haven't been already.
+        This method updates several instance variables: - `nions`: The total number of ions as determined from `line`. -
+        `ions_per_type`: A list that tracks the number of ions per species. - `masses`: A list of masses for each ion,
+        ordered accordingly. - `atom_type_list`: A list mapping each ion to its species index. - `unit_cells[-1]`: The
+        coordinates and element names for ions in the most recent unit cell are set based on the processed line. -
+        Oscillator strengths `oscillator_strengths` and frequencies `frequencies` arrays are initialized as zero arrays
+        if they haven't been already.
 
-        Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.
+
+        Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled
+        outside of its scope.
 
         """        
         ions = []
@@ -764,11 +867,135 @@ class ExperimentOutputReader(GenericOutputReader):
             odc = np.real(odc)
         self.zerof_optical_dielectric = odc.tolist()
         if self.CrystalPermittivity:
-            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+            self.CrystalPermittivity.set_epsilon_infinity(self.zerof_optical_dielectric)
+        return
+
+    def _read_raman_tensors(self, line):
+        """Read Raman tensors for each normal mode.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line, expected format: ``raman_tensors N [units]``
+            where *N* is the total number of modes and the optional *units*
+            keyword is ``castep`` (default), ``epsilon``, or ``skelton``.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        Each mode occupies four consecutive non-comment lines:
+
+        1. Frequency in cm-1.
+        2. First row of the 3×3 Raman tensor.
+        3. Second row.
+        4. Third row.
+
+        Modes must be listed in ascending-frequency order (acoustic / silent
+        modes first, with zero tensors), consistent with the ordering used
+        throughout PDielec.
+
+        Two unit conventions are supported via the optional keyword on the
+        header line:
+
+        ``castep`` (default)
+            Elements are CASTEP-style polarizability-volume tensors divided by
+            ``sqrt(Vcell)`` and are multiplied by ``4π`` on read, matching
+            :class:`PDielec.CastepOutputReader.CastepOutputReader`.
+        ``epsilon``
+            Elements are already in PDielec's ``R_epsilon = sqrt(V)dε/dQ``
+            convention, with units ``(Å/amu)^{0.5}``, and are stored directly.
+        ``skelton``
+            Elements are Skelton-style polarizability-volume derivatives
+            ``R_alpha = dα_vol/dQ`` in ``Å²·amu^{-0.5}``.  They are converted
+            to ``R_epsilon`` by multiplying by ``4π/sqrt(Vcell)``.
+
+        Frequencies are taken from a preceding ``frequencies`` block; this
+        section contains only the tensor data.
+
+        Example input (ZnO, 12 modes, CASTEP units)::
+
+            raman_tensors  12
+            # 3x3 tensor rows for each mode, in ascending-frequency order
+              0.000   0.000   0.000
+              0.000   0.000   0.000
+              0.000   0.000   0.000
+              0.0487  -0.0101   0.0041
+             -0.0101   0.0487   0.0041
+              0.0041   0.0041   0.1208
+            ...
+
+        """
+        parts = line.split()
+        n = int(parts[1])
+        units = parts[2].lower() if len(parts) > 2 else "castep"
+        tensors = []
+        for _i in range(n):
+            row0 = [float(x) for x in self._read_line().split()[:3]]
+            row1 = [float(x) for x in self._read_line().split()[:3]]
+            row2 = [float(x) for x in self._read_line().split()[:3]]
+            tensors.append(np.array([row0, row1, row2], dtype=float))
+        if units == "castep":
+            factor = 4.0 * math.pi
+            tensors = [t * factor for t in tensors]
+        elif units == "skelton":
+            factor = 4.0 * math.pi / math.sqrt(self.volume)
+            tensors = [t * factor for t in tensors]
+        elif units != "epsilon":
+            logger.warning(f"Unknown experimental Raman tensor units '{units}', assuming R_epsilon")
+        self.raman_tensors = tensors
+        return
+
+    def _read_normal_modes(self, line):
+        """Read mass-weighted normal-mode eigenvectors for each mode.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line, expected format: ``normal_modes N``
+            where *N* is the total number of modes.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        Frequencies are taken from a preceding ``frequencies`` block.
+        Each mode occupies *nions* consecutive non-comment lines, each
+        containing three floating-point values (the x, y, z components of
+        the mass-weighted displacement for that atom).
+
+        The eigenvectors should be normalised to unit length
+        (``Σ |u|² = 1``) and ordered to match the ``frequencies`` block —
+        acoustic / imaginary modes first, then optical in ascending
+        frequency order.
+
+        Example input (ZnO, 12 modes, 4 atoms)::
+
+            normal_modes  12
+            # mode 0 (acoustic)
+             0.19709682  -0.22840953   0.00000001
+             0.19709682  -0.22840953   0.00000001
+             0.41779946  -0.48417512   0.00000003
+             0.41779946  -0.48417512   0.00000003
+            # mode 1 ...
+
+        """
+        n = int(line.split()[1])
+        modes = []
+        for _i in range(n):
+            mode = []
+            for _atom in range(self.nions):
+                mode.append([float(x) for x in self._read_line().split()[:3]])
+            modes.append(mode)
+        self.mass_weighted_normal_modes = np.array(modes, dtype=float)
         return
 
     def calculate_mass_weighted_normal_modes(self):
-        """Calculate the mass weight normal modes.
+        """Return mass-weighted normal modes, preserving any read from file.
 
         Parameters
         ----------
@@ -777,9 +1004,15 @@ class ExperimentOutputReader(GenericOutputReader):
         Returns
         -------
         np.array
-            Returns an array for the mass weighted normal modes which in this case is zero
-            The array has a shape 3*nions, nions, 3
+            Mass-weighted normal modes with shape (3*nions, nions, 3).
+            If a ``normal_modes`` block was present in the input file the
+            stored values are returned unchanged.  Otherwise a zero array
+            is returned (no phonon data available).
 
-        """        
+        """
+        if (isinstance(self.mass_weighted_normal_modes, np.ndarray)
+                and self.mass_weighted_normal_modes.shape == (3*self.nions, self.nions, 3)
+                and np.any(self.mass_weighted_normal_modes)):
+            return self.mass_weighted_normal_modes
         self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
         return self.mass_weighted_normal_modes

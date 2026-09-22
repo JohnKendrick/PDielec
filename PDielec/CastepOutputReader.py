@@ -15,13 +15,19 @@
 #
 """CastepOutputReader module."""
 
+import logging
+import math
 import os
 import re
 
 import numpy as np
 
+from PDielec.Constants import angs2bohr
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class CastepOutputReader(GenericOutputReader):
@@ -36,15 +42,20 @@ class CastepOutputReader(GenericOutputReader):
 
     Notes
     -----
-    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
-    - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
+    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it
+      looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance. - The
+      method does not return a value but initializes the instance with the necessary attributes for further processing
+      and analysis of CASTEP output files.
 
     """
 
     def __init__(self, filenames):
         """Initialize a new instance of the class CastepOutputReader.
 
-        This constructor initializes the class with data from the provided filenames. It sets up the necessary properties for further operations, including identifying and setting up key output files (.castep and .phonon files) from the given filenames. Additional properties related to electronic calculations, phonon calculations, and ionic types are also initialized but not explicitly defined.
+        This constructor initializes the class with data from the provided filenames. It sets up the necessary
+        properties for further operations, including identifying and setting up key output files (.castep and .phonon
+        files) from the given filenames. Additional properties related to electronic calculations, phonon calculations,
+        and ionic types are also initialized but not explicitly defined.
 
         Parameters
         ----------
@@ -53,13 +64,16 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
-        - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
+        - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs.
+          Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for
+          the instance. - The method does not return a value but initializes the instance with the necessary attributes
+          for further processing and analysis of CASTEP output files.
 
         Raises
         ------
-        ValueError
-            If the first filename does not contain '.castep' or '.phonon', implying it may not be suitable for initializing this class instance as intended. (Note: This exception raising is implied and should ideally be added to the code to handle cases where filenames do not meet expected criteria.)
+        ValueError If the first filename does not contain '.castep' or '.phonon', implying it may not be suitable for
+        initializing this class instance as intended. (Note: This exception raising is implied and should ideally be
+        added to the code to handle cases where filenames do not meet expected criteria.)
 
         """        
         GenericOutputReader.__init__(self, filenames)
@@ -79,6 +93,8 @@ class CastepOutputReader(GenericOutputReader):
         self._ion_type_index         = {}
         self._ion_index_type         = {}
         self._intensities             = None
+        self._castep_raman_polar_deriv = None
+        self._castep_raman_polar_deriv_source = None
         self.de_ion                  = []
         self.fmax                    = []
         self.dr_max                  = []
@@ -117,8 +133,23 @@ class CastepOutputReader(GenericOutputReader):
         #  For the .phonon file
         self.manage["frequency"]      = (re.compile("     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$"), self._read_frequencies)
         self.manage["nbranches"]      = (re.compile(" Number of branches"), self._read_nbranches)
+        self.manage["ramanAtomicPolarTensor"] = (
+            re.compile(r".*Raman atomic polar tensor V\*dChi\(1\)/dR"),
+            self._read_raman_atomic_polar_tensors,
+        )
+        self.manage["ramanPolarDeriv"] = (
+            re.compile(r"\s*BEGIN DFPT RAMAN POLAR_DERIV"),
+            self._read_raman_polar_derivatives,
+        )
+        self.manage["ramanTensors"]   = (re.compile(".*Raman Susceptibility Tensors"), self._read_raman_tensors)
+        self.manage["nloSusceptibility"] = (
+            re.compile(r" *Nonlinear Optical Susceptibility"),
+            self._read_nlo_susceptibility,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
+        if self._castep_raman_polar_deriv is not None:
+            self._calculate_raman_tensors_from_polar_derivatives()
         return
 
     def _read_nbranches(self, line):
@@ -137,7 +168,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function does not return anything as it sets the parsed number directly to an instance variable named `_nbranches`.
+        This function does not return anything as it sets the parsed number directly to an instance variable named
+        `_nbranches`.
 
         """        
         self._nbranches = int(line.split()[3])
@@ -145,7 +177,9 @@ class CastepOutputReader(GenericOutputReader):
     def _read_frequencies(self, line):
         """Read and process frequencies, intensities, and normal modes from  phonon file.
 
-        This method assumes a specific format of the input file, where frequencies, intensities, and normal mode coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal mode vectors for each mode.
+        This method assumes a specific format of the input file, where frequencies, intensities, and normal mode
+        coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal
+        mode vectors for each mode.
 
         Parameters
         ----------
@@ -158,18 +192,19 @@ class CastepOutputReader(GenericOutputReader):
 
         Attributes Modified
         -------------------
-        mass_weighted_normal_modes : list
-            A list of mass-weighted normal modes. Each normal mode is represented as a list of 3D vectors (lists) for each ion in the structure.
-        frequencies : list
-            A list of frequency values read from the file.
-        _intensities : list
-            A list of intensity values corresponding to each frequency.
+        mass_weighted_normal_modes : list A list of mass-weighted normal modes. Each normal mode is represented as a
+        list of 3D vectors (lists) for each ion in the structure. frequencies : list A list of frequency values read
+        from the file. _intensities : list A list of intensity values corresponding to each frequency.
+
+
+
 
         Notes
         -----
-        - This method directly modifies the instance attributes `mass_weighted_normal_modes`, `frequencies`, and `_intensities`.
-        - It is assumed that `self.file_descriptor` is an open file object from which the data is read.
-        - The method relies on the internal variable `self._nbranches` to determine the number of modes to read, and `self.nions` for the number of ions per mode.
+        - This method directly modifies the instance attributes `mass_weighted_normal_modes`, `frequencies`, and
+          `_intensities`. - It is assumed that `self.file_descriptor` is an open file object from which the data is
+          read. - The method relies on the internal variable `self._nbranches` to determine the number of modes to read,
+          and `self.nions` for the number of ions per mode.
 
         """        
         self.mass_weighted_normal_modes = []
@@ -205,10 +240,338 @@ class CastepOutputReader(GenericOutputReader):
         # end of for freq
         return
 
+    def _set_raman_polar_derivatives(self, polar_deriv, source):
+        """Store atom-resolved CASTEP Raman derivatives according to source priority."""
+        priorities = {"developer": 0, "official": 1}
+        current_priority = priorities.get(self._castep_raman_polar_deriv_source, -1)
+        if priorities[source] < current_priority:
+            return
+        self._castep_raman_polar_deriv = polar_deriv
+        self._castep_raman_polar_deriv_source = source
+        return
+
+    def _read_raman_atomic_polar_tensors(self, line):
+        """Read CASTEP's official atom-resolved Raman polar-tensor table.
+
+        Recent CASTEP versions print a table headed
+        ``Raman atomic polar tensor V*dChi(1)/dR (A**2)``. Each atom and
+        Cartesian displacement has a 3x3 derivative tensor. The species-local
+        atom number is mapped back onto the atom ordering of the unit cell.
+        Values are converted from Angstrom squared to the internal Bohr-squared
+        representation used by the common projection routine.
+
+        This official table takes priority over the older optional developer
+        ``POLAR_DERIV`` block if both are present.
+
+        Parameters
+        ----------
+        line : str
+            The table heading that triggered this method.
+
+        """
+        del line
+        values = {}
+        atom_labels = []
+        displacement_indices = {"X": 0, "Y": 1, "Z": 2}
+
+        while True:
+            derivative_line = self.file_descriptor.readline()
+            if derivative_line == "":
+                logger.warning("CASTEP Raman atomic polar tensor table ended unexpectedly")
+                return
+            if "+====" in derivative_line:
+                break
+
+            fields = derivative_line.replace("+", " ").split()
+            if len(fields) < 6 or fields[2].upper() not in displacement_indices:
+                continue
+
+            species = fields[0].capitalize()
+            try:
+                species_index = int(fields[1])
+                displacement = displacement_indices[fields[2].upper()]
+                rows = [[float(value) for value in fields[3:6]]]
+                for _row in range(2):
+                    row_fields = self.file_descriptor.readline().replace("+", " ").split()
+                    if len(row_fields) < 3:
+                        raise ValueError
+                    rows.append([float(value) for value in row_fields[:3]])
+            except (ValueError, IndexError):
+                logger.warning(
+                    f"Malformed CASTEP Raman atomic polar tensor row: {derivative_line.rstrip()}"
+                )
+                return
+
+            atom_label = (species, species_index)
+            if atom_label not in atom_labels:
+                atom_labels.append(atom_label)
+            values[atom_label, displacement] = np.asarray(rows, dtype=float)
+
+        if not values:
+            logger.warning("CASTEP Raman atomic polar tensor table contained no derivative data")
+            return
+
+        atom_indices = {}
+        if self.unit_cells and len(self.unit_cells[-1].get_element_names()) == self.nions:
+            species_counts = {}
+            for atom, species in enumerate(self.unit_cells[-1].get_element_names()):
+                species = species.capitalize()
+                species_counts[species] = species_counts.get(species, 0) + 1
+                atom_indices[species, species_counts[species]] = atom
+        elif len(atom_labels) == self.nions:
+            atom_indices = {atom_label: atom for atom, atom_label in enumerate(atom_labels)}
+        else:
+            logger.warning("Cannot map CASTEP Raman atomic polar tensors onto the structure")
+            return
+
+        expected_entries = self.nions * 3
+        if len(values) != expected_entries:
+            logger.warning(
+                f"CASTEP Raman atomic polar tensor table contains {len(values)} entries; "
+                f"expected {expected_entries}"
+            )
+            return
+
+        polar_deriv = np.zeros((self.nions, 3, 3, 3), dtype=float)
+        for (atom_label, displacement), tensor in values.items():
+            if atom_label not in atom_indices:
+                logger.warning(
+                    f"CASTEP Raman atomic polar tensor contains unknown atom "
+                    f"{atom_label[0]} {atom_label[1]}"
+                )
+                return
+            polar_deriv[atom_indices[atom_label], displacement] = tensor * angs2bohr**2
+
+        self._set_raman_polar_derivatives(polar_deriv, "official")
+        if self.debug:
+            logger.debug(
+                f"_read_raman_atomic_polar_tensors: read derivatives for {self.nions} atoms"
+            )
+
+    def _read_raman_polar_derivatives(self, line):
+        """Read CASTEP's atom-resolved DFPT polarizability derivatives.
+
+        This legacy fallback reads the optional developer block containing the
+        internal ``polar_deriv`` array immediately before CASTEP contracts it
+        with its in-memory phonon eigenvectors. Its layout is
+
+        ``polar_deriv[atom, displacement, tensor_row, tensor_column]``.
+
+        Atom, displacement, and tensor-row indices in the output are one-based.
+        Values are derivatives of the cell polarizability in CASTEP atomic
+        units and therefore have dimensions of Bohr squared. They are retained
+        in their native units and projected only after the companion
+        ``.phonon`` file has supplied the normal modes.
+
+        Parameters
+        ----------
+        line : str
+            The ``BEGIN DFPT RAMAN POLAR_DERIV`` marker.
+
+        """
+        del line
+        # Skip the array-description and column-heading lines.
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+
+        values = {}
+        while True:
+            derivative_line = self.file_descriptor.readline()
+            if derivative_line == "":
+                logger.warning("CASTEP DFPT RAMAN POLAR_DERIV block ended unexpectedly")
+                return
+            if "END DFPT RAMAN POLAR_DERIV" in derivative_line:
+                break
+            fields = derivative_line.split()
+            if len(fields) != 6:
+                logger.warning(f"Ignoring malformed CASTEP POLAR_DERIV row: {derivative_line.rstrip()}")
+                continue
+            atom, displacement, tensor_row = (int(value) - 1 for value in fields[:3])
+            values[atom, displacement, tensor_row] = np.asarray(fields[3:6], dtype=float)
+
+        if not values:
+            logger.warning("CASTEP DFPT RAMAN POLAR_DERIV block contained no derivative data")
+            return
+        nions = max(atom for atom, _displacement, _tensor_row in values) + 1
+        if self.nions > 0 and nions != self.nions:
+            logger.warning(
+                f"CASTEP POLAR_DERIV block contains {nions} atoms but the structure contains {self.nions}"
+            )
+            return
+
+        expected_rows = nions * 3 * 3
+        if len(values) != expected_rows:
+            logger.warning(
+                f"CASTEP POLAR_DERIV block contains {len(values)} rows; expected {expected_rows}"
+            )
+            return
+
+        polar_deriv = np.zeros((nions, 3, 3, 3), dtype=float)
+        for (atom, displacement, tensor_row), tensor_columns in values.items():
+            if not (0 <= displacement < 3 and 0 <= tensor_row < 3):
+                logger.warning("CASTEP POLAR_DERIV block contains an out-of-range Cartesian index")
+                return
+            polar_deriv[atom, displacement, tensor_row, :] = tensor_columns
+        self._set_raman_polar_derivatives(polar_deriv, "developer")
+        if self.debug:
+            logger.debug(
+                f"_read_raman_polar_derivatives: read derivatives for {nions} atoms"
+            )
+        return
+
+    def _calculate_raman_tensors_from_polar_derivatives(self):
+        """Project CASTEP atomic polarizability derivatives onto current modes."""
+        polar_deriv = self._castep_raman_polar_deriv
+        if polar_deriv is None:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
+            return
+        if len(self.masses) != polar_deriv.shape[0]:
+            logger.warning("Cannot project CASTEP POLAR_DERIV data: masses and atoms are inconsistent")
+            return
+        if self.volume <= 0.0:
+            logger.warning("Cannot project CASTEP POLAR_DERIV data: unit-cell volume is unavailable")
+            return
+
+        modes = np.asarray(self.mass_weighted_normal_modes, dtype=float)
+        masses = np.asarray(self.masses, dtype=float)
+        # polar_deriv is in Bohr^2. CASTEP's printed mode tensor is obtained by
+        # converting it to Angstrom^2, projecting with e/sqrt(M_amu), and
+        # dividing by sqrt(V_A^3). Multiplication by 4*pi then gives PDielec's
+        # R_epsilon = sqrt(V) d epsilon / dQ convention.
+        unit_factor = 4.0 * math.pi / (math.sqrt(self.volume) * angs2bohr**2)
+        tensors = []
+        for mode in modes:
+            tensor = np.zeros((3, 3), dtype=float)
+            for atom, mass in enumerate(masses):
+                for displacement in range(3):
+                    tensor += (
+                        polar_deriv[atom, displacement]
+                        * mode[atom, displacement]
+                        / math.sqrt(mass)
+                    )
+            tensors.append(tensor * unit_factor)
+        self.raman_tensors = tensors
+        if self.debug:
+            logger.debug(
+                "_calculate_raman_tensors_from_polar_derivatives: "
+                f"computed {len(tensors)} mode tensors"
+            )
+        return
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Reproject raw CASTEP derivatives after a normal-mode recalculation."""
+        if self._castep_raman_polar_deriv is not None:
+            self._calculate_raman_tensors_from_polar_derivatives()
+            return
+        super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+        return
+
+    def _read_raman_tensors(self, line):
+        """Read the Raman susceptibility tensors from the .castep file.
+
+        CASTEP prints one 3×3 Raman susceptibility tensor per mode in the block
+        headed ``Raman Susceptibility Tensors ((A/amu)*0.5)``.  CASTEP prints
+        the polarizability-volume tensor divided by ``sqrt(Vcell)``; CASTEP's
+        own ``A**4 amu**(-1)`` activities are recovered as ``Vcell`` times the
+        rotational invariants of the printed tensor.  PDielec stores the shared
+        ``R_epsilon = sqrt(Vcell) dε/dQ`` convention, so the printed tensor is
+        multiplied by ``4*pi``. Precision is limited by CASTEP's formatted
+        output.
+
+        The tensors are stored directly in ``self.raman_tensors`` as a fallback
+        when neither the official atomic polar-tensor table nor the legacy
+        developer ``POLAR_DERIV`` block is available. Atom-resolved derivatives
+        are projected using the companion ``.phonon`` eigenvectors after all
+        files have been read and replace these pre-projected tensors.
+
+        Parameters
+        ----------
+        line : str
+            The line that triggered this method (containing
+            ``"Raman Susceptibility Tensors"``).  Not used directly; reading
+            continues from the current position of ``self.file_descriptor``.
+
+        Returns
+        -------
+        None
+
+        """
+        # Skip the separator line  +-----...-----+
+        self.file_descriptor.readline()
+        self.raman_tensors = []
+        # Loop until the closing +---...---+ line (which has no "Mode number")
+        while True:
+            header = self.file_descriptor.readline()
+            if "Mode number" not in header:
+                break
+            # Row 0: three tensor values followed by the depolarisation ratio
+            row0 = self.file_descriptor.readline().split()
+            # Row 1 and 2: three tensor values only
+            row1 = self.file_descriptor.readline().split()
+            row2 = self.file_descriptor.readline().split()
+            # Skip the blank separator line between modes
+            self.file_descriptor.readline()
+            # Each line is bordered by '+' tokens; the tensor values are at
+            # positions [1], [2], [3] after splitting on whitespace.
+            tensor = np.array([
+                [float(row0[1]), float(row0[2]), float(row0[3])],
+                [float(row1[1]), float(row1[2]), float(row1[3])],
+                [float(row2[1]), float(row2[2]), float(row2[3])],
+            ])
+            self.raman_tensors.append(tensor * 4.0 * math.pi)
+        if self.debug:
+            logger.debug(f"_read_raman_tensors: read {len(self.raman_tensors)} Raman tensors")
+        return
+
+    def _read_nlo_susceptibility(self, line):
+        """Read the nonlinear optical susceptibility tensor from the .castep file.
+
+        CASTEP prints the d-tensor (d = χ^(2)/2) in a 3×6 Voigt-format block::
+
+            Nonlinear Optical Susceptibility (pm/V)
+            ---------------------------------------
+              -0.01384    -0.00493     0.00060    -0.00001    21.65509    -0.00057
+              -0.00057    -0.00261     0.00002    21.65875    -0.00001    -0.00493
+              21.65509    21.65875   -38.35388     0.00002     0.00060    -0.00001
+
+        Voigt column mapping: 0→(0,0), 1→(1,1), 2→(2,2), 3→(1,2)=(2,1),
+        4→(0,2)=(2,0), 5→(0,1)=(1,0).
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+        converted from pm/V to the reader ``R_epsilon`` convention.
+
+        Parameters
+        ----------
+        line : str
+            The trigger line (already consumed by the manage loop).
+
+        Returns
+        -------
+        bool
+            True on success.
+
+        """
+        # skip separator line "  ------..."
+        self.file_descriptor.readline()
+        voigt_pairs = [(0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1)]
+        d = np.zeros((3, 3, 3))
+        for i in range(3):
+            vals = [float(x) for x in self.file_descriptor.readline().split()]
+            for col, (j, k) in enumerate(voigt_pairs):
+                d[i, j, k] = vals[col]
+                d[i, k, j] = vals[col]   # symmetrize last two indices
+        # CASTEP outputs d = χ^(2)/2 in pm/V; convert to χ^(2), then to R_epsilon units.
+        self._store_nonlinear_optical_susceptibility_pm_per_v(2.0 * d)
+        logger.info("  Nonlinear optical susceptibility tensor read from CASTEP output (χ^(2) = 2d, R_epsilon units)")
+        return True
+
     def _read_kpoint_grid(self, line):
         """Parse and set the k-point grid dimensions from the given line.
 
-        This method updates the `kpoint_grid` attribute of the object with the k-point grid dimensions obtained from parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th positions (1-based indexing) in the line, separated by spaces.
+        This method updates the `kpoint_grid` attribute of the object with the k-point grid dimensions obtained from
+        parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th
+        positions (1-based indexing) in the line, separated by spaces.
 
         Parameters
         ----------
@@ -237,7 +600,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the `kpoints` attribute of the class instance.
+        This function assumes the number of k-points is always located at the 6th position (index 5) when the line is
+        split by whitespace. It directly updates the `kpoints` attribute of the class instance.
 
         """        
         self.kpoints = int(line.split()[5])
@@ -273,7 +637,9 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.
+        This method processes a line from a data file, extracting the species from the sixth (index 5) position in the
+        whitespace-separated list. The species name is capitalized and stored, and indices related to the species and
+        ion types are updated accordingly.
 
         """        
         species = line.split()[5].capitalize()
@@ -367,7 +733,9 @@ class CastepOutputReader(GenericOutputReader):
     def _read_masses(self, line):
         """Read and parse masses from a file, categorizing them by species.
 
-        This method reads lines from an opened file associated with the instance, extracting the species name, its mass, and the number of ions per species. It updates instance attributes to store this information, organizing masses both by type and in total.
+        This method reads lines from an opened file associated with the instance, extracting the species name, its mass,
+        and the number of ions per species. It updates instance attributes to store this information, organizing masses
+        both by type and in total.
 
         Parameters
         ----------
@@ -403,7 +771,11 @@ class CastepOutputReader(GenericOutputReader):
     def _read_born_charges(self, line):
         """Read the born charges from the castep file.
 
-        This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each column of the output refers to a given field direction, and each row refers to the atomic displacement, organizing the numbers in the format `[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]`. The function then rearranges these numbers into the desired format: `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`, where 1, 2, 3 are the field directions, and x, y, z represent the atomic displacements.
+        This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each
+        column of the output refers to a given field direction, and each row refers to the atomic displacement,
+        organizing the numbers in the format `[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]`. The function then
+        rearranges these numbers into the desired format: `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`, where 1, 2, 3
+        are the field directions, and x, y, z represent the atomic displacements.
 
         Parameters
         ----------
@@ -412,8 +784,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Returns
         -------
-        ndarray
-            An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
+        ndarray An array where each row represents the born charges for a particular atomic displacement arranged in the
+        format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
 
         """
         line = self.file_descriptor.readline()
@@ -434,7 +806,8 @@ class CastepOutputReader(GenericOutputReader):
     def _read_dielectric(self, line):
         """Read and parse dielectric data from a file.
 
-        This method reads dielectric data from the currently opened file associated with the object. It updates the object's properties for zero-frequency optical and static dielectric constants.
+        This method reads dielectric data from the currently opened file associated with the object. It updates the
+        object's properties for zero-frequency optical and static dielectric constants.
 
         Parameters
         ----------
@@ -447,9 +820,13 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        The function assumes that the file's current position is at the correct start point for reading dielectric data. It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first three numbers of each line are appended to 'zerof_optical_dielectric', and the latter three numbers to 'zerof_static_dielectric'. 
+        The function assumes that the file's current position is at the correct start point for reading dielectric data.
+        It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first
+        three numbers of each line are appended to 'zerof_optical_dielectric', and the latter three numbers to
+        'zerof_static_dielectric'.
 
-        This method modifies the state of the object by updating the 'zerof_optical_dielectric' and 'zerof_static_dielectric' lists with new data read from the file. 
+        This method modifies the state of the object by updating the 'zerof_optical_dielectric' and
+        'zerof_static_dielectric' lists with new data read from the file.
 
         """        
         line = self.file_descriptor.readline()
@@ -505,7 +882,9 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.
+        This function updates the `pressure` attribute of the class instance based on the value parsed from the input
+        string. The specific use case and format of the input string are not detailed, assuming some domain-specific
+        knowledge is required.
 
         """        
         self.pressure = float(line.split()[2])
@@ -555,7 +934,8 @@ class CastepOutputReader(GenericOutputReader):
     def _read_energy_cutoff(self, line):
         """Extract the energy cutoff value from a given line and store it in the object.
 
-        This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.
+        This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a
+        space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.
 
         Parameters
         ----------
@@ -594,7 +974,8 @@ class CastepOutputReader(GenericOutputReader):
     def _read_nelect(self, line):
         """Extract the number of electrons from a line and assign it.
 
-        Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable `electrons`.
+        Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance
+        variable `electrons`.
 
         Parameters
         ----------
@@ -612,7 +993,10 @@ class CastepOutputReader(GenericOutputReader):
     def _read_energies(self, line):
         """Read and store energy values from a given line.
 
-        Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in the given line contains the DFT energy, which is appended to a list, and also set as the final energy without entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.
+        Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that
+        the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in
+        the given line contains the DFT energy, which is appended to a list, and also set as the final energy without
+        entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.
 
         Parameters
         ----------
@@ -625,7 +1009,10 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This method expects that 'line' follows a specific format, where the fifth (index 4) element is the final energy without entropy and, on the subsequent line, the sixth (index 5) element is the final free energy. It further assumes 'self.file_descriptor' to be an open file object positioned at the line immediately following the line containing energy information.
+        This method expects that 'line' follows a specific format, where the fifth (index 4) element is the final energy
+        without entropy and, on the subsequent line, the sixth (index 5) element is the final free energy. It further
+        assumes 'self.file_descriptor' to be an open file object positioned at the line immediately following the line
+        containing energy information.
 
         The method updates four attributes of the object:
         - Appends the energy value to 'self.energiesDFT'.
@@ -705,7 +1092,9 @@ class CastepOutputReader(GenericOutputReader):
     def _read_convergence(self, line):
         """Read convergence data from a file and update internal lists.
 
-        This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.
+        This internal method reads specific lines from a file that is already opened and updates internal lists for
+        de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on
+        the values found in those lines.
 
         Parameters
         ----------
@@ -718,7 +1107,8 @@ class CastepOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). 
+        This function assumes that the file being read follows a specific format where the required values are found at
+        known line intervals and in a consistent column position (index 3 after splitting the line).
 
         The function does not return any value, but it updates the internal state of the object it is a part of.
 
@@ -739,4 +1129,3 @@ class CastepOutputReader(GenericOutputReader):
         return    
         
             
-

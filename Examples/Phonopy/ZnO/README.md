@@ -52,4 +52,8 @@ The output from this command is stored in qpoints.yaml and phonopy.yaml
 | script.py         | pdgui test script                            |
 | VASP.Born/        | Directory containing Born charge calculation |
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [VASP.Born](VASP.Born/README.md)

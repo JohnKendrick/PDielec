@@ -8,4 +8,4 @@
 | [Na2SO42/](./Na2SO42/README.md)  | Abinit version 8, powder example  |
 | [preader/](./preader/README.md)  | Test of preader for all abinit examples |
 
-[Back](..)
+[Back](../README.md)

@@ -14,16 +14,20 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """A module to read contents of a directory containing Crystal input and output files."""
+import logging
 import math
 import os
 import re
 
 import numpy as np
 
-from PDielec.Constants import amu, hartree2ev
+from PDielec.Constants import amu, angs2bohr, hartree2ev
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.IO import pdielec_io
 from PDielec.UnitCell import UnitCell
+
+logger = logging.getLogger(__name__)
+
 
 
 class CrystalOutputReader(GenericOutputReader):
@@ -38,7 +42,9 @@ class CrystalOutputReader(GenericOutputReader):
 
     Notes
     -----
-    This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+    This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It
+    initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian
+    symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
 
     """
 
@@ -52,13 +58,16 @@ class CrystalOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+        This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It
+        initializes several class attributes including the type of output (set to 'Crystal output'), the method for
+        hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
 
         """        
         GenericOutputReader.__init__(self, filenames)
         self.type                    = "Crystal output"
         self.hessian_symmetrisation  = "crystal"
         self._fractional_coordinates = []
+        self._crystal_raman_dalpha   = None
         return
 
     def _read_output_files(self):
@@ -85,8 +94,240 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage["energy"]  = (re.compile(" TOTAL ENERGY\\(DFT\\)"), self._read_energy)
         self.manage["energy2"]  = (re.compile(" TOTAL ENERGY \\+ DISP"), self._read_energy2)
         self.manage["energy3"]  = (re.compile(" *CENTRAL POINT"), self._read_energy3)
+        self.manage["chi2"]  = (
+            re.compile(r" FIRST HYPERPOLARIZABILITY \(BETA\) AND SECOND ELECTRIC SUSCEPTIBILITY \(CHI\(2\)\)"),
+            self._read_chi2_output,
+        )
         for f in self._outputfiles:
             self._read_output_file(f)
+        # TENS_RAMAN.DAT is an optional companion file; read it if present
+        tens_raman = os.path.join(self.open_directory, "TENS_RAMAN.DAT")
+        if os.path.isfile(tens_raman):
+            self._read_tens_raman_dat(tens_raman)
+        # CHI2.DAT is an optional companion file written by Crystal's CPHF chi(2) calculation
+        chi2_dat = os.path.join(self.open_directory, "CHI2.DAT")
+        if os.path.isfile(chi2_dat):
+            self._read_chi2_dat(chi2_dat)
+        return
+
+    def _read_tens_raman_dat(self, filename):
+        """Read Raman polarizability derivatives from TENS_RAMAN.DAT and compute mode Raman tensors.
+
+        TENS_RAMAN.DAT contains the derivative of the unit-cell polarizability tensor
+        (in atomic units, Bohr²) with respect to each atomic Cartesian displacement (Bohr).
+        There is one line per (atom, displacement-direction) pair, ordered as
+        ``(atom1_x, atom1_y, atom1_z, atom2_x, …, atomN_z)``, and each line holds
+        six values::
+
+            ∂α_xx/∂u   ∂α_xy/∂u   ∂α_xz/∂u   ∂α_yy/∂u   ∂α_yz/∂u   ∂α_zz/∂u
+
+        The raw projected tensors are polarizability-volume derivatives
+        ``R_alpha = dα_vol/dQ``.  PDielec stores the AbInit-style bulk Raman
+        convention ``R_epsilon = sqrt(V) dε/dQ``.  Since
+        ``α_vol = V(ε−I)/(4π)``, the final conversion is::
+
+            R_epsilon = (4π / sqrt(Vcell)) R_alpha
+
+        The projection is::
+
+            R_alpha[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
+                               / angs2bohr²
+
+        where ``mwm[n,k,β]`` is the mass-weighted eigenvector component for mode *n*,
+        atom *k*, Cartesian direction *β*, and ``M_k`` is the atomic mass in amu.
+        The ``1 / angs2bohr²`` factor maps Crystal's Bohr² amu⁻¹/² to
+        Å² amu⁻¹/² before the polarizability-to-``R_epsilon`` conversion.
+
+        Parameters
+        ----------
+        filename : str
+            Path to the TENS_RAMAN.DAT file.
+
+        Returns
+        -------
+        None
+
+        """
+        if not self.mass_weighted_normal_modes or not self.masses:
+            logger.warning("TENS_RAMAN.DAT found but normal modes are not yet available; skipping Raman tensors")
+            return
+
+        nmodes = 3 * self.nions
+
+        # Read the 3N × 6 polarizability-derivative table
+        fd = pdielec_io(filename, "r")
+        dalpha = np.zeros((nmodes, 6))
+        for i in range(nmodes):
+            line = fd.readline()
+            if not line:
+                logger.error(f"Unexpected end of file in TENS_RAMAN.DAT at row {i}")
+                fd.close()
+                return
+            dalpha[i] = [float(x) for x in line.split()]
+        fd.close()
+        self._crystal_raman_dalpha = dalpha
+
+        self._calculate_raman_tensors_from_tens_raman_dat()
+        if self.debug:
+            logger.debug(f"_read_tens_raman_dat: computed Raman tensors for {nmodes} modes from {filename}")
+        return
+
+    def _calculate_raman_tensors_from_tens_raman_dat(self):
+        """Project stored CRYSTAL polarizability derivatives onto current modes."""
+        if self._crystal_raman_dalpha is None:
+            return
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
+            return
+        if len(self.masses) == 0:
+            return
+
+        nmodes = 3 * self.nions
+        dalpha = self._crystal_raman_dalpha
+
+        # mwm shape: (nmodes, nions, 3)  — unit-normalised mass-weighted eigenvectors
+        mwm = np.array(self.mass_weighted_normal_modes)
+
+        # Flatten to (nmodes, 3*nions) and attach 1/√M_k weights so that
+        # amp[n, k*3+β] = mwm[n, k, β] / √M_k
+        inv_sqrt_masses = np.repeat(1.0 / np.sqrt(self.masses), 3)   # shape (3*nions,)
+        amp = mwm.reshape(nmodes, nmodes) * inv_sqrt_masses           # (nmodes, nmodes)
+
+        # Project: raman_raw[n, c] = Σ_{k,β} amp[n, k*3+β] × dalpha[k*3+β, c]
+        raman_raw = amp @ dalpha   # (nmodes, 6)
+
+        # Convert from Crystal polarizability units (Bohr² amu⁻¹/²) to
+        # PDielec's R_epsilon convention sqrt(V) dε/dQ.
+        # Crystal dα = ∂α/∂u in Bohr² (polarisability per unit displacement in Bohr).
+        unit_factor = (1.0 / (angs2bohr**2)) * (4.0 * math.pi / math.sqrt(self.volume))
+
+        # Build symmetric 3×3 tensors from the 6 independent components
+        # Column order: α_xx=0, α_xy=1, α_xz=2, α_yy=3, α_yz=4, α_zz=5
+        self.raman_tensors = []
+        for n in range(nmodes):
+            da = raman_raw[n]
+            tensor = np.array([
+                [da[0], da[1], da[2]],
+                [da[1], da[3], da[4]],
+                [da[2], da[4], da[5]],
+            ]) * unit_factor
+            self.raman_tensors.append(tensor)
+        return
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Rebuild CRYSTAL Raman tensors exactly from TENS_RAMAN.DAT derivatives."""
+        if self._crystal_raman_dalpha is not None:
+            self._calculate_raman_tensors_from_tens_raman_dat()
+        else:
+            super()._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
+        return
+
+    def _read_chi2_dat(self, filename):
+        """Read the second-order nonlinear optical susceptibility χ^(2) from CHI2.DAT.
+
+        Crystal23's CPHF chi(2) calculation writes the 10 independent components of
+        the d-tensor (d = χ^(2)/2) as three-character Cartesian labels (e.g. ``XXZ``)
+        together with BETA (a.u.), CHI(2) (a.u.), d(MKS) (pm/V) and d(CGS) columns::
+
+            COMPONENT      BETA                        CHI(2)       d(MKS)       d(cgs)
+            *****...
+                XXZ    6.1371E+02  (  6.1372E+02)   1.2024E+01   1.1691E+01   2.7892E-01
+                ...
+            *****...
+
+        The 10 independent components assume full Kleinman symmetry (all index
+        permutations equivalent).  ``d(MKS)`` is already in pm/V and satisfies
+        d = χ^(2)/2.
+
+        The stored attribute ``nonlinear_optical_susceptibility`` is χ^(2) = 2d
+        converted from pm/V to the reader ``R_epsilon`` convention, consistent
+        with the Abinit and CASTEP readers.
+
+        Parameters
+        ----------
+        filename : str
+            Path to the CHI2.DAT file.
+
+        Returns
+        -------
+        None
+
+        """
+        fd = pdielec_io(filename, "r")
+        self._read_chi2_block(fd, filename)
+        fd.close()
+        return
+
+    def _read_chi2_output(self, line):
+        """Read the second-order susceptibility block embedded in a CRYSTAL output file."""
+        self._read_chi2_block(self.file_descriptor, self.open_filename)
+        return
+
+    def _read_chi2_block(self, fd, source):
+        """Read a CRYSTAL second-order susceptibility table from an open file."""
+        # All Kleinman-equivalent index triples for each 10-component label
+        _component_perms = {
+            "XXX": [(0, 0, 0)],
+            "XXY": [(0, 0, 1), (0, 1, 0), (1, 0, 0)],
+            "XXZ": [(0, 0, 2), (0, 2, 0), (2, 0, 0)],
+            "XYY": [(0, 1, 1), (1, 0, 1), (1, 1, 0)],
+            "XYZ": [(0, 1, 2), (0, 2, 1), (1, 0, 2), (1, 2, 0), (2, 0, 1), (2, 1, 0)],
+            "XZZ": [(0, 2, 2), (2, 0, 2), (2, 2, 0)],
+            "YYY": [(1, 1, 1)],
+            "YYZ": [(1, 1, 2), (1, 2, 1), (2, 1, 1)],
+            "YZZ": [(1, 2, 2), (2, 1, 2), (2, 2, 1)],
+            "ZZZ": [(2, 2, 2)],
+        }
+        label_re = re.compile(r"^\s*([XYZ]{3})\s")
+        paren_re = re.compile(r"\([^)]*\)")
+
+        d = np.zeros((3, 3, 3))
+        in_data = False
+        found_any = False
+        while True:
+            line = fd.readline()
+            if not line:
+                break
+            stripped = line.strip()
+            if not in_data:
+                # The data block starts immediately after the first long **** separator
+                if stripped.startswith("*") and len(stripped) > 10:
+                    in_data = True
+                continue
+            # End of data block at the next **** separator
+            if stripped.startswith("*"):
+                break
+            if not stripped:
+                continue
+            m = label_re.match(line)
+            if not m:
+                continue
+            label = m.group(1)
+            if label not in _component_perms:
+                continue
+            # Remove parenthesised pre-symmetrisation BETA value then split.
+            # Raw columns: LABEL  BETA  ( BETA_presym)  CHI2_au  d_MKS  d_cgs
+            # After removing parens: LABEL  BETA  CHI2_au  d_MKS  d_cgs
+            clean = paren_re.sub("", line)
+            parts = clean.split()
+            if len(parts) < 4:
+                continue
+            try:
+                d_mks = float(parts[3])
+            except ValueError:
+                continue
+            for idx in _component_perms[label]:
+                d[idx] = d_mks
+            found_any = True
+
+        if found_any:
+            # Store χ^(2) = 2d from pm/V, matching the internal reader convention.
+            self._store_nonlinear_optical_susceptibility_pm_per_v(2.0 * d)
+            logger.info(
+                f"  Nonlinear optical susceptibility tensor read from {source} "
+                "(χ^(2) = 2d, R_epsilon units)"
+            )
+        else:
+            logger.warning(f"  No χ^(2) data found in {source}")
         return
 
     def _read_energy(self, line):
@@ -181,7 +422,8 @@ class CrystalOutputReader(GenericOutputReader):
     def _read_kpoints(self, line):
         """Parse a line of text to extract k-point grid dimensions and the total number of k-points.
 
-        The function sets the object's kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.
+        The function sets the object's kpoint_grid attribute to a list of three integers representing the grid
+        dimensions, and the kpoints attribute to an integer representing the total number of k-points.
 
         Parameters
         ----------
@@ -199,7 +441,11 @@ class CrystalOutputReader(GenericOutputReader):
     def _read_epsilon(self, line):
         """Read epsilon values from a formatted file and update the optical dielectric matrix.
 
-        This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in the file. The method expects the values in a specific format and parses them accordingly.
+        This internal method reads lines from a previously opened file (using the file_descriptor attribute of the
+        object), interpreting data that specifies the components of the optical dielectric tensor. The method updates
+        the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric
+        values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in
+        the file. The method expects the values in a specific format and parses them accordingly.
 
 
         Parameters
@@ -213,11 +459,15 @@ class CrystalOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - The method does not return any value but instead updates the `zerof_optical_dielectric` attribute of the object.
-        - This method assumes that the file being read is opened and managed elsewhere in the class and that the `file_descriptor` attribute contains a valid file object.
-        - The method reads lines sequentially from the `file_descriptor` and expects the file to be formatted in a specific way, with optical dielectric components starting from a certain line.
-        - Each line read corresponds to a different component of the optical dielectric tensor, and the method parses these lines to identify the component and its value.
-        - After reading and storing the components' values, the method also updates the symmetric components of the tensor (i.e., sets optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding symmetric values).
+        - The method does not return any value but instead updates the `zerof_optical_dielectric` attribute of the
+          object. - This method assumes that the file being read is opened and managed elsewhere in the class and that
+          the `file_descriptor` attribute contains a valid file object. - The method reads lines sequentially from the
+          `file_descriptor` and expects the file to be formatted in a specific way, with optical dielectric components
+          starting from a certain line. - Each line read corresponds to a different component of the optical dielectric
+          tensor, and the method parses these lines to identify the component and its value. - After reading and storing
+          the components' values, the method also updates the symmetric components of the tensor (i.e., sets
+          optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding
+          symmetric values).
 
         """        
         self.file_descriptor.readline()
@@ -341,7 +591,8 @@ class CrystalOutputReader(GenericOutputReader):
 
         Notes
         -----
-        This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and then updates the dynamical matrix of the system. 
+        This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and
+        then updates the dynamical matrix of the system.
 
         See Also
         --------
@@ -379,7 +630,8 @@ class CrystalOutputReader(GenericOutputReader):
     def _read_output_eigenvectors(self, line):
         """Read and process output eigenvectors from a file descriptor.
 
-        This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom's masses to generate mass-weighted normal modes, and normalizes these modes.
+        This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the
+        square root of the atom's masses to generate mass-weighted normal modes, and normalizes these modes.
 
         Parameters
         ----------
@@ -392,9 +644,9 @@ class CrystalOutputReader(GenericOutputReader):
 
         Notes
         -----
-        - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class instance.
-        - Atoms' masses are used to compute mass-weighted normal modes
-        - Normalization of each mass-weighted mode is performed at the end of the method.
+        - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class
+          instance. - Atoms' masses are used to compute mass-weighted normal modes - Normalization of each mass-weighted
+          mode is performed at the end of the method.
 
         """        
         self.file_descriptor.readline()
@@ -451,8 +703,8 @@ class CrystalOutputReader(GenericOutputReader):
 
         Returns
         -------
-        numpy.ndarray
-            A 3x3 array where each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as: ::
+        numpy.ndarray A 3x3 array where each row of the output refers to a given field direction and each column in the
+        row refers to the atomic displacement. The output is arranged as: ::
     
                 [[a1x a1y a1z]
                  [a2x a2y a2z]
@@ -511,7 +763,9 @@ class CrystalOutputReader(GenericOutputReader):
     def _read_born_charges_from_output(self, line):
         """Read Born charges from output file.
 
-        This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the `born_charges` list attribute.
+        This method is responsible for parsing and reading Born effective charges from a given output file, beginning
+        from the current line position of the file descriptor. It stores the read charges into the `born_charges` list
+        attribute.
 
         Parameters
         ----------
@@ -524,7 +778,9 @@ class CrystalOutputReader(GenericOutputReader):
 
         Note
         ----
-        This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's formatted in a specific way expected by the logic of this method.
+        This method directly modifies the `born_charges` attribute of the class instance by appending the read Born
+        charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's
+        formatted in a specific way expected by the logic of this method.
 
         """        
         line = self.file_descriptor.readline()
@@ -589,7 +845,10 @@ class CrystalOutputReader(GenericOutputReader):
     def _read_lattice_vectors(self, line):
         """Read lattice vectors from a file and update the corresponding properties.
 
-        This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the last unit cell based on existing class attributes.
+        This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates
+        a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates
+        the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the
+        last unit cell based on existing class attributes.
 
         Modifications to the instance attributes include:
         - Appending a new `UnitCell` object to the `unit_cells` list.
@@ -612,7 +871,7 @@ class CrystalOutputReader(GenericOutputReader):
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         self.unit_cells.append(UnitCell(avector, bvector, cvector,units="Angstrom"))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         # The fractional coordinates are specified before the lattice vectors
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         self.unit_cells[-1].set_element_names(self.species_list)
@@ -700,9 +959,8 @@ class CrystalOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()   # Skip ATOMS IN THE ASYMMETRIC UNIT
         self._read_fractional_coordinates(line)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].getVolume("Angstrom")
+        self.volume = self.unit_cells[-1].get_volume("Angstrom")
         # The fractional coordinates are specified before the lattice vectors
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         self.unit_cells[-1].set_element_names(self.species_list)
         return
-

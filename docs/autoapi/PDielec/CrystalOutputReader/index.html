@@ -197,13 +197,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="../../../pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -211,11 +218,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
@@ -224,20 +232,23 @@
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -246,13 +257,92 @@
 <li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -271,6 +361,29 @@
 <li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
@@ -321,6 +434,18 @@
           <section id="module-PDielec.CrystalOutputReader">
 <span id="pdielec-crystaloutputreader"></span><h1>PDielec.CrystalOutputReader<a class="headerlink" href="#module-PDielec.CrystalOutputReader" title="Link to this heading">¶</a></h1>
 <p>A module to read contents of a directory containing Crystal input and output files.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.CrystalOutputReader.logger" title="PDielec.CrystalOutputReader.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
@@ -350,7 +475,15 @@
 </section>
 <section id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
-<p>This function calls the initializer of the parent class ‘GenericOutputReader’ with the given filenames. It initializes several class attributes including the type of output (set to ‘Crystal output’), the method for hessian symmetrisation (set to ‘crystal’), and an empty list for fractional coordinates.</p>
+<p>This function calls the initializer of the parent class ‘GenericOutputReader’ with the given filenames. It
+initializes several class attributes including the type of output (set to ‘Crystal output’), the method for hessian
+symmetrisation (set to ‘crystal’), and an empty list for fractional coordinates.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._calculate_raman_tensors_from_tens_raman_dat">
+<span class="sig-name descname"><span class="pre">_calculate_raman_tensors_from_tens_raman_dat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._calculate_raman_tensors_from_tens_raman_dat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._calculate_raman_tensors_from_tens_raman_dat" title="Link to this definition">¶</a></dt>
+<dd><p>Project stored CRYSTAL polarizability derivatives onto current modes.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges">
 <span class="sig-name descname"><span class="pre">_read_born_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges" title="Link to this definition">¶</a></dt>
@@ -364,16 +497,15 @@
 </section>
 <section id="returns">
 <h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
-<dl>
-<dt>numpy.ndarray</dt><dd><p>A 3x3 array where each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">a1x</span> <span class="n">a1y</span> <span class="n">a1z</span><span class="p">]</span>
- <span class="p">[</span><span class="n">a2x</span> <span class="n">a2y</span> <span class="n">a2z</span><span class="p">]</span>
- <span class="p">[</span><span class="n">a3x</span> <span class="n">a3y</span> <span class="n">a3z</span><span class="p">]]</span>
+<p>numpy.ndarray A 3x3 array where each row of the output refers to a given field direction and each column in the
+row refers to the atomic displacement. The output is arranged as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="p">[[</span><span class="n">a1x</span> <span class="n">a1y</span> <span class="n">a1z</span><span class="p">]</span>
+     <span class="p">[</span><span class="n">a2x</span> <span class="n">a2y</span> <span class="n">a2z</span><span class="p">]</span>
+     <span class="p">[</span><span class="n">a3x</span> <span class="n">a3y</span> <span class="n">a3z</span><span class="p">]]</span>
+
+<span class="n">where</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="n">represent</span> <span class="n">the</span> <span class="n">field</span> <span class="n">directions</span> <span class="ow">and</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="n">are</span> <span class="n">the</span> <span class="n">atomic</span> <span class="n">displacements</span><span class="o">.</span>
 </pre></div>
 </div>
-<p>where 1, 2, 3 represent the field directions and x, y, z are the atomic displacements.</p>
-</dd>
-</dl>
 </section>
 </dd></dl>
 
@@ -401,7 +533,9 @@ the result in the <cite>born_charges</cite> instance variable.</p>
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_output">
 <span class="sig-name descname"><span class="pre">_read_born_charges_from_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_born_charges_from_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_output" title="Link to this definition">¶</a></dt>
 <dd><p>Read Born charges from output file.</p>
-<p>This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the <cite>born_charges</cite> list attribute.</p>
+<p>This method is responsible for parsing and reading Born effective charges from a given output file, beginning
+from the current line position of the file descriptor. It stores the read charges into the <cite>born_charges</cite> list
+attribute.</p>
 <section id="id4">
 <h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
 <dl class="simple">
@@ -415,8 +549,55 @@ the result in the <cite>born_charges</cite> instance variable.</p>
 </section>
 <section id="note">
 <h4>Note<a class="headerlink" href="#note" title="Link to this heading">¶</a></h4>
-<p>This method directly modifies the <cite>born_charges</cite> attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it’s formatted in a specific way expected by the logic of this method.</p>
+<p>This method directly modifies the <cite>born_charges</cite> attribute of the class instance by appending the read Born
+charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it’s
+formatted in a specific way expected by the logic of this method.</p>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_block">
+<span class="sig-name descname"><span class="pre">_read_chi2_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_chi2_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_block" title="Link to this definition">¶</a></dt>
+<dd><p>Read a CRYSTAL second-order susceptibility table from an open file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_dat">
+<span class="sig-name descname"><span class="pre">_read_chi2_dat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_chi2_dat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_dat" title="Link to this definition">¶</a></dt>
+<dd><p>Read the second-order nonlinear optical susceptibility χ^(2) from CHI2.DAT.</p>
+<p>Crystal23’s CPHF chi(2) calculation writes the 10 independent components of
+the d-tensor (d = χ^(2)/2) as three-character Cartesian labels (e.g. <code class="docutils literal notranslate"><span class="pre">XXZ</span></code>)
+together with BETA (a.u.), CHI(2) (a.u.), d(MKS) (pm/V) and d(CGS) columns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COMPONENT</span>      <span class="n">BETA</span>                        <span class="n">CHI</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>       <span class="n">d</span><span class="p">(</span><span class="n">MKS</span><span class="p">)</span>       <span class="n">d</span><span class="p">(</span><span class="n">cgs</span><span class="p">)</span>
+<span class="o">*****...</span>
+    <span class="n">XXZ</span>    <span class="mf">6.1371E+02</span>  <span class="p">(</span>  <span class="mf">6.1372E+02</span><span class="p">)</span>   <span class="mf">1.2024E+01</span>   <span class="mf">1.1691E+01</span>   <span class="mf">2.7892E-01</span>
+    <span class="o">...</span>
+<span class="o">*****...</span>
+</pre></div>
+</div>
+<p>The 10 independent components assume full Kleinman symmetry (all index
+permutations equivalent).  <code class="docutils literal notranslate"><span class="pre">d(MKS)</span></code> is already in pm/V and satisfies
+d = χ^(2)/2.</p>
+<p>The stored attribute <code class="docutils literal notranslate"><span class="pre">nonlinear_optical_susceptibility</span></code> is χ^(2) = 2d
+converted from pm/V to the reader <code class="docutils literal notranslate"><span class="pre">R_epsilon</span></code> convention, consistent
+with the Abinit and CASTEP readers.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>Path to the CHI2.DAT file.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_output">
+<span class="sig-name descname"><span class="pre">_read_chi2_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_chi2_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_output" title="Link to this definition">¶</a></dt>
+<dd><p>Read the second-order susceptibility block embedded in a CRYSTAL output file.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -428,28 +609,11 @@ the file ‘HESSFREQ.DAT’ in the specified <cite>open_directory</cite>. If the
 eigenvectors from this file using the method <cite>_read_hessfreq_dat</cite>. If the file does not exist,
 it reads the eigenvectors from output data indicated by ‘line’ using the method
 <cite>_read_output_eigenvectors</cite>.</p>
-<section id="id6">
-<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>The line or identifier used to read the eigenvectors from output data, if ‘HESSFREQ.DAT’
-is not available.</p>
-</dd>
-</dl>
-</section>
-<section id="id7">
-<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons">
-<span class="sig-name descname"><span class="pre">_read_electrons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons" title="Link to this definition">¶</a></dt>
-<dd><p>Parse the number of electrons from a string and assign it to the instance variable.</p>
 <section id="id8">
 <h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>The number of electrons is the sixth element in a space-separated list.</p>
+<dt>line<span class="classifier">str</span></dt><dd><p>The line or identifier used to read the eigenvectors from output data, if ‘HESSFREQ.DAT’
+is not available.</p>
 </dd>
 </dl>
 </section>
@@ -460,15 +624,13 @@ is not available.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy">
-<span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy" title="Link to this definition">¶</a></dt>
-<dd><p>Read and set the free energy and energy without entropy from a line.</p>
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons">
+<span class="sig-name descname"><span class="pre">_read_electrons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons" title="Link to this definition">¶</a></dt>
+<dd><p>Parse the number of electrons from a string and assign it to the instance variable.</p>
 <section id="id10">
 <h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy information, expected to be in a format
-where the fourth element (index 3) after splitting contains the energy value
-in Hartrees.</p>
+<dt>line<span class="classifier">str</span></dt><dd><p>The number of electrons is the sixth element in a space-separated list.</p>
 </dd>
 </dl>
 </section>
@@ -476,8 +638,27 @@ in Hartrees.</p>
 <h4>Returns<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy">
+<span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy" title="Link to this definition">¶</a></dt>
+<dd><p>Read and set the free energy and energy without entropy from a line.</p>
 <section id="id12">
-<h4>Notes<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy information, expected to be in a format
+where the fourth element (index 3) after splitting contains the energy value
+in Hartrees.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id14">
+<h4>Notes<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <p>This method modifies the instance attributes <cite>final_free_energy</cite> and
 <cite>final_energy_without_entropy</cite> by converting the energy value from Hartrees to
 electronvolts (eV) using a conversion factor stored in <cite>hartree2ev</cite>.</p>
@@ -492,29 +673,11 @@ electronvolts (eV) using a conversion factor stored in <cite>hartree2ev</cite>.<
 <p>This method reads a line of text that contains energy values and updates the
 instance’s final free energy and final energy without entropy attributes.
 The energies are assumed to be in Hartree units and are converted to electronvolts (eV).</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>A string containing the desired energy values. The sixth value in the line
-(when split by whitespace) is assumed to be the energy in Hartree units.</p>
-</dd>
-</dl>
-</section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3">
-<span class="sig-name descname"><span class="pre">_read_energy3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3" title="Link to this definition">¶</a></dt>
-<dd><p>Parse energy information from a given line of text and update object properties.</p>
 <section id="id15">
 <h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>A line of text containing energy information where the 3rd element (index 2)
-after splitting by whitespace contains the energy value in Hartree units.</p>
+<dt>line<span class="classifier">str</span></dt><dd><p>A string containing the desired energy values. The sixth value in the line
+(when split by whitespace) is assumed to be the energy in Hartree units.</p>
 </dd>
 </dl>
 </section>
@@ -525,14 +688,14 @@ after splitting by whitespace contains the energy value in Hartree units.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon">
-<span class="sig-name descname"><span class="pre">_read_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon" title="Link to this definition">¶</a></dt>
-<dd><p>Read epsilon values from a formatted file and update the optical dielectric matrix.</p>
-<p>This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object’s <cite>zerof_optical_dielectric</cite> attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their ‘XX’, ‘YY’, ‘ZZ’, ‘XY’, ‘XZ’, and ‘YZ’ labels in the file. The method expects the values in a specific format and parses them accordingly.</p>
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3">
+<span class="sig-name descname"><span class="pre">_read_energy3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3" title="Link to this definition">¶</a></dt>
+<dd><p>Parse energy information from a given line of text and update object properties.</p>
 <section id="id17">
 <h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>line<span class="classifier">str</span></dt><dd><p>The initial line passed to the method. Currently, this parameter is not used within the method.</p>
+<dt>line<span class="classifier">str</span></dt><dd><p>A line of text containing energy information where the 3rd element (index 2)
+after splitting by whitespace contains the energy value in Hartree units.</p>
 </dd>
 </dl>
 </section>
@@ -540,14 +703,40 @@ after splitting by whitespace contains the energy value in Hartree units.</p>
 <h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon">
+<span class="sig-name descname"><span class="pre">_read_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon" title="Link to this definition">¶</a></dt>
+<dd><p>Read epsilon values from a formatted file and update the optical dielectric matrix.</p>
+<p>This internal method reads lines from a previously opened file (using the file_descriptor attribute of the
+object), interpreting data that specifies the components of the optical dielectric tensor. The method updates
+the object’s <cite>zerof_optical_dielectric</cite> attribute with a 3x3 matrix representing the read optical dielectric
+values. Optical dielectric components are identified by their ‘XX’, ‘YY’, ‘ZZ’, ‘XY’, ‘XZ’, and ‘YZ’ labels in
+the file. The method expects the values in a specific format and parses them accordingly.</p>
 <section id="id19">
-<h4>Notes<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The initial line passed to the method. Currently, this parameter is not used within the method.</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id21">
+<h4>Notes<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
 <ul class="simple">
-<li><p>The method does not return any value but instead updates the <cite>zerof_optical_dielectric</cite> attribute of the object.</p></li>
-<li><p>This method assumes that the file being read is opened and managed elsewhere in the class and that the <cite>file_descriptor</cite> attribute contains a valid file object.</p></li>
-<li><p>The method reads lines sequentially from the <cite>file_descriptor</cite> and expects the file to be formatted in a specific way, with optical dielectric components starting from a certain line.</p></li>
-<li><p>Each line read corresponds to a different component of the optical dielectric tensor, and the method parses these lines to identify the component and its value.</p></li>
-<li><p>After reading and storing the components’ values, the method also updates the symmetric components of the tensor (i.e., sets optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding symmetric values).</p></li>
+<li><p>The method does not return any value but instead updates the <cite>zerof_optical_dielectric</cite> attribute of the
+object. - This method assumes that the file being read is opened and managed elsewhere in the class and that
+the <cite>file_descriptor</cite> attribute contains a valid file object. - The method reads lines sequentially from the
+<cite>file_descriptor</cite> and expects the file to be formatted in a specific way, with optical dielectric components
+starting from a certain line. - Each line read corresponds to a different component of the optical dielectric
+tensor, and the method parses these lines to identify the component and its value. - After reading and storing
+the components’ values, the method also updates the symmetric components of the tensor (i.e., sets
+optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding
+symmetric values).</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -559,15 +748,15 @@ after splitting by whitespace contains the energy value in Hartree units.</p>
 <p>This method processes a line in the file to extract the number of ions and
 then reads the successive lines to acquire the fractional coordinates, species,
 and other related atomic information, storing them into the class attributes.</p>
-<section id="id20">
-<h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<section id="id22">
+<h4>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line to be processed for extracting the total number of ions.</p>
 </dd>
 </dl>
 </section>
-<section id="id21">
-<h4>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
+<section id="id23">
+<h4>Returns<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="attributes-updated">
@@ -595,16 +784,17 @@ and other related atomic information, storing them into the class attributes.</p
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat">
 <span class="sig-name descname"><span class="pre">_read_hessfreq_dat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_hessfreq_dat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat" title="Link to this definition">¶</a></dt>
 <dd><p>Read a Hessian frequency data from a given file and update the dynamical matrix.</p>
-<section id="id22">
-<h4>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
+<section id="id24">
+<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The path to the file containing Hessian frequency data.</p>
 </dd>
 </dl>
 </section>
-<section id="id23">
-<h4>Notes<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
-<p>This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and then updates the dynamical matrix of the system.</p>
+<section id="id25">
+<h4>Notes<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<p>This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and
+then updates the dynamical matrix of the system.</p>
 </section>
 <section id="see-also">
 <h4>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h4>
@@ -621,20 +811,20 @@ instance’s file descriptor. The second, third, and fourth lines are expected
 to contain ionic dielectric data, each consisting of three floating-point
 numbers. These numbers are stored in a list of lists in the instance variable
 <cite>zerof_static_dielectric</cite>.</p>
-<section id="id24">
-<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<section id="id26">
+<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>This parameter is not used. The function reads lines directly from the
 instance’s file descriptor.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h4>Returns<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<section id="id27">
+<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id26">
-<h4>Notes<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<section id="id28">
+<h4>Notes<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
 <p>The method directly modifies the instance variable <cite>zerof_static_dielectric</cite>.
 It is assumed that the file has been adequately positioned before this method
 is called, as it starts reading from the current position of the file
@@ -646,16 +836,17 @@ descriptor’s pointer.</p>
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_kpoints">
 <span class="sig-name descname"><span class="pre">_read_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_kpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_kpoints" title="Link to this definition">¶</a></dt>
 <dd><p>Parse a line of text to extract k-point grid dimensions and the total number of k-points.</p>
-<p>The function sets the object’s kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<p>The function sets the object’s kpoint_grid attribute to a list of three integers representing the grid
+dimensions, and the kpoints attribute to an integer representing the total number of k-points.</p>
+<section id="id29">
+<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string from which k-point grid dimensions and the total number of k-points are extracted. The line is expected to have specific data at predefined positions: the k-point grid dimensions at indices 2, 3, and 4, and the total number of k-points at index 12, according to the split by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<section id="id30">
+<h4>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -664,14 +855,32 @@ descriptor’s pointer.</p>
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors">
 <span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors" title="Link to this definition">¶</a></dt>
 <dd><p>Read lattice vectors from a file and update the corresponding properties.</p>
-<p>This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates a new <cite>UnitCell</cite> object with these vectors, and updates the unit cell collection of the object. It also updates the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the last unit cell based on existing class attributes.</p>
+<p>This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates
+a new <cite>UnitCell</cite> object with these vectors, and updates the unit cell collection of the object. It also updates
+the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the
+last unit cell based on existing class attributes.</p>
 <p>Modifications to the instance attributes include:
 - Appending a new <cite>UnitCell</cite> object to the <cite>unit_cells</cite> list.
 - Updating the <cite>ncells</cite> attribute to match the length of the <cite>unit_cells</cite> list.
 - Setting the volume of the last unit cell in <cite>unit_cells</cite>.
 - Updating the fractional coordinates and element names of the last unit cell.</p>
-<section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<section id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the <cite>line</cite> parameter could be omitted or revised.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors2">
+<span class="sig-name descname"><span class="pre">_read_lattice_vectors2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_lattice_vectors2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors2" title="Link to this definition">¶</a></dt>
+<dd><p>Read lattice vectors and fractional coordinates.</p>
+<p>This method is used to read the intermediate coordinates and cell of an optimisation.
+This method reads the cell as a,b,c,alpha,bet,gamm</p>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the <cite>line</cite> parameter could be omitted or revised.</p>
 </dd>
@@ -685,8 +894,8 @@ descriptor’s pointer.</p>
 <dd><p>Read and parse the masses from a file descriptor line by line.</p>
 <p>This private method reads mass information from consecutive lines of a
 file, updating a list of masses and a list of masses per species type.</p>
-<section id="id30">
-<h4>Notes<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<section id="id33">
+<h4>Notes<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
 <p>The function uses a file descriptor (self.file_descriptor) that should
 be opened before calling this function. It reads the masses from the
 file, expecting the mass values to be placed at specific positions in
@@ -698,8 +907,8 @@ of masses indexed by species type).</p>
 that <cite>self.nions</cite>, <cite>self.nspecies</cite>, and <cite>self.atom_type_list</cite> are set
 correctly before calling this method.</p>
 </section>
-<section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line from which to start reading. Note that this
 parameter is not used in the function body and the actual reading
@@ -707,8 +916,8 @@ starts from the next line of the file descriptor.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -717,24 +926,25 @@ starts from the next line of the file descriptor.</p>
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_output_eigenvectors">
 <span class="sig-name descname"><span class="pre">_read_output_eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_output_eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_eigenvectors" title="Link to this definition">¶</a></dt>
 <dd><p>Read and process output eigenvectors from a file descriptor.</p>
-<p>This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom’s masses to generate mass-weighted normal modes, and normalizes these modes.</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<p>This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the
+square root of the atom’s masses to generate mass-weighted normal modes, and normalizes these modes.</p>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line in the file from which to start reading eigenvectors. This parameter is not explicitly used in the processing inside the function but hints at expecting a certain positioning within the file content.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<section id="id37">
+<h4>Returns<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id35">
-<h4>Notes<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id38">
+<h4>Notes<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
 <ul class="simple">
-<li><p>This method directly modifies the <cite>frequencies</cite> and <cite>mass_weighted_normal_modes</cite> attributes of the class instance.</p></li>
-<li><p>Atoms’ masses are used to compute mass-weighted normal modes</p></li>
-<li><p>Normalization of each mass-weighted mode is performed at the end of the method.</p></li>
+<li><p>This method directly modifies the <cite>frequencies</cite> and <cite>mass_weighted_normal_modes</cite> attributes of the class
+instance. - Atoms’ masses are used to compute mass-weighted normal modes - Normalization of each mass-weighted
+mode is performed at the end of the method.</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -744,11 +954,63 @@ starts from the next line of the file descriptor.</p>
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_files" title="Link to this definition">¶</a></dt>
 <dd><p>Read the Crystal files in the directory.</p>
 <p>Define the strings used to search for the required information and then process the file</p>
-<section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<section id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_tens_raman_dat">
+<span class="sig-name descname"><span class="pre">_read_tens_raman_dat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_tens_raman_dat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_tens_raman_dat" title="Link to this definition">¶</a></dt>
+<dd><p>Read Raman polarizability derivatives from TENS_RAMAN.DAT and compute mode Raman tensors.</p>
+<p>TENS_RAMAN.DAT contains the derivative of the unit-cell polarizability tensor
+(in atomic units, Bohr²) with respect to each atomic Cartesian displacement (Bohr).
+There is one line per (atom, displacement-direction) pair, ordered as
+<code class="docutils literal notranslate"><span class="pre">(atom1_x,</span> <span class="pre">atom1_y,</span> <span class="pre">atom1_z,</span> <span class="pre">atom2_x,</span> <span class="pre">…,</span> <span class="pre">atomN_z)</span></code>, and each line holds
+six values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>∂α_xx/∂u   ∂α_xy/∂u   ∂α_xz/∂u   ∂α_yy/∂u   ∂α_yz/∂u   ∂α_zz/∂u
+</pre></div>
+</div>
+<p>The raw projected tensors are polarizability-volume derivatives
+<code class="docutils literal notranslate"><span class="pre">R_alpha</span> <span class="pre">=</span> <span class="pre">dα_vol/dQ</span></code>.  PDielec stores the AbInit-style bulk Raman
+convention <code class="docutils literal notranslate"><span class="pre">R_epsilon</span> <span class="pre">=</span> <span class="pre">sqrt(V)</span> <span class="pre">dε/dQ</span></code>.  Since
+<code class="docutils literal notranslate"><span class="pre">α_vol</span> <span class="pre">=</span> <span class="pre">V(ε−I)/(4π)</span></code>, the final conversion is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R_epsilon</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="n">π</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">Vcell</span><span class="p">))</span> <span class="n">R_alpha</span>
+</pre></div>
+</div>
+<p>The projection is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>R_alpha[n, i, j] = Σ_{k,β}  (∂α_ij/∂u_{k,β})  ×  mwm[n,k,β] / √M_k
+                   / angs2bohr²
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">mwm[n,k,β]</span></code> is the mass-weighted eigenvector component for mode <em>n</em>,
+atom <em>k</em>, Cartesian direction <em>β</em>, and <code class="docutils literal notranslate"><span class="pre">M_k</span></code> is the atomic mass in amu.
+The <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">angs2bohr²</span></code> factor maps Crystal’s Bohr² amu⁻¹/² to
+Å² amu⁻¹/² before the polarizability-to-<code class="docutils literal notranslate"><span class="pre">R_epsilon</span></code> conversion.</p>
+<section id="id40">
+<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>Path to the TENS_RAMAN.DAT file.</p>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._update_raman_tensors_after_mode_recalculation">
+<span class="sig-name descname"><span class="pre">_update_raman_tensors_after_mode_recalculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_raman_tensors</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._update_raman_tensors_after_mode_recalculation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._update_raman_tensors_after_mode_recalculation" title="Link to this definition">¶</a></dt>
+<dd><p>Rebuild CRYSTAL Raman tensors exactly from TENS_RAMAN.DAT derivatives.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._crystal_raman_dalpha">
+<span class="sig-name descname"><span class="pre">_crystal_raman_dalpha</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._crystal_raman_dalpha" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._fractional_coordinates">
@@ -767,6 +1029,11 @@ starts from the next line of the file descriptor.</p>
 
 </section>
 </dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.CrystalOutputReader.logger">
+<span class="sig-prename descclassname"><span class="pre">PDielec.CrystalOutputReader.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#PDielec.CrystalOutputReader.logger" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -827,12 +1094,17 @@ starts from the next line of the file descriptor.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PDielec.CrystalOutputReader</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._calculate_raman_tensors_from_tens_raman_dat"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._calculate_raman_tensors_from_tens_raman_dat()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_born_charges()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_born_dat"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_born_charges_from_born_dat()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_output"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_born_charges_from_output()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_block"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_chi2_block()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_dat"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_chi2_dat()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_chi2_output"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_chi2_output()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_eigenvectors"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_eigenvectors()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_electrons()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_energy()</span></code></a></li>
@@ -844,14 +1116,19 @@ starts from the next line of the file descriptor.</p>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_ionic_dielectric"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_ionic_dielectric()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_kpoints"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_kpoints()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_lattice_vectors()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_lattice_vectors2"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_lattice_vectors2()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_masses"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_masses()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_eigenvectors"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_output_eigenvectors()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_files"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_output_files()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_tens_raman_dat"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._read_tens_raman_dat()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._update_raman_tensors_after_mode_recalculation"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._update_raman_tensors_after_mode_recalculation()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._crystal_raman_dalpha"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._crystal_raman_dalpha</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader._fractional_coordinates"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader._fractional_coordinates</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader.hessian_symmetrisation"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader.hessian_symmetrisation</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.CrystalOutputReader.CrystalOutputReader.type"><code class="docutils literal notranslate"><span class="pre">CrystalOutputReader.type</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.CrystalOutputReader.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -865,7 +1142,7 @@ starts from the next line of the file descriptor.</p>
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="../../../_static/documentation_options.js?v=335988e4"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

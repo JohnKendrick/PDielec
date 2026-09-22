@@ -10,4 +10,9 @@
 | [Urea/](./Urea/README.md) | Urea example using xml reader |
 | [ZnO/](./ZnO/README.md) | ZnO example                 |
 
-[Back](..)
+[Back](../README.md)
+
+## Further directories
+
+- [Na2SO42_v](Na2SO42_v/README.md)
+- [Vasp6](Vasp6/README.md)

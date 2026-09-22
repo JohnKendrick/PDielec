@@ -1,0 +1,494 @@
+#!/usr/bin/env python
+# The script was taken from the intel web-site and modified
+# https://software.intel.com/sites/default/files/0f/a7/mkl_benchmark.py
+
+import os
+import sys
+home_directory = os.path.join('..','..')
+sys.path.insert(0,home_directory)
+
+import timeit
+import numpy as np
+import PDielec
+import PDielec.GTMcore as GTM
+import PDielec.DielectricFunction as DielectricFunction
+from PDielec.Constants import wavenumber, speed_light_si
+from PDielec.HelperRoutines import get_material
+from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer
+from functools import partial
+import time
+import psutil
+
+# Setting the following environment variable in the shell executing the script allows
+# you limit the maximal number threads used for computation
+ 
+incoherentOptions = ["Coherent","Incoherent (intensity)","Incoherent (phase averaging)","Incoherent (non-reflective)"] 
+gtmMethods ={"Coherent":GTM.CoherentLayer,
+             "Incoherent (intensity)":GTM.IncoherentIntensityLayer,
+             "Incoherent (phase cancelling)":GTM.IncoherentPhaseLayer,
+             "Incoherent (phase averaging)":GTM.IncoherentAveragePhaseLayer,
+             "Incoherent (non-reflective)":GTM.IncoherentThickLayer} 
+threading = False
+#If testing threading then set to True, but make sure there us only 1 CPU used
+
+def get_pool(ncpus, initializer=None, initargs=None, debugger=None ):
+    """
+        cpus can be threaded if multiprocessing is selected
+        If threading is true the only threads are used"""
+    global variable_type
+    global parallel_type
+    if parallel_type == 'multiprocess':
+        pool = get_multiprocess_pool(ncpus, initializer, initargs, debugger)
+    elif parallel_type == 'multiprocessing':
+        pool = get_multiprocessing_pool(ncpus, initializer, initargs, debugger)
+    elif parallel_type == 'pathos':
+        pool = get_pathos_pool(ncpus, initializer, initargs, debugger)
+    elif parallel_type == 'ray':
+        pool = get_ray_pool(ncpus, initializer, initargs, debugger)
+    else:
+        print('Error unkown parallel type ',parallel_type)
+    return pool
+
+
+def get_pathos_pool(ncpus, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     if threading:
+         from pathos.threading import ThreadPool
+         if initargs is None:
+             pool = ThreadPool(ncpus, initializer=initializer)
+         else:
+             pool = ThreadPool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from pathos.pools import ProcessPool
+         if initargs is None:
+             pool = ProcessPool(ncpus, initializer=initializer)
+         else:
+             pool = ProcessPool(ncpus, initializer=initializer, initargs=initargs )
+     return pool
+
+def get_ray_pool(ncpus, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     import ray
+     if threading:
+         from ray.util.multiprocessing.dummy import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from ray.util.multiprocessing import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     return pool
+
+def get_multiprocessing_pool(ncpus, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     from multiprocessing import set_start_method
+     set_start_method('spawn',force=True)
+     if threading:
+         from multiprocessing.dummy import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from multiprocessing import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs )
+     return pool
+
+def get_multiprocess_pool(ncpus, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     if threading:
+         from multiprocess.dummy import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from multiprocess import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     return pool
+
+
+
+def init_local(function, layers, mode, theta, phi, psi, angleOfIncidence, exponent_threshold):
+    # Initialise the function with variables
+    function.layers = layers
+    function.mode = mode
+    function.theta = theta
+    function.phi = phi
+    function.psi = psi
+    function.angleOfIncidence = angleOfIncidence
+    function.exponent_threshold = exponent_threshold
+    return
+
+def set_no_of_threads(nthreads):
+    '''Set default number of threads'''
+    os.environ['MKL_NUM_THREADS']        = str(nthreads)
+    os.environ['OPENBLAS_NUM_THREADS']   = str(nthreads)
+    os.environ['OMP_NUM_THREADS']        = str(nthreads)
+    os.environ['NUMEXPR_NUM_THREADS']    = str(nthreads)
+    os.environ['BLIS_NUM_THREADS']       = str(nthreads)
+    os.environ['VECLIB_MAXIMUM_THREADS'] = str(nthreads)
+
+def set_affinity_on_worker():
+    '''When a new worker process is created, the affinity is set to all CPUs'''
+    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
+
+def solve_single_crystal_equations_local(v):
+    """ This is a parallel call to the single crystal equation solver,
+    The variables are stored in the function itself
+    The variables have been placed there by init_local()
+    system is a GTM system"""
+    # print('solve_single_crystal_equations_local ',id(solve_single_crystal_equations_local))
+    layers                  = solve_single_crystal_equations_local.layers
+    mode                    = solve_single_crystal_equations_local.mode
+    theta                   = solve_single_crystal_equations_local.theta
+    phi                     = solve_single_crystal_equations_local.phi
+    psi                     = solve_single_crystal_equations_local.psi
+    angleOfIncidence        = solve_single_crystal_equations_local.angleOfIncidence
+    exponent_threshold      = solve_single_crystal_equations_local.exponent_threshold
+    # Create superstrate from the first layer
+    superstrate      = GTM.SemiInfiniteLayer(layers[0],exponent_threshold=exponent_threshold)
+    # Create substrate from the last layer
+    substrate        = GTM.SemiInfiniteLayer(layers[-1],exponent_threshold=exponent_threshold)
+    selectedLayers = layers[1:-1]
+    gtmLayers = []
+    # Create layers from all the layers between first and last
+    for layer in selectedLayers:
+        incoherentOption = layer.getIncoherentOption()
+        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
+    # Create the GTM system with the layers 
+    if mode == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    else:
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
+    system.substrate.set_euler(theta, phi, psi)
+    system.superstrate.set_euler(theta, phi, psi)
+    for layer in system.layers:
+        layer.set_euler(theta, phi, psi)
+    # 
+    # convert cm-1 to frequency
+    #
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
+    return v,r,R,t,T,epsilon
+
+def solve_single_crystal_equations_global(v):
+    """ This is a parallel call to the single crystal equation solver,
+    Using global variables 
+    system is a GTM system"""
+    global Mode
+    global Theta
+    global Phi
+    global Psi
+    global AngleOfIncidence
+    global Layers
+    global Exponent_threshold
+    # Create superstrate from the first layer
+    superstrate      = GTM.SemiInfiniteLayer(Layers[0],exponent_threshold=Exponent_threshold)
+    # Create substrate from the last layer
+    substrate        = GTM.SemiInfiniteLayer(Layers[-1],exponent_threshold=Exponent_threshold)
+    selectedLayers = Layers[1:-1]
+    gtmLayers = []
+    # Create layers from all the layers between first and last
+    for layer in selectedLayers:
+        incoherentOption = layer.getIncoherentOption()
+        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=Exponent_threshold))
+    # Creat the system with the layers 
+    if Mode == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    else:
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
+    system.substrate.set_euler(Theta, Phi, Psi)
+    system.superstrate.set_euler(Theta, Phi, Psi)
+    for layer in system.layers:
+        layer.set_euler(Theta, Phi, Psi)
+    # 
+    # convert cm-1 to frequency
+    #
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(AngleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
+    return v,r,R,t,T,epsilon
+
+def solve_single_crystal_equations_partial( 
+    layers,
+    mode,
+    theta,
+    phi,
+    psi,
+    angleOfIncidence,
+    exponent_threshold,
+    v):
+    """ This is a parallel call to the single crystal equation solver,
+    The call uses the partial method where all parameters are passed through the function call
+    system is a GTM system"""
+    # Create superstrate from the first layer
+    superstrate      = GTM.SemiInfiniteLayer(layers[0],exponent_threshold=exponent_threshold)
+    # Create substrate from the last layer
+    substrate        = GTM.SemiInfiniteLayer(layers[-1],exponent_threshold=exponent_threshold)
+    selectedLayers = layers[1:-1]
+    gtmLayers = []
+    # Create layers from all the layers between first and last
+    for layer in selectedLayers:
+        incoherentOption = layer.getIncoherentOption()
+        gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
+    # Creat the system with the layers 
+    if mode == "Scattering matrix":
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    else:
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
+    system.substrate.set_euler(theta, phi, psi)
+    system.superstrate.set_euler(theta, phi, psi)
+    for layer in system.layers:
+        layer.set_euler(theta, phi, psi)
+    # 
+    # convert cm-1 to frequency
+    #
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    epsilon = system.layers[0].epsilon if len(system.layers) > 0 else system.substrate.epsilon
+    return v,r,R,t,T,epsilon
+
+
+
+def init_global():
+    """Prepare global variables for sending parameters to a parallel function"""
+    global Mode
+    global Theta
+    global Phi
+    global Psi
+    global AngleOfIncidence
+    global Layers
+    global Exponent_threshold
+    Theta,Phi,Psi = 20, 20, 70
+    AngleOfIncidence      = 85.0 * np.pi / 180.0
+    Mode = 'Scattering matrix'
+    # Prepare layers ................................................................
+    air = get_material("air")
+    ptfe = get_material("ptfe")
+    sapphire = get_material("Sapphire")
+    Layers = []
+    # Add a substrate
+    Layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    # Add the dielectric layer
+    Layers.append(SingleCrystalLayer(sapphire,hkl=[0,0,1],
+                                     azimuthal=0.0,
+                                     thickness=1.0,
+                                     thicknessUnit='um',
+                                     incoherentOption='Coherent'))
+    # Add the superstrate
+    Layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    Exponent_threshold = 20.0
+    return 
+
+def setup_partial_func():
+    """Prepare a partial set of variables for sending parameters to a parallel function"""
+    # Determine the euler angles
+    theta,phi,psi = 20, 20, 70
+    # Set the angle of incidence in radians
+    angleOfIncidence      = 85.0 * np.pi / 180.0
+    mode = 'Scattering matrix'
+    # Prepare layers ................................................................
+    air = get_material("air")
+    ptfe = get_material("ptfe")
+    sapphire = get_material("Sapphire")
+    layers = []
+    # Add a substrate
+    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    # Add the dielectric layer
+    layers.append(SingleCrystalLayer(sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+                                     incoherentOption='Coherent'))
+    # Add the superstrate
+    layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    exponent_threshold = 20.0
+    partial_func = partial(solve_single_crystal_equations_partial,
+         layers,
+         mode,
+         theta,
+         phi,
+         psi,
+         angleOfIncidence,
+         exponent_threshold)
+    return partial_func
+
+def setup_local_args():
+    """Prepare a all local variables for sending parameters to a parallel function"""
+    # Determine the euler angles
+    theta,phi,psi = 20, 20, 70
+    # Set the angle of incidence in radians
+    angleOfIncidence      = 85 * np.pi / 180.0
+    mode = 'Scattering matrix'
+    # Prepare layers ................................................................
+    air = get_material("air")
+    ptfe = get_material("ptfe")
+    sapphire = get_material("Sapphire")
+    layers = []
+    # Add a substrate
+    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+    # Add the dielectric layer
+    layers.append(SingleCrystalLayer(sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+                                     incoherentOption='Coherent'))
+    # Add the superstrate
+    layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+    exponent_threshold = 20.0
+    local_args = (solve_single_crystal_equations_local,
+         layers,
+         mode,
+         theta,
+         phi,
+         psi,
+         angleOfIncidence,
+         exponent_threshold)
+    return local_args
+
+
+
+def start_benchmark():
+    print("""Benchmark is parallel processing""")
+    global variable_type
+    global parallel_type
+    global thread_range
+    global cpu_range
+    global chunk_range
+    np.seterr(all='ignore')
+    print(("-" * 80))
+    print("Starting timing with numpy %s\nVersion: %s" % (np.__version__, sys.version))
+    print('parallel_type, variable_type, cpus, threads, chunksize, Time(s)')
+    if variable_type == 'partial':
+        func = setup_partial_func()
+    elif variable_type == 'global':
+        func = solve_single_crystal_equations_global
+    elif variable_type == 'local':
+        func = solve_single_crystal_equations_local
+        init_local_args = setup_local_args()
+    vs = [ v for v in np.arange(1,2000) ]
+    for nthreads in thread_range:
+        set_no_of_threads(nthreads)
+        for ncpus in cpu_range:
+            for chunksize in chunk_range:
+                if variable_type == 'partial':
+                    pool = get_pool(ncpus, initializer=None,initargs=None)
+                elif variable_type == 'global':
+                    pool = get_pool(ncpus, initializer=init_global)
+                elif variable_type == 'local':
+                    pool = get_pool(ncpus, initializer=init_local,initargs=init_local_args)
+                t = time.time()
+                results = []
+                if chunksize >0:
+                    for result in pool.map(func, vs, chunksize=chunksize):
+                        results.append(result)
+                else:
+                    for result in pool.map(func, vs):
+                        results.append(result)
+                td = time.time() - t
+                print(f'{parallel_type}, {variable_type}, {ncpus}, {nthreads}, {chunksize}, {td}')
+        pool.close()
+        pool.join()
+
+def usage():
+    print('test_parallel [-variable_type partial|global|local] [-parallel_type multiprocess|pathos|ray] [-threads 1 2] [-cpus 1 8]')
+    print('        Tests different types of parallelisms')
+    print('        -variable_type choices are                ')
+    print('                  partial - variables are passed using the partial function in functools')
+    print('                  global  - variables are passed using the global variable              ')
+    print('                  local   - variables are passed using a local variable in the function ')
+    print('        -parallel_type choices are                ')
+    print('                  multiprocess    - for the pathos multiprocessing api                     ')
+    print('                  multiprocessing - for the standard python parallelism                    ')
+    print('                  pathos          - for the pathos fork of multiprocess                    ')
+    print('        -chunks   start end step                  ')
+    print('                  Defines the range of chunkSizes to be tested, the increment is step ')
+    print('        -threads  start end                       ')
+    print('                  Defines the range of threads to be tested, the increment is 1 ')
+    print('        -cpus    start end                       ')
+    print('                  Defines the range of cpus to be tested, the increment is 1 ')
+
+def main():
+    global variable_type
+    global parallel_type
+    global cpu_range
+    global thread_range
+    global chunk_range
+    possible_variable_types = ['partial', 'global','local']
+    possible_parallel_types = ['multiprocessing', 'multiprocess', 'pathos','ray']
+    variable_type = 'partial'
+    parallel_type = 'multiprocess'
+    cpu_count = psutil.cpu_count(logical=False)
+    cpu_range = range(1,cpu_count+1)
+    thread_range = range(1,2)
+    chunk_range = [30, 40, 50, 60]
+    tokens = sys.argv[1:]
+    itoken = -1
+    ntokens = len(tokens) -1
+    while itoken < ntokens:
+        itoken += 1
+        token = tokens[itoken]
+        if token == '-variable_type' or token == '--variable_type':
+            itoken += 1
+            variable_type = tokens[itoken]
+        elif token == '-parallel_type' or token == '--parallel_type':
+            itoken += 1
+            parallel_type = tokens[itoken]
+        elif token == '-threading' or token == '--threading' or token == '-threads' or token == '--threads':
+            itoken += 1; start = int(tokens[itoken])
+            itoken += 1; end   = int(tokens[itoken])+1
+            thread_range = range(start,end)
+        elif token == '-chunks' or token == '--chunks':
+            itoken += 1; start = int(tokens[itoken])
+            itoken += 1; end   = int(tokens[itoken])+1
+            itoken += 1; step   = int(tokens[itoken])
+            chunk_range = range(start,end,step)
+        elif token == '-cpus' or token == '--cpus':
+            itoken += 1; start = int(tokens[itoken])
+            itoken += 1; end   = int(tokens[itoken])+1
+            cpu_range = range(start,end)
+        elif token == '-h' or token == '--help':
+            usage()
+            exit()
+        else:
+            usage()
+            exit()
+    if variable_type not in possible_variable_types:
+        print('variable_type not recognised',variable_type)
+        usage()
+        exit()
+    if parallel_type not in possible_parallel_types:
+        print('parallel_type not recognised',parallel_type)
+        usage()
+        exit()
+    if parallel_type == 'ray':
+        import ray
+        ray.init(runtime_env={"py_modules" : [PDielec]})
+    # Start the benchmarks
+    start_benchmark()
+
+if __name__ == '__main__':
+    main()

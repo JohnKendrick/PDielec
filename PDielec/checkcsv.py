@@ -17,10 +17,14 @@
 
 It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
 """
+import logging
 import sys
 from os.path import splitext
 
 from termcolor import colored
+
+logger = logging.getLogger(__name__)
+
 
 global separator
 global threshold

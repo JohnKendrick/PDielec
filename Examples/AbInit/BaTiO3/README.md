@@ -13,4 +13,4 @@ Powder calculations are performed by PDGui using Maxwell-Garnett theory applied 
 | results.ref.xlsx      | reference results from running the test script |
 | script.py             | script used by the test suite |
 
-[Back](..)
+[Back](../README.md)

@@ -14,16 +14,53 @@
 # You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Generic reader of output files. An actual reader should inherit from this class."""
+import logging
 import math
 import os
-import sys
 
 import numpy as np
 
 from PDielec.Calculator import calculate_normal_modes_and_frequencies, cleanup_symbol
-from PDielec.Constants import amu, avogadro_si, wavenumber
+from PDielec.Constants import (
+    amu,
+    avogadro_si,
+    elementary_charge_si,
+    epsilon_0_si,
+    wavenumber,
+)
 from PDielec.IO import pdielec_io
 from PDielec.Plotter import print3x3, print_ints, print_reals, print_strings
+
+logger = logging.getLogger(__name__)
+
+# Volume-independent numerator of the pm/V -> R_epsilon conversion.  The
+# complete factor is CHI2_PM_PER_V_TO_REPSILON / sqrt(Vcell [Angstrom^3]).
+# It follows from eq-nonanalytic after expressing Born charges in electrons,
+# masses in electron masses, and mode coordinates in Angstrom*sqrt(amu).
+CHI2_PM_PER_V_TO_REPSILON = (
+    math.sqrt(amu) * elementary_charge_si * 1.0e8 / (4.0 * math.pi * epsilon_0_si)
+)
+
+
+def chi2_pm_per_v_to_repsilon(volume_angstrom3):
+    """Return the cell-dependent conversion from pm/V to ``R_epsilon`` units.
+
+    Parameters
+    ----------
+    volume_angstrom3 : float
+        Primitive-cell volume in Angstrom cubed.
+
+    Returns
+    -------
+    float
+        Factor that converts physical chi(2) in pm/V for use with mass-weighted
+        Born charges and ``R_epsilon = sqrt(Vcell) d epsilon / dQ`` tensors.
+
+    """
+    if volume_angstrom3 <= 0.0:
+        raise ValueError("A positive cell volume is required to convert chi(2) from pm/V")
+    return CHI2_PM_PER_V_TO_REPSILON / math.sqrt(volume_angstrom3)
+
 
 
 class GenericOutputReader:
@@ -64,8 +101,10 @@ class GenericOutputReader:
     ncells, nsteps, electrons, spin, nbands, volume, nions, nspecies, geomsteps : int
         Attributes initialized as 0, representing various numerical properties.
 
-    unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy, volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses, masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric : list
-        Various lists to store computational results related to the object. Initialized as empty lists.
+    unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy,
+    volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses,
+    masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric : list Various lists to store
+    computational results related to the object. Initialized as empty lists.
     
     final_free_energy, final_energy_without_entropy, magnetization, energy_cutoff, pressure : float
         Floating point attributes initialized to represent different scalar quantities. Defaults to 0 or 0.0.
@@ -106,6 +145,15 @@ class GenericOutputReader:
     original_born_charges, CrystalPermittivity, oscillator_strengths, edited_masses : Various types
         Attributes initialized as `None` to represent unassigned computational properties.
 
+    raman_tensors : list or None
+        A list of 3×3 Raman susceptibility tensors, one per normal mode, or ``None`` if
+        the output reader does not provide Raman data.
+
+    nonlinear_optical_susceptibility : ndarray or None
+        Second-order nonlinear optical susceptibility tensor χ^(2), shape (3, 3, 3),
+        stored in Angstrom-based units consistent with reader ``R_epsilon``
+        Raman tensors; ``None`` if not available.
+
     original_born_charges_are_being_used : bool
         Signifies whether original Born charges are in use, defaults to True.
 
@@ -124,8 +172,8 @@ class GenericOutputReader:
         # Test to see if all the files needed are there
         # the test on "ignore" is present because of the FHI-Aims interface
         if not all( [ os.path.isfile(f) for f in filenames if "ignore" not in f ] ):
-            print("Error in calling the generic output reader some files are not present")
-            print(filenames)
+            logger.error("Error in calling the generic output reader some files are not present")
+            logger.debug(filenames)
             return
         self._outputfiles               = filenames
         self.names                      = [os.path.abspath(f) for f in filenames]
@@ -181,10 +229,21 @@ class GenericOutputReader:
         self.nomass_hessian_has_been_set= False
         self.original_born_charges      = None
         self.original_born_charges_are_being_used = True
+        self.default_symmetrise_optical_permittivity = True
         self.CrystalPermittivity        = None
         self.oscillator_strengths       = None
         self.edited_masses              = None
         self.primitive_transformation   = None
+        self._mode_reference_masses = None
+        self._raman_reference = None
+        self.raman_tensors              = None
+        self.nonlinear_optical_susceptibility = None   # 3×3×3 ndarray (χ^(2)) in R_epsilon units, or None
+        self._nonlinear_optical_susceptibility_pm_per_v = None
+        return
+
+    def _store_nonlinear_optical_susceptibility_pm_per_v(self, chi2_pm_per_v):
+        """Retain physical χ^(2) for conversion after the final cell volume is known."""
+        self._nonlinear_optical_susceptibility_pm_per_v = np.asarray(chi2_pm_per_v, dtype=float)
         return
 
     def read_output(self):
@@ -200,6 +259,103 @@ class GenericOutputReader:
 
         """
         self._read_output_files()
+        if self._nonlinear_optical_susceptibility_pm_per_v is not None:
+            self.nonlinear_optical_susceptibility = (
+                self._nonlinear_optical_susceptibility_pm_per_v
+                * chi2_pm_per_v_to_repsilon(self.volume)
+            )
+        self._symmetrise_nonlinear_optical_susceptibility()
+        self._capture_mode_reference()
+        return
+
+    def _symmetrise_nonlinear_optical_susceptibility(self):
+        """Symmetrise the parsed Cartesian χ^(2) tensor using the final unit-cell point group."""
+        if self.nonlinear_optical_susceptibility is None:
+            return
+        chi2_sym, metrics = self._symmetrise_cartesian_rank3_tensor(self.nonlinear_optical_susceptibility)
+        self._report_rank3_symmetry_discrepancy(metrics)
+        self.nonlinear_optical_susceptibility = chi2_sym
+        return
+
+    def _symmetrise_cartesian_rank3_tensor(self, tensor):
+        """Return a Cartesian rank-3 polar tensor averaged over the current cell point group."""
+        metrics = {
+            "available": False,
+            "n_operations": 0,
+            "max_abs": 0.0,
+            "rms_abs": 0.0,
+            "relative_max": 0.0,
+        }
+        if not self.unit_cells:
+            return tensor, metrics
+        cell = self.unit_cells[-1]
+        if len(cell.fractional_coordinates) == 0 or len(cell.element_names) == 0:
+            return tensor, metrics
+        try:
+            import spglib
+            numbers = cell.get_atomic_numbers()
+            dataset = spglib.get_symmetry(
+                (cell.lattice, cell.fractional_coordinates, numbers),
+                symprec=1.0e-5,
+            )
+        except Exception as exc:
+            logger.debug(f"Could not symmetrise rank-3 tensor: {exc}")
+            return tensor, metrics
+        rotations = getattr(dataset, "rotations", None)
+        if rotations is None and hasattr(dataset, "get"):
+            rotations = dataset.get("rotations")
+        if rotations is None or len(rotations) == 0:
+            return tensor, metrics
+
+        lattice_t = np.asarray(cell.lattice, dtype=float).T
+        lattice_t_inv = np.linalg.inv(lattice_t)
+        tensor = np.asarray(tensor, dtype=float)
+        sym_tensor = np.zeros_like(tensor, dtype=float)
+        for rotation in rotations:
+            cart_rotation = lattice_t @ np.asarray(rotation, dtype=float) @ lattice_t_inv
+            sym_tensor += np.einsum(
+                "ia,jb,kc,abc->ijk",
+                cart_rotation,
+                cart_rotation,
+                cart_rotation,
+                tensor,
+            )
+        sym_tensor /= float(len(rotations))
+
+        diff = tensor - sym_tensor
+        max_tensor = float(np.max(np.abs(tensor)))
+        max_abs = float(np.max(np.abs(diff)))
+        metrics.update({
+            "available": True,
+            "n_operations": len(rotations),
+            "max_abs": max_abs,
+            "rms_abs": float(np.sqrt(np.mean(diff * diff))),
+            "relative_max": max_abs / max(max_tensor, 1.0e-30),
+        })
+        return sym_tensor, metrics
+
+    def _report_rank3_symmetry_discrepancy(self, metrics):
+        """Report large point-group violations in a parsed Cartesian rank-3 tensor."""
+        if not metrics["available"]:
+            return
+        max_abs = metrics["max_abs"]
+        relative_max = metrics["relative_max"]
+        rms_abs = metrics["rms_abs"]
+        n_operations = metrics["n_operations"]
+        logger.info(
+            f"  {self.type} χ^(2) point-group discrepancy before symmetrisation: "
+            f"max={max_abs:.6g} R_epsilon units, rms={rms_abs:.6g} R_epsilon units, "
+            f"relative={relative_max:.6g}, "
+            f"operations={n_operations}",
+        )
+        if max_abs > 1.0e-6 and relative_max > 1.0e-3:
+            print(
+                f"Warning: {self.type} χ^(2) tensor does not transform according to the "
+                "unit-cell point group. "
+                f"max |χ^(2) - sym(χ^(2))| = {max_abs:.6g} R_epsilon units, "
+                f"rms = {rms_abs:.6g} R_epsilon units, relative max = {relative_max:.6g}; "
+                f"using the point-group symmetrised tensor ({n_operations} operations).",
+            )
         return
 
     def reset_masses(self):
@@ -239,11 +395,11 @@ class GenericOutputReader:
         """        
         mass_dictionary = {}
         if self.debug:
-            print("Re setting mass dictionary to the program values")
+            logger.debug("Re setting mass dictionary to the program values")
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
-    def getSpecies(self):
+    def get_species(self):
         """Return a list of cleaned species symbols.
 
         This method applies a specified cleanup function to each element of 
@@ -275,11 +431,15 @@ class GenericOutputReader:
 
         Notes
         -----
-        The function uses a helper function `cleanup_symbol` to clean up the species symbols before using them as keys in the dictionary. If the instance's `debug` attribute is set to True, the function will print the newly created mass dictionary.
+        The function uses a helper function `cleanup_symbol` to clean up the species symbols before using them as keys
+        in the dictionary. If the instance's `debug` attribute is set to True, the function will print the newly created
+        mass dictionary.
 
         Examples
         --------
-        Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
+        Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug
+        attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return
+        this dictionary.
 
         """        
         dictionary = {}
@@ -288,7 +448,7 @@ class GenericOutputReader:
             element = cleanup_symbol(symbol)
             dictionary[element] = mass
         if self.debug:
-            print("new mass_dictionary", dictionary)
+            logger.debug(f"new mass_dictionary {dictionary}")
         return dictionary
 
     def set_edited_masses(self,masses):
@@ -305,7 +465,9 @@ class GenericOutputReader:
 
         Notes
         -----
-        The method updates the `edited_masses` attribute only if the length of the input list matches the length of the `masses` attribute of the object. If they do not match, an error message is printed, and `edited_masses` is set to `None`.
+        The method updates the `edited_masses` attribute only if the length of the input list matches the length of the
+        `masses` attribute of the object. If they do not match, an error message is printed, and `edited_masses` is set
+        to `None`.
 
         Returns
         -------
@@ -315,21 +477,27 @@ class GenericOutputReader:
         if len(masses) == len(self.masses):
             self.edited_masses = masses
         else:
-            print("Error unable to edited_masses")
+            logger.error("Error unable to edited_masses")
             self.edited_masses = None
         return
 
     def change_masses(self, new_masses, mass_dictionary):
         """Change the masses of elements in a output reader.
 
-        This function updates the masses of the elements within the reader according to the new masses provided. If the object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the simulation's internal mass dictionary based on the provided `new_masses` and an optional external `mass_dictionary` for overrides. If debugging is enabled, various diagnostic messages will be printed during the function's execution.
+        This function updates the masses of the elements within the reader according to the new masses provided. If the
+        object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the
+        simulation's internal mass dictionary based on the provided `new_masses` and an optional external
+        `mass_dictionary` for overrides. If debugging is enabled, various diagnostic messages will be printed during the
+        function's execution.
 
         Parameters
         ----------
         new_masses : dict
             A dictionary where keys are element symbols as strings and values are the new masses for these elements.
         mass_dictionary : dict, optional
-            An additional dictionary provided for mass overrides. If any element present in `new_masses` also exists in `mass_dictionary`, the mass from `mass_dictionary` will be used.
+            An additional dictionary provided for mass overrides. If any element present in `new_masses` also exists
+            in `mass_dictionary`, the mass from `mass_dictionary` will be used.
+
 
         Returns
         -------
@@ -337,30 +505,32 @@ class GenericOutputReader:
 
         Notes
         -----
-        - It assumes that `cleanup_symbol()` is a function used to standardize or validate the element symbols in `self.species`.
-        - It alters `self.masses` and `self.masses_per_type` to reflect changes in masses as per `new_masses` and `mass_dictionary`.
-        - If `self.edited_masses` is already set to a truthy value, it bypasses the update process and uses these values instead.
-        - `self.species` and `self.atom_type_list` are expected to be iterable attributes of the object containing symbols for elements and types of atoms, respectively.
-        - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
+        - It assumes that `cleanup_symbol()` is a function used to standardize or validate the element symbols in
+          `self.species`. - It alters `self.masses` and `self.masses_per_type` to reflect changes in masses as per
+          `new_masses` and `mass_dictionary`. - If `self.edited_masses` is already set to a truthy value, it bypasses
+          the update process and uses these values instead. - `self.species` and `self.atom_type_list` are expected to
+          be iterable attributes of the object containing symbols for elements and types of atoms, respectively. -
+          Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
 
         """        
+        self._capture_mode_reference()
         if self.edited_masses:
             # This is pretty crude!  If the reader has this variable set then we
             # only use the masses stored in the edit_masses list
             # Once this variable has been set then only these masses are used
             if self.debug:
-                print("Using the edited masses")
+                logger.debug("Using the edited masses")
             self.masses = self.edited_masses
             return
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
             if self.debug:
-                print("Setting program mass dictionary")
+                logger.debug("Setting program mass dictionary")
             for symbol,mass in zip(self.species,self.masses_per_type):
                 element = cleanup_symbol(symbol)
                 self.program_mass_dictionary[element] = mass
         if self.debug:
-            print("changing masses", self.program_mass_dictionary)
+            logger.debug(f"changing masses {self.program_mass_dictionary}")
         self.masses = []
         self.masses_per_type = []
         for symbol in self.species:
@@ -373,7 +543,7 @@ class GenericOutputReader:
         # end for symbol
         self.masses = [ self.masses_per_type[atype] for atype in self.atom_type_list ]
         if self.debug:
-            print("new masses", self.masses)
+            logger.debug(f"new masses {self.masses}")
         return
 
     def print(self):
@@ -426,7 +596,6 @@ class GenericOutputReader:
             title = f"Born Charges for Atom {i:d}"
             print3x3(title, charges)
         print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
-        #jk print3x3("Unit cell: ", self.unit_cells[-1].lattice)
         self.unit_cells[-1].print()
         print(" ")
         print(f"Volume of cell: {self.volume:f}")
@@ -462,6 +631,146 @@ class GenericOutputReader:
         cell.set_atomic_masses(self.masses)
         # return the cell
         return cell
+
+    def get_raman_tensors(self):
+        """Return the physical bulk Raman tensors ``R_epsilon``.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list or None
+            A list of 3×3 Raman tensors, one per normal mode, in the
+            ``R_epsilon = sqrt(Vcell) dε/dQ`` convention of
+            ``Raman-Theory.tex``.  This is not the polarizability-volume
+            convention ``d[V(ε-I)/(4π)]/dQ``.  Returns ``None`` if the reader
+            does not provide Raman data.
+
+        """
+        return self.raman_tensors
+
+    def get_nonlinear_optical_susceptibility(self):
+        """Return the second-order nonlinear optical susceptibility tensor χ^(2).
+
+        Returns
+        -------
+        ndarray or None
+            χ^(2) tensor, shape (3, 3, 3), in Angstrom-based units consistent
+            with reader ``R_epsilon`` Raman tensors; None if not available.
+
+        """
+        return self.nonlinear_optical_susceptibility
+
+    @staticmethod
+    def _normal_modes_to_matrix(modes):
+        """Return normal modes as a row-normalised ``(n_modes, 3*nions)`` matrix."""
+        matrix = np.asarray(modes, dtype=float)
+        if matrix.ndim != 3:
+            return None
+        matrix = matrix.reshape(matrix.shape[0], matrix.shape[1] * matrix.shape[2])
+        norms = np.linalg.norm(matrix, axis=1)
+        if np.any(norms <= 1.0e-14):
+            return None
+        return matrix / norms[:, np.newaxis]
+
+    def _native_masses_for_mode_reference(self, masses=None):
+        """Resolve native per-atom masses before active mass edits.
+
+        Some readers publish per-atom masses in _old_masses (Phonopy/Aims),
+        others in masses, and legacy paths expose only species masses plus
+        atom_type_list. Explicit masses are supplied by the finite-field reader.
+        Never infer a missing reference from average periodic-table masses.
+        """
+        try:
+            if masses is None:
+                if len(self._old_masses):
+                    masses = self._old_masses
+                elif len(self.masses):
+                    masses = self.masses
+                elif self.program_mass_dictionary:
+                    masses = [self.program_mass_dictionary[cleanup_symbol(self.species[index])]
+                              for index in self.atom_type_list]
+                else:
+                    masses = [self.masses_per_type[index] for index in self.atom_type_list]
+            reference = np.array(masses, dtype=float, copy=True)
+        except (IndexError, KeyError, TypeError, ValueError) as error:
+            raise ValueError("Cannot capture native mode masses: missing or invalid per-atom mass data") from error
+        if (reference.shape != (self.nions,) or not np.all(np.isfinite(reference))
+                or np.any(reference <= 0)):
+            raise ValueError(f"Cannot capture native mode masses: expected {self.nions} finite positive masses")
+        return reference
+
+    def _capture_mode_reference(self, masses=None):
+        """Retain the native mass coordinate before any mass or mode changes.
+
+        Raw-derivative readers still reproject directly. This fixed reference
+        supplies the per-mode fallback and avoids repeated projection drift.
+        """
+        if np.asarray(self.mass_weighted_normal_modes).size == 0:
+            return
+        if self._mode_reference_masses is None:
+            self._mode_reference_masses = self._native_masses_for_mode_reference(masses)
+        if len(self.masses) == 0:
+            # Preserve the existing reader layouts while exposing usable active
+            # native masses, including for preader -masses program.
+            self.masses = self._mode_reference_masses.tolist()
+        if self._raman_reference is None and self.raman_tensors is not None:
+            self._raman_reference = (
+                np.array(self.mass_weighted_normal_modes, dtype=float, copy=True),
+                np.array(self.raman_tensors, copy=True),
+                self._mode_reference_masses.copy(),
+            )
+
+    @classmethod
+    def _transform_raman_tensors_between_mode_bases(
+        cls, old_modes, new_modes, old_tensors, old_masses=None, new_masses=None,
+    ):
+        """Reproject a complete mode response, including its mass coordinate.
+
+        For row eigenvectors, C = U_old sqrt(M_old/M_new) U_new.T.
+        Omitting masses denotes a change of basis at fixed masses only.
+        """
+        if old_tensors is None:
+            return None
+        old_matrix = cls._normal_modes_to_matrix(old_modes)
+        new_matrix = cls._normal_modes_to_matrix(new_modes)
+        if (old_matrix is None or new_matrix is None
+                or old_matrix.shape[1] != new_matrix.shape[1]
+                or old_matrix.shape[0] != len(old_tensors)):
+            raise ValueError("Raman reprojection requires a complete reference mode basis and matching tensors")
+        # Printed eigenvectors may be rounded; reject genuinely missing directions.
+        if not np.allclose(old_matrix @ old_matrix.T, np.eye(len(old_matrix)), atol=1e-3):
+            raise ValueError("Raman reprojection requires a complete orthonormal reference mode basis")
+        if (old_matrix.shape[0] != old_matrix.shape[1]
+                and (old_masses is not None or new_masses is not None
+                     or not np.allclose((new_matrix @ old_matrix.T) @ old_matrix, new_matrix, atol=1e-3))):
+            raise ValueError("Mass reprojection requires a complete reference mode basis")
+        if old_masses is not None or new_masses is not None:
+            old_masses = np.asarray(old_masses, dtype=float)
+            new_masses = np.asarray(new_masses, dtype=float)
+            expected_shape = (old_matrix.shape[1] // 3,)
+            if (old_masses.shape != expected_shape or new_masses.shape != expected_shape
+                    or not np.all(np.isfinite(old_masses)) or not np.all(np.isfinite(new_masses))
+                    or np.any(old_masses <= 0) or np.any(new_masses <= 0)):
+                raise ValueError("Raman reprojection requires finite positive reference and active atomic masses")
+            old_matrix = old_matrix * np.repeat(np.sqrt(old_masses / new_masses), 3)
+        overlap = old_matrix @ new_matrix.T
+        return list(np.real_if_close(np.einsum("nm,nij->mij", overlap, np.asarray(old_tensors))))
+
+    def _update_raman_tensors_after_mode_recalculation(self, old_modes, old_raman_tensors):
+        """Reproject from the fixed native response; derivative readers override this."""
+        if old_raman_tensors is None:
+            return
+        if self._raman_reference is None:
+            raise ValueError("Raman reprojection is missing the reference mode/mass provenance")
+        reference_modes, reference_tensors, reference_masses = self._raman_reference
+        self.raman_tensors = self._transform_raman_tensors_between_mode_bases(
+            reference_modes, self.mass_weighted_normal_modes, reference_tensors,
+            reference_masses, self.masses,
+        )
+        return
 
     def get_crystal_density(self):
         """Return the crystal density in g/cc.
@@ -500,7 +809,7 @@ class GenericOutputReader:
 
         """
         # Define the search keys to be looked for in the files
-        print("Error _read_output_files must be defined by the actual file reader")
+        logger.error("Error _read_output_files must be defined by the actual file reader")
         return
 
     def _read_output_file(self, name):
@@ -522,7 +831,7 @@ class GenericOutputReader:
         """
         # Check to see if the file exists....
         if not os.path.isfile(name):
-            print("Warning file is not present: ", name, file=sys.stderr)
+            logger.warning(f"Warning file is not present: {name}")
             return
         # Open file and store file name and directory
         self.file_descriptor = pdielec_io(name, "r")
@@ -537,7 +846,7 @@ class GenericOutputReader:
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
-                        print(f"_read_output_file({name}): Match found {k}")
+                        logger.debug(f"_read_output_file({name}): Match found {k}")
                     method(line)
                     break
                 # end if
@@ -572,7 +881,7 @@ class GenericOutputReader:
             Ak = np.dot((unity + Kk), Ak)
             error  = np.sum(np.abs(error))
             if self.debug:
-                print("Orthogonalisation iteration: ", error)
+                logger.error(f"Orthogonalisation iteration: {error}")
         # end for k
         return Ak
 
@@ -604,18 +913,25 @@ class GenericOutputReader:
         # D = (UT)-1 f^2 U-1 = U f UT
         # Construct UT from the normal modes
         if self.debug:
-            print("calculate mass weighted normal modes")
+            logger.debug("calculate mass weighted normal modes")
+        if not isinstance(self.mass_weighted_normal_modes, np.ndarray) and not self.mass_weighted_normal_modes:
+            return self.mass_weighted_normal_modes
+        self._capture_mode_reference()
+        old_modes = np.array(self.mass_weighted_normal_modes, dtype=float, copy=True)
+        old_raman_tensors = None
+        if self.raman_tensors is not None:
+            old_raman_tensors = [np.array(tensor, dtype=complex, copy=True) for tensor in self.raman_tensors]
         n = np.size(self.mass_weighted_normal_modes, 0)
         m = np.size(self.mass_weighted_normal_modes, 1)*3
         UT = np.zeros((n, m))
         frequencies_a = np.array(self.frequencies) * wavenumber
         if self.debug:
-            print("frequencies_a",frequencies_a)
+            logger.debug(f"frequencies_a {frequencies_a}")
         masses = np.array(self.masses)*amu
         # if the non mass-weighted hasn't been set, set it
         if not self.nomass_hessian_has_been_set:
             if self.debug:
-                print("hessian was not set")
+                logger.debug("hessian was not set")
             self.nomass_hessian_has_been_set = True
             for imode, mode in enumerate(self.mass_weighted_normal_modes):
                 n = 0
@@ -644,38 +960,37 @@ class GenericOutputReader:
             # they are calculated using the program masses
             current_mass_dictionary = self.mass_dictionary()
             if self.debug:
-                print("current mass dictionary", current_mass_dictionary)
+                logger.debug(f"current mass dictionary {current_mass_dictionary}")
             # There is a chance that the program_mass_dictionary hasn't been set - if it hasn't use the current masses
             if not self.program_mass_dictionary:
                 self.program_mass_dictionary = current_mass_dictionary
             if self.debug:
-                print("program mass dictionary", self.program_mass_dictionary)
-            self.change_masses(self.program_mass_dictionary, {})
-            masses = np.array(self.masses)*amu
-            # remove the mass weighting from the hessian and store
-            self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
-            # finally replace the masses with those set before we did this
-            self.change_masses(current_mass_dictionary, {})
+                logger.debug(f"program mass dictionary {self.program_mass_dictionary}")
+            # Use native per-atom masses directly: edited_masses overrides
+            # change_masses and must not alter the reconstructed force constants.
+            masses = self._mode_reference_masses * amu
+            self.nomass_hessian = self._remove_mass_weighting(hessian, masses)
             if self.debug:
-                print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+                logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         # If the masses have been changed then alter the mass weighted hessian here
         masses = np.array(self.masses)*amu
         if self.debug:
-            print("masses", masses)
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"masses {masses}")
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         self.hessian = self._modify_mass_weighting(self.nomass_hessian, masses)
         if self.debug:
-            print("mass weighted hessian", self.hessian[0:4][0])
+            logger.debug(f"mass weighted hessian {self.hessian[0:4][0]}")
         # Project out the translational modes if requested
         if self.eckart:
             self.hessian = self.project(self.hessian)
             if self.debug:
-                print("projected hessian", self.hessian[0:4][0])
+                logger.debug(f"projected hessian {self.hessian[0:4][0]}")
         # Find its eigenvalues and eigen vectors
         self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(self.hessian)
         if self.debug:
-            print("calculated frequencies", self.frequencies)
-            print("mass-weighted normal modes", self.mass_weighted_normal_modes)
+            logger.debug(f"calculated frequencies {self.frequencies}")
+            logger.debug(f"mass-weighted normal modes {self.mass_weighted_normal_modes}")
+        self._update_raman_tensors_after_mode_recalculation(old_modes, old_raman_tensors)
         # end for i
         return self.mass_weighted_normal_modes
 
@@ -741,11 +1056,14 @@ class GenericOutputReader:
     def _dynamical_matrix(self, hessian):
         """Process the dynamical matrix.
 
-        Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.
+        Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of
+        mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally
+        storing the frequencies and normal modes.
 
         Parameters
         ----------
-        hessian : nxn array of floats
+        hessian : nxn
+            array of floats
             The second derivative matrix
 
         Returns
@@ -762,11 +1080,11 @@ class GenericOutputReader:
 
         """
         if self.debug:
-            print("_dynamical_matrix")
-            print("hessian", hessian[0:4][0])
+            logger.debug("_dynamical_matrix")
+            logger.debug(f"hessian {hessian[0:4][0]}")
         masses = np.array(self.masses)*amu
         if self.debug:
-            print("masses", self.masses, masses)
+            logger.debug(f"masses {self.masses} {masses}")
         if not self.nomass_hessian_has_been_set:
             # symmetrise the hessian and store it for later use
             if self.hessian_symmetrisation == "symm":
@@ -777,26 +1095,30 @@ class GenericOutputReader:
             self.nomass_hessian_has_been_set = True
             self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
         if self.debug:
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         hessian = self._modify_mass_weighting(self.nomass_hessian,masses)
         if self.debug:
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         if self.debug:
-            print("mass weighted hessian", hessian[0:4][0])
+            logger.debug(f"mass weighted hessian {hessian[0:4][0]}")
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
         if self.debug:
-            print("projected hessian", hessian[0:4][0])
+            logger.debug(f"projected hessian {hessian[0:4][0]}")
+        # Store the mass-weighted hessian so that Raman particle-frequency
+        # corrections (which need self.hessian) work for all readers.
+        self.hessian = hessian
         self.mass_weighted_normal_modes, self.frequencies = calculate_normal_modes_and_frequencies(hessian)
         if self.debug:
-            print("non mass weighted hessian", self.nomass_hessian[0:4][0])
+            logger.debug(f"non mass weighted hessian {self.nomass_hessian[0:4][0]}")
         return
 
     def reset_born_charges(self):
         """Reset the born charges to their original values if they are not currently being used.
 
-        This method restores the `born_charges` attribute of the instance to the value stored in `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
+        This method restores the `born_charges` attribute of the instance to the value stored in
+        `original_born_charges`, but only if `original_born_charges_are_being_used` is `False`.
 
         Parameters
         ----------
@@ -808,7 +1130,8 @@ class GenericOutputReader:
 
         Notes
         -----
-        This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
+        This method changes the state of the reader by modifying its `born_charges` attribute to match
+        `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
 
         """        
         if not self.original_born_charges_are_being_used:
@@ -865,7 +1188,7 @@ class GenericOutputReader:
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
         if self.debug:
-            print("born charge sum", total)
+            logger.debug(f"born charge sum {total}")
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return
@@ -873,14 +1196,15 @@ class GenericOutputReader:
     def _modify_mass_weighting(self,hessian,new):
         """Modify the Hessian matrix based on new mass weighting.
 
-        This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the square root of the product of elements from a new weighting (`new`). 
+        This function iterates over the elements of the Hessian matrix (`hessian`) and adjusts each element based on the
+        square root of the product of elements from a new weighting (`new`).
 
         Parameters
         ----------
         hessian : numpy.ndarray
             The original Hessian matrix whose elements are to be modified. It is assumed to be a square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.
-        new : numpy.ndarray or list
-            An array or list of new weighting factors, one per ion. Its length should be equal to `nions`. These factors are applied in the modification of the Hessian matrix elements.
+        new : numpy.ndarray
+            or list An array or list of new weighting factors, one per ion. Its length should be equal to `nions`. These factors are applied in the modification of the Hessian matrix elements.
 
         Returns
         -------
@@ -913,7 +1237,7 @@ class GenericOutputReader:
             The Hessian matrix to be un-weighted, typically a square, 2D array where
             the dimension correlates with 3 times the number of ions (nions*3) since
             it includes the x, y, and z coordinates for each ion.
-        old : ndarray or list
+        old : ndarray
             An array or list of mass weights for each ion.
 
         Returns

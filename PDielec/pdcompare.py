@@ -29,10 +29,14 @@ H Mie/3.0
 -sheet [molar/absorption/real/imaginary/atr]
 -excel filename
 """
+import logging
 import sys
 
 import numpy as np
 from openpyxl import load_workbook
+
+logger = logging.getLogger(__name__)
+
 
 
 def main():
@@ -76,7 +80,7 @@ def main():
         return
 
     # check usage
-    if len(sys.argv) <= 1:
+    if len(sys.argv) <= 1 or any(token in ("-h", "-help", "--help") for token in sys.argv[1:]):
         show_usage()
         sys.exit()
 
@@ -96,6 +100,7 @@ def main():
     rmax = 0
     column = "D"
     sheet = "molar"
+    excelfile = ""
     while itoken < ntokens:
         token = tokens[itoken]
         if token == "-rmin":

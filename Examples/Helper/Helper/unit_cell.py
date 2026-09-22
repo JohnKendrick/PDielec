@@ -21,18 +21,18 @@ examples_directory = os.path.join(home_directory,'Examples')
 sys.path.insert(0,home_directory)
 import numpy as np
 from PDielec.UnitCell import UnitCell
-from PDielec.HelperRoutines   import getMaterial
+from PDielec.HelperRoutines   import get_material
 
 def main():
     # Read in asparticAcid calculation by CASTEP
-    asparticAcid = getMaterial(os.path.join(examples_directory,'Castep','AsparticAcid','phonon.castep'))
-    uc = asparticAcid.getCell()
+    asparticAcid = get_material(os.path.join(examples_directory,'Castep','AsparticAcid','phonon.castep'))
+    uc = asparticAcid.get_cell()
     # bonds etc, are only defined if a new cell is created of whole molecules
     number_of_molecules = uc.calculate_molecular_contents()
     print('Number of whole molecules {}'.format(number_of_molecules))
     print('CIF file')
     uc.write_cif('test.cif')
-    density = uc.getDensity('cm')
+    density = uc.get_density('cm')
     #
     bonds,bondlengths = uc.get_bonds()
     print('BONDS')

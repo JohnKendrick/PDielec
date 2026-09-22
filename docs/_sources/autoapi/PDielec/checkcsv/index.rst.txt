@@ -11,6 +11,14 @@ PDielec.checkcsv
 
 
 
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.checkcsv.logger
+
+
 Functions
 ---------
 
@@ -120,4 +128,6 @@ Module Contents
    The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.
 
 
+
+.. py:data:: logger
 

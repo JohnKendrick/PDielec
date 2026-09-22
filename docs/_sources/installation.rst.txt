@@ -2,67 +2,139 @@
 Installation
 ============
 
-..
-    .. contents::
-       :local:
-..
-
 .. meta::
-   :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
-   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP, FHI-Aims, Phonopy, QE
+   :description: Installing PDielec for infrared, terahertz and Raman calculations
+   :keywords: PDielec, installation, Python, PyQt6, conda, pip, Raman
 
+Requirements and installation choices
+=====================================
+
+PDielec 10 requires **Python 3.10 or later**. Install it in a dedicated conda
+or Python virtual environment so that its dependencies are kept together.
+The GUI uses **PyQt6** through QtPy; the 3D viewer also requires working
+OpenGL support from the operating system and graphics driver.
+
+Choose a published package for normal use, or a Git checkout to run the
+examples, develop the code, or use changes not yet published. The version
+available on `PyPI <https://pypi.org/project/pdielec/>`_ or
+`conda-forge <https://anaconda.org/conda-forge/pdielec>`_ may differ from the
+version described by the development documentation. Check the installed
+version with::
+
+    python -c "from PDielec import __version__; print(__version__)"
+
+Package installations provide the Python modules, GUI and command-line
+entry points. Obtain the example datasets and regression tests from the Git
+repository; they are not included in the installed wheel. Use a checkout
+matching the installed version when comparing with reference results.
 
 Conda
 =====
 
-Unless you are interested in the full conda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an conda command terminal, which will be added to the user's menu when miniconda is installed.
+With conda installed, create and activate an environment. On Windows, use a
+terminal configured for conda, such as the Miniconda prompt::
 
-PDielec is available on the conda-forge channel and installation using conda can be performed on Linux, Windows, and Mac systems.
-However, in a conda installation, there are no example files installed, only the executables and python files.  
-Example files for each of the DFT packages supported can be downloaded from the Git repository.
+    conda create --name pdielec --channel conda-forge pdielec
+    conda activate pdielec
+    pdgui
 
-The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or conda, a new environment should be created in which to install the package::
+Update to the version available on that channel with::
 
-   conda config --add channels conda-forge
-   conda create  --name pdielec pdielec
-   conda activate pdielec
-   pdgui
+    conda activate pdielec
+    conda update --channel conda-forge pdielec
 
+For development from source, create an environment containing Python and pip,
+then follow the Git checkout instructions below. For example::
 
-If at a later stage, you want to update PDielec to the latest version from conda-forge, you should be able to update the environment in the following way::
+    conda create --name pdielec-dev --channel conda-forge python=3.12 pip
+    conda activate pdielec-dev
 
-   conda activate pdielec
-   conda update pdielec
+Python 3.12 is an example environment choice, not the minimum requirement.
+The package installation step below installs its declared dependencies.
 
-This only works if the conda-forge channel has been added to the channel list for the environment.
-
-If the full GitHub installation is required to run the examples for instance, then this can be downloaded from GitHub as outlined below.
-
-
-PyPi
+PyPI
 ====
 
-If you do not want to use conda or miniconda, PDielec is available on pypi.org and can be installed using pip.::
+Use Python 3.10 or later to create a virtual environment. On Linux or macOS::
 
-   pip install --user pdielec
-   pdgui
+    python3 -m venv pdielec-env
+    source pdielec-env/bin/activate
 
-Sometimes a pip install may fail because there isn't a wheel (compiled) version of a required package and the compilation is not possible because the necessary tools have not been installed.  In this case it is necessary to look to see what versions of the whl files are available on PyPi and ensure that the version of Python running is compatible.  Sometimes downgrading the Python version is enough to install all the software requirements from wheels, thereby avoiding recompilation.
+On Windows, the equivalent commands in Command Prompt are::
 
+    python -m venv pdielec-env
+    pdielec-env\Scripts\activate.bat
 
-GitHub - Linux
-==============
+If you already activated a conda environment, use that environment instead.
+In the activated environment, install and start PDielec::
 
-The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec.
-cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a 'Software/' directory in my home directory to store programs, so the commands to obtain PDielec would look like this.::
+    python -m pip install --upgrade pip
+    python -m pip install pdielec
+    pdgui
 
-  cd ~/Software
-  git clone https://github.com/JohnKendrick/PDielec.git
+To update a PyPI installation, use ``python -m pip install --upgrade pdielec``.
+Always run pip through the Python interpreter of the intended environment.
+See the `Python Packaging installation guide
+<https://packaging.python.org/en/latest/tutorials/installing-packages/>`_
+for environment setup on other shells.
 
-This will create a directory \~/Software/PDielec. 
+If a dependency cannot be installed from a wheel, check that it provides a
+wheel for your operating system, processor architecture and Python version.
+Use a supported Python version with matching wheels, or install the build
+tools required by that dependency. PDielec itself is a Python package, but
+several scientific and GUI dependencies contain compiled components.
 
-As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows; ::
+Installing from GitHub
+======================
+
+Install Git and activate a Python environment as above. From a directory
+where you want to keep the source, run::
+
+    git clone https://github.com/JohnKendrick/PDielec.git
+    cd PDielec
+    python -m pip install -e .
+    pdgui
+
+The editable installation reads dependencies from ``pyproject.toml`` and
+creates commands such as ``pdgui``, ``preader`` and ``pdmake`` in the active
+environment. It works from a checkout on Linux, macOS or Windows without
+manually copying scripts or relying on Windows symbolic links. Activate the
+same environment whenever using those commands.
+
+To install a fixed copy instead of an editable checkout, use
+``python -m pip install .``. With an editable installation, Python source
+changes take effect directly. After updating a checkout with ``git pull``,
+repeat ``python -m pip install -e .`` to pick up dependency or entry-point
+changes as well.
+
+Checking an installation
+------------------------
+
+Check dependency consistency and launch the GUI::
+
+    python -m pip check
+    pdgui
+
+From the repository root, run the pytest suites with::
+
+    pdmake test-pytests
+
+Run pytest followed by the example regression suites with::
+
+    pdmake tests
+
+On Linux or macOS, ``./pdmake`` explicitly selects the wrapper in the current
+checkout. These tests need the checkout's ``Examples`` and ``PDielec/Tests``
+directories. Normal regression runs compare generated results with references;
+``--regenerate`` replaces references and is not an installation check.
+
+Package dependencies
+====================
+
+The authoritative list is ``[project].dependencies`` in ``pyproject.toml``.
+Pip installs these automatically when installing PDielec. The accompanying
+``requirements.txt`` lists the same dependencies for environments that need
+an explicit requirements file::
 
     dill
     imageio
@@ -72,261 +144,368 @@ As part of the installation, you will have to install several Python packages in
     openpyxl
     psutil
     PyOpenGL
+    PyQt6
+    pytest
     PyYAML
     QtPy
-    scikit_learn
+    scikit-learn
     scipy
     setuptools
     spglib
     termcolor
     XlsxWriter
-    scikit-learn
 
-GitHub - Windows
-================
+QtPy is an abstraction layer; it does not replace the PyQt6 binding.
+Pytest is currently a declared dependency because PDielec includes test-running
+commands. A separate ``mkl`` installation is not required by PDielec.
 
-An conda installation is the recommended way of installing on a Windows machine.  See the section on conda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.
+Optional tools
+--------------
 
+**Phonopy:** install ``phonopy`` to use ``phonopy-pdielec-born``, which calls
+the Phonopy API to expand Born charges. It is not in the core dependency list::
 
-Installation from repository
-----------------------------
+    python -m pip install phonopy
 
-This Windows installation method is only needed if installation through conda is not possible.
-A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that runs all the test cases.  In the following instructions replace 'yourusername' with your user name.
+**Documentation:** from the repository root, install the documentation tools::
 
-Install git
-...........
+    python -m pip install -r Sphinx/requirements.txt
 
-First of all, install a Windows version of git from www.git-scm.com. A 64-bit version of Windows 10 will be assumed for the following instructions.
+This includes Sphinx, its configured extensions and theme, and
+``sphinx-autobuild`` for live previews. With Make available, ``make livehtml``
+in ``Sphinx/`` starts a preview that updates when sources change. A direct
+cross-platform alternative, run from the repository root, is::
 
-* From the download page download and run the 64-bit Git for Windows setup.
-* During the installation install the Quick Launch and Desktop icons as these make using the program easier.
-* If you are not familiar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
-* In the section concerning the PATH environment, I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replaced by the Unix commands, so be careful.
-* Leave the https certificate choice as the default, namely the OpenSSL library.
-* Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.
-* The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.
-* Under the "Configuring extra options" I leave everything as the default.
+    sphinx-autobuild -b html Sphinx Sphinx/_build/html
 
-I have seen a few hiccups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has been completed.  When this happens I kill the setup process with the task manager
+For a static preview, use ``sphinx-build -b html Sphinx Sphinx/_build/html``.
+The custom ``make html`` target also copies built HTML into ``docs/``.
+Screenshot regeneration needs a working Qt/OpenGL display; see
+``Sphinx/tools/README.md`` for the capture and input-validation tools.
 
-Install Python
-..............
+**PDF manual:** install the additional Python converter, together with a TeX
+installation providing ``pdflatex`` and ``latexmk``, and the system
+``rsvg-convert`` command (provided by librsvg). From the repository root, run::
 
-* From https://www.python.org/downloads/windows/ download and run the Windows x86-64 executable installer for the latest Python 3.x version
-* Uncheck the "Install launcher" for all users
-* Check "Add Python 3.x to PATH"
-* Click on the "Install now" button
-* Check installation ran OK by running the Idle Python environment
+    python -m pip install -r Sphinx/requirements-pdf.txt
+    make -C Sphinx pdf
 
-Open a git bash console and type; ::
+Alternatively, if you are already inside ``Sphinx/``, run::
 
+    make pdf
 
-    pip install dill
-    pip install imageio
-    pip install imageio-ffmpeg
-    pip install matplotlib
-    pip install mkl
-    pip install numpy
-    pip install openpyxl
-    pip install psutil
-    pip install PyOpenGL
-    pip install PyYAML
-    pip install QtPy
-    pip install scikit_learn
-    pip install scipy
-    pip install setuptools
-    pip install spglib
-    pip install termcolor
-    pip install XlsxWriter
-    pip install scikit-learn
+This builds the manual and copies it to ``PDielec.pdf`` in the repository root
+after a successful build. The intermediate manual remains at
+``Sphinx/_build/latex/PDielec.pdf``; ``make latexpdf`` builds only that copy.
+SVG figures are converted to vector PDF files automatically in the build
+directory. HTML continues to use the original
+SVG files and does not require the PDF converter or TeX. Unicode mappings for
+scientific symbols are applied only to the LaTeX output.
 
-Install PDielec
-...............
+**Release builds:** install the build frontend before creating archives::
 
-Open a git bash console and type;::
+    python -m pip install build
+    python -m build
 
-  cd Software
-  git clone -c core.symlinks=true https://github.com/JohnKendrick/PDielec.git
-
-This should create a directory in Software called PDielec.  The "-c core.symlinks=true" means that the commands; pdgui and preader are treated as windows symlinks to their equivalent .py file.
-
-Testing PDielec
-...............
-
-Open a git bash console.  If you have installed Python using conda then you need to 'source activate' the environment you have established before typing;::
-
-  cd Software/PDielec
-  pdmake test-preader
-  pdmake test-pdgui
-
-Installing PDielec to run in any git bash console
-.................................................
-
-Open a git bash console and type;::
-
-  cd Software/PDielec
-  export SCRIPTS=~/bin
-  pdmake install
-
-Updating PDielec from the git repository
-........................................
-
-Open a git bash console and type;::
-
-  cd Software/PDielec
-  git pull
+The build environment installs the backend declared in ``pyproject.toml``,
+including ``setuptools>=77.0.3`` for SPDX license metadata. ``pdmake pypi``
+also builds archives on supported platforms, but removes previous build
+output first. Building archives does not upload them to PyPI. Maintainers
+can install ``twine`` separately to check or upload a release.
 
 GitHub - PDielec directory structure
 ====================================
 
-* PDielec/ - The home directory that contains the `pdgui` and `preader` commands
-* PDielec/PDielec  - Holds the source for the modules used by the pdielec and preader commands
-* PDielec/PDielec/GUI  - Holds the Python code for PDGui
-* PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, FHI-Aims, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
-* PDielec/Sphinx - Holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either HTML or PDF format.
-* PDielec/docs - Holds the final HTML documentation.
+Paths below are relative to the repository root:
+
+* ``PDielec/`` contains the readers and numerical routines; ``PDielec/GUI/`` contains PDGui.
+* ``PDielec/Tests/`` contains pytest regression tests.
+* ``Examples/`` contains input/output datasets, regression recipes and helper scripts.
+* ``Sphinx/`` contains the documentation sources; ``docs/`` contains published HTML.
+* ``pyproject.toml`` defines dependencies, package data and installed command entry points.
 
 .. _Examples:
 
 Examples
 ========
 
-Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively: ::
+The catalogue below describes the tracked example families. A directory with
+``command.pdmake`` contains a regression recipe. PDGui recipes normally use
+``script.py`` and compare a generated ``results.xlsx`` with
+``results.ref.xlsx``. Reader and analysis recipes instead use CSV, CIF or
+normal-mode-analysis references. Supporting files and notebooks are not all
+standalone regression tests, and ``pdmake tests`` runs the configured suites,
+not every file below ``Examples/``.
 
- pdmake view
+From an example directory containing a PDGui recipe, run::
 
-The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically. A complete set of tests for the system can be run using: ::
+    pdmake command.pdmake
+    pdmake --view command.pdmake
 
- pdmake tests
+The second command opens the saved scenario interactively. From the repository
+root, ``pdmake tests`` runs pytest first and then the configured example suites.
+``pdmake benchmarks`` runs the benchmark selection without reference comparison;
+see :ref:`performance`. Use ``--regenerate`` only after reviewing differences.
 
-This will run each example automatically and compare the output compared with the reference files.  To remove the intermediate files after running the tests, type `pdmake clean`.
+The small ``Crystal_Raman/AbInit`` and ``Crystal_Raman/Finite_field`` directories
+currently contain provenance notes only. Use ``Powder_Raman/AbInit`` and
+``Powder_Raman/Finite_difference`` for the corresponding complete datasets.
+The CASTEP 25.12 directory includes both a crystal Raman recipe and data used
+by the atomic Raman reader tests.
 
-A benchmark can be run for comparison of the performance of PDielec on different platforms by typing; ::
+.. list-table:: Examples available in the repository
+   :header-rows: 1
+   :widths: 28 16 56
 
- pdmake benchmarks
-
-This runs a range of calculations on different systems and provides a real-world view of the performance.  An indication of the likely performance of the program is given in the :ref:`performance` section of the documentation.
-
-A summary of the different examples and their purpose is shown below;
-
-.. table:: Summary of the Examples available in the Examples/ directory
-   :widths: 2 1 1 8
-   :header-alignment: center center center center
-   :column-alignment: left center left left
-   :column-wrapping: false false false true
-   :column-dividers: single single single single single
-
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Directory                 | Program          | Molecule      | Description                                                                                                                                     |
-   +===========================+==================+===============+=================================================================================================================================================+
-   | ATR/AlAs                  | AbInit           | AlAs          | Maxwell Garnett calculation of the ATR spectrum of an ellipsoid along   [001].  The incident angle varies from   0 to 80 degrees.               |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ATR/Na2SO42               | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, changes the S polarisation   component from 0 to 100%                                          |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ATR/Na2SO42_fit           | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, an example of fitting the spectrum to experiment                                               |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/AlAs               | AbInit           | AlAs          | Average permittivity and Maxwell-Garnett calculation of sphere, plate and   ellipsoid                                                           |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/BaTiO3             | AbInit           | BaTiO3        | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using average isotope masses                            |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/BaTiO3-phonana     | AbInit           | BaTiO3        | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program-defined masses                            |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/Na2SO42            | AbInit           | Na2(SO4)2     | Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2,   sphere, plate and ellipsoid, using program-defined masses                 |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/AsparticAcid       | Castep           | Aspartic Acid | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program-defined masses                            |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/Bubbles            | Castep           | MgO           | Maxwell-Garnett calculation showing the effect of air bubbles at 24%   volume fraction and 30 micron radius                                     |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/Castep17           | Castep           | beta-Lactose  | Castep 17, Maxwell-Garnett sphere and plates with 3 surfaces                                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/Isoleucine         | Castep           | Isoleucine    | Maxwell-Garnett sphere                                                                                                                          |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/MgO                | Castep           | MgO           | Comparison of MG, Bruggeman and AP methods changing shapes and volume   fractions                                                               |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/Na2SO42            | Castep           | Na2(SO4)2     | Comparison of MG and Bruggeman, for needle, ellipsoid and plate shapes                                                                          |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/Leucine           | Crystal          | Leuscine      | Comparison of MG, plates and ellipsoids                                                                                                         |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/Na2SO42           | Crystal          | Na2(SO4)2     | Comparison of MG for needle, ellipsoid and plate shapes                                                                                         |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/Na2SO42_C17       | Crystal          | Na2(SO4)2     | Comparison of MG for needle, ellipsoid and plate shapes, reading output   from Crystal 17                                                       |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/Quartz            | Crystal          | Quartz        | Comparison of MG for needle, ellipsoid and plate shapes                                                                                         |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/ZnO/CPHF          | Crystal          | ZnO           | Coupled Hartree-Fock, Maxwell-Garnett Sphere, Needle and Plate                                                                                  |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/ZnO/Default       | Crystal          | ZnO           | Default Crystal calculation of IR spectrum, Maxwell-Garnett Sphere,   Needle and Plate                                                          |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Crystal/ZnO/NoEckart      | Crystal          | ZnO           | As above, but no Eckart projection in Crystal,  Maxwell-Garnett Sphere, Needle and Plate                                                        |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | FHI-Aims/Na2SO42          | FHI-Aims         | Na2(SO4)2     | Powder calculation for spheres, including a comparison with VASP results                                                                        |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/Forsterite     | Experiment       | Forsterite    | Single crystal calculations of a thick slab, for a, b and c axis   alignments with polarisation direction.    Uses FPSQ model for permittivity. |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/Mayerhofer     | Experiment       | Toy model     | Example of a Drude Lorentz model permittivity                                                                                                   |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/constant       | Experiment       | Constant      | Example of a constant permittivity with loss                                                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/drude-lorentz  | Experiment       | MgO           | A Drude-Lorentz model for MgO, varying the angle of incidence                                                                                   |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/fpsq           | Experiment       | Quartz        | An FPSQ model for Quartz, showing polarisation on along different axes and different incident angles.                                           |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/interpolation  | Experiment       | Quartz        | An example of an interpolation model                                                                                                            |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/AlN            | Experiment       | AlN           | Aluminium Nitride multi-layer system including SiC and Si                                                                                       |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/Sapphire       | Experiment       | Sapphire      | Sapphire example and test of the materials database                                                                                             |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Gulp/Na2SO42              | Gulp             | Na2(SO4)2     | Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate                                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Gulp/calcite              | Gulp             | Calcite       | Maxwell-Garnett method on Sphere and Plate                                                                                                      |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Mie/MgO                   | Castep           | MgO           | Mie method with varying volume fractions and sphere sizes                                                                                       |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Mie/MgO_lognormal         | Castep           | MgO           | Mie method with varying volume fractions and sphere size distributions                                                                          |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Phonopy/Al2O3             | Phonopy          | Al2O3         | Primitive and standard cell example of using Phonopy                                                                                            |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Phonopy/Na2SO42           | Phonopy          | Na2(SO4)2     | Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes, with varying volume fractions                                      |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Phonopy/ZnO               | Phonopy          | ZnO           | Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes                                                                     |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Phonopy/Crystal           | Phonopy/Crystal  | Urea          | Powder and single crystal Phonopy example using Crystal                                                                                         |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Phonopy/QE                | Phonopy/QE       | Urea          | Powder and single crystal Phonopy example using QE                                                                                              |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Phonopy/Vasp              | Phonopy/Vasp     | Urea          | Powder and single crystal Phonopy example using Vasp                                                                                            |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | QE/Cocaine                | Quantum Espresso | Cocaine       | Maxwel-Garnett sphere, using QE 4.1                                                                                                             |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | QE/Na2SO42                | Quantum Espresso | Na2(SO4)2     | Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 5.1                                                                      |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | QE/Na2SO42-v7             | Quantum Espresso | Na2(SO4)2     | Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 7.3.1                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | QE/Urea                   | Quantum Espresso | Urea          | Maxwell-Garnett and single crystal, using QE 7.3.1                                                                                              |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | QE/ZnO                    | Quantum Espresso | ZnO           | Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 5.4.0                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SingleCrystal/Bi2Se3      | Vasp             | Bi2Se3        | Single crystal example of thick slab, angle of incidence varies from 0 to 90                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SingleCrystal/Bi2Se3_film | Vasp             | Bi2Se3        | Single crystal example of thin film, angle of incidence varies from 0 to 90                                                                     |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SingleCrystal/L-Alanine   | Crystal          | L-Alanine     | Explores single crystal calculations on L-Alanine and compares the results with experiment                                                      |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SizeEffects/BaTiO3        | Abinit           | BaTiO3        | Exploration of size effects in Bruggeman effective medium theory                                                                                |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SizeEffects/MgO           | Castep           | MgO           | Exploration of size effects in Bruggeman and Maxwell-Garnett effective  medium theories                                                         |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SizeEffects/ZnO           | Vasp             | ZnO           | Exploration of size effects in Maxwell-Garnett effective medium theory                                                                          |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Vasp/F-Apatite            | Vasp             | F-Apatite     | Maxwell-Garnett, sphere plates and needles, using Vasp 5.3.5                                                                                    |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Vasp/Na2SO42              | Vasp             | Na2(SO4)2     | Maxwell-Garnett and Bruggeman, needle, plate and needle, using Vasp 5.3.5                                                                       |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Vasp/Vasp6                | Vasp             | Na2(SO4)2     | The DFT calculation were performed using VASP 6.4.2, with thanks to Dr David Santos-Carballal for performing the DFT calculation                |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Vasp/Urea                 | Vasp             | Urea          | Powder and single crystal exampl, using Vasp 5.4.4                                                                                              |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Vasp/ZnO                  | Vasp             | ZnO           | Maxwell-Garnett and Bruggeman, needle, plate and needle, mass fraction, using Vasp 5.3.5                                                        |
-   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   * - Directory
+     - Input or workflow
+     - Purpose
+   * - ``ATR/AlAs``
+     - AbInit
+     - Maxwell Garnett calculation of the ATR spectrum of an ellipsoid along [001]. The incident angle varies from 0 to 80 degrees.
+   * - ``ATR/Na2SO42``
+     - Vasp
+     - Maxwell-Garnett calculation of the ATR spectrum, changes the S polarisation component from 0 to 100%
+   * - ``ATR/Na2SO42_fit``
+     - Vasp
+     - Maxwell-Garnett calculation of the ATR spectrum, an example of fitting the spectrum to experiment
+   * - ``AbInit/AlAs``
+     - AbInit
+     - Average permittivity and Maxwell-Garnett calculation of sphere, plate and ellipsoid
+   * - ``AbInit/BaTiO3``
+     - AbInit
+     - Average permittivity and Maxwell-Garnett calculations of sphere, plate and ellipsoid, using average isotope masses
+   * - ``AbInit/Na2SO42``
+     - AbInit
+     - Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2, sphere, plate and ellipsoid, using program-defined masses
+   * - ``AbInit/preader``
+     - AbInit
+     - AbInit preader test
+   * - ``Castep/AsparticAcid``
+     - Castep
+     - Average permittivity and Maxwell-Garnett calculations of sphere, plate and ellipsoid, using program-defined masses
+   * - ``Castep/Bubbles``
+     - Castep
+     - Maxwell-Garnett calculation showing the effect of air bubbles at 24% volume fraction and 30 micron radius
+   * - ``Castep/Castep17``
+     - Castep
+     - Castep 17, Maxwell-Garnett sphere and plates with 3 surfaces
+   * - ``Castep/Isoleucine``
+     - Castep
+     - Maxwell-Garnett sphere
+   * - ``Castep/MgO``
+     - Castep
+     - Comparison of MG, Bruggeman and AP methods changing shapes and volume fractions
+   * - ``Castep/Na2SO42``
+     - Castep
+     - Comparison of MG and Bruggeman, for needle, ellipsoid and plate shapes
+   * - ``Castep/preader``
+     - Castep
+     - Castep preader test
+   * - ``Crystal/Leucine``
+     - Crystal
+     - Comparison of MG, plates and ellipsoids
+   * - ``Crystal/Na2SO42``
+     - Crystal
+     - Comparison of MG for needle, ellipsoid and plate shapes
+   * - ``Crystal/Na2SO42_C17``
+     - Crystal
+     - Comparison of MG for needle, ellipsoid and plate shapes, reading output from Crystal 17
+   * - ``Crystal/Quartz``
+     - Crystal
+     - Comparison of MG for needle, ellipsoid and plate shapes
+   * - ``Crystal/ZnO``
+     - Crystal
+     - PDGui Crystal of ZnO (CPHF); PDGui Crystal of ZnO (default settings); PDGui Crystal of ZnO (NOECKART settings)
+   * - ``Crystal/preader``
+     - Crystal
+     - Crystal preader test
+   * - ``Crystal_Raman/Castep``
+     - Crystal Raman
+     - PDGui Castep Crystal Raman of ZnO
+   * - ``Crystal_Raman/Castep-25.12``
+     - Crystal Raman
+     - ZnO crystal Raman scenarios and CASTEP 25.12 atomic polar tensor reader checks.
+   * - ``Crystal_Raman/Crystal23``
+     - Crystal Raman
+     - CRYSTAL23 ZnO crystal Raman scenarios, including optical geometry and coherence.
+   * - ``Experiment/AlN``
+     - Experiment
+     - Aluminium Nitride multi-layer system including SiC and Si
+   * - ``Experiment/Forsterite``
+     - Experiment
+     - Single crystal calculations of a thick slab, for a, b and c axis alignments with polarisation direction. Uses FPSQ model for permittivity.
+   * - ``Experiment/Mayerhofer``
+     - Experiment
+     - Example of a Drude Lorentz model permittivity
+   * - ``Experiment/Sapphire``
+     - Experiment
+     - Sapphire example and test of the materials database
+   * - ``Experiment/constant``
+     - Experiment
+     - Example of a constant permittivity with loss
+   * - ``Experiment/cp2k``
+     - Experiment
+     - PDGui experiment Single Crystal for cysteine form3
+   * - ``Experiment/drude-lorentz``
+     - Experiment
+     - A Drude-Lorentz model for MgO, varying the angle of incidence
+   * - ``Experiment/fpsq``
+     - Experiment
+     - An FPSQ model for Quartz, showing polarisation on along different axes and different incident angles.
+   * - ``Experiment/interpolation``
+     - Experiment
+     - An example of an interpolation model
+   * - ``FHI-Aims/Na2SO42``
+     - FHI-Aims
+     - Powder calculation for spheres, including a comparison with VASP results
+   * - ``FHI-Aims/preader``
+     - FHI-Aims
+     - FHI-Aims preader test
+   * - ``Finite_difference/preader``
+     - Finite-field JSON
+     - Finite-difference VASP ZnO preader infrared (Eckart)
+   * - ``Finite_difference/preader_raman``
+     - Finite-field JSON
+     - Finite-difference VASP ZnO preader Raman
+   * - ``Gulp/Na2SO42``
+     - Gulp
+     - Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate
+   * - ``Gulp/calcite``
+     - Gulp
+     - Maxwell-Garnett method on Sphere and Plate
+   * - ``Gulp/preader``
+     - Gulp
+     - Gulp preader test
+   * - ``Helper/Helper``
+     - Python API
+     - Python helper API demonstration; inspect test_helper.py for its workflow.
+   * - ``Helper/Jupyter``
+     - Python API
+     - Jupyter notebooks and supporting datasets for API workflows.
+   * - ``Mie/MgO``
+     - Castep
+     - Mie method with varying volume fractions and sphere sizes
+   * - ``Mie/MgO_lognormal``
+     - Castep
+     - Mie method with varying volume fractions and sphere size distributions
+   * - ``P2Cif``
+     - CIF export
+     - Testing p2cif
+   * - ``Phonopy/Al2O3``
+     - Phonopy
+     - Primitive and standard cell example of using Phonopy
+   * - ``Phonopy/Na2SO42``
+     - Phonopy
+     - Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes, with varying volume fractions
+   * - ``Phonopy/QE``
+     - Phonopy/QE
+     - Powder and single crystal Phonopy example using QE
+   * - ``Phonopy/Vasp``
+     - Phonopy/Vasp
+     - Powder and single crystal Phonopy example using Vasp
+   * - ``Phonopy/ZnO``
+     - Phonopy
+     - Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate shapes
+   * - ``Phonopy/preader``
+     - Phonopy
+     - Phonopy preader test
+   * - ``Powder_Raman/AbInit``
+     - Powder Raman
+     - PDGui Abinit powder Raman of ZnO
+   * - ``Powder_Raman/Castep``
+     - Powder Raman
+     - PDGui Castep powder Raman of ZnO
+   * - ``Powder_Raman/Crystal23``
+     - Powder Raman
+     - PDGui Crystal powder Raman of ZnO
+   * - ``Powder_Raman/Finite_difference``
+     - Powder Raman
+     - VASP ZnO finite-difference JSON; powder Raman with EO disabled and enabled.
+   * - ``Powder_Raman/QE``
+     - Powder Raman
+     - PDGui QE powder Raman of ZnO
+   * - ``Powder_Raman/Vasp``
+     - Powder Raman
+     - PDGui Vasp powder Raman of ZnO
+   * - ``QE/Cocaine``
+     - Quantum Espresso
+     - Maxwel-Garnett sphere, using QE 4.1
+   * - ``QE/Na2SO42``
+     - Quantum Espresso
+     - Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 5.1
+   * - ``QE/Na2SO42-v7``
+     - Quantum Espresso
+     - Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 7.3.1
+   * - ``QE/Urea``
+     - Quantum Espresso
+     - Maxwell-Garnett and single crystal, using QE 7.3.1
+   * - ``QE/ZnO``
+     - Quantum Espresso
+     - Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate, using QE 5.4.0
+   * - ``QE/preader``
+     - QE
+     - QE preader test
+   * - ``SingleCrystal/Bi2Se3``
+     - Vasp
+     - Single crystal example of thick slab, angle of incidence varies from 0 to 90
+   * - ``SingleCrystal/Bi2Se3_film``
+     - Vasp
+     - Single crystal example of thin film, angle of incidence varies from 0 to 90
+   * - ``SingleCrystal/L-alanine``
+     - SingleCrystal
+     - PDGui Single crystal L-alanine test
+   * - ``SingleCrystal/MgO``
+     - SingleCrystal
+     - PDGui Castep of MgO Single Crystal coherent
+   * - ``SingleCrystal/ScatteringMatrix``
+     - SingleCrystal
+     - PDGui Single crystal scattering matrix test
+   * - ``SizeEffects/BaTiO3``
+     - Abinit
+     - Exploration of size effects in Bruggeman effective medium theory
+   * - ``SizeEffects/MgO``
+     - Castep
+     - Exploration of size effects in Bruggeman and Maxwell-Garnett effective medium theories
+   * - ``SizeEffects/ZnO``
+     - Vasp
+     - Exploration of size effects in Maxwell-Garnett effective medium theory
+   * - ``Vasp/F-Apatite``
+     - Vasp
+     - Maxwell-Garnett, sphere plates and needles, using Vasp 5.3.5
+   * - ``Vasp/Na2SO42``
+     - Vasp
+     - Maxwell-Garnett and Bruggeman, needle, plate and needle, using Vasp 5.3.5
+   * - ``Vasp/Na2SO42_v``
+     - Vasp
+     - PDGui Vasp for Na2(SO4)2 v dependent matrix permittivities
+   * - ``Vasp/Urea``
+     - Vasp
+     - Powder and single crystal exampl, using Vasp 5.4.4
+   * - ``Vasp/Vasp6``
+     - Vasp
+     - The DFT calculation were performed using VASP 6.4.2, with thanks to Dr David Santos-Carballal for performing the DFT calculation
+   * - ``Vasp/ZnO``
+     - Vasp
+     - Maxwell-Garnett and Bruggeman, needle, plate and needle, mass fraction, using Vasp 5.3.5
+   * - ``Vasp/preader``
+     - Vasp
+     - Vasp preader test
+   * - ``VibAnalysis/AsparticAcid``
+     - Mode analysis
+     - Vibanalysis Castep for L-Aspartic acid
+   * - ``VibAnalysis/BaTiO3``
+     - Mode analysis
+     - Vibanalysis Abinit for BaTiO3
+   * - ``VibAnalysis/Cocaine``
+     - Mode analysis
+     - Vibanalysis QE for cocaine salt
+   * - ``VibAnalysis/F-Apatite``
+     - Mode analysis
+     - Vibanalysis Vasp for F-Apatite
+   * - ``VibAnalysis/Isoleucine``
+     - Mode analysis
+     - Vibanalysis Castep for Isoleucine
+   * - ``VibAnalysis/Leucine``
+     - Mode analysis
+     - Vibanalysis Crystal for Leucine

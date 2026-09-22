@@ -1,7 +1,7 @@
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
 #
 #
 #
@@ -24,7 +24,7 @@ tab.sigmas_cm1 = [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Fused Silica - Maxwell Garnett (10%)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Fused Silica'
 tab.settings['Matrix density'] =  2.201
@@ -47,10 +47,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Manual (rho=2.2,eps=3+0.1j) - Maxwell Garnett (10%)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
@@ -73,10 +73,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Water (25C) - Maxwell Garnett (10%)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Water(25C)'
 tab.settings['Matrix density'] =  1.0
@@ -99,10 +99,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'Water (19C) - Maxwell Garnett (10%)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Water(19C)'
 tab.settings['Matrix density'] =  1.0
@@ -125,10 +125,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'PVC - Maxwell Garnett (10%)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'PVC'
 tab.settings['Matrix density'] =  1.38
@@ -151,10 +151,10 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 #
 #
-self.notebook.addScenario(scenarioType="Powder")
+self.notebook.add_scenario(scenarioType="Powder Infrared")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'Test - Maxwell Garnett (10%)'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Materials database'] = 'TestMaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Test'
 tab.settings['Matrix density'] =  2.0

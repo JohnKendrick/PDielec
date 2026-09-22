@@ -1,0 +1,157 @@
+PDielec.RamanAmplitudeAccumulator
+=================================
+
+.. py:module:: PDielec.RamanAmplitudeAccumulator
+
+.. autoapi-nested-parse::
+
+   Coherent Raman amplitude accumulator for final-state grouped records.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.RamanAmplitudeAccumulator.RamanAmplitudeAccumulator
+   PDielec.RamanAmplitudeAccumulator.RamanAmplitudeRecord
+
+
+Module Contents
+---------------
+
+.. py:class:: RamanAmplitudeAccumulator
+
+   Accumulate Raman signal with coherent and incoherent boundaries explicit.
+
+   Contributions with the same ``final_state_key`` and ``coherence_group`` are
+   summed as complex amplitudes before squaring.  Different final-state keys, or
+   different coherence groups for the same final state, are summed incoherently.
+
+
+   .. py:method:: _raise_if_multiple_groups(caller: str) -> None
+
+
+   .. py:method:: add(key: collections.abc.Hashable, amplitude: complex) -> None
+
+      Add one coherent contribution using the legacy key-as-group API.
+
+
+
+   .. py:method:: add_amplitude(final_state_key: collections.abc.Hashable, amplitude: complex, coherence_group: collections.abc.Hashable | None = None) -> None
+
+      Add an amplitude to a final state and coherent accumulation group.
+
+
+
+   .. py:method:: add_classified(classification: PDielec.PhononFinalStateResolver.ResolvedFinalState | PDielec.PhononFinalStateResolver.CoherentExternalChannelContribution | PDielec.PhononFinalStateResolver.DiscardedInternalComponent, amplitude: complex, coherence_group: collections.abc.Hashable | None = None) -> None
+
+      Add an amplitude using a resolver classification object.
+
+
+
+   .. py:method:: add_incoherent_intensity(final_state_key: collections.abc.Hashable, intensity: float) -> None
+
+      Add a local intensity that has already crossed an incoherent boundary.
+
+
+
+   .. py:method:: add_record(record: RamanAmplitudeRecord) -> None
+
+      Add a pre-classified amplitude record.
+
+
+
+   .. py:method:: amplitude(key: collections.abc.Hashable, coherence_group: collections.abc.Hashable | None = None) -> complex
+
+      Return the accumulated amplitude for a final state/group pair.
+
+
+
+   .. py:method:: amplitudes() -> dict[collections.abc.Hashable, complex]
+
+      Return amplitudes for legacy callers only when each final state has one group.
+
+
+
+   .. py:method:: coherent_final_state_amplitudes() -> dict[collections.abc.Hashable, complex]
+
+      Return diagnostic amplitudes after coherently collapsing all groups.
+
+      This intentionally ignores coherence-group boundaries and is not a
+      physical intensity path when a final state has multiple groups.
+
+
+
+   .. py:method:: final_state_amplitudes() -> dict[collections.abc.Hashable, complex]
+
+      Return amplitudes only when each final state has one coherent group.
+
+
+
+   .. py:method:: from_records(records: list[RamanAmplitudeRecord]) -> RamanAmplitudeAccumulator
+      :classmethod:
+
+
+      Build an accumulator from amplitude records.
+
+
+
+   .. py:method:: grouped_amplitudes() -> dict[tuple[collections.abc.Hashable, collections.abc.Hashable], complex]
+
+      Return amplitudes keyed by ``(final_state_key, coherence_group)``.
+
+
+
+   .. py:method:: intensities() -> dict[collections.abc.Hashable, float]
+
+      Return final-state intensities after coherent-group squaring.
+
+
+
+   .. py:method:: total_intensity() -> float
+
+      Return the incoherent sum over all resolved final-state intensities.
+
+
+
+   .. py:method:: update(records: collections.abc.Mapping[collections.abc.Hashable, complex]) -> None
+
+      Add legacy ``key -> amplitude`` contributions.
+
+
+
+   .. py:attribute:: _coherent_amplitudes
+
+
+   .. py:attribute:: _local_intensities
+
+
+.. py:class:: RamanAmplitudeRecord
+
+   One classified Raman amplitude or local-intensity contribution.
+
+
+   .. py:attribute:: amplitude
+      :type:  complex
+      :value: 0j
+
+
+
+   .. py:attribute:: coherence_group
+      :type:  collections.abc.Hashable | None
+      :value: None
+
+
+
+   .. py:attribute:: final_state_key
+      :type:  collections.abc.Hashable
+
+
+   .. py:attribute:: local_intensity
+      :type:  float
+      :value: 0.0
+
+
+

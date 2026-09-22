@@ -199,13 +199,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pdgui.html">PDGui</a><input aria-label="Toggle navigation of PDGui" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul><li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">Plotting Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li><li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_options.html">Viewer and Fitter Settings Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings_reference.html">PDGui Settings Reference</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Light Scattering from Powders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CrystalRaman.html">Theory for Crystal Layer Raman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Applications</span></p>
@@ -213,11 +220,12 @@
 <li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications of Effective Medium Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">Single Crystal Applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application_notes_3.html">Phonopy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input aria-label="Toggle navigation of PDielec" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AimsOutputReader/index.html">PDielec.AimsOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
@@ -226,20 +234,23 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input aria-label="Toggle navigation of PDielec.GUI" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AzimuthalSweepWindow/index.html">PDielec.GUI.AzimuthalSweepWindow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/CrystalScenarioTab/index.html">PDielec.GUI.CrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/RamanPolarWindow/index.html">PDielec.GUI.RamanPolarWindow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
@@ -248,13 +259,92 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/LayeredRamanCalculator/index.html">PDielec.LayeredRamanCalculator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/NACDiagnostics/index.html">PDielec.NACDiagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/OpticalChannelResolver/index.html">PDielec.OpticalChannelResolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhononFinalStateResolver/index.html">PDielec.PhononFinalStateResolver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PrimitiveCell/index.html">PDielec.PrimitiveCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanAmplitudeAccumulator/index.html">PDielec.RamanAmplitudeAccumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanGeometry/index.html">PDielec.RamanGeometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanPolarCalculator/index.html">PDielec.RamanPolarCalculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/RamanSpectrum/index.html">PDielec.RamanSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/index.html">PDielec.Tests</a><input aria-label="Toggle navigation of PDielec.Tests" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/index.html">PDielec.Tests.Calculator</a><input aria-label="Toggle navigation of PDielec.Tests.Calculator" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_A_tensor_utilities/index.html">PDielec.Tests.Calculator.test_A_tensor_utilities</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_B_geometry/index.html">PDielec.Tests.Calculator.test_B_geometry</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_C_depolarisation/index.html">PDielec.Tests.Calculator.test_C_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_D_permittivity_conversions/index.html">PDielec.Tests.Calculator.test_D_permittivity_conversions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_E_euler_angles/index.html">PDielec.Tests.Calculator.test_E_euler_angles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_F_normal_modes/index.html">PDielec.Tests.Calculator.test_F_normal_modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_G_effective_medium/index.html">PDielec.Tests.Calculator.test_G_effective_medium</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_H_absorption_spectrum/index.html">PDielec.Tests.Calculator.test_H_absorption_spectrum</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Calculator/test_I_raman_mass_normalization/index.html">PDielec.Tests.Calculator.test_I_raman_mass_normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_D_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_D_reciprocity</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_E_frequency/index.html">PDielec.Tests.Crystal_Raman.test_E_frequency</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_F_complex_values/index.html">PDielec.Tests.Crystal_Raman.test_F_complex_values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_G_polar_mode_simulator/index.html">PDielec.Tests.Crystal_Raman.test_G_polar_mode_simulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_H_depth_integration/index.html">PDielec.Tests.Crystal_Raman.test_H_depth_integration</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_I_modal_pairs/index.html">PDielec.Tests.Crystal_Raman.test_I_modal_pairs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_J_electro_optic_correction/index.html">PDielec.Tests.Crystal_Raman.test_J_electro_optic_correction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_abinit_raman_units/index.html">PDielec.Tests.Crystal_Raman.test_K_abinit_raman_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_K_degenerate_grouping/index.html">PDielec.Tests.Crystal_Raman.test_K_degenerate_grouping</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_L_electro_optic_toggle/index.html">PDielec.Tests.Crystal_Raman.test_L_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_finite_field_reader/index.html">PDielec.Tests.Crystal_Raman.test_M_finite_field_reader</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_M_porto_notation/index.html">PDielec.Tests.Crystal_Raman.test_M_porto_notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_N_crystal_scenario_layer_coalesce/index.html">PDielec.Tests.Crystal_Raman.test_N_crystal_scenario_layer_coalesce</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_O_fs3_basis_invariance/index.html">PDielec.Tests.Crystal_Raman.test_O_fs3_basis_invariance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_P_fs5_degenerate_subspace/index.html">PDielec.Tests.Crystal_Raman.test_P_fs5_degenerate_subspace</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_Q_fs16_polar_tensor_bulk_limit/index.html">PDielec.Tests.Crystal_Raman.test_Q_fs16_polar_tensor_bulk_limit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_fs_phase1_final_state_resolver/index.html">PDielec.Tests.Crystal_Raman.test_R_fs_phase1_final_state_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_R_stage2_nac_diagnostics/index.html">PDielec.Tests.Crystal_Raman.test_R_stage2_nac_diagnostics</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_S_fs_phase2_amplitude_accumulator/index.html">PDielec.Tests.Crystal_Raman.test_S_fs_phase2_amplitude_accumulator</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_T_fs_phase3_optical_channel_resolver/index.html">PDielec.Tests.Crystal_Raman.test_T_fs_phase3_optical_channel_resolver</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_U_fs_phase4_modal_pair_replacement/index.html">PDielec.Tests.Crystal_Raman.test_U_fs_phase4_modal_pair_replacement</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_azimuthal_plot_compatibility/index.html">PDielec.Tests.General.test_azimuthal_plot_compatibility</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_cli_release_smoke/index.html">PDielec.Tests.General.test_cli_release_smoke</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_excel_comparison/index.html">PDielec.Tests.General.test_excel_comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_experiment_reader_defaults/index.html">PDielec.Tests.General.test_experiment_reader_defaults</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_gui_program_names/index.html">PDielec.Tests.General.test_gui_program_names</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/General/test_pdmake_arguments/index.html">PDielec.Tests.General.test_pdmake_arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/index.html">PDielec.Tests.Powder_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Powder_Raman" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Powder_Raman.test_A_raman_tensor_algebra</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_B_local_field_sphere/index.html">PDielec.Tests.Powder_Raman.test_B_local_field_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_C_anisotropic_sphere/index.html">PDielec.Tests.Powder_Raman.test_C_anisotropic_sphere</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_D_ellipsoid_depolarisation/index.html">PDielec.Tests.Powder_Raman.test_D_ellipsoid_depolarisation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_E_orientation_averaging/index.html">PDielec.Tests.Powder_Raman.test_E_orientation_averaging</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_I_numerical_stability/index.html">PDielec.Tests.Powder_Raman.test_I_numerical_stability</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_J_reader_conventions/index.html">PDielec.Tests.Powder_Raman.test_J_reader_conventions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_castep_atomic_raman/index.html">PDielec.Tests.Powder_Raman.test_K_castep_atomic_raman</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_K_electro_optic_toggle/index.html">PDielec.Tests.Powder_Raman.test_K_electro_optic_toggle</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_particle_eo_and_effective_tensor/index.html">PDielec.Tests.Powder_Raman.test_L_particle_eo_and_effective_tensor</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_L_spreadsheet_units/index.html">PDielec.Tests.Powder_Raman.test_L_spreadsheet_units</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_M_batio3_particle_regression/index.html">PDielec.Tests.Powder_Raman.test_M_batio3_particle_regression</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Powder_Raman/test_N_missing_polar_data/index.html">PDielec.Tests.Powder_Raman.test_N_missing_polar_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
@@ -273,6 +363,29 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_H_cif/index.html">test_H_cif</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_layer/index.html">test_B_layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_system/index.html">test_D_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_lattice/index.html">test_B_lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_fresnel/index.html">test_E_fresnel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_smatrix/index.html">test_C_smatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_database/index.html">test_E_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_symmetry/index.html">test_E_symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_molecular/index.html">test_F_molecular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_incoherent/index.html">test_F_incoherent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_coordinates/index.html">test_C_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_length_units/index.html">test_A_length_units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_element_data/index.html">test_D_element_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
@@ -322,22 +435,30 @@
         <article role="main" id="furo-main-content">
           <section id="pdielec">
 <h1>PDielec<a class="headerlink" href="#pdielec" title="Link to this heading">¶</a></h1>
-<p>This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material’s infrared and terahertz response.
+<p>This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material’s infrared, terahertz and Raman response.
 For single crystals (thin films or slabs), a generalized transfer matrix or a scattering matrix method is used.  For powdered material in a support matrix, an effective medium theory is used which can take into account the effect of shape and particle size.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Software</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements-and-installation-choices">Requirements and installation choices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#conda">Conda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#pypi">PyPi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-linux">GitHub - Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-windows">GitHub - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#id1">PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-github">Installing from GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#package-dependencies">Package dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#github-pdielec-directory-structure">GitHub - PDielec directory structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#examples">Examples</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="migration.html">Version 10 migration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="migration.html#python-scripts">Python scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html#crystal-raman-geometry">Crystal Raman geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migration.html#spreadsheets-and-regression-references">Spreadsheets and regression references</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="pdgui.html">PDGui</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#starting-pdgui">Starting PDGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">Main Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">Settings Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">Scenario Tabs</a></li>
@@ -345,16 +466,22 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">Analysis Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3D Viewer Tab</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">Fitter Tab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pdgui.html#parallelisation-and-threads">Parallelisation and threads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#raman-polar-window">Raman Polar Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#azimuthal-sweep-window">Azimuthal Sweep Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#saving-settings-and-scripting">Saving Settings and Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pdgui.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#additional-settings-references">Additional settings references</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Other Software Components</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="software.html#preader">preader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">Vibanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#aims-pdielec-born">aims-pdielec-born</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#phonopy-pdielec-born">phonopy-pdielec-born</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">vibanalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#pdmake">pdmake</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">MM/QM Interfaces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">Experimental File Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#finite-difference-and-finite-field-json-format">Finite-Difference and Finite-Field JSON Format</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-materials-database">The Format of the Materials’ Database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-output-spreadsheet">The Format of the Output Spreadsheet</a></li>
 </ul>
@@ -364,7 +491,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Theory</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Light Scattering from Powders</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">Theory for Infrared Absorption in Powders</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="theory_powder.html#molecular-approach-to-absorption-intensity">Molecular approach to absorption intensity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_powder.html#solid-state-approach-to-absorption-intensity">Solid state approach to absorption intensity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_powder.html#effect-of-particle-shape-on-infrared-absorption">Effect of particle shape on infrared absorption</a></li>
@@ -375,12 +502,29 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l2"><a class="reference internal" href="theory_powder.html#removing-baseline-artefacts-from-experiment">Removing Baseline Artefacts from Experiment</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Optics</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">Theory for Single Crystal Infrared Optics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#the-transfer-matrix">The Transfer Matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#the-scattering-matrix">The Scattering Matrix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#incoherence">Incoherence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#comparison-of-computational-approaches">Comparison of computational approaches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#crystal-laboratory-coordinate-frames">Crystal &amp; Laboratory Coordinate Frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PowderRaman.html">Theory for Powder Raman</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PowderRaman.html#raman-tensor">Raman Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PowderRaman.html#local-field-correction">Local Field Correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PowderRaman.html#particle-frequencies">Particle Frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PowderRaman.html#orientation-averaging">Orientation Averaging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CrystalRaman.html">Theory for Crystal Layer Raman</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#geometry">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#layer-raman-amplitude">Layer Raman Amplitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#optical-fields">Optical Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#raman-tensor-orientation">Raman Tensor Orientation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#combining-layers-and-modes">Combining Layers and Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#layer-phonon-frequencies">Layer Phonon Frequencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrystalRaman.html#electro-optic-correction-to-the-raman-tensor">Electro-Optic Correction to the Raman Tensor</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a><ul>
@@ -421,6 +565,16 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l2"><a class="reference internal" href="application_notes_3.html#comparison-of-results">Comparison of results</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_gan.html">GaN: from powder Raman spectra to crystal modal pairs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#preparing-the-calculation">Preparing the calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#powder-raman-separate-orientation-averaging-from-particle-effects">1. Powder Raman: separate orientation averaging from particle effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#crystal-raman-near-forward-scattering-and-modal-pairs">2. Crystal Raman: near-forward scattering and modal pairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#irmer-et-al-an-aperture-scan-and-a-finite-q-comparison">3. Irmer et al.: an aperture scan and a finite-q comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#what-does-an-incoherent-final-state-mean">4. What does an incoherent final state mean?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#reproducing-the-note-and-preparing-documentation">Reproducing the note and preparing documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_gan.html#references">References</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -433,6 +587,135 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/index.html#package-contents">Package Contents</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_H_cif/index.html">test_H_cif</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_H_cif/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_H_cif/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_H_cif/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_layer/index.html">test_B_layer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_layer/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_layer/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_layer/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_system/index.html">test_D_system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_system/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_system/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_system/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_lattice/index.html">test_B_lattice</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_lattice/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_lattice/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_fresnel/index.html">test_E_fresnel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_fresnel/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_fresnel/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_fresnel/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_smatrix/index.html">test_C_smatrix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_smatrix/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_smatrix/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_smatrix/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_database/index.html">test_E_database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_database/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_database/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_database/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_database/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_E_symmetry/index.html">test_E_symmetry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_symmetry/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_symmetry/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_E_symmetry/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_molecular/index.html">test_F_molecular</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_F_molecular/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_F_molecular/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_F_molecular/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_F_incoherent/index.html">test_F_incoherent</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_F_incoherent/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_F_incoherent/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_F_incoherent/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_coordinates/index.html">test_C_coordinates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_coordinates/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_coordinates/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_length_units/index.html">test_A_length_units</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_length_units/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_length_units/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_element_data/index.html">test_D_element_data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_element_data/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_element_data/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_volume_density/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_volume_density/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_material_classes/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_D_material_classes/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_dielectric_constant/index.html">test_A_dielectric_constant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_dielectric_constant/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_dielectric_constant/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html">test_B_dielectric_tabulated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_B_dielectric_tabulated/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_dielectric_lorentzian/index.html">test_C_dielectric_lorentzian</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_dielectric_lorentzian/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_C_dielectric_lorentzian/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_fundamental_constants/index.html">test_A_fundamental_constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_fundamental_constants/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/test_A_fundamental_constants/index.html#module-contents">Module Contents</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a><ul>
@@ -441,6 +724,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l2"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html#module-contents">Module Contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html#PDielec.pdgui.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html#PDielec.pdgui.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html#PDielec.pdgui.version"><code class="docutils literal notranslate"><span class="pre">version</span></code></a></li>
 </ul>
 </li>
@@ -454,6 +738,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html#PDielec.preader.print_help"><code class="docutils literal notranslate"><span class="pre">print_help()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html#PDielec.preader.read_a_file"><code class="docutils literal notranslate"><span class="pre">read_a_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html#PDielec.preader.set_affinity_on_worker"><code class="docutils literal notranslate"><span class="pre">set_affinity_on_worker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html#PDielec.preader.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html#PDielec.preader.version"><code class="docutils literal notranslate"><span class="pre">version</span></code></a></li>
 </ul>
 </li>
@@ -464,35 +749,41 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
 <li class="toctree-l2"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#attributes">Attributes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#module-contents">Module Contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.changePadding"><code class="docutils literal notranslate"><span class="pre">changePadding()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.checkLocalExecutables"><code class="docutils literal notranslate"><span class="pre">checkLocalExecutables()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compareFiles"><code class="docutils literal notranslate"><span class="pre">compareFiles()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compareNmaFiles"><code class="docutils literal notranslate"><span class="pre">compareNmaFiles()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.findRootDirectory"><code class="docutils literal notranslate"><span class="pre">findRootDirectory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.change_padding"><code class="docutils literal notranslate"><span class="pre">change_padding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.check_local_executables"><code class="docutils literal notranslate"><span class="pre">check_local_executables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compare_files"><code class="docutils literal notranslate"><span class="pre">compare_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compare_nma_files"><code class="docutils literal notranslate"><span class="pre">compare_nma_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.find_root_directory"><code class="docutils literal notranslate"><span class="pre">find_root_directory()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.mychdir"><code class="docutils literal notranslate"><span class="pre">mychdir()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.readNmaFile"><code class="docutils literal notranslate"><span class="pre">readNmaFile()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.readPdMakefile"><code class="docutils literal notranslate"><span class="pre">readPdMakefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.read_nma_file"><code class="docutils literal notranslate"><span class="pre">read_nma_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.read_pd_makefile"><code class="docutils literal notranslate"><span class="pre">read_pd_makefile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.redirect"><code class="docutils literal notranslate"><span class="pre">redirect()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runClean"><code class="docutils literal notranslate"><span class="pre">runClean()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runP2CifTest"><code class="docutils literal notranslate"><span class="pre">runP2CifTest()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPDGuiTest"><code class="docutils literal notranslate"><span class="pre">runPDGuiTest()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPdMakefile"><code class="docutils literal notranslate"><span class="pre">runPdMakefile()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPreaderTest"><code class="docutils literal notranslate"><span class="pre">runPreaderTest()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPyPi"><code class="docutils literal notranslate"><span class="pre">runPyPi()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runTests"><code class="docutils literal notranslate"><span class="pre">runTests()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runVibAnalysis"><code class="docutils literal notranslate"><span class="pre">runVibAnalysis()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.testForRootDirectory"><code class="docutils literal notranslate"><span class="pre">testForRootDirectory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_clean"><code class="docutils literal notranslate"><span class="pre">run_clean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_p2cif_test"><code class="docutils literal notranslate"><span class="pre">run_p2cif_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_pd_makefile"><code class="docutils literal notranslate"><span class="pre">run_pd_makefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_pdgui_test"><code class="docutils literal notranslate"><span class="pre">run_pdgui_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_preader_test"><code class="docutils literal notranslate"><span class="pre">run_preader_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_pypi"><code class="docutils literal notranslate"><span class="pre">run_pypi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_pytest_suite"><code class="docutils literal notranslate"><span class="pre">run_pytest_suite()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_tests"><code class="docutils literal notranslate"><span class="pre">run_tests()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.run_vib_analysis"><code class="docutils literal notranslate"><span class="pre">run_vib_analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_for_root_directory"><code class="docutils literal notranslate"><span class="pre">test_for_root_directory()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.usage"><code class="docutils literal notranslate"><span class="pre">usage()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.benchmarks"><code class="docutils literal notranslate"><span class="pre">benchmarks</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.debug"><code class="docutils literal notranslate"><span class="pre">debug</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.print"><code class="docutils literal notranslate"><span class="pre">print</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.settings"><code class="docutils literal notranslate"><span class="pre">settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_crystal_infrared"><code class="docutils literal notranslate"><span class="pre">test_crystal_infrared</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_crystal_raman"><code class="docutils literal notranslate"><span class="pre">test_crystal_raman</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_p2cif"><code class="docutils literal notranslate"><span class="pre">test_p2cif</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_pdgui"><code class="docutils literal notranslate"><span class="pre">test_pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_powder_atr"><code class="docutils literal notranslate"><span class="pre">test_powder_atr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_powder_infrared"><code class="docutils literal notranslate"><span class="pre">test_powder_infrared</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_powder_raman"><code class="docutils literal notranslate"><span class="pre">test_powder_raman</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_preader"><code class="docutils literal notranslate"><span class="pre">test_preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_singlecrystal"><code class="docutils literal notranslate"><span class="pre">test_singlecrystal</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.test_vibanalysis"><code class="docutils literal notranslate"><span class="pre">test_vibanalysis</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.useLocal"><code class="docutils literal notranslate"><span class="pre">useLocal</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html#PDielec.pdmake.viewing"><code class="docutils literal notranslate"><span class="pre">viewing</span></code></a></li>
@@ -574,7 +865,7 @@ For single crystals (thin films or slabs), a generalized transfer matrix or a sc
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=0b13d40c"></script>
+</div><script src="_static/documentation_options.js?v=335988e4"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

@@ -7,7 +7,7 @@ tab.settings['Output file name'] = 'phonon.dynG'
 #
 # Handle the special case of the first scenario
 #
-self.notebook.switchScenario(0,scenarioType="Powder")
+self.notebook.switch_scenario(0,scenarioType="Powder Infrared")
 #
 #
 #
@@ -36,7 +36,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Maxwell-Garnett'
-tab.settings['Scenario type'] = 'Powder'
+tab.settings['Scenario type'] = 'Powder Infrared'
 tab.settings['Matrix'] = 'ptfe'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
