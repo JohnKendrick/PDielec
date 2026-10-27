@@ -265,12 +265,13 @@ def calculate_crystal_infrared_spectrum(frequencies_cm1, layers, incident_angle,
         (v,r,R,t,T,epsilon,errors,largest_exponent) = solve_single_crystal_equations(layers,method,
                                                               theta,phi,psi,incident_angle,
                                                               exponent_threshold,v_cm1)
-        reflp.append( R[0] + R[2] )
-        refls.append( R[1] + R[3] )
+        # R = [p->p, s->s, s->p, p->s]; sum by incident polarization.
+        reflp.append( R[0] + R[3] )
+        refls.append( R[1] + R[2] )
         tranp.append( T[0] )
         trans.append( T[1] )
-        absop.append( 1.0 - R[0] - R[2] - T[0] )
-        absos.append( 1.0 - R[1] - R[3] - T[1] )
+        absop.append( 1.0 - R[0] - R[3] - T[0] )
+        absos.append( 1.0 - R[1] - R[2] - T[1] )
     return np.array([reflp,refls]), np.array([tranp,trans]), np.array([absop,absos])
 
 def calculate_powder_infrared_spectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method="Maxwell-Garnett"):

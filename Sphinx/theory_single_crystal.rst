@@ -253,3 +253,79 @@ Information about the crystal coordinates relative to the laboratory frame is gi
 
    Definition of single crystal laboratory coordinates in PDGui
 
+
+.. _berreman-si-conventions:
+
+Berreman field units and normalization
+--------------------------------------
+
+The optical solver uses phasors with time dependence :math:`e^{-i\omega t}`,
+relative permittivity and scalar relative permeability. Define
+:math:`\widetilde{\mathbf H}=Z_0\mathbf H`, where
+:math:`Z_0=\sqrt{\mu_0/\epsilon_0}`. Both electric and scaled magnetic
+fields then have SI units V/m. The propagation state is
+
+.. math::
+
+   \Psi=(E_x,\widetilde H_y,E_y,-\widetilde H_x)^T,\qquad
+   \frac{d\Psi}{dz}=i k_0\Delta\Psi.
+
+``Layer.Delta`` uses this order. ``Layer.Ai`` uses the boundary order
+:math:`(E_x,E_y,\widetilde H_y,-\widetilde H_x)^T`; swapping the second and
+third rows maps between the two conventions. The electric polarization
+vectors ``gamma`` have Hermitian norm one,
+:math:`\sum_a|\gamma_{ja}|^2=1`, including complex and evanescent modes.
+The four-component basis is dimensionless. Physical modal coefficients
+have units V/m; stored coefficients are divided by the incident electric
+amplitude :math:`E_{\rm ref}`.
+
+.. list-table:: Optical implementation conversions
+   :header-rows: 1
+   :widths: 25 40 35
+
+   * - Quantity
+     - Stored representation
+     - SI conversion
+   * - Frequency ``f``
+     - Hz
+     - :math:`\omega=2\pi f`
+   * - Depth and thickness
+     - Metres
+     - Unchanged
+   * - ``qs``, ``zeta``
+     - Reduced wavevectors
+     - Multiply by :math:`k_0=2\pi f/c`
+   * - ``E_out``
+     - :math:`\mathbf E/E_{\rm ref}`
+     - Multiply by :math:`E_{\rm ref}`
+   * - ``H_out``
+     - :math:`Z_0\mathbf H/E_{\rm ref}`
+     - Multiply by :math:`E_{\rm ref}/Z_0`
+   * - ``S_out``
+     - Reduced Poynting vector
+     - Multiply by :math:`|E_{\rm ref}|^2/Z_0`
+
+Spectroscopic wavenumber in cm\ :sup:`-1` converts to solver frequency by
+:math:`f=100c\bar\nu`, with :math:`c` in m/s.
+``Ki`` maps back-interface amplitudes to the front using
+:math:`\exp(-ik_0q_jd)`. ``calculate_modal_amplitudes`` returns the
+**back-interface** coefficients. In coherent layers, reconstruct fields at
+position :math:`z` using :math:`\exp[ik_0q_j(z-z_{\rm back})]`.
+
+For each mode the scaled magnetic vector is
+:math:`\eta_j=(\zeta,0,q_j)\times\gamma_j/\mu`. Sum electric and magnetic
+modal contributions separately, then form
+:math:`\operatorname{Re}(\mathbf E\times\mathbf H^*)/2`.
+Using one mode's wavevector for the combined electric field gives incorrect
+flux in a birefringent substrate. Transmission is the ratio of transmitted
+to incident normal flux; unit electric amplitude is not unit flux.
+The conventional reflected powers :math:`|r|^2` assume lossless isotropic
+incident channels. General absorbing or nonorthogonal external channels
+need a separate flux analysis, and a zero-flux incident channel cannot
+define a transmission ratio.
+
+These conventions follow the published Passler--Paarmann treatment with the
+`2019 correction <https://doi.org/10.1364/JOSAB.36.003246>`_ and the
+`2020 energy-flow formulation <https://doi.org/10.1103/PhysRevB.101.165425>`_.
+They describe coherent optical fields. The normalization of Raman source
+correlations and absolute scattering intensities is a separate question.

@@ -785,19 +785,22 @@ class Layer:
         gamma3 = np.array([[self.gamma[2,0], gamma32, gamma33]],dtype=np.cdouble)
         gamma4 = np.array([[gamma41, self.gamma[3,1], gamma43]],dtype=np.cdouble)
         
+        # Hermitian electric-field norm: sum(gamma**2) can vanish for a
+        # nonzero complex/evanescent vector, e.g. (1, 0, -1j).
         #### Regular case, no birefringence, we keep the Xu fields
-        self.gamma[0,:] = gamma1/np.sqrt(np.sum(gamma1**2))      #lag.norm(gamma1)
-        self.gamma[1,:] = gamma2/np.sqrt(np.sum(gamma2**2))      #lag.norm(gamma2)
-        self.gamma[2,:] = gamma3/np.sqrt(np.sum(gamma3**2))      #lag.norm(gamma3)
-        self.gamma[3,:] = gamma4/np.sqrt(np.sum(gamma4**2))      #lag.norm(gamma4)
+        self.gamma[0,:] = gamma1/np.linalg.norm(gamma1)
+        self.gamma[1,:] = gamma2/np.linalg.norm(gamma2)
+        self.gamma[2,:] = gamma3/np.linalg.norm(gamma3)
+        self.gamma[3,:] = gamma4/np.linalg.norm(gamma4)
 
         #### In case of birefringence, use Berreman fields
         for ki in range(4): 
             ### normalize them first
-            #self.Berreman[ki] = self.Berreman[ki]/lag.norm(self.Berreman[ki])
-            self.Berreman[ki] = self.Berreman[ki]/np.sqrt(np.sum(self.Berreman[ki]**2))
+            self.Berreman[ki] = self.Berreman[ki]/np.linalg.norm(self.Berreman[ki])
         if self.useBerreman:
-            self.gamma = self.Berreman
+            # The next calculation writes analytic modes into gamma before
+            # selecting Berreman modes. Do not overwrite that independent basis.
+            self.gamma = self.Berreman.copy()
         return
 
     def calculate_transfer_matrix(self, f, zeta):
@@ -1650,17 +1653,23 @@ class System:
         r_out : array_like, shape (4,)
             Complex *field* reflection coefficients `r_out=([rpp,rps,rss,rsp])`
         R_out : array_like, shape (4,)
-            Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Tps])`
+            Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Rps])`
+            Subscripts denote incident then reflected polarization. Total
+            reflected powers are ``Rp = R_out[0] + R_out[3]`` and
+            ``Rs = R_out[1] + R_out[2]``.
         t_out : array_like, shape (4,)
             Complex *field* transmission coefficients `t=([tpp, tps, tsp, tss])`
-        T_out : array_like, shape (4,)
+        T_out : array_like, shape (2,)
             Real *intensity* transmission coefficients `T_out=([Tp,Ts])` (mode-inselective)
 
         Notes
         -----
         **IMPORTANT**
 
-        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+        - Reflected powers assume lossless isotropic incident channels. Transmission
+          requires nonzero incident normal flux.
+
+        - As of version 19-03-2020: Transmission is defined
           mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
           The new definition of this function **BREAKS compatibility** with the previous one.
 
@@ -1720,42 +1729,32 @@ class System:
         #CHECK the ORDERING! JK
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.cdouble)
 
-        #### Intensity transmission requires Poynting vector analysis
-        ## N.B: could be done mode-dependentely later
-        ## start with the superstrate
-        ## Incident fields are either p or s polarized
-        ksup = np.zeros((4,3), dtype=np.cdouble) ## wavevector in superstrate
-        ksup[:,0] = zeta_sys
-        for ii, qi in enumerate(self.superstrate.qs):
-            ksup[ii,2] = qi
-        ksup = ksup/c_const     ## omega simplifies in the H field formula
-        Einc_pin = self.superstrate.gamma[0,:] ## p-pol incident electric field
-        Einc_sin = self.superstrate.gamma[1,:] ## s-pol incident electric field
-        ## Poynting vector in superstrate (incident, p-in and s-in)
-        Sinc_pin = 0.5*np.real(np.cross(Einc_pin,np.conj(np.cross(ksup[0,:],Einc_pin))))
-        Sinc_sin = 0.5*np.real(np.cross(Einc_sin,np.conj(np.cross(ksup[1,:],Einc_sin))))
-
-        ### Substrate Poynting vector
-        ## Outgoing fields (eqn 17)
-        Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
-        Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
-        ksub = np.zeros((4,3), dtype=np.cdouble)
-        ksub[:,0] = zeta_sys
-        for ii, qi in enumerate(self.substrate.qs):
-            ksub[ii,2] = qi
-        ksub = ksub/c_const ## omega simplifies in the H field formula
-
-        ###########################
-        ## outgoing Poynting vectors, 2 formulations
-        Sout_pin = 0.5*np.real(np.cross(Eout_pin,np.conj(np.cross(ksub[0,:],Eout_pin))))
-        Sout_sin = 0.5*np.real(np.cross(Eout_sin,np.conj(np.cross(ksub[1,:],Eout_sin))))
-        ### Intensity transmission coefficients are only the z-component of S !
-        T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
-        T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
-
-        T_out = np.array([T_pp, T_ss])
+        T_out = self._calculate_transmittance(zeta_sys, t_out)
 
         return r_out, R_out, t_out, T_out
+
+    def _calculate_transmittance(self, zeta_sys, t_out):
+        """Return transmitted/incident normal flux for each incident mode.
+
+        Magnetic basis vectors are Z0 H / E_ref = (k/k0 cross gamma)/mu.
+        Sum modal E and H separately before evaluating Re(E cross H*)/2;
+        distinct substrate modes generally have different longitudinal q.
+        The common SI flux factor abs(E_ref)**2/Z0 cancels in this ratio.
+        Incident modes must carry nonzero normal flux.
+        """
+        magnetic = []
+        for medium in (self.superstrate, self.substrate):
+            wavevectors = np.zeros((2, 3), dtype=np.cdouble)
+            wavevectors[:, 0] = zeta_sys
+            wavevectors[:, 2] = medium.qs[:2]
+            magnetic.append(np.cross(wavevectors, medium.gamma[:2]) / medium.mu)
+        incident_flux = 0.5 * np.real(np.cross(
+            self.superstrate.gamma[:2], magnetic[0].conj()))[:, 2]
+        coefficients = t_out.reshape(2, 2)
+        electric_out = coefficients @ self.substrate.gamma[:2]
+        magnetic_out = coefficients @ magnetic[1]
+        transmitted_flux = 0.5 * np.real(np.cross(electric_out, magnetic_out.conj()))[:, 2]
+        return transmitted_flux / incident_flux
 
     def calculate_Efield(self, f, zeta_sys, z_vect=None, x=0.0,
                          magnetic=False, dz=None):
@@ -1773,7 +1772,7 @@ class System:
         x : float or 1D array, optional
             x-coordinates (reserved for future 2D field plots). Default is 0.0.
         magnetic : bool, optional
-            If True, also compute and return the magnetic field vector.
+            If True, also return the scaled magnetic field Z0 H / E_ref.
             Default is False.
         dz : float, optional
             Spatial resolution along the propagation (z) axis. Supersedes
@@ -1785,9 +1784,11 @@ class System:
             z-coordinates at which the fields were evaluated.
         E_out : ndarray, shape (6, len(z))
             Total electric field in the structure (rows 0–2: p-pol in,
-            rows 3–5: s-pol in).
+            rows 3–5: s-pol in), divided by incident electric amplitude E_ref.
+            Multiply by E_ref in V/m to recover the physical electric field.
         H_out : ndarray, shape (6, len(z)), optional
-            Total magnetic field (only returned when ``magnetic=True``).
+            Scaled magnetic field Z0 H / E_ref (only when ``magnetic=True``).
+            Physical H in A/m is E_ref/Z0 times this array.
         zn : 1D array
             Positions of the layer interfaces.
 
@@ -1896,7 +1897,7 @@ class System:
         else:
             z = np.arange(-self.superstrate.thick, zn[-1], dz)
 
-        # 2x4-component field tensor propagated from the front surface
+        # 2x4-component field tensor referenced to the back surface
         Eprop = np.empty((8), dtype=np.complex128)
         # 4-component field tensor for each direction and polarisation
         F_tens = np.zeros((24, len(z)), dtype=np.complex128)
@@ -1952,7 +1953,7 @@ class System:
                         np.real(L.propagation_exponents[kk]) * (zc - zn[current_layer]) / L.thick
                     )
 
-            #### Eprop propagated from front surface to back of next layer
+            #### Propagate back-interface amplitudes to the sampled position
             Eprop[:4] = np.matmul(dKiz, F_bk[current_layer,:4])
             Eprop[4:] = np.matmul(dKiz, F_bk[current_layer,4:])
 
@@ -2022,14 +2023,15 @@ class System:
         E : ndarray, shape (6, len(z))
             Electric field vector (p- and s-pol in) along z.
         H : ndarray, shape (6, len(z))
-            Magnetic field vector (p- and s-pol in) along z.
+            Scaled magnetic field Z0 H / E_ref (p- and s-pol in) along z.
         R : array_like, shape (4,)
             Intensity reflectivity from :py:func:`calculate_r_t`.
 
         Returns
         -------
         S_out : ndarray, shape (6, len(z))
-            Six-component (p//s) Poynting vector along z.
+            Six-component (p//s) reduced Poynting vector along z.
+            Multiply by abs(E_ref)**2/Z0 for physical flux in W/m^2.
         A_out : ndarray, shape (2, len(z))
             Two-component (p//s) cumulated absorption along z.
         """
@@ -2043,10 +2045,10 @@ class System:
                                               axisa=0, axisb=0, axisc=0))
 
         z1 = np.abs(z).argmin()+1  ### index where z>0, first interface
-        Tp_z = S_out[2,:]/S_out[2,0]*(1.0-(R[0]+R[2])) ## layer-resolved transmittance p-pol
-        Ts_z = S_out[5,:]/S_out[5,0]*(1.0-(R[1]+R[3])) ## layer-resolved transmittance s-pol
-        A_out[0,z1:] = 1.0-(R[0]+R[2])-Tp_z[z1:]
-        A_out[1,z1:] = 1.0-(R[1]+R[3])-Ts_z[z1:]
+        Tp_z = S_out[2,:]/S_out[2,0]*(1.0-(R[0]+R[3])) ## layer-resolved transmittance p-pol
+        Ts_z = S_out[5,:]/S_out[5,0]*(1.0-(R[1]+R[2])) ## layer-resolved transmittance s-pol
+        A_out[0,z1:] = 1.0-(R[0]+R[3])-Tp_z[z1:]
+        A_out[1,z1:] = 1.0-(R[1]+R[2])-Ts_z[z1:]
 
         return S_out, A_out
 
@@ -2140,13 +2142,14 @@ class System:
         return eps
 
     def calculate_modal_amplitudes(self, f, zeta_sys):
-        """Expose the per-layer Berreman modal amplitudes at the front of each layer.
+        """Expose the per-layer Berreman modal amplitudes at the back of each layer.
 
         Extracts the F_bk bookkeeping from ``calculate_Efield`` and returns the
         four complex modal amplitudes (for p-pol and s-pol incidence) at the
-        front interface of every finite-thickness layer.  The field at any depth z
+        back interface of every finite-thickness layer.  The field at any depth z
         inside layer k is then ``dKiz(z) @ F_bk[k+1, :]`` where dKiz is the
-        partial-depth propagation matrix, exactly as used inside
+        partial-depth propagation matrix exp(+i k0 q (z-z_back)) for coherent
+        layers, exactly as used inside
         ``calculate_Efield``.
 
         Both ``TransferMatrixSystem`` and ``ScatteringMatrixSystem`` are
@@ -2258,7 +2261,7 @@ class System:
         # Shift so that z=0 is the superstrate/first-layer interface
         zn = zn - zn[0]
 
-        # modal_amps[k] = F_bk[k+1, :] — the amplitude vector at the front of layer k.
+        # modal_amps[k] = F_bk[k+1, :] — the amplitude vector at the back of layer k.
         # At any depth z in layer k: Eprop = dKiz(z) @ F_bk[k+1, :4] (p-pol)
         #                                           @ F_bk[k+1, 4:] (s-pol)
         modal_amps = {k: F_bk[k + 1, :].copy() for k in range(laynum)}
@@ -2419,10 +2422,13 @@ class ScatteringMatrixSystem(System):
         r_out : array_like, shape (4,)
             Complex *field* reflection coefficients (r_out=([rpp,rps,rss,rsp])).
         R_out : array_like, shape (4,)
-            Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Tps])).
+            Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Rps])).
+            Subscripts denote incident then reflected polarization. Total
+            reflected powers are ``Rp = R_out[0] + R_out[3]`` and
+            ``Rs = R_out[1] + R_out[2]``.
         t_out : array_like, shape (4,)
             Complex *field* transmission coefficients (t=([tpp, tps, tsp, tss])).
-        T_out : array_like, shape (4,)
+        T_out : array_like, shape (2,)
             Real *intensity* transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).
 
         """
@@ -2450,40 +2456,7 @@ class ScatteringMatrixSystem(System):
         tsp = S[2,1]
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.cdouble)
 
-        # Intensity transmission using Poynting vector analysis
-        # start with the superstrate
-        # Incident fields are either p or s polarized
-        ksup = np.zeros((4,3), dtype=np.cdouble) ## wavevector in superstrate
-        ksup[:,0] = zeta_sys
-        for ii, qi in enumerate(self.superstrate.qs):
-            ksup[ii,2] = qi
-        ksup = ksup/c_const                     # omega simplifies in the H field formula
-        # Incident electric field
-        Einc_pin = self.superstrate.gamma[0,:]  # p-pol incident electric field
-        Einc_sin = self.superstrate.gamma[1,:]  # s-pol incident electric field
-
-        # Poynting vector in superstrate (incident, p-in and s-in)
-        Sinc_pin = 0.5*np.real(np.cross(Einc_pin,np.conj(np.cross(ksup[0,:],Einc_pin))))
-        Sinc_sin = 0.5*np.real(np.cross(Einc_sin,np.conj(np.cross(ksup[1,:],Einc_sin))))
-
-        # Substrate Poynting vector
-        Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
-        Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
-        ksub = np.zeros((4,3), dtype=np.cdouble)
-        ksub[:,0] = zeta_sys
-        for ii, qi in enumerate(self.substrate.qs):
-            ksub[ii,2] = qi
-        ksub = ksub/c_const # omega simplifies in the H field formula
-
-        # outgoing Poynting vectors, 2 formulations
-        Sout_pin = 0.5*np.real(np.cross(Eout_pin,np.conj(np.cross(ksub[0,:],Eout_pin))))
-        Sout_sin = 0.5*np.real(np.cross(Eout_sin,np.conj(np.cross(ksub[1,:],Eout_sin))))
-
-        # Intensity transmission coefficients are only the z-component of S !
-        T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
-        T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
-
-        T_out = np.array([T_pp, T_ss])
+        T_out = self._calculate_transmittance(zeta_sys, t_out)
 
         return r_out, R_out, t_out, T_out
 
@@ -2515,7 +2488,7 @@ class ScatteringMatrixSystem(System):
         x : float or 1D array, optional
             x-coordinates (reserved for future 2D field plots). Default is 0.0.
         magnetic : bool, optional
-            If True, also compute and return the magnetic field vector.
+            If True, also return the scaled magnetic field Z0 H / E_ref.
             Default is False.
         dz : float, optional
             Spatial resolution along the propagation (z) axis. Supersedes
@@ -2527,9 +2500,11 @@ class ScatteringMatrixSystem(System):
             z-coordinates at which the fields were evaluated.
         E_out : ndarray, shape (6, len(z))
             Total electric field in the structure (rows 0–2: p-pol in,
-            rows 3–5: s-pol in).
+            rows 3–5: s-pol in), divided by incident electric amplitude E_ref.
+            Multiply by E_ref in V/m to recover the physical electric field.
         H_out : ndarray, shape (6, len(z)), optional
-            Total magnetic field (only returned when ``magnetic=True``).
+            Scaled magnetic field Z0 H / E_ref (only when ``magnetic=True``).
+            Physical H in A/m is E_ref/Z0 times this array.
         zn : 1D array
             Positions of the layer interfaces.
         """

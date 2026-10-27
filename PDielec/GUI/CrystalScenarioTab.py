@@ -3074,12 +3074,13 @@ class CrystalScenarioTab(ScenarioTab):
         for v,_r,R,_t,T,eps,errors,largest_exponent in results:
             if self.settings["Mode"] == "Transfer matrix" and errors > 0:
                 logger.warning(f"Warning exponential overflow occured at frequency {v} {errors} {largest_exponent}")
-            p_reflectance.append(R[0]+R[2])
-            s_reflectance.append(R[1]+R[3])
+            # R = [p->p, s->s, s->p, p->s]; sum by incident polarization.
+            p_reflectance.append(R[0]+R[3])
+            s_reflectance.append(R[1]+R[2])
             p_transmittance.append(T[0])
             s_transmittance.append(T[1])
-            p_absorbtance.append(1.0 - R[0]-R[2]-T[0])
-            s_absorbtance.append(1.0 - R[1]-R[3]-T[1])
+            p_absorbtance.append(1.0 - R[0]-R[3]-T[0])
+            s_absorbtance.append(1.0 - R[1]-R[2]-T[1])
             epsilon.append(eps)
         logger.debug(f"{self.settings['Legend']} Finished the coherent_calculator function")
         return ( p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance, epsilon )
