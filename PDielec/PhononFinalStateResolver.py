@@ -206,7 +206,7 @@ class PhononFinalStateResolver:
         is_polar: bool = True,
         frequency_key: Hashable | None = None,
     ) -> tuple[Hashable, Hashable, int, Hashable, Hashable | tuple[str]]:
-        """Return the physical final-state key for a mode and q-vector."""
+        """Return the legacy mode/direction group key, not a general spatial-state identity."""
         q_key: Hashable | tuple[str] = self.q_class_key(q_ph) if is_polar else ("q_independent",)
         return (self.layer_coherence_group, self.detected_channel_key, int(mode_idx), frequency_key, q_key)
 

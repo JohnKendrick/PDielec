@@ -471,6 +471,8 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                     integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
                     amp_ij = np.dot(w, integrand)
 
+                    # Orthogonal detector channels never share an amplitude sum.
+                    det_key = det_pol_idx if detected_pol == "unpolarised" else 0
                     if modal_pair_combination == MODAL_PAIR_GROUP_Q:
                         line_q_ext = external_q_by_frequency[round(float(nu_m), 10)]
                         q_final = _modal_pair_final_state_q(
@@ -497,7 +499,6 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                             q_key = resolver.q_class_key(q_final)
                         else:
                             q_key = resolver.q_class_key(q_final)
-                        det_key = det_pol_idx if detected_pol == "unpolarised" else 0
                         final_state_key = (
                             "modal_pair",
                             det_key,
@@ -510,13 +511,13 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                         if not use_q_resolved_nac:
                             # Non-polar mode: all pairs are q-independent — group coherently
                             # so the combination option does not affect non-polar intensities.
-                            final_state_key = ("modal_pair_incoherent_np", mode_idx, _line_key(nu_m, line_sigma))
+                            final_state_key = ("modal_pair_incoherent_np", det_key, mode_idx, _line_key(nu_m, line_sigma))
                             group_key = "all" if coherent_layers else (layer_index, "all")
                         else:
                             final_state_key = ("modal_pair_incoherent", cache_key, _line_key(nu_m, line_sigma))
                             group_key = cache_key
                     else:
-                        final_state_key = ("modal_pair_all", mode_idx, _line_key(nu_m, line_sigma))
+                        final_state_key = ("modal_pair_all", det_key, mode_idx, _line_key(nu_m, line_sigma))
                         group_key = "all" if coherent_layers else (layer_index, "all")
 
                     line_metadata[final_state_key] = (nu_m, line_sigma)
@@ -763,7 +764,8 @@ def lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, f
     mode_frequencies_cm1 : array_like, shape (M,)
         Mode frequencies in cm⁻¹ (only active modes, after acoustic filtering).
     mode_intensities : array_like, shape (M,)
-        Integrated mode intensities before broadening.
+        Line coefficients before broadening. The implemented Lorentzian has
+        full area pi, so each integrated line area is pi times its coefficient.
     linewidths_cm1 : array_like, shape (M,)
         Lorentzian half-widths at half-maximum σ_m in cm⁻¹.
     freq_axis_cm1 : array_like, shape (N,)
@@ -882,9 +884,9 @@ class LayeredRamanCalculator:
     depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
         How to combine the source along the depth of each Raman-active layer.
         ``'Coherent amplitude'`` integrates the complex amplitude before
-        squaring and is appropriate for thin coherent films.  ``'Incoherent
-        intensity'`` integrates the local intensity and is more stable for
-        thick or bulk samples where long-range phase coherence is not physical.
+        squaring as a legacy raw constant-profile overlap. ``'Incoherent
+        intensity'`` integrates the local intensity. These have different
+        length dimensions; thickness alone does not select the physical model.
     final_state_model : {'Bulk phase matched', 'Local incoherent'}, optional
         Interpretation of modal pairs when ``depth_integration`` is incoherent.
         ``'Bulk phase matched'`` compares each internal ``q_pair`` with the
@@ -1664,6 +1666,8 @@ class LayeredRamanCalculator:
                             integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
                             amp_ij = np.dot(w, integrand)
 
+                            # A Jones analyser is one channel; unpolarised p/s are independent.
+                            det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
                             if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
                                 q_final = _modal_pair_final_state_q(
                                     q_pair, line_q_ext, self.depth_integration, self.final_state_model
@@ -1689,7 +1693,6 @@ class LayeredRamanCalculator:
                                     q_key = resolver.q_class_key(q_final)
                                 else:
                                     q_key = resolver.q_class_key(q_final)
-                                det_key = det_pol_idx if self.detected_pol == "unpolarised" else 0
                                 final_state_key = (
                                     "modal_pair",
                                     det_key,
@@ -1702,13 +1705,13 @@ class LayeredRamanCalculator:
                                 if not use_q_resolved_nac:
                                     # Non-polar mode: all pairs are q-independent — group coherently
                                     # so the combination option does not affect non-polar intensities.
-                                    final_state_key = ("modal_pair_incoherent_np", mode_idx, _line_key(nu_m, line_sigma))
+                                    final_state_key = ("modal_pair_incoherent_np", det_key, mode_idx, _line_key(nu_m, line_sigma))
                                     group_key = "all" if self.coherent_layers else (rl.layer_index, "all")
                                 else:
                                     final_state_key = ("modal_pair_incoherent", cache_key, _line_key(nu_m, line_sigma))
                                     group_key = cache_key  # already per-layer via layer_index in cache_key
                             else:  # MODAL_PAIR_COHERENT_ALL
-                                final_state_key = ("modal_pair_all", mode_idx, _line_key(nu_m, line_sigma))
+                                final_state_key = ("modal_pair_all", det_key, mode_idx, _line_key(nu_m, line_sigma))
                                 group_key = "all" if self.coherent_layers else (rl.layer_index, "all")
 
                             local_key = (rl.layer_index, sl.start, sl.stop)

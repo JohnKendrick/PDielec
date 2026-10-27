@@ -8,7 +8,7 @@ no finite layers, calling calculate_GammaStar + calculate_r_t at normal
 incidence (zeta=0).
 
 The Fresnel formulae for normal incidence between media n1 (superstrate) and
-n2 (substrate) are:
+n2 (substrate) are::
 
     r = (n1 - n2) / (n1 + n2)
     R = |r|²
