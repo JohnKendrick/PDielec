@@ -205,8 +205,8 @@ spatial phase; small film thickness alone does not establish that assumption:
    \mathbf{E}_L(z,\nu_L)
    \right|^2\,dz ,
 
-which is more appropriate for thick or bulk samples where long-range Raman phase
-coherence is not physical.  When *Incoherent intensity* is selected, PDielec also
+which assumes spatially local source correlations. Film thickness alone does
+not determine phonon coherence.  When *Incoherent intensity* is selected, PDielec also
 forces separate Raman-active layers to be combined as incoherent intensities,
 because there is then no well-defined layer amplitude to add coherently.
 
@@ -375,12 +375,29 @@ alternatives for solving the optical propagation problem.
    .. math::
       :label: eq-crystal-raman-modal-pair-q
 
-      \mathbf{q}^{ij}_{ph} \propto
+      \frac{\mathbf{Q}^{ij}}{k_{0L}} = \mathrm{Re}
       \begin{pmatrix}
-      \zeta_L-\zeta_S \\
+      \zeta_L+r\zeta_{S,rec} \\
       0 \\
-      q^i_{z,L}-q^j_{z,S}
-      \end{pmatrix}.
+      q^i_{z,L}+s r q^j_{z,S,rec}
+      \end{pmatrix},\qquad r=\nu_S/\nu_L.
+
+   Here :math:`s=+1` for superstrate collection and :math:`s=-1` for
+   substrate collection, whose solver depth is :math:`z'=L-z`. All components
+   use the common laser vacuum wavevector :math:`k_{0L}`. The collection angle
+   describes the outgoing ray; the reciprocal launch uses its negative.
+   For substrate collection, the dielectric tensor is reflected with
+   :math:`P=\operatorname{diag}(1,1,-1)` and electric vectors are mapped back
+   to the laboratory frame before contraction with the Raman tensor.
+
+   Each input branch seeds NAC at its supplied Stokes frequency. Returned NAC
+   frequencies determine the final Stokes fields and momentum classification.
+   This is a single-pass approximation, not a self-consistent frequency and
+   direction iteration. ``Approximate ES=True`` freezes optical fields and
+   indices at the laser frequency but retains the Stokes/laser momentum ratio.
+   Material results are cached by layer and direction. If optical channel counts
+   change after the NAC frequency shift, the calculation raises an error;
+   equal counts still assume corresponding channel order.
 
    If :math:`|\mathbf{q}^{ij}_{ph}|` is negligible, that pair uses the uncorrected
    TO phonons.  Otherwise the NAC dynamical matrix is solved for
@@ -390,8 +407,8 @@ alternatives for solving the optical propagation problem.
    spectral line.
 
    The default modal-pair combination policy is *Group q channels*.  Amplitudes whose
-   phonon momentum and detected polarisation are the same are added coherently before
-   squaring; different phonon-q final states are summed as intensities,
+   legacy angular momentum keys and detected polarisation are the same are added
+   coherently before squaring; different groups are summed as intensities,
 
    .. math::
       :label: eq-crystal-raman-modal-pairs
@@ -402,15 +419,16 @@ alternatives for solving the optical propagation problem.
       \sum_{(i_L,j_S)\in g} A^{ij}_m
       \right|^2 ,
 
-   where :math:`g` labels a common phonon-q and detector-channel group.  This is the
-   physically recommended setting and is the one used for normal calculations.  Two
+   where :math:`g` labels a legacy angular and detector-channel group. Direction
+   alone does not identify a general spatial phonon final state; this policy
+   does not supply finite-slab profiles or a complete state sum. Two
    diagnostic alternatives are also available in the GUI: *Incoherent pairs*, which
    squares each q-channel-pair amplitude independently, and *Coherent all pairs*, which
    sums all modal-pair amplitudes before squaring and therefore mixes distinct
    phonon-momentum final states.
 
-   This is the most complete treatment available and reduces to the dominant-mode
-   result when only one q-channel is significant in each geometry.
+   This resolves multiple optical channel pairs, subject to the stated NAC and
+   final-state approximations.
 
    For incoherent depth integration, *Group q channels* has two explicit
    final-state models.  *Bulk phase matched* retains each internal
@@ -560,3 +578,48 @@ computing the Raman spectrum.  The GUI labels for the three NAC levels then show
 *(EO)* suffix (*Snell's law (EO)*, *Dominant mode (EO)*, *All modes (EO)*) to make
 clear that the electro-optic correction is active.  A log message also confirms this
 at calculation time.
+
+
+Normalized depth correlations (calculator API)
+----------------------------------------------
+
+The existing depth settings retain **legacy raw-overlap** outputs. Before the
+Stokes factor, squared coherent overlaps have units angstrom cubed per amu,
+while local intensity integrals have units angstrom squared per amu. Their
+proportionality constants cannot be equated.
+
+An opt-in total-field calculation provides a common reduced depth weight::
+
+    frequencies, weights, widths = calc.calculate_depth_correlated_weights(
+        domain_edges_m=[0.0, 100e-9, 200e-9])
+
+The example assumes a 200 nm finite stack with two independent physical phonon
+domains. Each domain contains one uniform collective mode normalized over its
+cells. For unit-launch fields, let :math:`f=e_S^T R_\epsilon e_L`. Then
+
+.. math::
+
+   W = \sum_d \frac{1}{L_d}\left|\int_{D_d} f(z)\,dz\right|^2.
+
+The inverse domain length follows from the collective coordinate's
+:math:`1/\sqrt{N_d}` normalization; it is not an empirical correction.
+Omitting ``domain_edges_m`` selects the local result
+:math:`W=\int |f|^2 dz`. Both return angstrom squared per amu. The numerical
+SI conversion is ``weight * 1e-20 / atomic_mass_unit_kg`` (square metres per kg).
+These weights omit the Stokes prefactor: multiply by ``stokes_prefactor`` once
+before applying a normalized line shape. Absolute power additionally needs
+illuminated area and specified radiation/collection normalization.
+
+Domains describe physical correlations independently of optical layers. Keep
+the same edges when subdividing an optical layer. The API splits quadrature at
+both sets of boundaries; ``n_gauss`` controls numerical accuracy, not phonon
+correlation length. Finite domains form a positive-semidefinite projector;
+refining physical domains approaches the local limit for smooth overlaps.
+This model retains one final state per domain, not every phonon momentum state.
+
+Every finite optical layer must have one Raman layer with matching branch
+frequencies and consistent tensor phases. Coherent optical propagation is
+required. Modal-pair NAC grouping and heterogeneous phonon interfaces are not
+supported by this API. Detector polarizations remain independent channels.
+The existing GUI depth/layer settings do not configure this model; GUI outputs
+and reference spreadsheets are unchanged.

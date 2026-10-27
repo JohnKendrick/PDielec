@@ -116,8 +116,8 @@ def test_optical_resolver_external_q_ext_backscatter_and_forward_limits():
         "substrate",
     )
 
-    npt.assert_allclose(q_back, [0.0, 0.0, 2.0], atol=1e-12)
-    npt.assert_allclose(q_forward, [0.0, 0.0, 0.0], atol=1e-12)
+    npt.assert_allclose(q_back, [0.0, 0.0, 1.995], atol=1e-12)
+    npt.assert_allclose(q_forward, [0.0, 0.0, 0.005], atol=1e-12)
 
 
 def test_oblique_automatic_retro_specular_and_forward_q_ext():
@@ -135,17 +135,17 @@ def test_oblique_automatic_retro_specular_and_forward_q_ext():
     q_specular = explicit_specular.resolve_optical_channels(19900.0)["q_ext"]
     q_forward = automatic_forward.resolve_optical_channels(19900.0)["q_ext"]
 
-    npt.assert_allclose(q_retro, [1.0, 0.0, np.sqrt(3.0)], atol=1e-12)
-    npt.assert_allclose(q_specular, [0.0, 0.0, np.sqrt(3.0)], atol=1e-12)
-    npt.assert_allclose(q_forward, [0.0, 0.0, 0.0], atol=1e-12)
+    npt.assert_allclose(q_retro, [1.995*np.sin(angle), 0.0, 1.995*np.cos(angle)], atol=1e-12)
+    npt.assert_allclose(q_specular, [0.005*np.sin(angle), 0.0, 1.995*np.cos(angle)], atol=1e-12)
+    npt.assert_allclose(q_forward, [0.005*np.sin(angle), 0.0, 0.005*np.cos(angle)], atol=1e-12)
 
 
 @pytest.mark.parametrize(
     ("collection_side", "collection_angle_rad", "expected_field_angles"),
     [
-        ("superstrate", None, (30.0, -30.0)),
-        ("superstrate", np.radians(30.0), (30.0,)),
-        ("substrate", None, (30.0, 30.0)),
+        ("superstrate", None, (30.0,)),
+        ("superstrate", np.radians(30.0), (30.0, -30.0)),
+        ("substrate", None, (30.0, -30.0)),
     ],
 )
 def test_approximate_es_reuses_incident_field_only_for_identical_optical_problem(
@@ -185,7 +185,7 @@ def test_layered_calculator_exposes_phase3_optical_diagnostics():
     assert diagnostics["incident"].total_fields.shape == (6, len(calc._gl_z))
     assert diagnostics["detected"].total_fields.shape == (6, len(calc._gl_z))
     assert 0 in diagnostics["incident"].channels_by_pol[0]
-    npt.assert_allclose(diagnostics["q_ext"], [0.0, 0.0, 2.0], atol=1e-12)
+    npt.assert_allclose(diagnostics["q_ext"], [0.0, 0.0, 1.995], atol=1e-12)
 
 
 def test_forward_scatter_diagnostics_map_physical_layer_to_reversed_system_layer():

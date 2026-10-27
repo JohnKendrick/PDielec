@@ -178,6 +178,7 @@ test_powder_raman = [
 
 test_crystal_raman = [
 	"Crystal_Raman/Castep",
+	"Crystal_Raman/Castep-25.12",
 	"Crystal_Raman/Crystal23",
     ]
 

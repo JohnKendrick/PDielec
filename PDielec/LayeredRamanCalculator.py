@@ -62,7 +62,13 @@ from functools import partial
 import numpy as np
 
 from PDielec.Constants import speed_light_si
-from PDielec.OpticalChannelResolver import OpticalChannelResolver, compute_modal_fields_at_points
+from PDielec.OpticalChannelResolver import (
+    OpticalChannelResolver,
+    compute_modal_fields_at_points,
+    electric_fields_to_lab,
+    modal_pair_momentum,
+    reciprocal_system,
+)
 from PDielec.PhononFinalStateResolver import (
     BULK_PHASE_MATCHED,
     COHERENT_EXTERNAL_CHANNEL,
@@ -131,7 +137,9 @@ class RamanContribution:
         Non-zero only for the incoherent-depth integration path, where
         ``amplitude`` is not meaningful.  Equal to the raw depth-integrated
         local intensity before the Stokes spectral prefactor.
+
     """
+
     mode_idx: int
     frequency: float
     sigma: float
@@ -241,7 +249,7 @@ def _compute_efield_chunk_worker(shared, z_chunk):
     system.initialize_sys(freq_hz)
     zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
     _, E_chunk, _ = system.calculate_Efield(freq_hz, zeta, z_vect=z_chunk)
-    return E_chunk
+    return electric_fields_to_lab(E_chunk, system)
 
 
 def _compute_raman_mode_worker(shared, mode_args):
@@ -303,6 +311,7 @@ def _compute_raman_mode_worker(shared, mode_args):
         es_system.initialize_sys(freq_hz)
         zeta = np.sin(collection_angle_rad) * np.sqrt(es_system.superstrate.epsilon[0, 0])
         _, E_S_out, _ = es_system.calculate_Efield(freq_hz, zeta, z_vect=z_s_arr)
+        E_S_out = electric_fields_to_lab(E_S_out, es_system)
 
     cp_L, cs_L = incident_jones
 
@@ -402,6 +411,8 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
         resolver,
         temperature_K,
         laser_frequency_cm1,
+        collection_side,
+        external_q_by_frequency,
     ) = shared
 
     _ref_layer_index, ref_freqs, _ref_tensors, _ref_rotation, _ref_selected = raman_layer_data[0]
@@ -415,6 +426,7 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
     accumulator = RamanAmplitudeAccumulator()
     local_integrands = {}
     line_metadata = {}
+    actual_pair_vectors = {}
 
     for layer_data, sl in zip(raman_layer_data, gl_layer_slices, strict=False):
         layer_index, _phonon_frequencies_cm1, raman_tensors, rotation_matrix, modes_selected = layer_data
@@ -447,6 +459,10 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                         continue
                     channel_S = layer_channels_S[j_channel]
 
+                    q_pair = modal_pair_momentum(
+                        channel_L, channel_S, (laser_frequency_cm1 - nu_m) / laser_frequency_cm1,
+                        collection_side)
+                    actual_pair_vectors[cache_key] = q_pair
                     R_crystal = nac_tensors[mode_idx]
                     R_lab = rotation_matrix @ R_crystal @ rotation_matrix.T
 
@@ -456,9 +472,9 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                     amp_ij = np.dot(w, integrand)
 
                     if modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                        q_pair = modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
+                        line_q_ext = external_q_by_frequency[round(float(nu_m), 10)]
                         q_final = _modal_pair_final_state_q(
-                            q_pair, resolver.q_ext, depth_integration, final_state_model
+                            q_pair, line_q_ext, depth_integration, final_state_model
                         )
                         classification = resolver.resolve_pair(
                             mode_idx,
@@ -468,7 +484,8 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                             raman_tensor=R_lab,
                             linewidth_cm1=line_sigma,
                             selected=mode_selected,
-                            reference_k=max(np.linalg.norm(resolver.q_ext), 1.0),
+                            reference_k=max(np.linalg.norm(line_q_ext), 1.0),
+                            q_ext=line_q_ext,
                         )
                         if classification.kind == DISCARDED_INTERNAL_COMPONENT:
                             continue
@@ -525,7 +542,12 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
         else:
             line_accumulator[lkey][1] += intensity
 
-    return mode_idx, list(line_accumulator.values())
+    return mode_idx, list(line_accumulator.values()), actual_pair_vectors
+
+
+def _prepared_modal_pair_worker(task):
+    """Evaluate a serially prepared optical/NAC task without pickling closures."""
+    return _compute_modal_pair_mode_worker(*task)
 
 
 def _modal_q_channels_from_fields(modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx):
@@ -596,6 +618,10 @@ def _modal_pair_stokes_channels(
         )
         for pol_idx in detected_pol_indices
     }
+    for pol_channels in channels_S.values():
+        for channels in pol_channels.values():
+            for channel in channels:
+                channel["zeta"] = zeta
     if detected_jones is not None:
         for pol_idx, pol_channels in channels_S.items():
             coeff = detected_jones[pol_idx]
@@ -603,6 +629,16 @@ def _modal_pair_stokes_channels(
                 for channel in channels:
                     channel["field"] = coeff * channel["field"]
     return channels_S
+
+
+def _validate_modal_channel_counts(seed_channels, shifted_channels):
+    """Reject an ambiguous NAC assignment when optical channels split or merge."""
+    for pol, layers in seed_channels.items():
+        for layer, channels in layers.items():
+            if len(channels) != len(shifted_channels.get(pol, {}).get(layer, [])):
+                raise ValueError(
+                    "NAC-shifted optical channels split or merged; channel tracking is required "
+                    "before NAC tensors can be assigned")
 
 
 def _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors,
@@ -965,10 +1001,15 @@ class LayeredRamanCalculator:
 
         # Built by _build_gl_grid()
         self._gl_z = None               # ndarray: concatenated z points (m) for E_L
-        self._gl_phys_weights = None    # ndarray: corresponding physical integration weights (m)
+        self._gl_phys_weights = None    # ndarray: corresponding integration weights (angstrom)
         self._gl_layer_slices = None    # list of slice: one per RamanLayer
 
         self._build_gl_grid()
+
+    @property
+    def _reciprocal_angle_rad(self):
+        """Detector launch angle; collection_angle_rad describes the outgoing ray."""
+        return -self.collection_angle_rad
 
     def _mode_is_selected(self, mode_idx):
         """Return True when a phonon mode is enabled in the caller's mode mask."""
@@ -1005,8 +1046,9 @@ class LayeredRamanCalculator:
             (the unit ``calculate_Efield`` expects).
         _gl_phys_weights : ndarray
             Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).
-            The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
-            keeping intensity magnitudes in a readable range.
+            These legacy raw overlaps use stored R_epsilon in sqrt(Å/amu).
+            Squared coherent overlaps have units Å³/amu; local integrals
+            have units Å²/amu. They are not a common normalized observable.
         _gl_layer_slices : list of slice
             One slice per ``RamanLayer`` indexing into ``_gl_z`` / ``_gl_phys_weights``.
         """
@@ -1063,12 +1105,12 @@ class LayeredRamanCalculator:
         system.initialize_sys(freq_hz)
         zeta = np.sin(angle_rad) * np.sqrt(system.superstrate.epsilon[0, 0])
         _, E_out, _ = system.calculate_Efield(freq_hz, zeta, z_vect=z_arr)
-        return E_out
+        return electric_fields_to_lab(E_out, system)
 
     def _incident_and_detector_optical_problems_match(self):
         """Return whether the laser-frequency detector field can reuse E_L."""
         return self.collection_side == "superstrate" and np.isclose(
-            self.collection_angle_rad,
+            self._reciprocal_angle_rad,
             self.incident_angle_rad,
             rtol=0.0,
             atol=1.0e-15,
@@ -1198,6 +1240,7 @@ class LayeredRamanCalculator:
             from the corresponding optical-system layer.
         zeta : complex
             In-plane wavevector used for this system/frequency/angle.
+
         """
         freq_hz = freq_cm1 * speed_light_si * 1e2
         system.initialize_sys(freq_hz)
@@ -1247,7 +1290,8 @@ class LayeredRamanCalculator:
             pol_idx,
         )
 
-    def _calculate_mode_intensities_modal_pairs(self, progress_callback=None, pool=None, return_contributions=False):
+    def _calculate_mode_intensities_modal_pairs(self, progress_callback=None, pool=None, return_contributions=False,
+                                               _mode_index=None):
         """Level 3 modal-pairs Raman intensity calculation.
 
         For each phonon mode, sums over incident and detected propagation-q
@@ -1259,10 +1303,12 @@ class LayeredRamanCalculator:
 
         For coherent depth, the phonon wavevector for each channel pair is
         q_ph = k_L − k_S, giving pair-resolved NAC tensors and finite-film
-        contributions.  For incoherent depth, the external photon momentum
-        transfer selects one phonon final state; internal Berreman q differences
-        remain coherent local-field components of that state.  NAC results are
-        cached per layer/channel pair and reused across all phonon modes.
+        contributions. For incoherent depth, NAC uses the external momentum
+        direction and the selected legacy grouping policy. Direction reuse is
+        a material-response approximation, not a general phonon-state identity.
+        NAC is evaluated at the supplied branch frequency; fields and final
+        classification use the returned Stokes frequency. This one-pass policy
+        does not solve for a self-consistent NAC-dependent frequency/direction.
 
         NAC closures are evaluated only while building the serial cache.  When a
         worker pool is supplied, the per-mode field and intensity calculations
@@ -1273,12 +1319,50 @@ class LayeredRamanCalculator:
         active_frequencies : ndarray
         active_intensities : ndarray
         active_linewidths : ndarray
+
         """
+        # Each input branch has its own Stokes momentum. NAC is evaluated once
+        # at that input branch frequency (a documented non-self-consistent policy).
+        # Material results are reused by direction, never by spatial-state identity.
+        if _mode_index is None:
+            self._nac_direction_cache = {}
+            self._modal_pair_q_vectors_by_mode = {}
+            self._nac_cache_by_mode = {}
+            results = []
+            tasks = []
+            self._modal_laser_solution = None
+            for index in range(len(self.raman_layers[0].phonon_frequencies_cm1)):
+                nu = self.raman_layers[0].phonon_frequencies_cm1[index]
+                if not valid_stokes_mode(nu, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1):
+                    if progress_callback is not None:
+                        progress_callback()
+                    continue
+                result = self._calculate_mode_intensities_modal_pairs(
+                    progress_callback if pool is None else None, pool, return_contributions, _mode_index=index)
+                self._modal_pair_q_vectors_by_mode[index] = dict(self._modal_pair_q_vectors)
+                self._nac_cache_by_mode[index] = dict(self._nac_cache)
+                if pool is None:
+                    results.append(result)
+                else:
+                    tasks.append((result, index))
+            if pool is not None:
+                for index, rows, vectors in pool.imap(_prepared_modal_pair_worker, tasks, chunksize=1):
+                    self._modal_pair_q_vectors_by_mode[index] = vectors
+                    self._modal_pair_q_vectors = vectors
+                    results.append(tuple(np.array([row[column] for row in rows]) for column in range(3)))
+                    if progress_callback is not None:
+                        progress_callback()
+            arrays = tuple(np.concatenate([r[i] for r in results]) if results else np.array([])
+                           for i in range(3))
+            if return_contributions:
+                return (*arrays, [c for r in results for c in r[3]])
+            return arrays
+
         # --- Set up ES system and z-array (mirrors calculate_mode_intensities) ---
         if self.collection_side == "substrate":
             total_thick = sum(layer.thick for layer in self.system.layers)
             z_s = total_thick - self._gl_z
-            es_system = self.system.reversed_system()
+            es_system = reciprocal_system(self.system, "substrate")
             detected_system_layer_indices = [len(self.system.layers) - 1 - rl.layer_index for rl in self.raman_layers]
         else:
             z_s = self._gl_z
@@ -1286,7 +1370,9 @@ class LayeredRamanCalculator:
             detected_system_layer_indices = [rl.layer_index for rl in self.raman_layers]
 
         ref_layer = self.raman_layers[0]
-        n_modes = len(ref_layer.phonon_frequencies_cm1)
+        mode_indices = [_mode_index]
+        seed_stokes = self.laser_frequency_cm1 - ref_layer.phonon_frequencies_cm1[_mode_index]
+        seed_optical_frequency = self.laser_frequency_cm1 if self.approximate_es else seed_stokes
 
         incident_pol_indices = [idx for idx, value in enumerate(self._incident_jones) if abs(value) > 1.0e-14]
         detected_pol_indices = (
@@ -1300,17 +1386,17 @@ class LayeredRamanCalculator:
             self.laser_frequency_cm1,
             self.incident_angle_rad,
             es_system,
-            self.laser_frequency_cm1,
+            seed_stokes,
             self.collection_angle_rad,
             self.collection_side,
         )
         use_external_q_for_modal_nac = self.depth_integration == DEPTH_INTEGRATION_INCOHERENT
 
         # Laser modal fields at laser frequency + incident angle
-        modal_fields_L, qs_L_dict, zeta_L = self._call_get_modal_fields_at_gl_points(
-            self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z
-        )
-        zeta_L_re = float(np.real(zeta_L))
+        if self._modal_laser_solution is None:
+            self._modal_laser_solution = self._call_get_modal_fields_at_gl_points(
+                self.laser_frequency_cm1, self.system, self.incident_angle_rad, self._gl_z)
+        modal_fields_L, qs_L_dict, zeta_L = self._modal_laser_solution
         channels_L_by_pol = {
             pol_idx: self._get_modal_q_channels(modal_fields_L, qs_L_dict, pol_idx)
             for pol_idx in incident_pol_indices
@@ -1321,22 +1407,25 @@ class LayeredRamanCalculator:
             for layer_index, channels in pol_channels.items():
                 merged = channels_L.setdefault(layer_index, [])
                 for channel in channels:
-                    merged.append({"qz": channel["qz"], "field": coeff * channel["field"]})
+                    merged.append({"qz": channel["qz"], "zeta": zeta_L, "field": coeff * channel["field"]})
 
-        # ES modal fields at laser frequency (used for q_ph / NAC computation,
-        # and also for the field integral when approximate_es=True)
+        # Seed NAC at the supplied branch's Stokes frequency. Approximate ES
+        # freezes optical indices/fields at the laser, but retains k0S/k0L.
         modal_fields_S_base, qs_S_dict, zeta_S = self._call_get_modal_fields_at_gl_points(
-            self.laser_frequency_cm1,
+            seed_optical_frequency,
             es_system,
-            self.collection_angle_rad,
+            self._reciprocal_angle_rad,
             z_s,
             system_layer_indices=detected_system_layer_indices,
         )
-        zeta_S_re = float(np.real(zeta_S))
         channels_S_base = {
             pol_idx: self._get_modal_q_channels(modal_fields_S_base, qs_S_dict, pol_idx)
             for pol_idx in detected_pol_indices
         }
+        for pol_channels in channels_S_base.values():
+            for channels in pol_channels.values():
+                for channel in channels:
+                    channel["zeta"] = zeta_S
         if self._detected_jones is not None:
             for pol_idx, pol_channels in channels_S_base.items():
                 coeff = self._detected_jones[pol_idx]
@@ -1344,10 +1433,9 @@ class LayeredRamanCalculator:
                     for channel in channels:
                         channel["field"] = coeff * channel["field"]
 
-        # Build NAC cache upfront (one call per q-channel pair per layer,
-        # independent of phonon mode).  Keys use channel ordinal positions rather
-        # than qz values so the cache remains valid when E_S is recomputed at
-        # the Stokes frequency and qz shifts slightly.
+        # Cache material response by layer/direction across input branches.
+        # Pair records below belong only to this branch's seed optical problem.
+        # This is one NAC evaluation, not an iteration to a self-consistent shift.
         self._nac_cache = {}
         self._modal_pair_q_vectors = {}
         for rl in self.raman_layers:
@@ -1360,11 +1448,9 @@ class LayeredRamanCalculator:
 
                         # q_ph = k_laser − k_scattered.  Channel qz values are
                         # coherent sums over degenerate Berreman eigenmodes.
-                        q_pair = np.array([
-                            zeta_L_re - zeta_S_re,
-                            0.0,
-                            channel_L["qz"] - channel_S["qz"],
-                        ])
+                        q_pair = modal_pair_momentum(
+                            channel_L, channel_S, seed_stokes / self.laser_frequency_cm1,
+                            self.collection_side)
                         # Retain q_pair for coherent-depth final-state classification
                         # and diagnostics.
                         # NAC uses q_ext (incoherent depth, so all pairs share the same
@@ -1376,7 +1462,10 @@ class LayeredRamanCalculator:
                             self._nac_cache[cache_key] = None  # use TO baseline
                         else:
                             q_hat_lab = q_for_nac / q_for_nac_norm
-                            self._nac_cache[cache_key] = rl.nac_function(q_hat_lab)
+                            direction_key = (rl.layer_index, tuple(np.round(q_hat_lab, 12)))
+                            if direction_key not in self._nac_direction_cache:
+                                self._nac_direction_cache[direction_key] = rl.nac_function(q_hat_lab)
+                            self._nac_cache[cache_key] = self._nac_direction_cache[direction_key]
 
         modal_pair_use_nac = self.modal_pair_use_nac
         resolver = PhononFinalStateResolver(
@@ -1392,13 +1481,27 @@ class LayeredRamanCalculator:
         active_sigmas = []
         contributions: list = []
 
+        external_q_by_frequency = {}
+        for rl in self.raman_layers:
+            for value in [None, *self._nac_cache.values()]:
+                nu, _, _, _ = _modal_pair_phonon_data(
+                    _mode_index, ref_layer.phonon_frequencies_cm1[_mode_index],
+                    rl.raman_tensors, 5.0, True, value)
+                if valid_stokes_mode(nu, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1):
+                    frequency_key = round(float(nu), 10)
+                    if frequency_key not in external_q_by_frequency:
+                        external_q_by_frequency[frequency_key] = OpticalChannelResolver().external_momentum_transfer(
+                            self.system, self.laser_frequency_cm1, self.incident_angle_rad,
+                            es_system, self.laser_frequency_cm1 - nu,
+                            self.collection_angle_rad, self.collection_side)
+
         if pool is not None and not return_contributions:
             layer_indices = [rl.layer_index for rl in self.raman_layers]
             raman_layer_data = _modal_pair_layer_worker_data(self.raman_layers)
             channels_S_by_frequency = {}
             if not self.approximate_es:
                 required_stokes_channels = {}
-                for mode_idx in range(n_modes):
+                for mode_idx in mode_indices:
                     fallback_nu_m = ref_layer.phonon_frequencies_cm1[mode_idx]
                     sigma = self.linewidths_cm1[mode_idx] if mode_idx < len(self.linewidths_cm1) else 5.0
                     use_q_resolved_nac = (
@@ -1432,7 +1535,7 @@ class LayeredRamanCalculator:
                 for freq_key, nu_m in required_stokes_channels.items():
                     channels_S = _modal_pair_stokes_channels(
                         es_system,
-                        self.collection_angle_rad,
+                        self._reciprocal_angle_rad,
                         z_s,
                         layer_indices,
                         self._gl_layer_slices,
@@ -1443,9 +1546,10 @@ class LayeredRamanCalculator:
                         nu_m,
                     )
                     if channels_S is not None:
+                        _validate_modal_channel_counts(channels_S_base, channels_S)
                         channels_S_by_frequency[freq_key] = channels_S
 
-            shared = (
+            return (
                 self._gl_layer_slices,
                 self._gl_phys_weights,
                 channels_L,
@@ -1466,22 +1570,11 @@ class LayeredRamanCalculator:
                 resolver,
                 self.temperature_K,
                 self.laser_frequency_cm1,
-            )
-            worker_fn = partial(_compute_modal_pair_mode_worker, shared)
-            for _mode_idx, rows in pool.imap(worker_fn, range(n_modes), chunksize=1):
-                if progress_callback is not None:
-                    progress_callback()
-                for nu_m, intensity, sigma in rows:
-                    active_freqs.append(nu_m)
-                    active_intensities.append(intensity)
-                    active_sigmas.append(sigma)
-            return (
-                np.array(active_freqs),
-                np.array(active_intensities),
-                np.array(active_sigmas),
+                self.collection_side,
+                external_q_by_frequency,
             )
 
-        for mode_idx in range(n_modes):
+        for mode_idx in mode_indices:
             if progress_callback is not None:
                 progress_callback()
 
@@ -1528,10 +1621,10 @@ class LayeredRamanCalculator:
                                     continue
                                 freq_key = round(float(nu_m), 10)
                                 if freq_key not in channels_s_cache:
-                                    modal_fields_S, qs_S_mode, _ = self._call_get_modal_fields_at_gl_points(
+                                    modal_fields_S, qs_S_mode, zeta_S_mode = self._call_get_modal_fields_at_gl_points(
                                         nu_S,
                                         es_system,
-                                        self.collection_angle_rad,
+                                        self._reciprocal_angle_rad,
                                         z_s,
                                         system_layer_indices=detected_system_layer_indices,
                                     )
@@ -1539,24 +1632,17 @@ class LayeredRamanCalculator:
                                         pol_idx: self._get_modal_q_channels(modal_fields_S, qs_S_mode, pol_idx)
                                         for pol_idx in detected_pol_indices
                                     }
+                                    for pol_channels in channels_s_cache[freq_key].values():
+                                        for channels in pol_channels.values():
+                                            for channel in channels:
+                                                channel["zeta"] = zeta_S_mode
                                     if self._detected_jones is not None:
                                         for _pol, _pol_channels in channels_s_cache[freq_key].items():
                                             _coeff = self._detected_jones[_pol]
                                             for _channels in _pol_channels.values():
                                                 for _channel in _channels:
                                                     _channel["field"] = _coeff * _channel["field"]
-                                    for _rl in self.raman_layers:
-                                        for _pol in detected_pol_indices:
-                                            _n_base = len(channels_S_base[_pol].get(_rl.layer_index, []))
-                                            _n_mode = len(channels_s_cache[freq_key][_pol].get(_rl.layer_index, []))
-                                            if _n_base != _n_mode:
-                                                logger.warning(
-                                                    "modal_pairs approximate_es=False: layer %d pol %d has "
-                                                    "%d qz channels at nu_S=%.1f cm-1 but the NAC cache was "
-                                                    "built with %d channels at the laser frequency; NAC "
-                                                    "tensors may be misassigned for this mode.",
-                                                    _rl.layer_index, _pol, _n_mode, nu_S, _n_base,
-                                                )
+                                    _validate_modal_channel_counts(channels_S_base, channels_s_cache[freq_key])
                                 channels_S = channels_s_cache[freq_key]
 
                             layer_channels_S = channels_S[det_pol_idx].get(rl.layer_index, [])
@@ -1564,6 +1650,12 @@ class LayeredRamanCalculator:
                                 continue
                             channel_S = layer_channels_S[j_channel]
 
+                            q_pair = modal_pair_momentum(
+                                channel_L, channel_S,
+                                (self.laser_frequency_cm1 - nu_m) / self.laser_frequency_cm1,
+                                self.collection_side)
+                            self._modal_pair_q_vectors[cache_key] = q_pair
+                            line_q_ext = external_q_by_frequency[round(float(nu_m), 10)]
                             R_crystal = nac_tensors[mode_idx]
                             R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
 
@@ -1573,9 +1665,8 @@ class LayeredRamanCalculator:
                             amp_ij = np.dot(w, integrand)
 
                             if self.modal_pair_combination == MODAL_PAIR_GROUP_Q:
-                                q_pair = self._modal_pair_q_vectors.get(cache_key, np.zeros(3, dtype=float))
                                 q_final = _modal_pair_final_state_q(
-                                    q_pair, q_ext, self.depth_integration, self.final_state_model
+                                    q_pair, line_q_ext, self.depth_integration, self.final_state_model
                                 )
                                 classification = resolver.resolve_pair(
                                     mode_idx,
@@ -1585,7 +1676,8 @@ class LayeredRamanCalculator:
                                     raman_tensor=R_lab,
                                     linewidth_cm1=line_sigma,
                                     selected=mode_selected,
-                                    reference_k=max(np.linalg.norm(q_ext), 1.0),
+                                    reference_k=max(np.linalg.norm(line_q_ext), 1.0),
+                                    q_ext=line_q_ext,
                                 )
                                 if classification.kind == DISCARDED_INTERNAL_COMPONENT:
                                     continue
@@ -1684,7 +1776,7 @@ class LayeredRamanCalculator:
         if self.collection_side == "substrate":
             total_thick = sum(layer.thick for layer in self.system.layers)
             z_s = total_thick - self._gl_z
-            es_system = self.system.reversed_system()
+            es_system = reciprocal_system(self.system, "substrate")
         else:
             z_s = self._gl_z
             es_system = self.system
@@ -1715,7 +1807,7 @@ class LayeredRamanCalculator:
         detected = resolver.solve(
             es_system,
             nu_s,
-            self.collection_angle_rad,
+            self._reciprocal_angle_rad,
             z_s,
             layer_indices,
             self._gl_layer_slices,
@@ -1798,11 +1890,11 @@ class LayeredRamanCalculator:
 
                 for _pol_l, channel_l_idx, coeff_l, channel_l in layer_channels_l:
                     for det_pol_idx, channel_s_idx, coeff_s, channel_s in layer_channels_s:
-                        q_ph = np.array([
-                            np.real(incident.zeta - detected.zeta),
-                            0.0,
-                            np.real(channel_l.qz - channel_s.qz),
-                        ])
+                        q_ph = modal_pair_momentum(
+                            {"zeta": incident.zeta, "qz": channel_l.qz},
+                            {"zeta": detected.zeta, "qz": channel_s.qz},
+                            (self.laser_frequency_cm1 - nu_m) / self.laser_frequency_cm1,
+                            self.collection_side)
                         classification = phase_resolver.resolve_pair(
                             mode_idx,
                             q_ph,
@@ -1860,6 +1952,105 @@ class LayeredRamanCalculator:
     # ------------------------------------------------------------------
     # Public interface
     # ------------------------------------------------------------------
+
+    def calculate_depth_correlated_weights(self, domain_edges_m=None):
+        """Return normalized depth weights before Stokes factors or broadening.
+
+        This opt-in, sequential total-field model uses a local delta kernel
+        when ``domain_edges_m`` is None. Otherwise the strictly increasing
+        edges partition the entire finite stack into physical phonon domains,
+        each containing one uniform, normalized collective mode. Domains add
+        intensities; each detector channel is evaluated independently. Edges
+        are metres and must span [0, total thickness]. Quadrature is split at
+        optical interfaces and domain edges, so artificial optical subdivision
+        does not create phonon domains.
+
+        All finite optical layers must have one RamanLayer, with matching
+        phonon frequencies and an explicitly consistent branch/tensor phase
+        convention across domains. Heterogeneous phonon interfaces and modal
+        NAC/final-state grouping are not supported here. Legacy depth/layer
+        coherence settings do not select this model. No worker pool is used.
+
+        Returns frequencies (cm^-1), reduced weights (angstrom**2/amu), and
+        linewidths (cm^-1). Multiply each weight by ``stokes_prefactor`` once
+        for the existing reduced spectral convention. For SI depth weights,
+        multiply by ``1e-20 / atomic_mass_unit_kg``. Illuminated area and
+        absolute optical collection/radiation constants are not included.
+        """
+        from PDielec.DepthCorrelation import depth_weight
+
+        if self.modal_pairs:
+            raise ValueError("depth correlation requires total fields, not modal_pairs")
+        if any(getattr(layer, flag, False) for layer in self.system.layers
+               for flag in ("inCoherentIntensity", "inCoherentPhase", "inCoherentAveragePhase", "inCoherentThick")):
+            raise ValueError("depth correlation requires coherent optical propagation")
+        layers = sorted(self.raman_layers, key=lambda layer: layer.layer_index)
+        if [layer.layer_index for layer in layers] != list(range(len(self.system.layers))):
+            raise ValueError("every finite optical layer must have exactly one RamanLayer")
+        if not layers:
+            return np.array([]), np.array([]), np.array([])
+        frequencies = np.asarray(layers[0].phonon_frequencies_cm1)
+        if any(not np.array_equal(layer.phonon_frequencies_cm1, frequencies) for layer in layers):
+            raise ValueError("correlated layers must share phonon frequencies and branch labels")
+        thicknesses = np.array([layer.thick for layer in self.system.layers])
+        if np.any(~np.isfinite(thicknesses)) or np.any(thicknesses < 0):
+            raise ValueError("finite layer thicknesses must be finite and nonnegative")
+        boundaries = np.r_[0.0, np.cumsum(thicknesses)]
+        total = boundaries[-1]
+        edges = np.array([0.0, total]) if domain_edges_m is None else np.asarray(domain_edges_m, dtype=float)
+        if (edges.ndim != 1 or len(edges) < 2 or not np.all(np.isfinite(edges))
+                or edges[0] != 0 or not np.isclose(edges[-1], total, rtol=1e-12, atol=0.0)
+                or (total > 0 and np.any(np.diff(edges) <= 0))
+                or (total == 0 and (len(edges) != 2 or np.any(edges != 0)))):
+            raise ValueError("domain edges must increase from zero to total finite thickness")
+        edges = edges.copy()
+        edges[-1] = total
+        z_parts, w_parts, layer_ids, domain_ids = [], [], [], []
+        for index in range(len(layers)):
+            for domain, (left, right) in enumerate(zip(edges[:-1], edges[1:])):
+                start, end = max(left, boundaries[index]), min(right, boundaries[index + 1])
+                if end <= start:
+                    continue
+                half = (end - start) / 2
+                z_parts.extend((start + half + half * self._quad_nodes).tolist())
+                w_parts.extend((half * self._quad_weights * 1e10).tolist())
+                layer_ids.extend([index] * self.n_gauss)
+                domain_ids.extend([domain] * self.n_gauss)
+        z, weights = np.asarray(z_parts), np.asarray(w_parts)
+        layer_ids = np.asarray(layer_ids)
+        domain_ids = np.asarray(domain_ids, dtype=int)
+        selected = [m for m, nu in enumerate(frequencies)
+                    if self._any_layer_mode_is_selected(m)
+                    and valid_stokes_mode(nu, self.laser_frequency_cm1, _ACOUSTIC_THRESHOLD_CM1)]
+        sigmas = np.array([self.linewidths_cm1[m] if m < len(self.linewidths_cm1) else 5.0 for m in selected])
+        if total == 0:
+            return frequencies[selected], np.zeros(len(selected)), sigmas
+        laser = self._get_field_at_gl_points(
+            self.laser_frequency_cm1, self.system, self.incident_angle_rad, z)
+        incident = self._incident_jones[0] * laser[:3] + self._incident_jones[1] * laser[3:]
+        detector_system = reciprocal_system(self.system, "substrate") if self.collection_side == "substrate" else self.system
+        detector_z = total - z if self.collection_side == "substrate" else z
+        result = []
+        for mode in selected:
+            nu_s = self.laser_frequency_cm1 if self.approximate_es else self.laser_frequency_cm1 - frequencies[mode]
+            detector = self._get_field_at_gl_points(nu_s, detector_system, self._reciprocal_angle_rad, detector_z)
+            channels = [detector[:3], detector[3:]] if self._detected_jones is None else [
+                self._detected_jones[0] * detector[:3] + self._detected_jones[1] * detector[3:]]
+            overlap = np.zeros((len(channels), len(z)), dtype=complex)
+            for index, layer in enumerate(layers):
+                if not self._layer_mode_is_selected(layer, mode):
+                    continue
+                mask = layer_ids == index
+                tensor = self._rotate_raman_tensor(layer.raman_tensors[mode], layer.rotation_matrix)
+                source = tensor @ incident[:, mask]
+                for channel, field in enumerate(channels):
+                    overlap[channel, mask] = np.sum(field[:, mask] * source, axis=0)
+            result.append(depth_weight(
+                overlap, weights,
+                None if domain_edges_m is None else domain_ids,
+                None if domain_edges_m is None else np.diff(edges) * 1e10,
+            ))
+        return frequencies[selected], np.asarray(result), sigmas
 
     def calculate_mode_intensities(self, progress_callback=None, pool=None, return_contributions=False):
         """Compute the per-mode Raman intensities (before broadening).
@@ -1937,7 +2128,7 @@ class LayeredRamanCalculator:
             # Forward scattering: launch E_S from the substrate side
             total_thick = sum(layer.thick for layer in self.system.layers)
             z_s = total_thick - self._gl_z   # z in the reversed system
-            es_system = self.system.reversed_system()
+            es_system = reciprocal_system(self.system, "substrate")
         else:
             # Backscattering: same system, same z-array
             z_s = self._gl_z
@@ -1973,7 +2164,7 @@ class LayeredRamanCalculator:
                 E_S_out_fixed = E_L_out
             else:
                 E_S_out_fixed = self._get_field_at_gl_points(
-                    self.laser_frequency_cm1, es_system, self.collection_angle_rad, z_s
+                    self.laser_frequency_cm1, es_system, self._reciprocal_angle_rad, z_s
                 )
 
         active_freqs = []
@@ -2007,7 +2198,7 @@ class LayeredRamanCalculator:
                     )
                     continue
                 E_S_out = self._get_field_at_gl_points(
-                    nu_S, es_system, self.collection_angle_rad, z_s
+                    nu_S, es_system, self._reciprocal_angle_rad, z_s
                 )
 
             # Accumulate contributions from all Raman-active layers.
@@ -2156,7 +2347,7 @@ class LayeredRamanCalculator:
                 E_S_out_fixed = E_L_out
             else:
                 E_S_out_fixed = self._get_field_parallel(
-                    pool, self.laser_frequency_cm1, es_system, self.collection_angle_rad,
+                    pool, self.laser_frequency_cm1, es_system, self._reciprocal_angle_rad,
                     z_s,
                 )
         else:
@@ -2167,7 +2358,7 @@ class LayeredRamanCalculator:
         # the worker, so pass None to avoid unnecessary serialisation.
         shared = (
             None if E_S_out_fixed is not None else es_system,
-            self.collection_angle_rad,
+            self._reciprocal_angle_rad,
             z_s,
             E_L_out,
             E_S_out_fixed,

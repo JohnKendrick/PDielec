@@ -263,7 +263,9 @@ class TestI1BModalPairQGrouping:
         _, intensities, _ = calc.calculate_mode_intensities()
 
         weight = calc._gl_phys_weights[0]
-        expected = 6.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
+        # With Q=kL+krec and nonzero Stokes shift, the four pairs split
+        # into two positive/negative direction groups of two unit amplitudes.
+        expected = 8.0 * weight**2 * (LASER_CM1 - NU_MODE)**4 * bose_factor(NU_MODE, 0.0)
         np.testing.assert_allclose(intensities[0], expected, rtol=1e-12, atol=1e-12)
 
     def test_same_qhat_different_q_magnitude_modal_pairs_are_coherent(self):
@@ -472,14 +474,8 @@ class TestI1BModalPairQGrouping:
 class TestI1DApproximateESChannelWarning:
     """Regression test: approximate_es=False warns when Stokes channel count differs."""
 
-    def test_channel_count_mismatch_emits_warning(self, caplog):
-        """A warning must be logged when nu_S channels differ from laser-freq channels.
-
-        The NAC cache is built once at the laser frequency.  If optical dispersion
-        causes a different number of qz channels at the Stokes frequency the cache
-        keys are mismatched and NAC tensors may be silently misassigned.  The code
-        must emit a logger.warning so this is diagnosable.
-        """
+    def test_stokes_channels_are_used_for_seed_cache(self, caplog):
+        """Dispersion between laser and seed Stokes channels is handled before NAC."""
         import logging
 
         system, _ = _make_system_and_layer()
@@ -530,10 +526,10 @@ class TestI1DApproximateESChannelWarning:
         with caplog.at_level(logging.WARNING, logger="PDielec.LayeredRamanCalculator"):
             calc.calculate_mode_intensities()
 
-        assert any(
-            "channels" in r.message and "misassigned" in r.message
-            for r in caplog.records
-        ), "Expected a NAC channel-mismatch warning but none was logged"
+        # The incident problem has 2 channels, the actual seed Stokes problem
+        # has 4. All 8 pairs enter the cache without an ordinal mismatch.
+        assert len(calc._nac_cache) == 8
+        assert not any("misassigned" in r.message for r in caplog.records)
 
 
 class TestI1CModalPairParallel:
@@ -579,11 +575,11 @@ class TestI1CModalPairParallel:
             np.testing.assert_allclose(serial_array, parallel_array, rtol=1e-10, atol=1e-10)
 
 
-class TestI3NACCacheCalledOncePerPair:
-    """Verify NAC function is called once per optical channel pair, not per mode."""
+class TestI3NACCacheReusesDirections:
+    """Verify NAC material results are reused by layer and direction."""
 
-    def test_nac_called_once_per_pair(self):
-        """For N_pairs pairs, nac_function should be called exactly N_pairs times."""
+    def test_nac_called_once_per_distinct_direction(self):
+        """Repeated pairs and branches reuse the same material direction."""
         system, _ = _make_system_and_layer()
 
         # Multiple phonon modes
@@ -627,7 +623,7 @@ class TestI3NACCacheCalledOncePerPair:
         # Key invariant: NAC is cached per optical channel pair, not called once
         # per mode per channel pair. Zero-q pairs stay in the cache as TO entries.
         assert len(call_log) > 0, "NAC should be called for at least one pair"
-        assert len(call_log) == n_finite_q_pairs, (
+        assert len(call_log) == len(calc._nac_direction_cache), (
             f"Expected {n_finite_q_pairs} nac_function calls (once per finite-q channel pair), "
             f"got {len(call_log)}"
         )
@@ -636,8 +632,8 @@ class TestI3NACCacheCalledOncePerPair:
             f"got {len(call_log)}"
         )
 
-    def test_nac_called_once_per_pair_per_layer(self):
-        """With 2 Raman-active layers, nac_function called N_pairs × 2 times."""
+    def test_nac_direction_cache_separates_layers(self):
+        """Each layer has an independent material-direction cache."""
         system = build_system(
             [(THICKNESS_M, N_LAYER), (THICKNESS_M, N_LAYER)],
             n_sup=1.0, n_sub=N_LAYER
@@ -675,7 +671,7 @@ class TestI3NACCacheCalledOncePerPair:
         n_modes = len(nu_modes)
         # Key invariant: NAC called once per finite-q channel pair/layer, not per mode.
         assert call_counts[0] > 0, "NAC should be called for non-zero q_ph pairs"
-        assert call_counts[0] == n_finite_q_pairs, (
+        assert call_counts[0] == len(calc._nac_direction_cache), (
             f"Expected {n_finite_q_pairs} calls (once per finite-q channel pair/layer), "
             f"got {call_counts[0]}"
         )
@@ -820,17 +816,11 @@ class TestI5ScatteringMatrixConsistency:
 # ---------------------------------------------------------------------------
 
 class TestI7NACFrequencyShift:
-    """Verify that modal_pairs reports q-resolved TO and NAC frequencies.
+    """Verify returned NAC frequencies and tensors remain paired.
 
-    Regression test for q-resolved modal-pair handling.  Zero-q pairs remain at
-    the TO frequency, while non-zero-q pairs use the NAC-corrected frequencies
-    and tensors returned by the pair's nac_function.
-
-    This test uses a synthetic nac_function that returns two phonon modes whose
-    eigenvalue ordering is SWAPPED compared to the TO ordering, i.e. the TO mode
-    at index 0 (ν_TO_0) maps to NAC index 1 (ν_NAC_1 > ν_TO_0).  With the bug,
-    modal_pairs would report at the wrong frequency and with wrong (tiny) tensor.
-    With the fix, it must report at ν_NAC_1 with non-trivial intensity.
+    The finite Stokes shift prevents a spurious zero-momentum TO line.
+    The active synthetic mode shifts from 300 to 550 cm-1; the second
+    mode remains inactive at 700 cm-1.
     """
 
     NU_TO_LOW = 300.0    # TO frequency that gets shifted up (cm⁻¹)
@@ -839,7 +829,7 @@ class TestI7NACFrequencyShift:
     LASER_CM1 = 20000.0
 
     def _make_nac_function(self):
-        """Return a nac_function that swaps the eigenvalue order.
+        """Return a nac_function that shifts the first mode.
 
         TO modes:  [NU_TO_LOW=300, NU_TO_HIGH=700]
         NAC modes: [NU_LO=550, NU_TO_HIGH=700] — order preserved in this case.
@@ -859,11 +849,11 @@ class TestI7NACFrequencyShift:
 
         return nac_fn
 
-    def test_peaks_include_to_and_nac_frequencies(self):
-        """q=0 and non-zero-q groups must report their own line centres."""
+    def test_finite_shift_pairs_use_nac_frequencies(self):
+        """Finite Stokes shifts retain the returned NAC line centres."""
         # n_sub != n_layer creates a back-reflection, giving the backward mode (mode 2)
-        # a non-zero amplitude.  Pair (0,2) then has q_ph ≈ 2n (backscattering) and
-        # calls the nac_function, shifting the peak from TO (300) to LO (550).
+        # a non-zero amplitude. Both sum and difference optical momenta are
+        # finite, so NAC shifts the active peak from TO (300) to LO (550).
         system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)
 
         phonon_freqs = np.array([self.NU_TO_LOW, self.NU_TO_HIGH])
@@ -897,20 +887,17 @@ class TestI7NACFrequencyShift:
 
         assert len(freqs) > 0, "No active modes returned"
 
-        # q-resolved modal_pairs should keep the q=0 TO line and add the
-        # non-zero-q NAC/LO line.
+        # Finite-shift pairs use the returned NAC/LO frequency.
         active_freqs = np.array(freqs)
         assert np.any(np.abs(active_freqs - self.NU_LO) < 1.0), (
             f"Expected a peak near {self.NU_LO} cm⁻¹ (NAC/LO freq) "
             f"but got active_freqs={active_freqs.tolist()}"
         )
-        assert np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0), (
-            f"Expected the q=0 TO line near {self.NU_TO_LOW} cm⁻¹ "
-            f"but got active_freqs={active_freqs.tolist()}"
-        )
+        # Even opposite travelling components have |Q|=n*(kL-kS), not zero.
+        assert not np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0)
 
-    def test_zero_q_modal_pairs_are_retained_by_final_state_path(self):
-        """Phase-4 final-state grouping retains zero-q TO channels."""
+    def test_finite_shift_does_not_create_spurious_zero_q_to_line(self):
+        """Opposite optical components retain the finite Stokes momentum."""
         system = build_system([(THICKNESS_M, N_LAYER)], n_sup=1.0, n_sub=1.0)
 
         phonon_freqs = np.array([self.NU_TO_LOW, self.NU_TO_HIGH])
@@ -942,7 +929,7 @@ class TestI7NACFrequencyShift:
         active_freqs = np.asarray(freqs)
 
         assert np.any(np.abs(active_freqs - self.NU_LO) < 1.0)
-        assert np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0)
+        assert not np.any(np.abs(active_freqs - self.NU_TO_LOW) < 1.0)
 
     def test_modal_pairs_maps_to_mode_matched_nac_branch(self):
         """A TO mode must use the NAC branch mapped back to that TO mode."""

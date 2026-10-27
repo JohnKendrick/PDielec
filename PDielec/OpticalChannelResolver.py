@@ -12,11 +12,59 @@ from __future__ import annotations
 
 import dataclasses
 from collections.abc import Sequence
+from copy import deepcopy
 
 import numpy as np
 
 from PDielec.Constants import speed_light_si
 from PDielec.PhononFinalStateResolver import PhononFinalStateResolver
+
+
+def reciprocal_system(system, collection_side):
+    """Return the detector stack in coordinates (x, y, L-z).
+
+    Reflect permittivity tensors as P epsilon P, P=diag(1,1,-1), on
+    independent layer copies. Electric vectors are mapped back by P; the
+    optical solver handles magnetic axial vectors in its own coordinate frame.
+    """
+    if collection_side == "superstrate":
+        return system
+    if collection_side != "substrate":
+        raise ValueError("unknown collection side")
+    reversed_stack = deepcopy(system.reversed_system())
+    reflection = np.diag([1.0, 1.0, -1.0])
+    for layer in [reversed_stack.superstrate, *reversed_stack.layers, reversed_stack.substrate]:
+        layer.euler = reflection @ layer.euler
+        layer.euler_inverse = layer.euler_inverse @ reflection
+    reversed_stack._raman_depth_reversed = True
+    return reversed_stack
+
+
+def electric_fields_to_lab(fields, system, component_axis=0):
+    """Map electric components from a depth-reflected solver to the lab frame."""
+    if not getattr(system, "_raman_depth_reversed", False):
+        return fields
+    result = fields.copy()
+    indices = [slice(None)] * result.ndim
+    for component in range(2, result.shape[component_axis], 3):
+        indices[component_axis] = component
+        result[tuple(indices)] *= -1
+    return result
+
+
+def modal_pair_momentum(channel_l, channel_s, stokes_ratio, collection_side):
+    """Return real overlap momentum in common laser-vacuum wavevector units.
+
+    Channel zeta/qz belong to the incident and reciprocal solver frames.
+    This real-vector convention is for NAC/legacy angular classification;
+    attenuation remains in the complex fields, not in a phonon-state label.
+    """
+    sign = 1.0 if collection_side == "superstrate" else -1.0
+    return np.array([
+        np.real(channel_l.get("zeta", 0.0) + stokes_ratio * channel_s.get("zeta", 0.0)),
+        0.0,
+        np.real(channel_l["qz"] + sign * stokes_ratio * channel_s["qz"]),
+    ])
 
 
 @dataclasses.dataclass(frozen=True)
@@ -36,6 +84,8 @@ class OpticalChannelSolution:
     ``channels_by_pol`` is nested as
     ``channels_by_pol[pol_idx][physical_layer_index] -> list[OpticalChannel]``.
     The physical layer index is the index in the original, unreversed stack.
+    Electric components are in the laboratory frame. Coordinates, zeta and qz
+    remain in the solver frame; substrate collection uses z_prime = L - z.
     """
 
     frequency_cm1: float
@@ -81,6 +131,7 @@ class OpticalChannelResolver:
         zeta = np.sin(float(angle_rad)) * np.sqrt(system.superstrate.epsilon[0, 0])
         _, total_fields, _ = system.calculate_Efield(freq_hz, zeta, z_vect=z_array)
 
+        total_fields = electric_fields_to_lab(total_fields, system)
         modal_fields, qs_by_layer = compute_modal_fields_at_points(
             system,
             freq_hz,
@@ -117,9 +168,9 @@ class OpticalChannelResolver:
     ) -> np.ndarray:
         """Return the macroscopic external momentum transfer ``q_ext = k_inc - k_det``.
 
-        The returned vector uses GTM's normalised wavevector units.  For normal
-        incidence this gives zero in forward scattering and finite ``2qz`` in
-        backscattering, which is the distinction needed by the phonon resolver.
+        The returned vector is normalized to the incident vacuum wavevector.
+        Detector angles specify the outgoing ray in laboratory coordinates.
+        The Stokes/laser ratio is retained, including in forward scattering.
 
         This helper follows the current GTM boundary convention and assumes the
         external half-space wavevector is determined by ``epsilon[0, 0]``.  It is
@@ -134,7 +185,7 @@ class OpticalChannelResolver:
         else:
             msg = f"collection_side must be 'superstrate' or 'substrate', got {collection_side!r}"
             raise ValueError(msg)
-        return k_inc - k_det
+        return k_inc - (detected_frequency_cm1 / incident_frequency_cm1) * k_det
 
     def _channels_for_pol(self, modal_fields, qs_by_layer, layer_indices, layer_slices, pol_idx):
         channels_by_layer = {}
@@ -220,4 +271,4 @@ def compute_modal_fields_at_points(
                     propagation[mode_idx] * amps[mode_idx + 4] * layer.gamma[mode_idx]
                 )
 
-    return modal_fields, qs_by_layer
+    return electric_fields_to_lab(modal_fields, system, component_axis=2), qs_by_layer

@@ -9,13 +9,5 @@
 Run `pdmake command.pdmake` in a selected directory. To load its saved
 scenarios interactively, use `pdmake --view command.pdmake`.
 
-AbInit and Finite_field contain provenance notes only; complete datasets are
-in [Powder_Raman/AbInit](../Powder_Raman/AbInit/README.md) and
-[Powder_Raman/Finite_difference](../Powder_Raman/Finite_difference/README.md).
-
 [Back to Examples](../README.md)
 
-## Further directories
-
-- [AbInit](AbInit/README.md)
-- [Finite_field](Finite_field/README.md)
