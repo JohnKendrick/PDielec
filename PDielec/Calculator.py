@@ -523,7 +523,7 @@ def compute_internal_field_tensor(L, epsilon_i, epsilon_e):
     I3 = np.eye(3, dtype=complex)
     epsilon_i = np.asarray(epsilon_i, dtype=complex)
     if epsilon_i.ndim == 0:
-        epsilon_i = float(epsilon_i) * I3
+        epsilon_i = epsilon_i * I3
     L = np.asarray(L, dtype=complex)
     return np.linalg.inv(I3 + (1.0 / epsilon_e) * L @ (epsilon_i - epsilon_e * I3))
 

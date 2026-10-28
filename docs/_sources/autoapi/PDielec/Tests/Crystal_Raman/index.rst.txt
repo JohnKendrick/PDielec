@@ -16,6 +16,8 @@ Submodules
    :maxdepth: 1
 
    /autoapi/PDielec/Tests/Crystal_Raman/conftest/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_AD_scientific_audit/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index
@@ -43,5 +45,7 @@ Submodules
    /autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index
    /autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_depth_correlation/index
+   /autoapi/PDielec/Tests/Crystal_Raman/test_momentum_reciprocity/index
 
 

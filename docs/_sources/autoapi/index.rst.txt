@@ -23,6 +23,7 @@ This page contains auto-generated API reference documentation [#f1]_.
    /autoapi/test_G_coordinate_io/index
    /autoapi/test_D_volume_density/index
    /autoapi/test_A_math_utilities/index
+   /autoapi/test_G_si_conventions/index
    /autoapi/test_D_material_classes/index
    /autoapi/test_C_unit_conversions/index
    /autoapi/test_B_derived_constants/index

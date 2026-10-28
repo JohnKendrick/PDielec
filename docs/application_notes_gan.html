@@ -230,6 +230,7 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -287,6 +288,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -314,6 +317,8 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -377,6 +382,7 @@
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -496,7 +502,7 @@ CRYSTAL output; the average-mass recalculation in PDGui changes them
 slightly, so these are not exact plotted peak positions.</p>
 <div class="table-wrapper colwidths-given docutils container" id="id8">
 <table class="docutils align-default" id="id8">
-<caption><span class="caption-number">Table 25 </span><span class="caption-text">Raman-active modes in the supplied calculation</span><a class="headerlink" href="#id8" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 27 </span><span class="caption-text">Raman-active modes in the supplied calculation</span><a class="headerlink" href="#id8" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 15.0%" />
 <col style="width: 25.0%" />
@@ -582,7 +588,7 @@ volume fraction to 0.1 and particle shape to <em>Sphere</em>. Disable
 combinations:</p>
 <div class="table-wrapper docutils container" id="id9">
 <table class="docutils align-default" id="id9">
-<caption><span class="caption-number">Table 26 </span><span class="caption-text">Powder scenario matrix</span><a class="headerlink" href="#id9" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 28 </span><span class="caption-text">Powder scenario matrix</span><a class="headerlink" href="#id9" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Legend</p></th>
 <th class="head"><p>Matrix</p></th>
@@ -650,7 +656,7 @@ features remain, while a polar feature appears near
 arbitrary units. These changes demonstrate boundary and local-field
 effects, not finite-q polariton dispersion.</p>
 <figure class="align-default" id="id10">
-<a class="reference internal image-reference" href="../Examples/ApplicationNotes/GaN/Powder/Figures/gan_powder.png"><img alt="Parallel and crossed powder spectra for uncorrected GaN and spheres in air." src="../Examples/ApplicationNotes/GaN/Powder/Figures/gan_powder.png" style="width: 100%;" />
+<a class="reference internal image-reference" href="_images/gan_powder.png"><img alt="Parallel and crossed powder spectra for uncorrected GaN and spheres in air." src="_images/gan_powder.png" style="width: 100%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 108 </span><span class="caption-text">GaN powder comparison. The two panels have different ordinate scales;
@@ -672,7 +678,7 @@ individual spectra have not been normalised. Generate with
 The dielectric layer is the material read from the CRYSTAL calculation.</p>
 <div class="table-wrapper colwidths-given docutils container" id="id11">
 <table class="docutils align-default" id="id11">
-<caption><span class="caption-number">Table 27 </span><span class="caption-text">Common settings for the Mina-inspired comparison</span><a class="headerlink" href="#id11" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 29 </span><span class="caption-text">Common settings for the Mina-inspired comparison</span><a class="headerlink" href="#id11" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 35.0%" />
 <col style="width: 30.0%" />
@@ -758,7 +764,7 @@ for every geometry by choosing the reference density above.</p>
 <h3>Choosing the NAC treatment<a class="headerlink" href="#choosing-the-nac-treatment" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper docutils container" id="id12">
 <table class="docutils align-default" id="id12">
-<caption><span class="caption-number">Table 28 </span><span class="caption-text">GUI names and saved-script values</span><a class="headerlink" href="#id12" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 30 </span><span class="caption-text">GUI names and saved-script values</span><a class="headerlink" href="#id12" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Layer NAC mode in PDGui</p></th>
 <th class="head"><p>Script value</p></th>
@@ -810,7 +816,7 @@ polar-band interval in the scripts, this window also includes
 <h3>Reading the results against Mina et al.<a class="headerlink" href="#reading-the-results-against-mina-et-al" title="Link to this heading">¶</a></h3>
 <div class="table-wrapper docutils container" id="id13">
 <table class="docutils align-default" id="id13">
-<caption><span class="caption-number">Table 29 </span><span class="caption-text">Regenerated integrated intensity, All modes / Snell’s law</span><a class="headerlink" href="#id13" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 31 </span><span class="caption-text">Regenerated integrated intensity, All modes / Snell’s law</span><a class="headerlink" href="#id13" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>External incidence</p></th>
 <th class="head"><p><span class="math notranslate nohighlight">\(e\to e\)</span></p></th>
@@ -843,7 +849,7 @@ forward scattering. At 2 degrees they recover, with integrated
 <span class="math notranslate nohighlight">\(730\ \mathrm{cm}^{-1}\)</span>. Tiny residual signals in the zero-angle
 crossed channels should not be assigned as observable Raman peaks.</p>
 <figure class="align-default" id="id14">
-<a class="reference internal image-reference" href="../Examples/ApplicationNotes/GaN/ModalPairs/Figures/gan_modal_pairs_summary.png"><img alt="Crossed-channel spectra and integrated intensity ratios for three NAC choices." src="../Examples/ApplicationNotes/GaN/ModalPairs/Figures/gan_modal_pairs_summary.png" style="width: 100%;" />
+<a class="reference internal image-reference" href="_images/gan_modal_pairs_summary.png"><img alt="Crossed-channel spectra and integrated intensity ratios for three NAC choices." src="_images/gan_modal_pairs_summary.png" style="width: 100%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 109 </span><span class="caption-text">Near-forward optical-pair comparison. The experimental 485
@@ -894,7 +900,7 @@ the optical refraction; do not enter the refracted angle in its external
 angle control.</p>
 <div class="table-wrapper docutils container" id="id15">
 <table class="docutils align-default" id="id15">
-<caption><span class="caption-number">Table 30 </span><span class="caption-text">Mapping the paper’s coordinate convention to PDGui</span><a class="headerlink" href="#id15" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 32 </span><span class="caption-text">Mapping the paper’s coordinate convention to PDGui</span><a class="headerlink" href="#id15" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Paper figure and configuration</p></th>
 <th class="head"><p>Displacements / mm</p></th>
@@ -963,7 +969,7 @@ oscillator denominator; it should not be identified automatically with
 the HWHM used to plot the PDGui lines.</p>
 <div class="table-wrapper docutils container" id="id16">
 <table class="docutils align-default" id="id16">
-<caption><span class="caption-number">Table 31 </span><span class="caption-text">Regenerated central-ray peak ranges, in <span class="math notranslate nohighlight">\(\mathrm{cm}^{-1}\)</span></span><a class="headerlink" href="#id16" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 33 </span><span class="caption-text">Regenerated central-ray peak ranges, in <span class="math notranslate nohighlight">\(\mathrm{cm}^{-1}\)</span></span><a class="headerlink" href="#id16" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Scan</p></th>
 <th class="head"><p>Finite-q response using DFT permittivity</p></th>
@@ -1000,7 +1006,7 @@ the DFT Maxwell response has a peak at about
 frequency scale accessible to a polariton; it is not a reproduction of
 the different-wavelength Mina experiment.</p>
 <figure class="align-default" id="id17">
-<a class="reference internal image-reference" href="../Examples/ApplicationNotes/GaN/ModalPairs/Irmer2013/Figures/irmer_response_spectra.png"><img alt="Aperture-dependent finite-wavevector response for paper and DFT dielectric models." src="../Examples/ApplicationNotes/GaN/ModalPairs/Irmer2013/Figures/irmer_response_spectra.png" style="width: 100%;" />
+<a class="reference internal image-reference" href="_images/irmer_response_spectra.png"><img alt="Aperture-dependent finite-wavevector response for paper and DFT dielectric models." src="_images/irmer_response_spectra.png" style="width: 100%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 110 </span><span class="caption-text">Finite-q response curves are normalised separately and offset for
@@ -1041,7 +1047,7 @@ individual optical-pair contributions as a diagnostic alternative to
 <em>Group q channels</em>.</p>
 <div class="table-wrapper docutils container" id="id18">
 <table class="docutils align-default" id="id18">
-<caption><span class="caption-number">Table 32 </span><span class="caption-text">Integrated final-state sensitivity at 2 degrees external incidence</span><a class="headerlink" href="#id18" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 34 </span><span class="caption-text">Integrated final-state sensitivity at 2 degrees external incidence</span><a class="headerlink" href="#id18" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Channel</p></th>
 <th class="head"><p>Bulk (90 degrees) / local</p></th>
@@ -1074,7 +1080,7 @@ tolerance nearly removes three channels at 2-degree incidence. This
 is a sensitivity test of a hard directional cutoff, not a fit parameter
 that should be selected to recover an experimental intensity.</p>
 <figure class="align-default" id="id19">
-<a class="reference internal image-reference" href="../Examples/ApplicationNotes/GaN/ModalPairs/IncoherentModels/Figures/gan_incoherent_models.png"><img alt="Bulk and local incoherent final-state spectra and q-angle tolerance sensitivity." src="../Examples/ApplicationNotes/GaN/ModalPairs/IncoherentModels/Figures/gan_incoherent_models.png" style="width: 100%;" />
+<a class="reference internal image-reference" href="_images/gan_incoherent_models.png"><img alt="Bulk and local incoherent final-state spectra and q-angle tolerance sensitivity." src="_images/gan_incoherent_models.png" style="width: 100%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 111 </span><span class="caption-text">Changing the final-state acceptance changes intensities substantially,
@@ -1094,6 +1100,11 @@ the quantitative conclusion that can be drawn from this example.</p>
 </section>
 <section id="reproducing-the-note-and-preparing-documentation">
 <h2>Reproducing the note and preparing documentation<a class="headerlink" href="#reproducing-the-note-and-preparing-documentation" title="Link to this heading">¶</a></h2>
+<p>The documentation includes copies of the four figures in
+<code class="docutils literal notranslate"><span class="pre">Sphinx/_static/figures/gan</span></code>, so building the manual does not require
+running the example calculations. After regenerating the plots, copy the
+four PNG files used above from the examples’ <code class="docutils literal notranslate"><span class="pre">Figures</span></code> directories into
+that directory to update the documentation.</p>
 <p>From a source checkout, activate the PDielec Python environment and run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">Examples</span><span class="o">/</span><span class="n">ApplicationNotes</span><span class="o">/</span><span class="n">GaN</span><span class="o">/</span><span class="n">regenerate</span><span class="o">.</span><span class="n">py</span>
 </pre></div>

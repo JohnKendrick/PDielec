@@ -229,6 +229,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -286,6 +287,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -313,6 +316,8 @@
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -376,6 +381,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -1249,19 +1255,22 @@
         <span class="n">gamma3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">gamma32</span><span class="p">,</span> <span class="n">gamma33</span><span class="p">]],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
         <span class="n">gamma4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">gamma41</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">gamma43</span><span class="p">]],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
         
+        <span class="c1"># Hermitian electric-field norm: sum(gamma**2) can vanish for a</span>
+        <span class="c1"># nonzero complex/evanescent vector, e.g. (1, 0, -1j).</span>
         <span class="c1">#### Regular case, no birefringence, we keep the Xu fields</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gamma1</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>      <span class="c1">#lag.norm(gamma1)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gamma2</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>      <span class="c1">#lag.norm(gamma2)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma3</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gamma3</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>      <span class="c1">#lag.norm(gamma3)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">3</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma4</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gamma4</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>      <span class="c1">#lag.norm(gamma4)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">gamma1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">gamma2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma3</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">gamma3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">3</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">gamma4</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">gamma4</span><span class="p">)</span>
 
         <span class="c1">#### In case of birefringence, use Berreman fields</span>
         <span class="k">for</span> <span class="n">ki</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span> 
             <span class="c1">### normalize them first</span>
-            <span class="c1">#self.Berreman[ki] = self.Berreman[ki]/lag.norm(self.Berreman[ki])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="p">[</span><span class="n">ki</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="p">[</span><span class="n">ki</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">useBerreman</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span>
+            <span class="c1"># The next calculation writes analytic modes into gamma before</span>
+            <span class="c1"># selecting Berreman modes. Do not overwrite that independent basis.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Berreman</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span></div>
 
 
@@ -2207,17 +2216,23 @@
 <span class="sd">        r_out : array_like, shape (4,)</span>
 <span class="sd">            Complex *field* reflection coefficients `r_out=([rpp,rps,rss,rsp])`</span>
 <span class="sd">        R_out : array_like, shape (4,)</span>
-<span class="sd">            Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Tps])`</span>
+<span class="sd">            Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Rps])`</span>
+<span class="sd">            Subscripts denote incident then reflected polarization. Total</span>
+<span class="sd">            reflected powers are ``Rp = R_out[0] + R_out[3]`` and</span>
+<span class="sd">            ``Rs = R_out[1] + R_out[2]``.</span>
 <span class="sd">        t_out : array_like, shape (4,)</span>
 <span class="sd">            Complex *field* transmission coefficients `t=([tpp, tps, tsp, tss])`</span>
-<span class="sd">        T_out : array_like, shape (4,)</span>
+<span class="sd">        T_out : array_like, shape (2,)</span>
 <span class="sd">            Real *intensity* transmission coefficients `T_out=([Tp,Ts])` (mode-inselective)</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        **IMPORTANT**</span>
 
-<span class="sd">        - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined</span>
+<span class="sd">        - Reflected powers assume lossless isotropic incident channels. Transmission</span>
+<span class="sd">          requires nonzero incident normal flux.</span>
+
+<span class="sd">        - As of version 19-03-2020: Transmission is defined</span>
 <span class="sd">          mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.</span>
 <span class="sd">          The new definition of this function **BREAKS compatibility** with the previous one.</span>
 
@@ -2277,42 +2292,35 @@
         <span class="c1">#CHECK the ORDERING! JK</span>
         <span class="n">t_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tpp</span><span class="p">,</span> <span class="n">tps</span><span class="p">,</span> <span class="n">tsp</span><span class="p">,</span> <span class="n">tss</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
 
-        <span class="c1">#### Intensity transmission requires Poynting vector analysis</span>
-        <span class="c1">## N.B: could be done mode-dependentely later</span>
-        <span class="c1">## start with the superstrate</span>
-        <span class="c1">## Incident fields are either p or s polarized</span>
-        <span class="n">ksup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span> <span class="c1">## wavevector in superstrate</span>
-        <span class="n">ksup</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_sys</span>
-        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">qi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">qs</span><span class="p">):</span>
-            <span class="n">ksup</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">qi</span>
-        <span class="n">ksup</span> <span class="o">=</span> <span class="n">ksup</span><span class="o">/</span><span class="n">c_const</span>     <span class="c1">## omega simplifies in the H field formula</span>
-        <span class="n">Einc_pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="c1">## p-pol incident electric field</span>
-        <span class="n">Einc_sin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1">## s-pol incident electric field</span>
-        <span class="c1">## Poynting vector in superstrate (incident, p-in and s-in)</span>
-        <span class="n">Sinc_pin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Einc_pin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksup</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">Einc_pin</span><span class="p">))))</span>
-        <span class="n">Sinc_sin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Einc_sin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksup</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="n">Einc_sin</span><span class="p">))))</span>
-
-        <span class="c1">### Substrate Poynting vector</span>
-        <span class="c1">## Outgoing fields (eqn 17)</span>
-        <span class="n">Eout_pin</span> <span class="o">=</span> <span class="n">t_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">+</span><span class="n">t_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1">#p-in, p or s out</span>
-        <span class="n">Eout_sin</span> <span class="o">=</span> <span class="n">t_out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">+</span><span class="n">t_out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1">#s-in, p or s out</span>
-        <span class="n">ksub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
-        <span class="n">ksub</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_sys</span>
-        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">qi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">qs</span><span class="p">):</span>
-            <span class="n">ksub</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">qi</span>
-        <span class="n">ksub</span> <span class="o">=</span> <span class="n">ksub</span><span class="o">/</span><span class="n">c_const</span> <span class="c1">## omega simplifies in the H field formula</span>
-
-        <span class="c1">###########################</span>
-        <span class="c1">## outgoing Poynting vectors, 2 formulations</span>
-        <span class="n">Sout_pin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Eout_pin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksub</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">Eout_pin</span><span class="p">))))</span>
-        <span class="n">Sout_sin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Eout_sin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksub</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="n">Eout_sin</span><span class="p">))))</span>
-        <span class="c1">### Intensity transmission coefficients are only the z-component of S !</span>
-        <span class="n">T_pp</span> <span class="o">=</span> <span class="p">(</span><span class="n">Sout_pin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">Sinc_pin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1">## z-component only</span>
-        <span class="n">T_ss</span> <span class="o">=</span> <span class="p">(</span><span class="n">Sout_sin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">Sinc_sin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1">## z-component only</span>
-
-        <span class="n">T_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">T_pp</span><span class="p">,</span> <span class="n">T_ss</span><span class="p">])</span>
+        <span class="n">T_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_transmittance</span><span class="p">(</span><span class="n">zeta_sys</span><span class="p">,</span> <span class="n">t_out</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">r_out</span><span class="p">,</span> <span class="n">R_out</span><span class="p">,</span> <span class="n">t_out</span><span class="p">,</span> <span class="n">T_out</span></div>
+
+
+<div class="viewcode-block" id="System._calculate_transmittance">
+<a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System._calculate_transmittance">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_transmittance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">,</span> <span class="n">t_out</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return transmitted/incident normal flux for each incident mode.</span>
+
+<span class="sd">        Magnetic basis vectors are Z0 H / E_ref = (k/k0 cross gamma)/mu.</span>
+<span class="sd">        Sum modal E and H separately before evaluating Re(E cross H*)/2;</span>
+<span class="sd">        distinct substrate modes generally have different longitudinal q.</span>
+<span class="sd">        The common SI flux factor abs(E_ref)**2/Z0 cancels in this ratio.</span>
+<span class="sd">        Incident modes must carry nonzero normal flux.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">magnetic</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">medium</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="p">):</span>
+            <span class="n">wavevectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
+            <span class="n">wavevectors</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_sys</span>
+            <span class="n">wavevectors</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">medium</span><span class="o">.</span><span class="n">qs</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">magnetic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">wavevectors</span><span class="p">,</span> <span class="n">medium</span><span class="o">.</span><span class="n">gamma</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">medium</span><span class="o">.</span><span class="n">mu</span><span class="p">)</span>
+        <span class="n">incident_flux</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">magnetic</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">conj</span><span class="p">()))[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">coefficients</span> <span class="o">=</span> <span class="n">t_out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">electric_out</span> <span class="o">=</span> <span class="n">coefficients</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">magnetic_out</span> <span class="o">=</span> <span class="n">coefficients</span> <span class="o">@</span> <span class="n">magnetic</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">transmitted_flux</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">electric_out</span><span class="p">,</span> <span class="n">magnetic_out</span><span class="o">.</span><span class="n">conj</span><span class="p">()))[:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">transmitted_flux</span> <span class="o">/</span> <span class="n">incident_flux</span></div>
 
 
 <div class="viewcode-block" id="System.calculate_Efield">
@@ -2333,7 +2341,7 @@
 <span class="sd">        x : float or 1D array, optional</span>
 <span class="sd">            x-coordinates (reserved for future 2D field plots). Default is 0.0.</span>
 <span class="sd">        magnetic : bool, optional</span>
-<span class="sd">            If True, also compute and return the magnetic field vector.</span>
+<span class="sd">            If True, also return the scaled magnetic field Z0 H / E_ref.</span>
 <span class="sd">            Default is False.</span>
 <span class="sd">        dz : float, optional</span>
 <span class="sd">            Spatial resolution along the propagation (z) axis. Supersedes</span>
@@ -2345,9 +2353,11 @@
 <span class="sd">            z-coordinates at which the fields were evaluated.</span>
 <span class="sd">        E_out : ndarray, shape (6, len(z))</span>
 <span class="sd">            Total electric field in the structure (rows 0–2: p-pol in,</span>
-<span class="sd">            rows 3–5: s-pol in).</span>
+<span class="sd">            rows 3–5: s-pol in), divided by incident electric amplitude E_ref.</span>
+<span class="sd">            Multiply by E_ref in V/m to recover the physical electric field.</span>
 <span class="sd">        H_out : ndarray, shape (6, len(z)), optional</span>
-<span class="sd">            Total magnetic field (only returned when ``magnetic=True``).</span>
+<span class="sd">            Scaled magnetic field Z0 H / E_ref (only when ``magnetic=True``).</span>
+<span class="sd">            Physical H in A/m is E_ref/Z0 times this array.</span>
 <span class="sd">        zn : 1D array</span>
 <span class="sd">            Positions of the layer interfaces.</span>
 
@@ -2456,7 +2466,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">thick</span><span class="p">,</span> <span class="n">zn</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">dz</span><span class="p">)</span>
 
-        <span class="c1"># 2x4-component field tensor propagated from the front surface</span>
+        <span class="c1"># 2x4-component field tensor referenced to the back surface</span>
         <span class="n">Eprop</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">8</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
         <span class="c1"># 4-component field tensor for each direction and polarisation</span>
         <span class="n">F_tens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">24</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
@@ -2512,7 +2522,7 @@
                         <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">propagation_exponents</span><span class="p">[</span><span class="n">kk</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">zc</span> <span class="o">-</span> <span class="n">zn</span><span class="p">[</span><span class="n">current_layer</span><span class="p">])</span> <span class="o">/</span> <span class="n">L</span><span class="o">.</span><span class="n">thick</span>
                     <span class="p">)</span>
 
-            <span class="c1">#### Eprop propagated from front surface to back of next layer</span>
+            <span class="c1">#### Propagate back-interface amplitudes to the sampled position</span>
             <span class="n">Eprop</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dKiz</span><span class="p">,</span> <span class="n">F_bk</span><span class="p">[</span><span class="n">current_layer</span><span class="p">,:</span><span class="mi">4</span><span class="p">])</span>
             <span class="n">Eprop</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dKiz</span><span class="p">,</span> <span class="n">F_bk</span><span class="p">[</span><span class="n">current_layer</span><span class="p">,</span><span class="mi">4</span><span class="p">:])</span>
 
@@ -2585,14 +2595,15 @@
 <span class="sd">        E : ndarray, shape (6, len(z))</span>
 <span class="sd">            Electric field vector (p- and s-pol in) along z.</span>
 <span class="sd">        H : ndarray, shape (6, len(z))</span>
-<span class="sd">            Magnetic field vector (p- and s-pol in) along z.</span>
+<span class="sd">            Scaled magnetic field Z0 H / E_ref (p- and s-pol in) along z.</span>
 <span class="sd">        R : array_like, shape (4,)</span>
 <span class="sd">            Intensity reflectivity from :py:func:`calculate_r_t`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        S_out : ndarray, shape (6, len(z))</span>
-<span class="sd">            Six-component (p//s) Poynting vector along z.</span>
+<span class="sd">            Six-component (p//s) reduced Poynting vector along z.</span>
+<span class="sd">            Multiply by abs(E_ref)**2/Z0 for physical flux in W/m^2.</span>
 <span class="sd">        A_out : ndarray, shape (2, len(z))</span>
 <span class="sd">            Two-component (p//s) cumulated absorption along z.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2606,10 +2617,10 @@
                                               <span class="n">axisa</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axisb</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axisc</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
 
         <span class="n">z1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>  <span class="c1">### index where z&gt;0, first interface</span>
-        <span class="n">Tp_z</span> <span class="o">=</span> <span class="n">S_out</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span><span class="o">/</span><span class="n">S_out</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="c1">## layer-resolved transmittance p-pol</span>
-        <span class="n">Ts_z</span> <span class="o">=</span> <span class="n">S_out</span><span class="p">[</span><span class="mi">5</span><span class="p">,:]</span><span class="o">/</span><span class="n">S_out</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">## layer-resolved transmittance s-pol</span>
-        <span class="n">A_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">z1</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">-</span><span class="n">Tp_z</span><span class="p">[</span><span class="n">z1</span><span class="p">:]</span>
-        <span class="n">A_out</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">z1</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">-</span><span class="n">Ts_z</span><span class="p">[</span><span class="n">z1</span><span class="p">:]</span>
+        <span class="n">Tp_z</span> <span class="o">=</span> <span class="n">S_out</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span><span class="o">/</span><span class="n">S_out</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="c1">## layer-resolved transmittance p-pol</span>
+        <span class="n">Ts_z</span> <span class="o">=</span> <span class="n">S_out</span><span class="p">[</span><span class="mi">5</span><span class="p">,:]</span><span class="o">/</span><span class="n">S_out</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="c1">## layer-resolved transmittance s-pol</span>
+        <span class="n">A_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">z1</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">-</span><span class="n">Tp_z</span><span class="p">[</span><span class="n">z1</span><span class="p">:]</span>
+        <span class="n">A_out</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">z1</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">-</span><span class="n">Ts_z</span><span class="p">[</span><span class="n">z1</span><span class="p">:]</span>
 
         <span class="k">return</span> <span class="n">S_out</span><span class="p">,</span> <span class="n">A_out</span></div>
 
@@ -2715,13 +2726,14 @@
 <div class="viewcode-block" id="System.calculate_modal_amplitudes">
 <a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System.calculate_modal_amplitudes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculate_modal_amplitudes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">zeta_sys</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expose the per-layer Berreman modal amplitudes at the front of each layer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expose the per-layer Berreman modal amplitudes at the back of each layer.</span>
 
 <span class="sd">        Extracts the F_bk bookkeeping from ``calculate_Efield`` and returns the</span>
 <span class="sd">        four complex modal amplitudes (for p-pol and s-pol incidence) at the</span>
-<span class="sd">        front interface of every finite-thickness layer.  The field at any depth z</span>
+<span class="sd">        back interface of every finite-thickness layer.  The field at any depth z</span>
 <span class="sd">        inside layer k is then ``dKiz(z) @ F_bk[k+1, :]`` where dKiz is the</span>
-<span class="sd">        partial-depth propagation matrix, exactly as used inside</span>
+<span class="sd">        partial-depth propagation matrix exp(+i k0 q (z-z_back)) for coherent</span>
+<span class="sd">        layers, exactly as used inside</span>
 <span class="sd">        ``calculate_Efield``.</span>
 
 <span class="sd">        Both ``TransferMatrixSystem`` and ``ScatteringMatrixSystem`` are</span>
@@ -2833,7 +2845,7 @@
         <span class="c1"># Shift so that z=0 is the superstrate/first-layer interface</span>
         <span class="n">zn</span> <span class="o">=</span> <span class="n">zn</span> <span class="o">-</span> <span class="n">zn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="c1"># modal_amps[k] = F_bk[k+1, :] — the amplitude vector at the front of layer k.</span>
+        <span class="c1"># modal_amps[k] = F_bk[k+1, :] — the amplitude vector at the back of layer k.</span>
         <span class="c1"># At any depth z in layer k: Eprop = dKiz(z) @ F_bk[k+1, :4] (p-pol)</span>
         <span class="c1">#                                           @ F_bk[k+1, 4:] (s-pol)</span>
         <span class="n">modal_amps</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">F_bk</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">laynum</span><span class="p">)}</span>
@@ -3012,10 +3024,13 @@
 <span class="sd">        r_out : array_like, shape (4,)</span>
 <span class="sd">            Complex *field* reflection coefficients (r_out=([rpp,rps,rss,rsp])).</span>
 <span class="sd">        R_out : array_like, shape (4,)</span>
-<span class="sd">            Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Tps])).</span>
+<span class="sd">            Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Rps])).</span>
+<span class="sd">            Subscripts denote incident then reflected polarization. Total</span>
+<span class="sd">            reflected powers are ``Rp = R_out[0] + R_out[3]`` and</span>
+<span class="sd">            ``Rs = R_out[1] + R_out[2]``.</span>
 <span class="sd">        t_out : array_like, shape (4,)</span>
 <span class="sd">            Complex *field* transmission coefficients (t=([tpp, tps, tsp, tss])).</span>
-<span class="sd">        T_out : array_like, shape (4,)</span>
+<span class="sd">        T_out : array_like, shape (2,)</span>
 <span class="sd">            Real *intensity* transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3043,40 +3058,7 @@
         <span class="n">tsp</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">t_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tpp</span><span class="p">,</span> <span class="n">tps</span><span class="p">,</span> <span class="n">tsp</span><span class="p">,</span> <span class="n">tss</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
 
-        <span class="c1"># Intensity transmission using Poynting vector analysis</span>
-        <span class="c1"># start with the superstrate</span>
-        <span class="c1"># Incident fields are either p or s polarized</span>
-        <span class="n">ksup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span> <span class="c1">## wavevector in superstrate</span>
-        <span class="n">ksup</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_sys</span>
-        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">qi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">qs</span><span class="p">):</span>
-            <span class="n">ksup</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">qi</span>
-        <span class="n">ksup</span> <span class="o">=</span> <span class="n">ksup</span><span class="o">/</span><span class="n">c_const</span>                     <span class="c1"># omega simplifies in the H field formula</span>
-        <span class="c1"># Incident electric field</span>
-        <span class="n">Einc_pin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>  <span class="c1"># p-pol incident electric field</span>
-        <span class="n">Einc_sin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>  <span class="c1"># s-pol incident electric field</span>
-
-        <span class="c1"># Poynting vector in superstrate (incident, p-in and s-in)</span>
-        <span class="n">Sinc_pin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Einc_pin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksup</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">Einc_pin</span><span class="p">))))</span>
-        <span class="n">Sinc_sin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Einc_sin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksup</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="n">Einc_sin</span><span class="p">))))</span>
-
-        <span class="c1"># Substrate Poynting vector</span>
-        <span class="n">Eout_pin</span> <span class="o">=</span> <span class="n">t_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">+</span><span class="n">t_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1">#p-in, p or s out</span>
-        <span class="n">Eout_sin</span> <span class="o">=</span> <span class="n">t_out</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">+</span><span class="n">t_out</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="c1">#s-in, p or s out</span>
-        <span class="n">ksub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cdouble</span><span class="p">)</span>
-        <span class="n">ksub</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeta_sys</span>
-        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">qi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">substrate</span><span class="o">.</span><span class="n">qs</span><span class="p">):</span>
-            <span class="n">ksub</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">qi</span>
-        <span class="n">ksub</span> <span class="o">=</span> <span class="n">ksub</span><span class="o">/</span><span class="n">c_const</span> <span class="c1"># omega simplifies in the H field formula</span>
-
-        <span class="c1"># outgoing Poynting vectors, 2 formulations</span>
-        <span class="n">Sout_pin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Eout_pin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksub</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span><span class="n">Eout_pin</span><span class="p">))))</span>
-        <span class="n">Sout_sin</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Eout_sin</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">ksub</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="n">Eout_sin</span><span class="p">))))</span>
-
-        <span class="c1"># Intensity transmission coefficients are only the z-component of S !</span>
-        <span class="n">T_pp</span> <span class="o">=</span> <span class="p">(</span><span class="n">Sout_pin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">Sinc_pin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1">## z-component only</span>
-        <span class="n">T_ss</span> <span class="o">=</span> <span class="p">(</span><span class="n">Sout_sin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">Sinc_sin</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1">## z-component only</span>
-
-        <span class="n">T_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">T_pp</span><span class="p">,</span> <span class="n">T_ss</span><span class="p">])</span>
+        <span class="n">T_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_transmittance</span><span class="p">(</span><span class="n">zeta_sys</span><span class="p">,</span> <span class="n">t_out</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">r_out</span><span class="p">,</span> <span class="n">R_out</span><span class="p">,</span> <span class="n">t_out</span><span class="p">,</span> <span class="n">T_out</span></div>
 
@@ -3111,7 +3093,7 @@
 <span class="sd">        x : float or 1D array, optional</span>
 <span class="sd">            x-coordinates (reserved for future 2D field plots). Default is 0.0.</span>
 <span class="sd">        magnetic : bool, optional</span>
-<span class="sd">            If True, also compute and return the magnetic field vector.</span>
+<span class="sd">            If True, also return the scaled magnetic field Z0 H / E_ref.</span>
 <span class="sd">            Default is False.</span>
 <span class="sd">        dz : float, optional</span>
 <span class="sd">            Spatial resolution along the propagation (z) axis. Supersedes</span>
@@ -3123,9 +3105,11 @@
 <span class="sd">            z-coordinates at which the fields were evaluated.</span>
 <span class="sd">        E_out : ndarray, shape (6, len(z))</span>
 <span class="sd">            Total electric field in the structure (rows 0–2: p-pol in,</span>
-<span class="sd">            rows 3–5: s-pol in).</span>
+<span class="sd">            rows 3–5: s-pol in), divided by incident electric amplitude E_ref.</span>
+<span class="sd">            Multiply by E_ref in V/m to recover the physical electric field.</span>
 <span class="sd">        H_out : ndarray, shape (6, len(z)), optional</span>
-<span class="sd">            Total magnetic field (only returned when ``magnetic=True``).</span>
+<span class="sd">            Scaled magnetic field Z0 H / E_ref (only when ``magnetic=True``).</span>
+<span class="sd">            Physical H in A/m is E_ref/Z0 times this array.</span>
 <span class="sd">        zn : 1D array</span>
 <span class="sd">            Positions of the layer interfaces.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

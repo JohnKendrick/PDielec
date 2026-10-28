@@ -87,12 +87,14 @@ Functions
    PDielec.LayeredRamanCalculator._line_key
    PDielec.LayeredRamanCalculator._modal_pair_final_state_q
    PDielec.LayeredRamanCalculator._modal_pair_layer_worker_data
-   PDielec.LayeredRamanCalculator._modal_pair_phonon_data
+   PDielec.LayeredRamanCalculator._modal_pair_phonon_branches
    PDielec.LayeredRamanCalculator._modal_pair_stokes_channels
    PDielec.LayeredRamanCalculator._modal_q_channels_from_fields
    PDielec.LayeredRamanCalculator._polarisation_to_jones
+   PDielec.LayeredRamanCalculator._prepared_modal_pair_worker
    PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected
    PDielec.LayeredRamanCalculator._resolver_coherence_regime
+   PDielec.LayeredRamanCalculator._validate_modal_channel_counts
    PDielec.LayeredRamanCalculator.lorentzian_broaden
 
 
@@ -173,9 +175,9 @@ Module Contents
    depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
        How to combine the source along the depth of each Raman-active layer.
        ``'Coherent amplitude'`` integrates the complex amplitude before
-       squaring and is appropriate for thin coherent films.  ``'Incoherent
-       intensity'`` integrates the local intensity and is more stable for
-       thick or bulk samples where long-range phase coherence is not physical.
+       squaring as a legacy raw constant-profile overlap. ``'Incoherent
+       intensity'`` integrates the local intensity. These have different
+       length dimensions; thickness alone does not select the physical model.
    final_state_model : {'Bulk phase matched', 'Local incoherent'}, optional
        Interpretation of modal pairs when ``depth_integration`` is incoherent.
        ``'Bulk phase matched'`` compares each internal ``q_pair`` with the
@@ -229,14 +231,15 @@ Module Contents
           (the unit ``calculate_Efield`` expects).
       _gl_phys_weights : ndarray
           Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).
-          The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
-          keeping intensity magnitudes in a readable range.
+          These legacy raw overlaps use stored R_epsilon in sqrt(Å/amu).
+          Squared coherent overlaps have units Å³/amu; local integrals
+          have units Å²/amu. They are not a common normalized observable.
       _gl_layer_slices : list of slice
           One slice per ``RamanLayer`` indexing into ``_gl_z`` / ``_gl_phys_weights``.
 
 
 
-   .. py:method:: _calculate_mode_intensities_modal_pairs(progress_callback=None, pool=None, return_contributions=False)
+   .. py:method:: _calculate_mode_intensities_modal_pairs(progress_callback=None, pool=None, return_contributions=False, _mode_index=None)
 
       Level 3 modal-pairs Raman intensity calculation.
 
@@ -249,10 +252,12 @@ Module Contents
 
       For coherent depth, the phonon wavevector for each channel pair is
       q_ph = k_L − k_S, giving pair-resolved NAC tensors and finite-film
-      contributions.  For incoherent depth, the external photon momentum
-      transfer selects one phonon final state; internal Berreman q differences
-      remain coherent local-field components of that state.  NAC results are
-      cached per layer/channel pair and reused across all phonon modes.
+      contributions. For incoherent depth, NAC uses the external momentum
+      direction and the selected legacy grouping policy. Direction reuse is
+      a material-response approximation, not a general phonon-state identity.
+      NAC is evaluated at the supplied branch frequency; fields and final
+      classification use the returned Stokes frequency. This one-pass policy
+      does not solve for a self-consistent NAC-dependent frequency/direction.
 
       NAC closures are evaluated only while building the serial cache.  When a
       worker pool is supplied, the per-mode field and intensity calculations
@@ -263,6 +268,7 @@ Module Contents
       active_frequencies : ndarray
       active_intensities : ndarray
       active_linewidths : ndarray
+
 
 
 
@@ -402,6 +408,7 @@ Module Contents
 
 
 
+
    .. py:method:: _get_modal_q_channels(modal_fields, qs_by_layer, pol_idx)
 
       Group modal fields into propagation-q subspaces for one polarisation.
@@ -495,6 +502,33 @@ Module Contents
       ndarray, shape (3, 3)
           Raman tensor in the lab frame: ``G @ R_crystal @ G.T``.
 
+
+
+
+   .. py:method:: calculate_depth_correlated_weights(domain_edges_m=None)
+
+      Return normalized depth weights before Stokes factors or broadening.
+
+      This opt-in, sequential total-field model uses a local delta kernel
+      when ``domain_edges_m`` is None. Otherwise the strictly increasing
+      edges partition the entire finite stack into physical phonon domains,
+      each containing one uniform, normalized collective mode. Domains add
+      intensities; each detector channel is evaluated independently. Edges
+      are metres and must span [0, total thickness]. Quadrature is split at
+      optical interfaces and domain edges, so artificial optical subdivision
+      does not create phonon domains.
+
+      All finite optical layers must have one RamanLayer, with matching
+      phonon frequencies and an explicitly consistent branch/tensor phase
+      convention across domains. Heterogeneous phonon interfaces and modal
+      NAC/final-state grouping are not supported here. Legacy depth/layer
+      coherence settings do not select this model. No worker pool is used.
+
+      Returns frequencies (cm^-1), reduced weights (angstrom**2/amu), and
+      linewidths (cm^-1). Multiply each weight by ``stokes_prefactor`` once
+      for the existing reduced spectral convention. For SI depth weights,
+      multiply by ``1e-20 / atomic_mass_unit_kg``. Illuminated area and
+      absolute optical collection/radiation constants are not included.
 
 
 
@@ -617,10 +651,19 @@ Module Contents
    .. py:attribute:: _incident_jones
 
 
+   .. py:attribute:: _modal_pair_branch_vectors
+
+
    .. py:attribute:: _modal_pair_q_vectors
 
 
    .. py:attribute:: _nac_cache
+
+
+   .. py:property:: _reciprocal_angle_rad
+
+      Detector launch angle; collection_angle_rad describes the outgoing ray.
+
 
 
    .. py:attribute:: approximate_es
@@ -738,6 +781,7 @@ Module Contents
        Non-zero only for the incoherent-depth integration path, where
        ``amplitude`` is not meaningful.  Equal to the raw depth-integrated
        local intensity before the Stokes spectral prefactor.
+
 
 
    .. py:attribute:: amplitude
@@ -930,9 +974,14 @@ Module Contents
    Return pickle-friendly Raman layer data for modal-pair workers.
 
 
-.. py:function:: _modal_pair_phonon_data(mode_idx, fallback_frequency, fallback_tensors, fallback_sigma, fallback_selected, cache_val)
+.. py:function:: _modal_pair_phonon_branches(mode_idx, fallback_frequency, fallback_tensors, fallback_sigma, fallback_selected, cache_val)
 
-   Return q-resolved phonon data and the selection flag for one pair.
+   Yield every NAC branch owned by a TO seed, without collapsing final states.
+
+   Each row is ``(branch_index, frequency, tensor, linewidth, selected)``.
+   The dominant-TO map transfers seed/GUI ownership, not a one-branch capacity.
+   Legacy closures without a map retain their index-based association.
+   A missing NAC response yields the original TO branch.
 
 
 .. py:function:: _modal_pair_stokes_channels(es_system, collection_angle_rad, z_s, layer_indices, gl_layer_slices, detected_system_layer_indices, detected_pol_indices, detected_jones, laser_frequency_cm1, mode_frequency_cm1)
@@ -950,6 +999,11 @@ Module Contents
    Return a normalised p/s Jones vector, or None for unpolarised detection.
 
 
+.. py:function:: _prepared_modal_pair_worker(task)
+
+   Evaluate a serially prepared optical/NAC task without pickling closures.
+
+
 .. py:function:: _raman_layer_mode_is_selected(modes_selected, mode_idx)
 
    Return whether a mode is selected for a RamanLayer in worker code.
@@ -958,6 +1012,11 @@ Module Contents
 .. py:function:: _resolver_coherence_regime(depth_integration, final_state_model)
 
    Return the final-state resolver regime matching the depth treatment.
+
+
+.. py:function:: _validate_modal_channel_counts(seed_channels, shifted_channels)
+
+   Reject an ambiguous NAC assignment when optical channels split or merge.
 
 
 .. py:function:: lorentzian_broaden(mode_frequencies_cm1, mode_intensities, linewidths_cm1, freq_axis_cm1)
@@ -969,7 +1028,8 @@ Module Contents
    mode_frequencies_cm1 : array_like, shape (M,)
        Mode frequencies in cm⁻¹ (only active modes, after acoustic filtering).
    mode_intensities : array_like, shape (M,)
-       Integrated mode intensities before broadening.
+       Line coefficients before broadening. The implemented Lorentzian has
+       full area pi, so each integrated line area is pi times its coefficient.
    linewidths_cm1 : array_like, shape (M,)
        Lorentzian half-widths at half-maximum σ_m in cm⁻¹.
    freq_axis_cm1 : array_like, shape (N,)

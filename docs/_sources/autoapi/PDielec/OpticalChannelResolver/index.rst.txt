@@ -25,6 +25,9 @@ Functions
 .. autoapisummary::
 
    PDielec.OpticalChannelResolver.compute_modal_fields_at_points
+   PDielec.OpticalChannelResolver.electric_fields_to_lab
+   PDielec.OpticalChannelResolver.modal_pair_momentum
+   PDielec.OpticalChannelResolver.reciprocal_system
 
 
 Module Contents
@@ -68,9 +71,9 @@ Module Contents
 
       Return the macroscopic external momentum transfer ``q_ext = k_inc - k_det``.
 
-      The returned vector uses GTM's normalised wavevector units.  For normal
-      incidence this gives zero in forward scattering and finite ``2qz`` in
-      backscattering, which is the distinction needed by the phonon resolver.
+      The returned vector is normalized to the incident vacuum wavevector.
+      Detector angles specify the outgoing ray in laboratory coordinates.
+      The Stokes/laser ratio is retained, including in forward scattering.
 
       This helper follows the current GTM boundary convention and assumes the
       external half-space wavevector is determined by ``epsilon[0, 0]``.  It is
@@ -100,6 +103,8 @@ Module Contents
    ``channels_by_pol`` is nested as
    ``channels_by_pol[pol_idx][physical_layer_index] -> list[OpticalChannel]``.
    The physical layer index is the index in the original, unreversed stack.
+   Electric components are in the laboratory frame. Coordinates, zeta and qz
+   remain in the solver frame; substrate collection uses z_prime = L - z.
 
 
    .. py:attribute:: channels_by_pol
@@ -138,5 +143,28 @@ Module Contents
    ``system_layer_indices`` are the corresponding indices in ``system.layers``.
    Passing distinct values is required for reversed systems so physical layer
    ids remain stable while the optical stack order changes.
+
+
+.. py:function:: electric_fields_to_lab(fields, system, component_axis=0)
+
+   Map electric components from a depth-reflected solver to the lab frame.
+
+
+.. py:function:: modal_pair_momentum(channel_l, channel_s, stokes_ratio, collection_side)
+
+   Return real overlap momentum in common laser-vacuum wavevector units.
+
+   Channel zeta/qz belong to the incident and reciprocal solver frames.
+   This real-vector convention is for NAC/legacy angular classification;
+   attenuation remains in the complex fields, not in a phonon-state label.
+
+
+.. py:function:: reciprocal_system(system, collection_side)
+
+   Return the detector stack in coordinates (x, y, L-z).
+
+   Reflect permittivity tensors as P epsilon P, P=diag(1,1,-1), on
+   independent layer copies. Electric vectors are mapped back by P; the
+   optical solver handles magnetic axial vectors in its own coordinate frame.
 
 

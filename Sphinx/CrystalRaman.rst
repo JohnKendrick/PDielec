@@ -51,7 +51,23 @@ scattered radiation has frequency
 
    \nu_S = \nu_L - \nu_m
 
-for Stokes scattering from mode :math:`m`.
+for Stokes scattering from mode :math:`m`. Here and in the numerical spectrum,
+:math:`\nu` denotes wavenumber in cm\ :sup:`−1`.
+
+The signed collection angle specifies the **outgoing** ray's x component.
+Automatic collection (``Collection angle = -1`` in saved GUI scripts) selects
+retro-backscattering on the superstrate side: :math:`\theta_{out}=-\theta_L`.
+On the substrate side it selects :math:`\theta_{out}=\theta_L`.
+An explicit positive angle equal to the incident angle selects specular
+backscattering. The reciprocal field is launched at :math:`-\theta_{out}`.
+At normal incidence these choices coincide; at oblique incidence they can
+produce different peak heights even with unchanged phonon frequencies.
+
+The reciprocal-angle repair changes old oblique automatic-backscatter results.
+For example, the CASTEP ZnO 45° scenario's dominant line retains its frequency
+but has about one third of its previous height. Explicit +45° collection
+recovers the former specular geometry; this is a geometry choice, not an
+intensity rescaling.
 
 Layer Raman Amplitude
 ---------------------
@@ -102,7 +118,11 @@ system at the laser frequency.  The scattered field is calculated at the shifted
 :math:`\nu_S`.  For backscattering the reciprocal field is launched from the superstrate
 side.  For forward scattering it is launched from the substrate side, which is implemented
 by using the reversed stack and mapping each integration point to the corresponding
-position in that reversed system.
+position in that reversed system. With :math:`P=\operatorname{diag}(1,1,-1)`,
+the reversed stack uses :math:`P\varepsilon P` in coordinates :math:`(x,y,L-z)`;
+electric vectors are mapped back by :math:`P` before contraction with the
+laboratory Raman tensor. Layer reversal alone is insufficient for anisotropic
+materials.
 
 With the script option ``Approximate ES=True``, the reciprocal detector field
 is instead evaluated once at the laser frequency and reused for all modes.
@@ -178,8 +198,10 @@ from those layers is expected to retain a fixed phase relationship and interfere
 The *Depth coherence* option is a third, more local coherence choice.  It controls
 how Raman sources are combined through the thickness of each individual
 Raman-active layer.  *Coherent amplitude* integrates the complex source amplitude
-before squaring.  This assumes a common phonon final state with a specified
-spatial phase; small film thickness alone does not establish that assumption:
+before squaring. This is a raw constant-profile overlap: it supplies neither
+an explicit spatial phonon phase nor collective-state normalization. Interpreting
+it as one physical final state needs those additional specifications; small
+film thickness alone does not establish them:
 
 .. math::
    :label: eq-crystal-raman-depth-coherent
@@ -205,7 +227,10 @@ spatial phase; small film thickness alone does not establish that assumption:
    \mathbf{E}_L(z,\nu_L)
    \right|^2\,dz ,
 
-which assumes spatially local source correlations. Film thickness alone does
+which can describe spatially local source correlations. It also follows from a
+complete orthonormal spatial-state sum when the optical/tensor coupling and
+spectral weights are common to the included states; it does not require that
+each state itself be spatially localized. Film thickness alone does
 not determine phonon coherence.  When *Incoherent intensity* is selected, PDielec also
 forces separate Raman-active layers to be combined as incoherent intensities,
 because there is then no well-defined layer amplitude to add coherently.
@@ -228,7 +253,12 @@ formed by applying Lorentzian broadening to each active mode,
    I_m
    \frac{\sigma_m}{(\Delta\nu-\nu_m)^2+\sigma_m^2}
 
-where :math:`\sigma_m` is the Lorentzian half-width at half maximum.
+where :math:`\sigma_m` is the Lorentzian half-width at half maximum in cm\ :sup:`−1`.
+This implemented line shape has integral :math:`\pi` over the full wavenumber
+axis. Thus :math:`I_m` is a line coefficient and its full integrated area is
+:math:`\pi I_m`, not :math:`I_m`. A unit-area Lorentzian requires division by
+:math:`\pi`. A spectral density on a different axis also needs the appropriate
+Jacobian; relabelling the frequency axis alone does not convert its units.
 
 Crystal and powder calculations use the same scattered-frequency fourth-power
 weight. It is applied once per final phonon state, using its corrected frequency,
@@ -245,6 +275,15 @@ addition; the EO susceptibility model remains the static electronic response.
 
 Layer Phonon Frequencies
 ------------------------
+
+The NAC eigensolver uses Hartree atomic units: volume in Bohr cubed,
+masses in electron masses and Born charges in elementary-charge units.
+Its electrostatic prefactor is :math:`4\pi/V`. With SI charges and masses,
+the corresponding prefactor is :math:`1/(\epsilon_0 V)` instead. Atomic-unit
+eigenvalues are converted to cm\ :sup:`−1` by dividing their signed square
+roots by ``Constants.wavenumber``, the numerical factor
+:math:`100h c_{SI}/E_h`. An SI eigenvalue requires division by
+:math:`2\pi100c_{SI}`. These two conventions must not be mixed.
 
 The optical field calculation and the active-layer vibrational calculation are separate
 parts of the model.  The transfer or scattering matrix calculation determines the laser
@@ -327,13 +366,14 @@ alternatives for solving the optical propagation problem.
             \tensorbs{\varepsilon}^{b}_{i,lab}
             \hat{\mathbf{q}}_{ph}}
 
-   This is the bulk non-analytic correction evaluated for the Raman scattering geometry.
-   It is useful when the phonon is treated as a propagating long-wavelength bulk mode in
-   the active material.  In a multilayer calculation the optical fields may contain several
-   forward and backward components.  The implementation therefore uses the wave-vector
-   branch associated with the selected incident and detected optical channels; if more than
-   one branch is retained, the corresponding Raman contributions are evaluated and combined
-   using the same coherent or incoherent choices as the optical Raman amplitudes.
+   The implemented geometry estimate uses
+   :math:`n=\sqrt{\max(\operatorname{Tr}(\varepsilon_\infty)/3,1)}` and
+   :math:`\sin\theta_{int}=\sin\theta_{ext}/n`, assuming an air launch medium.
+   It subtracts unit optical directions, omitting the finite Stokes/laser
+   magnitude ratio. It supplies one direction for the layer's NAC calculation,
+   while the Raman overlap retains the full optical fields. This approximation
+   can return the TO fallback for collinear forward collection; that fallback
+   is not evidence that the physical finite-shift momentum vanishes.
 
 **Dominant mode — dominant Berreman eigenmode** (GUI label: *Dominant mode* or *Dominant mode (EO)*)
    Instead of the macroscopic Snell's-law estimate, the phonon wavevector direction is
@@ -342,7 +382,8 @@ alternatives for solving the optical propagation problem.
    the laser frequency :math:`\nu_L` to obtain the four Berreman :math:`k_z` eigenvalues
    of the layer; the transmitted-p eigenvalue is used for p-polarised incidence and the
    transmitted-s eigenvalue for s-polarised incidence.  A second GTM solve at the
-   collection geometry gives the corresponding Stokes :math:`k_z`.  The phonon momentum
+   collection geometry, also at the laser frequency, gives an approximate outgoing
+   :math:`k_z`. The phonon momentum
    transfer in the reduced wavevector :math:`(\zeta, 0, q_z)` space is then
 
    .. math::
@@ -350,13 +391,18 @@ alternatives for solving the optical propagation problem.
 
       \mathbf{q}_{ph} \propto
       \begin{pmatrix}\zeta_L - \zeta_S \\ 0 \\ q_{z,L} - q_{z,S}\end{pmatrix}
-      \quad\text{(backscattering: } \zeta_L+\zeta_S,\; q_{z,L}+q_{z,S}\text{)}
+      \quad\text{(backscattering: } \zeta_L-\zeta_S,\; q_{z,L}+q_{z,S}\text{)}
 
    where :math:`\zeta = n\sin\theta` is the in-plane reduced wavevector component.
    This accounts for optical anisotropy and birefringence that are neglected by the
    isotropic Snell's-law approximation of Level 2.  The resulting unit vector
    :math:`\hat{\mathbf{q}}_{ph}` is used in the same NAC dynamical-matrix correction
-   as above.
+   as above. The implementation selects the transmitted-p or transmitted-s
+   eigenvalue by incident polarization; it does not maximize modal field
+   strength. Both solves use the original stack and its superstrate index.
+   This is an equal-frequency directional estimate, not the per-branch finite
+   Stokes momentum used by *All modes*. General anisotropic outgoing-channel
+   tracking is not supplied by this approximation.
 
 **All modes — per Berreman q-channel-pair NAC** (GUI label: *All modes* or *All modes (EO)*)
    This level decomposes the incident and reciprocal scattered fields into Berreman
@@ -423,9 +469,33 @@ alternatives for solving the optical propagation problem.
    alone does not identify a general spatial phonon final state; this policy
    does not supply finite-slab profiles or a complete state sum. Two
    diagnostic alternatives are also available in the GUI: *Incoherent pairs*, which
-   squares each q-channel-pair amplitude independently, and *Coherent all pairs*, which
-   sums all modal-pair amplitudes before squaring and therefore mixes distinct
-   phonon-momentum final states.
+   squares each polar q-channel-pair amplitude independently, and *Coherent all pairs*, which
+   sums modal-pair amplitudes before squaring. These are diagnostic optical-path
+   combination rules, not general derivations of the phonon final-state sum.
+   Nonpolar modes bypass pairwise squaring in *Incoherent pairs* and retain
+   coherent optical reconstruction within each permitted layer group.
+   For local depth, products in a group are added at each quadrature point
+   before squaring, and each layer contributes a separate intensity integral.
+   The layer-combination switch does not create cross-layer amplitudes in this path.
+
+   All three policies keep orthogonal detector channels separate:
+   unpolarised detection returns :math:`I_p+I_s`, without a factor of one half.
+   A specified Jones analyser is a single coherent channel. Earlier versions
+   omitted the detector index in *Coherent all pairs* and the nonpolar bypass
+   of *Incoherent pairs*, allowing spurious p/s interference; this is corrected
+   in both serial and worker calculations.
+
+   For each input TO-frequency seed, modal-pair NAC retains every NAC branch
+   whose dominant TO overlap belongs to that input mode. Several branches may
+   therefore inherit the same GUI selection and linewidth. Their Raman tensors
+   still use the full overlap transformation. Distinct NAC branches remain
+   separate final states even when their frequencies coincide, so their powers
+   add. Earlier versions chose only the nearest-frequency branch and could omit
+   branches even with all modes selected.
+
+   This preserves the existing single-pass TO-frequency seed approximation:
+   branch enumeration does not iterate the NAC direction and Stokes frequency
+   to self-consistency or introduce tracking through branch crossings.
 
    This resolves multiple optical channel pairs, subject to the stated NAC and
    final-state approximations.
@@ -445,9 +515,10 @@ alternatives for solving the optical propagation problem.
    The two momenta have distinct roles and must not be conflated:
    :math:`\mathbf{q}^{ij}_{ph}` describes the phase of an internal optical-pair
    contribution, while :math:`\mathbf{q}_{ext}` labels the externally selected
-   scattering channel.  A future finite-coherence implementation will replace
-   the hard angular cutoff by a continuous phase-mismatch weight depending on
-   :math:`\mathbf{q}^{ij}_{ph}-\mathbf{q}_{ext}` and the coherence length.
+   scattering channel. The angular cutoff is a legacy acceptance model, not
+   exact finite-slab momentum conservation. A more general treatment requires
+   specified phonon profiles or a justified correlation kernel; no such
+   replacement is selected automatically.
 
 For an infrared-inactive mode :math:`\tensorbf{Z}^{mw}` gives no macroscopic restoring-force
 correction, so all four levels reduce to the same transverse-optic frequency.  For polar
@@ -498,6 +569,30 @@ The numerical :math:`10^8` combines pm/V and Å displacement/volume
 units.  :math:`Z^{mw}` uses masses in electron-mass units.  This conversion
 is not merely a change from picometres to Å or Bohr.
 
+An independent SI form makes the sign and normalization explicit. Define
+the physical susceptibility by
+:math:`P_i=\epsilon_0\chi_{ij}E_j+\epsilon_0\chi^{(2)}_{ijl}E_jE_l`,
+with no factorial in the quadratic term. The two optical/phonon-field cross
+terms give :math:`\Delta\varepsilon_{ij}=2\chi^{(2)}_{ijl}E_{ph,l}`.
+For mode charge :math:`z_p=Z^{mw}u_p` in coulombs per square root of kilogram,
+the bulk correction is
+
+.. math::
+   :label: eq-crystal-raman-eo-si
+
+   \Delta R_{\epsilon,ij}^{(p)}
+   =-\frac{2}{\epsilon_0\sqrt{V_{cell}}}
+     \sum_l\chi^{(2)}_{ijl}(K_{bulk}z_p)_l,
+   \qquad
+   K_{bulk}=\frac{\hat q\hat q^T}{\hat q^T\varepsilon_\infty\hat q}.
+
+Here the volume is in cubic metres and :math:`\chi^{(2)}` is in m/V;
+the result is in :math:`\sqrt{\mathrm m/\mathrm{kg}}`. Divide by
+:math:`\sqrt{10^{-10}/m_u}` to obtain the stored
+:math:`\sqrt{\text{Å}/\mathrm{amu}}` tensor. The finite-particle expression
+uses the same SI normalization with :math:`K_{bulk}` replaced by
+:math:`N_{bg}L/\varepsilon_e^b`.
+
 The explicit :math:`4\pi` in the correction is the Gaussian-unit electrostatic
 factor.  PDielec's conversion of physical :math:`\chi^{(2)}` values from pm/V to
 the internal :math:`R_\epsilon` convention contains the reciprocal
@@ -506,7 +601,7 @@ reader Raman tensor.  In particular, the separate :math:`4\pi` used by the
 Abinit reader converts its printed :math:`d\chi/dQ` transverse Raman tensor to
 :math:`d\epsilon/dQ` and is not applied again here.
 
-and :math:`s_p` is the projection of the Born-charge weighted polarisation onto the
+The quantity :math:`s_p` is the projection of the Born-charge weighted polarisation onto the
 phonon eigenvector,
 
 .. math::
@@ -607,7 +702,10 @@ Omitting ``domain_edges_m`` selects the local result
 :math:`W=\int |f|^2 dz`. Both return angstrom squared per amu. The numerical
 SI conversion is ``weight * 1e-20 / atomic_mass_unit_kg`` (square metres per kg).
 These weights omit the Stokes prefactor: multiply by ``stokes_prefactor`` once
-before applying a normalized line shape. Absolute power additionally needs
+to obtain a coefficient for the existing ``lorentzian_broaden`` routine, whose
+full area is :math:`\pi` times that coefficient. For a unit-area line-shape
+convention, use the same weighted strength with an explicitly normalized
+Lorentzian instead. Absolute power additionally needs
 illuminated area and specified radiation/collection normalization.
 
 Domains describe physical correlations independently of optical layers. Keep
@@ -621,5 +719,55 @@ Every finite optical layer must have one Raman layer with matching branch
 frequencies and consistent tensor phases. Coherent optical propagation is
 required. Modal-pair NAC grouping and heterogeneous phonon interfaces are not
 supported by this API. Detector polarizations remain independent channels.
-The existing GUI depth/layer settings do not configure this model; GUI outputs
-and reference spreadsheets are unchanged.
+The existing GUI depth/layer settings do not configure this model. It is an
+experimental uniform-state diagnostic, not a general normalization correction.
+For each domain, with :math:`\bar f_d=L_d^{-1}\int_{D_d}f dz`,
+
+.. math::
+
+   W_{local}-W_{domains}=\sum_d\int_{D_d}|f-\bar f_d|^2dz.
+
+The omitted weight is nonnegative under the common-overlap assumptions and
+represents components outside the selected uniform-domain profiles. This API
+does not automatically recover every unobserved final state or spectral window.
+
+Numerical conventions
+---------------------
+
+.. list-table:: Theory-to-code conversions for the layered Raman calculation
+   :header-rows: 1
+   :widths: 28 36 36
+
+   * - Quantity
+     - Stored convention
+     - Conversion or consequence
+   * - Optical frequency
+     - Wavenumber in cm\ :sup:`−1`
+     - :math:`f_{Hz}=100c_{SI}\nu`, :math:`\omega=2\pi f_{Hz}`
+   * - Laser wavelength
+     - Nanometres
+     - :math:`\nu_L=10^7/\lambda_{nm}`
+   * - Optical depth and phase
+     - Depth in metres; :math:`\zeta,q_z` dimensionless
+     - :math:`k_0=2\pi100\nu`; propagation phase uses :math:`k_0q_z z`
+   * - Raman depth quadrature
+     - Weights in Å
+     - Metre-valued quadrature weights multiplied by :math:`10^{10}`
+   * - Raman tensor
+     - :math:`R_\epsilon` in :math:`\sqrt{\mathrm{Å}/\mathrm{amu}}`
+     - Multiply by :math:`\sqrt{10^{-10}/m_u}` for :math:`\sqrt{\mathrm m/\mathrm{kg}}`
+   * - Raw coherent overlap squared
+     - Å cubed per amu
+     - Multiply by :math:`10^{-30}/m_u` for cubic metres per kg
+   * - Local or normalized-profile weight
+     - Å squared per amu
+     - Multiply by :math:`10^{-20}/m_u` for square metres per kg
+   * - Stokes prefactor
+     - :math:`\nu_S^4(n+1)/\nu_m`, all wavenumbers in cm\ :sup:`−1`
+     - Applied once; excludes absolute radiation and collection constants
+   * - Broadened line
+     - :math:`I_m\sigma_m/[(\nu-\nu_m)^2+\sigma_m^2]`
+     - Full area :math:`\pi I_m`; width is HWHM
+
+Here :math:`m_u` is the atomic mass unit in kg. These conversions do not equate
+raw coherent and local observables or supply missing physical normalization.

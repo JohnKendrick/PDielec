@@ -230,6 +230,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -287,6 +288,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -314,6 +317,8 @@
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -377,6 +382,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -1500,7 +1506,7 @@ boundaries are used.</p>
 </dd>
 <dt>x<span class="classifier">float or 1D array, optional</span></dt><dd><p>x-coordinates (reserved for future 2D field plots). Default is 0.0.</p>
 </dd>
-<dt>magnetic<span class="classifier">bool, optional</span></dt><dd><p>If True, also compute and return the magnetic field vector.
+<dt>magnetic<span class="classifier">bool, optional</span></dt><dd><p>If True, also return the scaled magnetic field Z0 H / E_ref.
 Default is False.</p>
 </dd>
 <dt>dz<span class="classifier">float, optional</span></dt><dd><p>Spatial resolution along the propagation (z) axis. Supersedes
@@ -1514,9 +1520,11 @@ Default is False.</p>
 <dt>z<span class="classifier">1D array</span></dt><dd><p>z-coordinates at which the fields were evaluated.</p>
 </dd>
 <dt>E_out<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Total electric field in the structure (rows 0–2: p-pol in,
-rows 3–5: s-pol in).</p>
+rows 3–5: s-pol in), divided by incident electric amplitude E_ref.
+Multiply by E_ref in V/m to recover the physical electric field.</p>
 </dd>
-<dt>H_out<span class="classifier">ndarray, shape (6, len(z)), optional</span></dt><dd><p>Total magnetic field (only returned when <code class="docutils literal notranslate"><span class="pre">magnetic=True</span></code>).</p>
+<dt>H_out<span class="classifier">ndarray, shape (6, len(z)), optional</span></dt><dd><p>Scaled magnetic field Z0 H / E_ref (only when <code class="docutils literal notranslate"><span class="pre">magnetic=True</span></code>).
+Physical H in A/m is E_ref/Z0 times this array.</p>
 </dd>
 <dt>zn<span class="classifier">1D array</span></dt><dd><p>Positions of the layer interfaces.</p>
 </dd>
@@ -1565,11 +1573,14 @@ of transmitted field.</p>
 <dl class="simple">
 <dt>r_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Complex <em>field</em> reflection coefficients (r_out=([rpp,rps,rss,rsp])).</p>
 </dd>
-<dt>R_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Real <em>intensity</em> reflection coefficients (R_out=([Rpp,Rss,Rsp,Tps])).</p>
+<dt>R_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Real <em>intensity</em> reflection coefficients (R_out=([Rpp,Rss,Rsp,Rps])).
+Subscripts denote incident then reflected polarization. Total
+reflected powers are <code class="docutils literal notranslate"><span class="pre">Rp</span> <span class="pre">=</span> <span class="pre">R_out[0]</span> <span class="pre">+</span> <span class="pre">R_out[3]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Rs</span> <span class="pre">=</span> <span class="pre">R_out[1]</span> <span class="pre">+</span> <span class="pre">R_out[2]</span></code>.</p>
 </dd>
 <dt>t_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Complex <em>field</em> transmission coefficients (t=([tpp, tps, tsp, tss])).</p>
 </dd>
-<dt>T_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Real <em>intensity</em> transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).</p>
+<dt>T_out<span class="classifier">array_like, shape (2,)</span></dt><dd><p>Real <em>intensity</em> transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).</p>
 </dd>
 </dl>
 </section>
@@ -1706,6 +1717,17 @@ a semi-infinite layer.</p>
 require the prior execution of <a class="reference internal" href="#PDielec.GTMcore.System.calculate_GammaStar" title="PDielec.GTMcore.System.calculate_GammaStar"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_GammaStar()</span></code></a>. The electric fields can be visualized in the case of
 an incident plane wave using <a class="reference internal" href="#PDielec.GTMcore.System.calculate_Efield" title="PDielec.GTMcore.System.calculate_Efield"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_Efield()</span></code></a>.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GTMcore.System._calculate_transmittance">
+<span class="sig-name descname"><span class="pre">_calculate_transmittance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeta_sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System._calculate_transmittance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System._calculate_transmittance" title="Link to this definition">¶</a></dt>
+<dd><p>Return transmitted/incident normal flux for each incident mode.</p>
+<p>Magnetic basis vectors are Z0 H / E_ref = (k/k0 cross gamma)/mu.
+Sum modal E and H separately before evaluating Re(E cross H*)/2;
+distinct substrate modes generally have different longitudinal q.
+The common SI flux factor abs(E_ref)**2/Z0 cancels in this ratio.
+Incident modes must carry nonzero normal flux.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.add_layer">
 <span class="sig-name descname"><span class="pre">add_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.add_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.add_layer" title="Link to this definition">¶</a></dt>
 <dd><p>Add a layer instance.</p>
@@ -1746,7 +1768,7 @@ boundaries are used.</p>
 </dd>
 <dt>x<span class="classifier">float or 1D array, optional</span></dt><dd><p>x-coordinates (reserved for future 2D field plots). Default is 0.0.</p>
 </dd>
-<dt>magnetic<span class="classifier">bool, optional</span></dt><dd><p>If True, also compute and return the magnetic field vector.
+<dt>magnetic<span class="classifier">bool, optional</span></dt><dd><p>If True, also return the scaled magnetic field Z0 H / E_ref.
 Default is False.</p>
 </dd>
 <dt>dz<span class="classifier">float, optional</span></dt><dd><p>Spatial resolution along the propagation (z) axis. Supersedes
@@ -1760,9 +1782,11 @@ Default is False.</p>
 <dt>z<span class="classifier">1D array</span></dt><dd><p>z-coordinates at which the fields were evaluated.</p>
 </dd>
 <dt>E_out<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Total electric field in the structure (rows 0–2: p-pol in,
-rows 3–5: s-pol in).</p>
+rows 3–5: s-pol in), divided by incident electric amplitude E_ref.
+Multiply by E_ref in V/m to recover the physical electric field.</p>
 </dd>
-<dt>H_out<span class="classifier">ndarray, shape (6, len(z)), optional</span></dt><dd><p>Total magnetic field (only returned when <code class="docutils literal notranslate"><span class="pre">magnetic=True</span></code>).</p>
+<dt>H_out<span class="classifier">ndarray, shape (6, len(z)), optional</span></dt><dd><p>Scaled magnetic field Z0 H / E_ref (only when <code class="docutils literal notranslate"><span class="pre">magnetic=True</span></code>).
+Physical H in A/m is E_ref/Z0 times this array.</p>
 </dd>
 <dt>zn<span class="classifier">1D array</span></dt><dd><p>Positions of the layer interfaces.</p>
 </dd>
@@ -1809,7 +1833,7 @@ All calls to <code class="docutils literal notranslate"><span class="pre">exact_
 </dd>
 <dt>E<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Electric field vector (p- and s-pol in) along z.</p>
 </dd>
-<dt>H<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Magnetic field vector (p- and s-pol in) along z.</p>
+<dt>H<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Scaled magnetic field Z0 H / E_ref (p- and s-pol in) along z.</p>
 </dd>
 <dt>R<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Intensity reflectivity from <a class="reference internal" href="#PDielec.GTMcore.System.calculate_r_t" title="PDielec.GTMcore.System.calculate_r_t"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_r_t()</span></code></a>.</p>
 </dd>
@@ -1818,7 +1842,8 @@ All calls to <code class="docutils literal notranslate"><span class="pre">exact_
 <section id="id72">
 <h4>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
 <dl class="simple">
-<dt>S_out<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Six-component (p//s) Poynting vector along z.</p>
+<dt>S_out<span class="classifier">ndarray, shape (6, len(z))</span></dt><dd><p>Six-component (p//s) reduced Poynting vector along z.
+Multiply by abs(E_ref)**2/Z0 for physical flux in W/m^2.</p>
 </dd>
 <dt>A_out<span class="classifier">ndarray, shape (2, len(z))</span></dt><dd><p>Two-component (p//s) cumulated absorption along z.</p>
 </dd>
@@ -1829,12 +1854,13 @@ All calls to <code class="docutils literal notranslate"><span class="pre">exact_
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GTMcore.System.calculate_modal_amplitudes">
 <span class="sig-name descname"><span class="pre">calculate_modal_amplitudes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta_sys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System.calculate_modal_amplitudes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System.calculate_modal_amplitudes" title="Link to this definition">¶</a></dt>
-<dd><p>Expose the per-layer Berreman modal amplitudes at the front of each layer.</p>
+<dd><p>Expose the per-layer Berreman modal amplitudes at the back of each layer.</p>
 <p>Extracts the F_bk bookkeeping from <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> and returns the
 four complex modal amplitudes (for p-pol and s-pol incidence) at the
-front interface of every finite-thickness layer.  The field at any depth z
+back interface of every finite-thickness layer.  The field at any depth z
 inside layer k is then <code class="docutils literal notranslate"><span class="pre">dKiz(z)</span> <span class="pre">&#64;</span> <span class="pre">F_bk[k+1,</span> <span class="pre">:]</span></code> where dKiz is the
-partial-depth propagation matrix, exactly as used inside
+partial-depth propagation matrix exp(+i k0 q (z-z_back)) for coherent
+layers, exactly as used inside
 <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code>.</p>
 <p>Both <code class="docutils literal notranslate"><span class="pre">TransferMatrixSystem</span></code> and <code class="docutils literal notranslate"><span class="pre">ScatteringMatrixSystem</span></code> are
 supported.  For the scattering-matrix path, <code class="docutils literal notranslate"><span class="pre">layer.Ki</span></code> is rebuilt by
@@ -1881,11 +1907,14 @@ incident (superstrate/first-layer) interface.</p>
 <dl class="simple">
 <dt>r_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Complex <em>field</em> reflection coefficients <cite>r_out=([rpp,rps,rss,rsp])</cite></p>
 </dd>
-<dt>R_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Real <em>intensity</em> reflection coefficients <cite>R_out=([Rpp,Rss,Rsp,Tps])</cite></p>
+<dt>R_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Real <em>intensity</em> reflection coefficients <cite>R_out=([Rpp,Rss,Rsp,Rps])</cite>
+Subscripts denote incident then reflected polarization. Total
+reflected powers are <code class="docutils literal notranslate"><span class="pre">Rp</span> <span class="pre">=</span> <span class="pre">R_out[0]</span> <span class="pre">+</span> <span class="pre">R_out[3]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Rs</span> <span class="pre">=</span> <span class="pre">R_out[1]</span> <span class="pre">+</span> <span class="pre">R_out[2]</span></code>.</p>
 </dd>
 <dt>t_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Complex <em>field</em> transmission coefficients <cite>t=([tpp, tps, tsp, tss])</cite></p>
 </dd>
-<dt>T_out<span class="classifier">array_like, shape (4,)</span></dt><dd><p>Real <em>intensity</em> transmission coefficients <cite>T_out=([Tp,Ts])</cite> (mode-inselective)</p>
+<dt>T_out<span class="classifier">array_like, shape (2,)</span></dt><dd><p>Real <em>intensity</em> transmission coefficients <cite>T_out=([Tp,Ts])</cite> (mode-inselective)</p>
 </dd>
 </dl>
 </section>
@@ -1893,7 +1922,9 @@ incident (superstrate/first-layer) interface.</p>
 <h4>Notes<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
 <p><strong>IMPORTANT</strong></p>
 <ul class="simple">
-<li><p>As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+<li><p>Reflected powers assume lossless isotropic incident channels. Transmission
+requires nonzero incident normal flux.</p></li>
+<li><p>As of version 19-03-2020: Transmission is defined
 mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
 The new definition of this function <strong>BREAKS compatibility</strong> with the previous one.</p></li>
 <li><p>As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well
@@ -2436,6 +2467,7 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GTMcore.System"><code class="docutils literal notranslate"><span class="pre">System</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GTMcore.System._calculate_transmittance"><code class="docutils literal notranslate"><span class="pre">System._calculate_transmittance()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GTMcore.System.add_layer"><code class="docutils literal notranslate"><span class="pre">System.add_layer()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GTMcore.System.calculate_Efield"><code class="docutils literal notranslate"><span class="pre">System.calculate_Efield()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GTMcore.System.calculate_GammaStar"><code class="docutils literal notranslate"><span class="pre">System.calculate_GammaStar()</span></code></a></li>

@@ -233,3 +233,7 @@ The broadened Raman spectrum is formed as a sum over active modes,
    \frac{\sigma_m}{(\Delta\nu-\nu_m)^2+\sigma_m^2}
 
 where :math:`\sigma_m` is the Lorentzian half-width at half maximum.
+The implemented Lorentzian integrates to :math:`\pi` over the full wavenumber
+axis: its coefficient is not the integrated line area. Divide the line shape
+by :math:`\pi` for a unit-area convention. Frequencies and widths are in
+cm\ :sup:`−1`; changing the spectral-density axis also requires a Jacobian.

@@ -276,7 +276,7 @@ Module Contents
 
    .. py:method:: final_state_key(mode_idx: int, q_ph: collections.abc.Sequence[float], is_polar: bool = True, frequency_key: collections.abc.Hashable | None = None) -> tuple[collections.abc.Hashable, collections.abc.Hashable, int, collections.abc.Hashable, collections.abc.Hashable | tuple[str]]
 
-      Return the physical final-state key for a mode and q-vector.
+      Return the legacy mode/direction group key, not a general spatial-state identity.
 
 
 

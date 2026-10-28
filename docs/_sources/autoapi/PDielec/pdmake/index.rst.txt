@@ -613,7 +613,7 @@ Module Contents
 
 
 .. py:data:: test_crystal_raman
-   :value: ['Crystal_Raman/Castep', 'Crystal_Raman/Crystal23']
+   :value: ['Crystal_Raman/Castep', 'Crystal_Raman/Castep-25.12', 'Crystal_Raman/Crystal23']
 
 
 .. py:data:: test_p2cif

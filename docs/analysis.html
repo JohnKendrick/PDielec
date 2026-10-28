@@ -232,6 +232,7 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -289,6 +290,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -316,6 +319,8 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -379,6 +384,7 @@
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -571,10 +577,10 @@ molecules in the unit-cell according to;</p>
 <section id="isoleucine">
 <h2>Isoleucine<a class="headerlink" href="#isoleucine" title="Link to this heading">¶</a></h2>
 <p>The example of a calculation on isoleucine using Castep is available in the Examples/Castep/Isoleucine directory of the distribution.  The analysis was performed using PDGui.
-The program first finds the four molecules of isoleucine in the unit-cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 13</span></a>.</p>
+The program first finds the four molecules of isoleucine in the unit-cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 15</span></a>.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-isoleucine-mols">
 <table class="styled-table docutils align-center" id="tab-isoleucine-mols">
-<caption><span class="caption-number">Table 13 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 20.0%" />
@@ -618,11 +624,11 @@ The program first finds the four molecules of isoleucine in the unit-cell of the
 </tbody>
 </table>
 </div>
-<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 14</span></a> shows the results of the analysis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be seen under the column %mol-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32.81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.
+<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 16</span></a> shows the results of the analysis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be seen under the column %mol-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32.81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.
 However, for this latter mode there is a considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and the contribution from vibrational modes (see the %vib column) increases.  The total contribution from molecular motion is summarised in the last four columns.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-isoleucine-results">
 <table class="styled-table docutils align-center" id="tab-isoleucine-results">
-<caption><span class="caption-number">Table 14 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 16 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 12.5%" />
 <col style="width: 12.5%" />
@@ -835,10 +841,10 @@ However, for this latter mode there is a considerable contribution from rigid-bo
 BaTiO<sub>3</sub>
 can be found in Example/AbInit/BaTiO3 in the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using PDGui.
 For this example, the default covalent radius of the Barium atoms has been changed to 0.3 Å, so this atom will be treated as though it is not bonded to anything else in the cell.  This results in 2 ‘molecules’ being found in the cell; a TiO<sub>3</sub> moiety and the Ba<sup>2+</sup> ion.</p>
-<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 15</span></a> below.  In this example, the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moiety. Above 200 cm<sup>-1</sup> there is a much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
+<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 17</span></a> below.  In this example, the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moiety. Above 200 cm<sup>-1</sup> there is a much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-batio3-results">
 <table class="styled-table docutils align-center" id="tab-batio3-results">
-<caption><span class="caption-number">Table 15 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 17 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 16.7%" />
 <col style="width: 16.7%" />

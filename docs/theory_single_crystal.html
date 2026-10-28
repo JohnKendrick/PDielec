@@ -232,6 +232,7 @@
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -289,6 +290,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -316,6 +319,8 @@
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="autoapi/PDielec/Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -379,6 +384,7 @@
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -629,6 +635,91 @@ Information about the crystal coordinates relative to the laboratory frame is gi
 </figcaption>
 </figure>
 </section>
+<section id="berreman-field-units-and-normalization">
+<span id="berreman-si-conventions"></span><h2>Berreman field units and normalization<a class="headerlink" href="#berreman-field-units-and-normalization" title="Link to this heading">¶</a></h2>
+<p>The optical solver uses phasors with time dependence <span class="math notranslate nohighlight">\(e^{-i\omega t}\)</span>,
+relative permittivity and scalar relative permeability. Define
+<span class="math notranslate nohighlight">\(\widetilde{\mathbf H}=Z_0\mathbf H\)</span>, where
+<span class="math notranslate nohighlight">\(Z_0=\sqrt{\mu_0/\epsilon_0}\)</span>. Both electric and scaled magnetic
+fields then have SI units V/m. The propagation state is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\Psi=(E_x,\widetilde H_y,E_y,-\widetilde H_x)^T,\qquad
+\frac{d\Psi}{dz}=i k_0\Delta\Psi.\]</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Layer.Delta</span></code> uses this order. <code class="docutils literal notranslate"><span class="pre">Layer.Ai</span></code> uses the boundary order
+<span class="math notranslate nohighlight">\((E_x,E_y,\widetilde H_y,-\widetilde H_x)^T\)</span>; swapping the second and
+third rows maps between the two conventions. The electric polarization
+vectors <code class="docutils literal notranslate"><span class="pre">gamma</span></code> have Hermitian norm one,
+<span class="math notranslate nohighlight">\(\sum_a|\gamma_{ja}|^2=1\)</span>, including complex and evanescent modes.
+The four-component basis is dimensionless. Physical modal coefficients
+have units V/m; stored coefficients are divided by the incident electric
+amplitude <span class="math notranslate nohighlight">\(E_{\rm ref}\)</span>.</p>
+<div class="table-wrapper colwidths-given docutils container" id="id19">
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">Optical implementation conversions</span><a class="headerlink" href="#id19" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 40.0%" />
+<col style="width: 35.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Quantity</p></th>
+<th class="head"><p>Stored representation</p></th>
+<th class="head"><p>SI conversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Frequency <code class="docutils literal notranslate"><span class="pre">f</span></code></p></td>
+<td><p>Hz</p></td>
+<td><p><span class="math notranslate nohighlight">\(\omega=2\pi f\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Depth and thickness</p></td>
+<td><p>Metres</p></td>
+<td><p>Unchanged</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">qs</span></code>, <code class="docutils literal notranslate"><span class="pre">zeta</span></code></p></td>
+<td><p>Reduced wavevectors</p></td>
+<td><p>Multiply by <span class="math notranslate nohighlight">\(k_0=2\pi f/c\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">E_out</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathbf E/E_{\rm ref}\)</span></p></td>
+<td><p>Multiply by <span class="math notranslate nohighlight">\(E_{\rm ref}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">H_out</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(Z_0\mathbf H/E_{\rm ref}\)</span></p></td>
+<td><p>Multiply by <span class="math notranslate nohighlight">\(E_{\rm ref}/Z_0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">S_out</span></code></p></td>
+<td><p>Reduced Poynting vector</p></td>
+<td><p>Multiply by <span class="math notranslate nohighlight">\(|E_{\rm ref}|^2/Z_0\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Spectroscopic wavenumber in cm<sup>-1</sup> converts to solver frequency by
+<span class="math notranslate nohighlight">\(f=100c\bar\nu\)</span>, with <span class="math notranslate nohighlight">\(c\)</span> in m/s.
+<code class="docutils literal notranslate"><span class="pre">Ki</span></code> maps back-interface amplitudes to the front using
+<span class="math notranslate nohighlight">\(\exp(-ik_0q_jd)\)</span>. <code class="docutils literal notranslate"><span class="pre">calculate_modal_amplitudes</span></code> returns the
+<strong>back-interface</strong> coefficients. In coherent layers, reconstruct fields at
+position <span class="math notranslate nohighlight">\(z\)</span> using <span class="math notranslate nohighlight">\(\exp[ik_0q_j(z-z_{\rm back})]\)</span>.</p>
+<p>For each mode the scaled magnetic vector is
+<span class="math notranslate nohighlight">\(\eta_j=(\zeta,0,q_j)\times\gamma_j/\mu\)</span>. Sum electric and magnetic
+modal contributions separately, then form
+<span class="math notranslate nohighlight">\(\operatorname{Re}(\mathbf E\times\mathbf H^*)/2\)</span>.
+Using one mode’s wavevector for the combined electric field gives incorrect
+flux in a birefringent substrate. Transmission is the ratio of transmitted
+to incident normal flux; unit electric amplitude is not unit flux.
+The conventional reflected powers <span class="math notranslate nohighlight">\(|r|^2\)</span> assume lossless isotropic
+incident channels. General absorbing or nonorthogonal external channels
+need a separate flux analysis, and a zero-flux incident channel cannot
+define a transmission ratio.</p>
+<p>These conventions follow the published Passler–Paarmann treatment with the
+<a class="reference external" href="https://doi.org/10.1364/JOSAB.36.003246">2019 correction</a> and the
+<a class="reference external" href="https://doi.org/10.1103/PhysRevB.101.165425">2020 energy-flow formulation</a>.
+They describe coherent optical fields. The normalization of Raman source
+correlations and absolute scattering intensities is a separate question.</p>
+</section>
 </section>
 
         </article>
@@ -692,6 +783,7 @@ Information about the crystal coordinates relative to the laboratory frame is gi
 <li><a class="reference internal" href="#incoherence">Incoherence</a></li>
 <li><a class="reference internal" href="#comparison-of-computational-approaches">Comparison of computational approaches</a></li>
 <li><a class="reference internal" href="#crystal-laboratory-coordinate-frames">Crystal &amp; Laboratory Coordinate Frames</a></li>
+<li><a class="reference internal" href="#berreman-field-units-and-normalization">Berreman field units and normalization</a></li>
 </ul>
 </li>
 </ul>

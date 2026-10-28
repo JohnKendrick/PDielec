@@ -43,6 +43,7 @@ Submodules
    /autoapi/PDielec/CastepOutputReader/index
    /autoapi/PDielec/Constants/index
    /autoapi/PDielec/CrystalOutputReader/index
+   /autoapi/PDielec/DepthCorrelation/index
    /autoapi/PDielec/DielectricFunction/index
    /autoapi/PDielec/ExperimentOutputReader/index
    /autoapi/PDielec/FiniteFieldOutputReader/index

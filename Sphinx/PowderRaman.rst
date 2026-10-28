@@ -179,7 +179,9 @@ The same electrostatic kernel
 
 Here :math:`\widetilde\chi^{(2)}` is the cell-dependent internal reader value,
 not the raw susceptibility in pm/V.  Its conversion is specified in
-:ref:`Crystal-Raman-Theory`.  Both the mechanical Raman tensor and the mode
+:ref:`Crystal-Raman-Theory`; the equivalent SI correction is
+:eq:`eq-crystal-raman-eo-si` with :math:`K_{bulk}` replaced by the particle
+kernel :math:`K`.  Both the mechanical Raman tensor and the mode
 charge must use the same particle eigenvector.  No bulk propagation direction
 is needed for this ellipsoid boundary-value model.  It describes a quasistatic
 particle in a lossless scalar host; it is not a bulk directional LO/TO powder
@@ -233,3 +235,7 @@ The broadened Raman spectrum is formed as a sum over active modes,
    \frac{\sigma_m}{(\Delta\nu-\nu_m)^2+\sigma_m^2}
 
 where :math:`\sigma_m` is the Lorentzian half-width at half maximum.
+The implemented Lorentzian integrates to :math:`\pi` over the full wavenumber
+axis: its coefficient is not the integrated line area. Divide the line shape
+by :math:`\pi` for a unit-area convention. Frequencies and widths are in
+cm\ :sup:`−1`; changing the spectral-density axis also requires a Jacobian.

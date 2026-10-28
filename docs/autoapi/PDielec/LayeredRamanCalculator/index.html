@@ -230,6 +230,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -287,6 +288,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -314,6 +317,8 @@
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -377,6 +382,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -564,8 +570,8 @@ each Raman-active layer.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_layer_worker_data" title="PDielec.LayeredRamanCalculator._modal_pair_layer_worker_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modal_pair_layer_worker_data</span></code></a>(raman_layers)</p></td>
 <td><p>Return pickle-friendly Raman layer data for modal-pair workers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_phonon_data" title="PDielec.LayeredRamanCalculator._modal_pair_phonon_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modal_pair_phonon_data</span></code></a>(mode_idx, fallback_frequency, ...)</p></td>
-<td><p>Return q-resolved phonon data and the selection flag for one pair.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_phonon_branches" title="PDielec.LayeredRamanCalculator._modal_pair_phonon_branches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modal_pair_phonon_branches</span></code></a>(mode_idx, ...)</p></td>
+<td><p>Yield every NAC branch owned by a TO seed, without collapsing final states.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_stokes_channels" title="PDielec.LayeredRamanCalculator._modal_pair_stokes_channels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modal_pair_stokes_channels</span></code></a>(es_system, ...)</p></td>
 <td><p>Return scattered modal channels for a Stokes-shifted phonon frequency.</p></td>
@@ -576,11 +582,17 @@ each Raman-active layer.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._polarisation_to_jones" title="PDielec.LayeredRamanCalculator._polarisation_to_jones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_polarisation_to_jones</span></code></a>(pol, name[, allow_unpolarised])</p></td>
 <td><p>Return a normalised p/s Jones vector, or None for unpolarised detection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected" title="PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_raman_layer_mode_is_selected</span></code></a>(modes_selected, mode_idx)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._prepared_modal_pair_worker" title="PDielec.LayeredRamanCalculator._prepared_modal_pair_worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prepared_modal_pair_worker</span></code></a>(task)</p></td>
+<td><p>Evaluate a serially prepared optical/NAC task without pickling closures.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected" title="PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_raman_layer_mode_is_selected</span></code></a>(modes_selected, mode_idx)</p></td>
 <td><p>Return whether a mode is selected for a RamanLayer in worker code.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._resolver_coherence_regime" title="PDielec.LayeredRamanCalculator._resolver_coherence_regime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_resolver_coherence_regime</span></code></a>(depth_integration, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._resolver_coherence_regime" title="PDielec.LayeredRamanCalculator._resolver_coherence_regime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_resolver_coherence_regime</span></code></a>(depth_integration, ...)</p></td>
 <td><p>Return the final-state resolver regime matching the depth treatment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator._validate_modal_channel_counts" title="PDielec.LayeredRamanCalculator._validate_modal_channel_counts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_modal_channel_counts</span></code></a>(seed_channels, ...)</p></td>
+<td><p>Reject an ambiguous NAC assignment when optical channels split or merge.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden" title="PDielec.LayeredRamanCalculator.lorentzian_broaden"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lorentzian_broaden</span></code></a>(mode_frequencies_cm1, ...)</p></td>
 <td><p>Broaden a set of delta-function Raman intensities with Lorentzian lineshapes.</p></td>
@@ -667,9 +679,9 @@ fields have the same system and signed angle.  Default is <code class="docutils 
 </dd>
 <dt>depth_integration<span class="classifier">{‘Coherent amplitude’, ‘Incoherent intensity’}, optional</span></dt><dd><p>How to combine the source along the depth of each Raman-active layer.
 <code class="docutils literal notranslate"><span class="pre">'Coherent</span> <span class="pre">amplitude'</span></code> integrates the complex amplitude before
-squaring and is appropriate for thin coherent films.  <code class="docutils literal notranslate"><span class="pre">'Incoherent</span>
-<span class="pre">intensity'</span></code> integrates the local intensity and is more stable for
-thick or bulk samples where long-range phase coherence is not physical.</p>
+squaring as a legacy raw constant-profile overlap. <code class="docutils literal notranslate"><span class="pre">'Incoherent</span>
+<span class="pre">intensity'</span></code> integrates the local intensity. These have different
+length dimensions; thickness alone does not select the physical model.</p>
 </dd>
 <dt>final_state_model<span class="classifier">{‘Bulk phase matched’, ‘Local incoherent’}, optional</span></dt><dd><p>Interpretation of modal pairs when <code class="docutils literal notranslate"><span class="pre">depth_integration</span></code> is incoherent.
 <code class="docutils literal notranslate"><span class="pre">'Bulk</span> <span class="pre">phase</span> <span class="pre">matched'</span></code> compares each internal <code class="docutils literal notranslate"><span class="pre">q_pair</span></code> with the
@@ -720,8 +732,9 @@ interface (the convention used by <code class="docutils literal notranslate"><sp
 (the unit <code class="docutils literal notranslate"><span class="pre">calculate_Efield</span></code> expects).</p>
 </dd>
 <dt>_gl_phys_weights<span class="classifier">ndarray</span></dt><dd><p>Corresponding integration weights in Ångström (quadrature weight × half-thickness × 1e10).
-The Å unit cancels the Å² in the Raman tensor more cleanly than metres,
-keeping intensity magnitudes in a readable range.</p>
+These legacy raw overlaps use stored R_epsilon in sqrt(Å/amu).
+Squared coherent overlaps have units Å³/amu; local integrals
+have units Å²/amu. They are not a common normalized observable.</p>
 </dd>
 <dt>_gl_layer_slices<span class="classifier">list of slice</span></dt><dd><p>One slice per <code class="docutils literal notranslate"><span class="pre">RamanLayer</span></code> indexing into <code class="docutils literal notranslate"><span class="pre">_gl_z</span></code> / <code class="docutils literal notranslate"><span class="pre">_gl_phys_weights</span></code>.</p>
 </dd>
@@ -731,7 +744,7 @@ keeping intensity magnitudes in a readable range.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs">
-<span class="sig-name descname"><span class="pre">_calculate_mode_intensities_modal_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_contributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._calculate_mode_intensities_modal_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_calculate_mode_intensities_modal_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_contributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_mode_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator._calculate_mode_intensities_modal_pairs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._calculate_mode_intensities_modal_pairs" title="Link to this definition">¶</a></dt>
 <dd><p>Level 3 modal-pairs Raman intensity calculation.</p>
 <p>For each phonon mode, sums over incident and detected propagation-q
 channels.  Each channel is the coherent field contribution from all
@@ -741,10 +754,12 @@ are degenerate or nearly degenerate, as at normal incidence in a
 uniaxial layer.</p>
 <p>For coherent depth, the phonon wavevector for each channel pair is
 q_ph = k_L − k_S, giving pair-resolved NAC tensors and finite-film
-contributions.  For incoherent depth, the external photon momentum
-transfer selects one phonon final state; internal Berreman q differences
-remain coherent local-field components of that state.  NAC results are
-cached per layer/channel pair and reused across all phonon modes.</p>
+contributions. For incoherent depth, NAC uses the external momentum
+direction and the selected legacy grouping policy. Direction reuse is
+a material-response approximation, not a general phonon-state identity.
+NAC is evaluated at the supplied branch frequency; fields and final
+classification use the returned Stokes frequency. This one-pass policy
+does not solve for a self-consistent NAC-dependent frequency/direction.</p>
 <p>NAC closures are evaluated only while building the serial cache.  When a
 worker pool is supplied, the per-mode field and intensity calculations
 are dispatched with picklable arrays and GTM systems.</p>
@@ -1000,6 +1015,30 @@ backscattering geometry.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_depth_correlated_weights">
+<span class="sig-name descname"><span class="pre">calculate_depth_correlated_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain_edges_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator.calculate_depth_correlated_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_depth_correlated_weights" title="Link to this definition">¶</a></dt>
+<dd><p>Return normalized depth weights before Stokes factors or broadening.</p>
+<p>This opt-in, sequential total-field model uses a local delta kernel
+when <code class="docutils literal notranslate"><span class="pre">domain_edges_m</span></code> is None. Otherwise the strictly increasing
+edges partition the entire finite stack into physical phonon domains,
+each containing one uniform, normalized collective mode. Domains add
+intensities; each detector channel is evaluated independently. Edges
+are metres and must span [0, total thickness]. Quadrature is split at
+optical interfaces and domain edges, so artificial optical subdivision
+does not create phonon domains.</p>
+<p>All finite optical layers must have one RamanLayer, with matching
+phonon frequencies and an explicitly consistent branch/tensor phase
+convention across domains. Heterogeneous phonon interfaces and modal
+NAC/final-state grouping are not supported here. Legacy depth/layer
+coherence settings do not select this model. No worker pool is used.</p>
+<p>Returns frequencies (cm^-1), reduced weights (angstrom**2/amu), and
+linewidths (cm^-1). Multiply each weight by <code class="docutils literal notranslate"><span class="pre">stokes_prefactor</span></code> once
+for the existing reduced spectral convention. For SI depth weights,
+multiply by <code class="docutils literal notranslate"><span class="pre">1e-20</span> <span class="pre">/</span> <span class="pre">atomic_mass_unit_kg</span></code>. Illuminated area and
+absolute optical collection/radiation constants are not included.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities">
 <span class="sig-name descname"><span class="pre">calculate_mode_intensities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_contributions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#LayeredRamanCalculator.calculate_mode_intensities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the per-mode Raman intensities (before broadening).</p>
@@ -1124,6 +1163,11 @@ not alter the existing standard or modal-pairs Raman calculations.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._modal_pair_branch_vectors">
+<span class="sig-name descname"><span class="pre">_modal_pair_branch_vectors</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._modal_pair_branch_vectors" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._modal_pair_q_vectors">
 <span class="sig-name descname"><span class="pre">_modal_pair_q_vectors</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._modal_pair_q_vectors" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1132,6 +1176,12 @@ not alter the existing standard or modal-pairs Raman calculations.</p>
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._nac_cache">
 <span class="sig-name descname"><span class="pre">_nac_cache</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._nac_cache" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator._reciprocal_angle_rad">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_reciprocal_angle_rad</span></span><a class="headerlink" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._reciprocal_angle_rad" title="Link to this definition">¶</a></dt>
+<dd><p>Detector launch angle; collection_angle_rad describes the outgoing ray.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.LayeredRamanCalculator.approximate_es">
@@ -1496,9 +1546,13 @@ pair-resolved q from eq-layer-qph.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._modal_pair_phonon_data">
-<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_modal_pair_phonon_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_selected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_modal_pair_phonon_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._modal_pair_phonon_data" title="Link to this definition">¶</a></dt>
-<dd><p>Return q-resolved phonon data and the selection flag for one pair.</p>
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._modal_pair_phonon_branches">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_modal_pair_phonon_branches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_selected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_modal_pair_phonon_branches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._modal_pair_phonon_branches" title="Link to this definition">¶</a></dt>
+<dd><p>Yield every NAC branch owned by a TO seed, without collapsing final states.</p>
+<p>Each row is <code class="docutils literal notranslate"><span class="pre">(branch_index,</span> <span class="pre">frequency,</span> <span class="pre">tensor,</span> <span class="pre">linewidth,</span> <span class="pre">selected)</span></code>.
+The dominant-TO map transfers seed/GUI ownership, not a one-branch capacity.
+Legacy closures without a map retain their index-based association.
+A missing NAC response yields the original TO branch.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1520,6 +1574,12 @@ pair-resolved q from eq-layer-qph.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._prepared_modal_pair_worker">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_prepared_modal_pair_worker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_prepared_modal_pair_worker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._prepared_modal_pair_worker" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate a serially prepared optical/NAC task without pickling closures.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected">
 <span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_raman_layer_mode_is_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes_selected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_raman_layer_mode_is_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected" title="Link to this definition">¶</a></dt>
 <dd><p>Return whether a mode is selected for a RamanLayer in worker code.</p>
@@ -1532,6 +1592,12 @@ pair-resolved q from eq-layer-qph.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator._validate_modal_channel_counts">
+<span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">_validate_modal_channel_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shifted_channels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#_validate_modal_channel_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator._validate_modal_channel_counts" title="Link to this definition">¶</a></dt>
+<dd><p>Reject an ambiguous NAC assignment when optical channels split or merge.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PDielec.LayeredRamanCalculator.lorentzian_broaden">
 <span class="sig-prename descclassname"><span class="pre">PDielec.LayeredRamanCalculator.</span></span><span class="sig-name descname"><span class="pre">lorentzian_broaden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_frequencies_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linewidths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq_axis_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/LayeredRamanCalculator.html#lorentzian_broaden"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden" title="Link to this definition">¶</a></dt>
 <dd><p>Broaden a set of delta-function Raman intensities with Lorentzian lineshapes.</p>
@@ -1540,7 +1606,8 @@ pair-resolved q from eq-layer-qph.</p>
 <dl class="simple">
 <dt>mode_frequencies_cm1<span class="classifier">array_like, shape (M,)</span></dt><dd><p>Mode frequencies in cm⁻¹ (only active modes, after acoustic filtering).</p>
 </dd>
-<dt>mode_intensities<span class="classifier">array_like, shape (M,)</span></dt><dd><p>Integrated mode intensities before broadening.</p>
+<dt>mode_intensities<span class="classifier">array_like, shape (M,)</span></dt><dd><p>Line coefficients before broadening. The implemented Lorentzian has
+full area pi, so each integrated line area is pi times its coefficient.</p>
 </dd>
 <dt>linewidths_cm1<span class="classifier">array_like, shape (M,)</span></dt><dd><p>Lorentzian half-widths at half-maximum σ_m in cm⁻¹.</p>
 </dd>
@@ -1712,6 +1779,7 @@ pair-resolved q from eq-layer-qph.</p>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._mode_is_selected"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._mode_is_selected()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._raise_if_phase3_incoherent_has_degenerate_channels"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._raise_if_phase3_incoherent_has_degenerate_channels()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._rotate_raman_tensor"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._rotate_raman_tensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_depth_correlated_weights"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.calculate_depth_correlated_weights()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_mode_intensities"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.calculate_mode_intensities()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_phase3_modal_pair_diagnostic_intensities"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.calculate_phase3_modal_pair_diagnostic_intensities()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.calculate_spectrum"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.calculate_spectrum()</span></code></a></li>
@@ -1721,8 +1789,10 @@ pair-resolved q from eq-layer-qph.</p>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_phys_weights"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._gl_phys_weights</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._gl_z"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._gl_z</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._incident_jones"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._incident_jones</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._modal_pair_branch_vectors"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._modal_pair_branch_vectors</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._modal_pair_q_vectors"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._modal_pair_q_vectors</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._nac_cache"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._nac_cache</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator._reciprocal_angle_rad"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator._reciprocal_angle_rad</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.approximate_es"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.approximate_es</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.coherent_layers"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.coherent_layers</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.LayeredRamanCalculator.collection_angle_rad"><code class="docutils literal notranslate"><span class="pre">LayeredRamanCalculator.collection_angle_rad</span></code></a></li>
@@ -1771,12 +1841,14 @@ pair-resolved q from eq-layer-qph.</p>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._line_key"><code class="docutils literal notranslate"><span class="pre">_line_key()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_final_state_q"><code class="docutils literal notranslate"><span class="pre">_modal_pair_final_state_q()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_layer_worker_data"><code class="docutils literal notranslate"><span class="pre">_modal_pair_layer_worker_data()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_phonon_data"><code class="docutils literal notranslate"><span class="pre">_modal_pair_phonon_data()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_phonon_branches"><code class="docutils literal notranslate"><span class="pre">_modal_pair_phonon_branches()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_pair_stokes_channels"><code class="docutils literal notranslate"><span class="pre">_modal_pair_stokes_channels()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._modal_q_channels_from_fields"><code class="docutils literal notranslate"><span class="pre">_modal_q_channels_from_fields()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._polarisation_to_jones"><code class="docutils literal notranslate"><span class="pre">_polarisation_to_jones()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._prepared_modal_pair_worker"><code class="docutils literal notranslate"><span class="pre">_prepared_modal_pair_worker()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._raman_layer_mode_is_selected"><code class="docutils literal notranslate"><span class="pre">_raman_layer_mode_is_selected()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._resolver_coherence_regime"><code class="docutils literal notranslate"><span class="pre">_resolver_coherence_regime()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.LayeredRamanCalculator._validate_modal_channel_counts"><code class="docutils literal notranslate"><span class="pre">_validate_modal_channel_counts()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.lorentzian_broaden"><code class="docutils literal notranslate"><span class="pre">lorentzian_broaden()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_COHERENT"><code class="docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_COHERENT</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.LayeredRamanCalculator.DEPTH_INTEGRATION_INCOHERENT"><code class="docutils literal notranslate"><span class="pre">DEPTH_INTEGRATION_INCOHERENT</span></code></a></li>

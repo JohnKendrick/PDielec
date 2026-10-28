@@ -988,7 +988,7 @@ Module Contents
       x : float or 1D array, optional
           x-coordinates (reserved for future 2D field plots). Default is 0.0.
       magnetic : bool, optional
-          If True, also compute and return the magnetic field vector.
+          If True, also return the scaled magnetic field Z0 H / E_ref.
           Default is False.
       dz : float, optional
           Spatial resolution along the propagation (z) axis. Supersedes
@@ -1000,9 +1000,11 @@ Module Contents
           z-coordinates at which the fields were evaluated.
       E_out : ndarray, shape (6, len(z))
           Total electric field in the structure (rows 0–2: p-pol in,
-          rows 3–5: s-pol in).
+          rows 3–5: s-pol in), divided by incident electric amplitude E_ref.
+          Multiply by E_ref in V/m to recover the physical electric field.
       H_out : ndarray, shape (6, len(z)), optional
-          Total magnetic field (only returned when ``magnetic=True``).
+          Scaled magnetic field Z0 H / E_ref (only when ``magnetic=True``).
+          Physical H in A/m is E_ref/Z0 times this array.
       zn : 1D array
           Positions of the layer interfaces.
 
@@ -1046,10 +1048,13 @@ Module Contents
       r_out : array_like, shape (4,)
           Complex *field* reflection coefficients (r_out=([rpp,rps,rss,rsp])).
       R_out : array_like, shape (4,)
-          Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Tps])).
+          Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Rps])).
+          Subscripts denote incident then reflected polarization. Total
+          reflected powers are ``Rp = R_out[0] + R_out[3]`` and
+          ``Rs = R_out[1] + R_out[2]``.
       t_out : array_like, shape (4,)
           Complex *field* transmission coefficients (t=([tpp, tps, tsp, tss])).
-      T_out : array_like, shape (4,)
+      T_out : array_like, shape (2,)
           Real *intensity* transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).
 
 
@@ -1184,6 +1189,18 @@ Module Contents
 
 
 
+   .. py:method:: _calculate_transmittance(zeta_sys, t_out)
+
+      Return transmitted/incident normal flux for each incident mode.
+
+      Magnetic basis vectors are Z0 H / E_ref = (k/k0 cross gamma)/mu.
+      Sum modal E and H separately before evaluating Re(E cross H*)/2;
+      distinct substrate modes generally have different longitudinal q.
+      The common SI flux factor abs(E_ref)**2/Z0 cancels in this ratio.
+      Incident modes must carry nonzero normal flux.
+
+
+
    .. py:method:: add_layer(layer)
 
       Add a layer instance.
@@ -1225,7 +1242,7 @@ Module Contents
       x : float or 1D array, optional
           x-coordinates (reserved for future 2D field plots). Default is 0.0.
       magnetic : bool, optional
-          If True, also compute and return the magnetic field vector.
+          If True, also return the scaled magnetic field Z0 H / E_ref.
           Default is False.
       dz : float, optional
           Spatial resolution along the propagation (z) axis. Supersedes
@@ -1237,9 +1254,11 @@ Module Contents
           z-coordinates at which the fields were evaluated.
       E_out : ndarray, shape (6, len(z))
           Total electric field in the structure (rows 0–2: p-pol in,
-          rows 3–5: s-pol in).
+          rows 3–5: s-pol in), divided by incident electric amplitude E_ref.
+          Multiply by E_ref in V/m to recover the physical electric field.
       H_out : ndarray, shape (6, len(z)), optional
-          Total magnetic field (only returned when ``magnetic=True``).
+          Scaled magnetic field Z0 H / E_ref (only when ``magnetic=True``).
+          Physical H in A/m is E_ref/Z0 times this array.
       zn : 1D array
           Positions of the layer interfaces.
 
@@ -1282,14 +1301,15 @@ Module Contents
       E : ndarray, shape (6, len(z))
           Electric field vector (p- and s-pol in) along z.
       H : ndarray, shape (6, len(z))
-          Magnetic field vector (p- and s-pol in) along z.
+          Scaled magnetic field Z0 H / E_ref (p- and s-pol in) along z.
       R : array_like, shape (4,)
           Intensity reflectivity from :py:func:`calculate_r_t`.
 
       Returns
       -------
       S_out : ndarray, shape (6, len(z))
-          Six-component (p//s) Poynting vector along z.
+          Six-component (p//s) reduced Poynting vector along z.
+          Multiply by abs(E_ref)**2/Z0 for physical flux in W/m^2.
       A_out : ndarray, shape (2, len(z))
           Two-component (p//s) cumulated absorption along z.
 
@@ -1297,13 +1317,14 @@ Module Contents
 
    .. py:method:: calculate_modal_amplitudes(f, zeta_sys)
 
-      Expose the per-layer Berreman modal amplitudes at the front of each layer.
+      Expose the per-layer Berreman modal amplitudes at the back of each layer.
 
       Extracts the F_bk bookkeeping from ``calculate_Efield`` and returns the
       four complex modal amplitudes (for p-pol and s-pol incidence) at the
-      front interface of every finite-thickness layer.  The field at any depth z
+      back interface of every finite-thickness layer.  The field at any depth z
       inside layer k is then ``dKiz(z) @ F_bk[k+1, :]`` where dKiz is the
-      partial-depth propagation matrix, exactly as used inside
+      partial-depth propagation matrix exp(+i k0 q (z-z_back)) for coherent
+      layers, exactly as used inside
       ``calculate_Efield``.
 
       Both ``TransferMatrixSystem`` and ``ScatteringMatrixSystem`` are
@@ -1346,17 +1367,23 @@ Module Contents
       r_out : array_like, shape (4,)
           Complex *field* reflection coefficients `r_out=([rpp,rps,rss,rsp])`
       R_out : array_like, shape (4,)
-          Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Tps])`
+          Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Rps])`
+          Subscripts denote incident then reflected polarization. Total
+          reflected powers are ``Rp = R_out[0] + R_out[3]`` and
+          ``Rs = R_out[1] + R_out[2]``.
       t_out : array_like, shape (4,)
           Complex *field* transmission coefficients `t=([tpp, tps, tsp, tss])`
-      T_out : array_like, shape (4,)
+      T_out : array_like, shape (2,)
           Real *intensity* transmission coefficients `T_out=([Tp,Ts])` (mode-inselective)
 
       Notes
       -----
       **IMPORTANT**
 
-      - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined
+      - Reflected powers assume lossless isotropic incident channels. Transmission
+        requires nonzero incident normal flux.
+
+      - As of version 19-03-2020: Transmission is defined
         mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions.
         The new definition of this function **BREAKS compatibility** with the previous one.
 

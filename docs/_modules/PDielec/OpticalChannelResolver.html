@@ -229,6 +229,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -286,6 +287,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -313,6 +316,8 @@
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../autoapi/PDielec/Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/PDielec/Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -376,6 +381,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../autoapi/test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -439,11 +445,68 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">dataclasses</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.Constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">speed_light_si</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PDielec.PhononFinalStateResolver</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhononFinalStateResolver</span>
+
+
+<div class="viewcode-block" id="reciprocal_system">
+<a class="viewcode-back" href="../../autoapi/PDielec/OpticalChannelResolver/index.html#PDielec.OpticalChannelResolver.reciprocal_system">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reciprocal_system</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">collection_side</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the detector stack in coordinates (x, y, L-z).</span>
+
+<span class="sd">    Reflect permittivity tensors as P epsilon P, P=diag(1,1,-1), on</span>
+<span class="sd">    independent layer copies. Electric vectors are mapped back by P; the</span>
+<span class="sd">    optical solver handles magnetic axial vectors in its own coordinate frame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;superstrate&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">system</span>
+    <span class="k">if</span> <span class="n">collection_side</span> <span class="o">!=</span> <span class="s2">&quot;substrate&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;unknown collection side&quot;</span><span class="p">)</span>
+    <span class="n">reversed_stack</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">reversed_system</span><span class="p">())</span>
+    <span class="n">reflection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="p">[</span><span class="n">reversed_stack</span><span class="o">.</span><span class="n">superstrate</span><span class="p">,</span> <span class="o">*</span><span class="n">reversed_stack</span><span class="o">.</span><span class="n">layers</span><span class="p">,</span> <span class="n">reversed_stack</span><span class="o">.</span><span class="n">substrate</span><span class="p">]:</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">reflection</span> <span class="o">@</span> <span class="n">layer</span><span class="o">.</span><span class="n">euler</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">euler_inverse</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">euler_inverse</span> <span class="o">@</span> <span class="n">reflection</span>
+    <span class="n">reversed_stack</span><span class="o">.</span><span class="n">_raman_depth_reversed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">reversed_stack</span></div>
+
+
+
+<div class="viewcode-block" id="electric_fields_to_lab">
+<a class="viewcode-back" href="../../autoapi/PDielec/OpticalChannelResolver/index.html#PDielec.OpticalChannelResolver.electric_fields_to_lab">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">electric_fields_to_lab</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">component_axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map electric components from a depth-reflected solver to the lab frame.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="s2">&quot;_raman_depth_reversed&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">fields</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">component_axis</span><span class="p">],</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">indices</span><span class="p">[</span><span class="n">component_axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span>
+        <span class="n">result</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">indices</span><span class="p">)]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="modal_pair_momentum">
+<a class="viewcode-back" href="../../autoapi/PDielec/OpticalChannelResolver/index.html#PDielec.OpticalChannelResolver.modal_pair_momentum">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">modal_pair_momentum</span><span class="p">(</span><span class="n">channel_l</span><span class="p">,</span> <span class="n">channel_s</span><span class="p">,</span> <span class="n">stokes_ratio</span><span class="p">,</span> <span class="n">collection_side</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return real overlap momentum in common laser-vacuum wavevector units.</span>
+
+<span class="sd">    Channel zeta/qz belong to the incident and reciprocal solver frames.</span>
+<span class="sd">    This real-vector convention is for NAC/legacy angular classification;</span>
+<span class="sd">    attenuation remains in the complex fields, not in a phonon-state label.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">collection_side</span> <span class="o">==</span> <span class="s2">&quot;superstrate&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">channel_l</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;zeta&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">stokes_ratio</span> <span class="o">*</span> <span class="n">channel_s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;zeta&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
+        <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">channel_l</span><span class="p">[</span><span class="s2">&quot;qz&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">stokes_ratio</span> <span class="o">*</span> <span class="n">channel_s</span><span class="p">[</span><span class="s2">&quot;qz&quot;</span><span class="p">]),</span>
+    <span class="p">])</span></div>
+
 
 
 <div class="viewcode-block" id="OpticalChannel">
@@ -468,6 +531,8 @@
 <span class="sd">    ``channels_by_pol`` is nested as</span>
 <span class="sd">    ``channels_by_pol[pol_idx][physical_layer_index] -&gt; list[OpticalChannel]``.</span>
 <span class="sd">    The physical layer index is the index in the original, unreversed stack.</span>
+<span class="sd">    Electric components are in the laboratory frame. Coordinates, zeta and qz</span>
+<span class="sd">    remain in the solver frame; substrate collection uses z_prime = L - z.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">frequency_cm1</span><span class="p">:</span> <span class="nb">float</span>
@@ -518,6 +583,7 @@
         <span class="n">zeta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">superstrate</span><span class="o">.</span><span class="n">epsilon</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">total_fields</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">calculate_Efield</span><span class="p">(</span><span class="n">freq_hz</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">z_vect</span><span class="o">=</span><span class="n">z_array</span><span class="p">)</span>
 
+        <span class="n">total_fields</span> <span class="o">=</span> <span class="n">electric_fields_to_lab</span><span class="p">(</span><span class="n">total_fields</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
         <span class="n">modal_fields</span><span class="p">,</span> <span class="n">qs_by_layer</span> <span class="o">=</span> <span class="n">compute_modal_fields_at_points</span><span class="p">(</span>
             <span class="n">system</span><span class="p">,</span>
             <span class="n">freq_hz</span><span class="p">,</span>
@@ -557,9 +623,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the macroscopic external momentum transfer ``q_ext = k_inc - k_det``.</span>
 
-<span class="sd">        The returned vector uses GTM&#39;s normalised wavevector units.  For normal</span>
-<span class="sd">        incidence this gives zero in forward scattering and finite ``2qz`` in</span>
-<span class="sd">        backscattering, which is the distinction needed by the phonon resolver.</span>
+<span class="sd">        The returned vector is normalized to the incident vacuum wavevector.</span>
+<span class="sd">        Detector angles specify the outgoing ray in laboratory coordinates.</span>
+<span class="sd">        The Stokes/laser ratio is retained, including in forward scattering.</span>
 
 <span class="sd">        This helper follows the current GTM boundary convention and assumes the</span>
 <span class="sd">        external half-space wavevector is determined by ``epsilon[0, 0]``.  It is</span>
@@ -574,7 +640,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;collection_side must be &#39;superstrate&#39; or &#39;substrate&#39;, got </span><span class="si">{</span><span class="n">collection_side</span><span class="si">!r}</span><span class="s2">&quot;</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">k_inc</span> <span class="o">-</span> <span class="n">k_det</span></div>
+        <span class="k">return</span> <span class="n">k_inc</span> <span class="o">-</span> <span class="p">(</span><span class="n">detected_frequency_cm1</span> <span class="o">/</span> <span class="n">incident_frequency_cm1</span><span class="p">)</span> <span class="o">*</span> <span class="n">k_det</span></div>
 
 
 <div class="viewcode-block" id="OpticalChannelResolver._channels_for_pol">
@@ -670,7 +736,7 @@
                     <span class="n">propagation</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">amps</span><span class="p">[</span><span class="n">mode_idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">gamma</span><span class="p">[</span><span class="n">mode_idx</span><span class="p">]</span>
                 <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">modal_fields</span><span class="p">,</span> <span class="n">qs_by_layer</span></div>
+    <span class="k">return</span> <span class="n">electric_fields_to_lab</span><span class="p">(</span><span class="n">modal_fields</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">component_axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">qs_by_layer</span></div>
 
 </pre></div>
         </article>

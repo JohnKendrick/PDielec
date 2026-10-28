@@ -230,6 +230,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DepthCorrelation/index.html">PDielec.DepthCorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../FiniteFieldOutputReader/index.html">PDielec.FiniteFieldOutputReader</a></li>
@@ -287,6 +288,8 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/Crystal_Raman/index.html">PDielec.Tests.Crystal_Raman</a><input aria-label="Toggle navigation of PDielec.Tests.Crystal_Raman" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/conftest/index.html">PDielec.Tests.Crystal_Raman.conftest</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_AD_scientific_audit/index.html">PDielec.Tests.Crystal_Raman.test_AD_scientific_audit</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_AE_nac_branch_enumeration/index.html">PDielec.Tests.Crystal_Raman.test_AE_nac_branch_enumeration</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_A_raman_tensor_algebra/index.html">PDielec.Tests.Crystal_Raman.test_A_raman_tensor_algebra</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_B_single_layer/index.html">PDielec.Tests.Crystal_Raman.test_B_single_layer</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_C_layered_consistency/index.html">PDielec.Tests.Crystal_Raman.test_C_layered_consistency</a></li>
@@ -314,6 +317,8 @@
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_V_stage8_batio3_regression/index.html">PDielec.Tests.Crystal_Raman.test_V_stage8_batio3_regression</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_W_review_regressions/index.html">PDielec.Tests.Crystal_Raman.test_W_review_regressions</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_X_native_abinit_eo/index.html">PDielec.Tests.Crystal_Raman.test_X_native_abinit_eo</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_depth_correlation/index.html">PDielec.Tests.Crystal_Raman.test_depth_correlation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Tests/Crystal_Raman/test_momentum_reciprocity/index.html">PDielec.Tests.Crystal_Raman.test_momentum_reciprocity</a></li>
 </ul>
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../Tests/General/index.html">PDielec.Tests.General</a><input aria-label="Toggle navigation of PDielec.Tests.General" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -377,6 +382,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../test_G_coordinate_io/index.html">test_G_coordinate_io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_volume_density/index.html">test_D_volume_density</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_A_math_utilities/index.html">test_A_math_utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../test_G_si_conventions/index.html">test_G_si_conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_D_material_classes/index.html">test_D_material_classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_C_unit_conversions/index.html">test_C_unit_conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../test_B_derived_constants/index.html">test_B_derived_constants</a></li>
@@ -460,6 +466,15 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.OpticalChannelResolver.compute_modal_fields_at_points" title="PDielec.OpticalChannelResolver.compute_modal_fields_at_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_modal_fields_at_points</span></code></a>(→ tuple[numpy.ndarray, ...)</p></td>
 <td><p>Compute per-Berreman-mode electric fields at selected z-points.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.OpticalChannelResolver.electric_fields_to_lab" title="PDielec.OpticalChannelResolver.electric_fields_to_lab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">electric_fields_to_lab</span></code></a>(fields, system[, component_axis])</p></td>
+<td><p>Map electric components from a depth-reflected solver to the lab frame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.OpticalChannelResolver.modal_pair_momentum" title="PDielec.OpticalChannelResolver.modal_pair_momentum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modal_pair_momentum</span></code></a>(channel_l, channel_s, ...)</p></td>
+<td><p>Return real overlap momentum in common laser-vacuum wavevector units.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.OpticalChannelResolver.reciprocal_system" title="PDielec.OpticalChannelResolver.reciprocal_system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reciprocal_system</span></code></a>(system, collection_side)</p></td>
+<td><p>Return the detector stack in coordinates (x, y, L-z).</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -510,9 +525,9 @@
 <dt class="sig sig-object py" id="PDielec.OpticalChannelResolver.OpticalChannelResolver.external_momentum_transfer">
 <span class="sig-name descname"><span class="pre">external_momentum_transfer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incident_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_frequency_cm1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incident_angle_rad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_frequency_cm1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detected_angle_rad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_side</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="../../../_modules/PDielec/OpticalChannelResolver.html#OpticalChannelResolver.external_momentum_transfer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.OpticalChannelResolver.OpticalChannelResolver.external_momentum_transfer" title="Link to this definition">¶</a></dt>
 <dd><p>Return the macroscopic external momentum transfer <code class="docutils literal notranslate"><span class="pre">q_ext</span> <span class="pre">=</span> <span class="pre">k_inc</span> <span class="pre">-</span> <span class="pre">k_det</span></code>.</p>
-<p>The returned vector uses GTM’s normalised wavevector units.  For normal
-incidence this gives zero in forward scattering and finite <code class="docutils literal notranslate"><span class="pre">2qz</span></code> in
-backscattering, which is the distinction needed by the phonon resolver.</p>
+<p>The returned vector is normalized to the incident vacuum wavevector.
+Detector angles specify the outgoing ray in laboratory coordinates.
+The Stokes/laser ratio is retained, including in forward scattering.</p>
 <p>This helper follows the current GTM boundary convention and assumes the
 external half-space wavevector is determined by <code class="docutils literal notranslate"><span class="pre">epsilon[0,</span> <span class="pre">0]</span></code>.  It is
 therefore exact for isotropic superstrate/substrate media and a
@@ -542,7 +557,9 @@ forward-scattering reciprocal fields.</p>
 <dd><p>Optical fields and modal channels for one external optical problem.</p>
 <p><code class="docutils literal notranslate"><span class="pre">channels_by_pol</span></code> is nested as
 <code class="docutils literal notranslate"><span class="pre">channels_by_pol[pol_idx][physical_layer_index]</span> <span class="pre">-&gt;</span> <span class="pre">list[OpticalChannel]</span></code>.
-The physical layer index is the index in the original, unreversed stack.</p>
+The physical layer index is the index in the original, unreversed stack.
+Electric components are in the laboratory frame. Coordinates, zeta and qz
+remain in the solver frame; substrate collection uses z_prime = L - z.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PDielec.OpticalChannelResolver.OpticalChannelSolution.channels_by_pol">
 <span class="sig-name descname"><span class="pre">channels_by_pol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#PDielec.OpticalChannelResolver.OpticalChannel" title="PDielec.OpticalChannelResolver.OpticalChannel"><span class="pre">OpticalChannel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PDielec.OpticalChannelResolver.OpticalChannelSolution.channels_by_pol" title="Link to this definition">¶</a></dt>
@@ -588,6 +605,30 @@ The physical layer index is the index in the original, unreversed stack.</p>
 <code class="docutils literal notranslate"><span class="pre">system_layer_indices</span></code> are the corresponding indices in <code class="docutils literal notranslate"><span class="pre">system.layers</span></code>.
 Passing distinct values is required for reversed systems so physical layer
 ids remain stable while the optical stack order changes.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.OpticalChannelResolver.electric_fields_to_lab">
+<span class="sig-prename descclassname"><span class="pre">PDielec.OpticalChannelResolver.</span></span><span class="sig-name descname"><span class="pre">electric_fields_to_lab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/OpticalChannelResolver.html#electric_fields_to_lab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.OpticalChannelResolver.electric_fields_to_lab" title="Link to this definition">¶</a></dt>
+<dd><p>Map electric components from a depth-reflected solver to the lab frame.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.OpticalChannelResolver.modal_pair_momentum">
+<span class="sig-prename descclassname"><span class="pre">PDielec.OpticalChannelResolver.</span></span><span class="sig-name descname"><span class="pre">modal_pair_momentum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stokes_ratio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_side</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/OpticalChannelResolver.html#modal_pair_momentum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.OpticalChannelResolver.modal_pair_momentum" title="Link to this definition">¶</a></dt>
+<dd><p>Return real overlap momentum in common laser-vacuum wavevector units.</p>
+<p>Channel zeta/qz belong to the incident and reciprocal solver frames.
+This real-vector convention is for NAC/legacy angular classification;
+attenuation remains in the complex fields, not in a phonon-state label.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.OpticalChannelResolver.reciprocal_system">
+<span class="sig-prename descclassname"><span class="pre">PDielec.OpticalChannelResolver.</span></span><span class="sig-name descname"><span class="pre">reciprocal_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_side</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/OpticalChannelResolver.html#reciprocal_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.OpticalChannelResolver.reciprocal_system" title="Link to this definition">¶</a></dt>
+<dd><p>Return the detector stack in coordinates (x, y, L-z).</p>
+<p>Reflect permittivity tensors as P epsilon P, P=diag(1,1,-1), on
+independent layer copies. Electric vectors are mapped back by P; the
+optical solver handles magnetic axial vectors in its own coordinate frame.</p>
 </dd></dl>
 
 </section>
@@ -678,6 +719,9 @@ ids remain stable while the optical stack order changes.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.OpticalChannelResolver.compute_modal_fields_at_points"><code class="docutils literal notranslate"><span class="pre">compute_modal_fields_at_points()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.OpticalChannelResolver.electric_fields_to_lab"><code class="docutils literal notranslate"><span class="pre">electric_fields_to_lab()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.OpticalChannelResolver.modal_pair_momentum"><code class="docutils literal notranslate"><span class="pre">modal_pair_momentum()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.OpticalChannelResolver.reciprocal_system"><code class="docutils literal notranslate"><span class="pre">reciprocal_system()</span></code></a></li>
 </ul>
 </li>
 </ul>
