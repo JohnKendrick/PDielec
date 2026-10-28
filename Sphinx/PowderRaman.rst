@@ -27,12 +27,15 @@ polarisation :math:`\mathbf{e}_S`, the scattering strength is proportional to
 .. math::
    :label: eq-powder-raman-strength
 
-   S_m =
-   \frac{\nu_S^4}{c^4}
-   \frac{n(\nu_m)+1}{8\pi^2\nu_m}
+   S_m \propto
+   \nu_S^4
+   \frac{n(\nu_m)+1}{\nu_m}
    \left|\mathbf{e}_S^{T}\tensorbf{R}^{(m)}\mathbf{e}_L\right|^2
 
-where :math:`n(\nu_m)` is the Bose-Einstein occupation factor.  PDielec reports Raman
+Here all :math:`\nu` are wavenumbers in cm\ :sup:`−1`, the polarisation vectors
+are real unit vectors for linear polarisations, and :math:`n(\nu_m)` is the
+Bose-Einstein occupation factor. This reduced proportionality omits common
+radiation and collection constants; it is not an absolute cross section. PDielec reports Raman
 intensities in arbitrary units, so the most important outputs are the relative mode
 strengths and the changes introduced by particle shape, local fields, polarisation geometry
 and linewidth.
@@ -58,8 +61,9 @@ is converted on read using :math:`R_\epsilon=4\pi R_\alpha/\sqrt{V_{cell}}`.
 Activities in :math:`\text{Å}^4/\mathrm{amu}` are display quantities,
 obtained by multiplying the internal activities by :math:`V_{cell}/(16\pi^2)`.
 
-For particles whose Raman tensor does not depend on shape, the powder average can be
-written in terms of rotational invariants of :math:`\tensorbf{R}`.  For one mode,
+For a fixed tensor that co-rotates with the crystallite, the powder average can be
+written in terms of rotational invariants of :math:`\tensorbf{R}`. The tensor may
+include shape-dependent local fields. For one mode,
 
 .. math::
    :label: eq-powder-raman-invariants
@@ -87,7 +91,12 @@ The usual parallel (VV), crossed (VH), and unpolarised powder strengths are then
    I_{VH}     &\propto 3\gamma^2 + 5\kappa^2 \\
    I_{total}  &\propto 45\alpha^2 + 7\gamma^2 + 5\kappa^2
 
-For non-chiral, non-magnetic Raman scattering the antisymmetric term is normally zero.
+With a normalised uniform measure on :math:`SO(3)`, the right-hand sides are
+45 times the mean squared VV and VH amplitudes. PDielec uses this common
+factor of 45 in both analytic and sampled powder activities. ``Unpolarised``
+is the sum VV + VH, with no factor of one half. The antisymmetric term vanishes
+for a symmetric tensor; differing incident and scattered local fields can
+make an effective tensor nonsymmetric even when the intrinsic tensor is symmetric.
 
 Local Field Correction
 ----------------------
@@ -209,9 +218,13 @@ The powder strength is the orientational average over all rotations,
    \int_{SO(3)}
    S_m(g)\,dg
 
-For spherical particles this average reduces to the invariant expressions above.  For more
-general particle tensors, PDielec samples the rotation group and averages the fixed
-laboratory polarisation geometry over many crystallite orientations.
+The measure :math:`dg` is normalised to one. For fixed relative shape/crystal
+axes in an isotropic host, both the optical local-field tensors and the Raman
+tensor co-rotate, so :eq:`eq-powder-raman-rotation` also holds for nonspherical
+particles. The invariant expressions are therefore valid for these shapes too.
+The current GUI uses analytic invariants for spheres and samples rotations for
+nonspherical particle modes, averaging the fixed laboratory polarisation geometry.
+This is an implementation choice, not a restriction of the invariant identity.
 
 If Born-charge or Hessian data are unavailable, PDielec retains the supplied TO
 frequencies and Raman tensors and omits the particle frequency/EO correction.
@@ -239,3 +252,15 @@ The implemented Lorentzian integrates to :math:`\pi` over the full wavenumber
 axis: its coefficient is not the integrated line area. Divide the line shape
 by :math:`\pi` for a unit-area convention. Frequencies and widths are in
 cm\ :sup:`−1`; changing the spectral-density axis also requires a Jacobian.
+
+Scripting Helper
+----------------
+
+``HelperRoutines.calculate_powder_raman_spectrum`` uses the supplied reader
+frequencies and Raman tensors, with optional spherical optical local-field
+factors. It does not calculate the particle frequency shifts or particle EO
+corrections described above. ``matrix=None`` or ``"none"`` bypasses optical
+local fields; this differs from embedding a particle in a host of permittivity one.
+Explicit mode selection cannot override the stable Stokes conditions: contributing
+frequencies must be finite, at least 1 cm\ :sup:`−1`, and below the laser
+wavenumber. The shared Stokes factor has a finite zero-temperature limit.

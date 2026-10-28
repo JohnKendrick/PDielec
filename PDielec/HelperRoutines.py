@@ -24,11 +24,12 @@ import numpy as np
 
 import PDielec.GTMcore as GTM
 from PDielec import Calculator, DielectricFunction, Utilities
-from PDielec.Constants import amu, average_masses, boltzmann_si, isotope_masses, planck_si, speed_light_si, wavenumber
+from PDielec.Constants import amu, average_masses, isotope_masses, wavenumber
 from PDielec.GUI.CrystalScenarioTab import solve_single_crystal_equations
 from PDielec.LayeredRamanCalculator import LayeredRamanCalculator, RamanLayer, lorentzian_broaden
 from PDielec.Materials import External, MaterialsDataBase
 from PDielec.RamanGeometry import resolve_collection_angle
+from PDielec.RamanSpectrum import stokes_prefactor, valid_stokes_mode, validate_laser_wavelength
 
 logger = logging.getLogger(__name__)
 gtm_methods = {"Coherent": GTM.CoherentLayer,
@@ -379,6 +380,12 @@ def calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume
                                     modes_selected=None):
     """Calculate a powder Raman spectrum for spherical particles.
 
+    This scripting helper uses the supplied mode frequencies and Raman tensors,
+    with optional optical local-field factors. It does not calculate particle
+    frequency shifts or particle EO corrections. Only finite stable modes with
+    a positive Stokes photon and frequency at least 1 cm-1 contribute, even
+    when explicitly selected. The shared reduced Stokes factor is used.
+
     Parameters
     ----------
     frequencies_cm1 : array_like
@@ -406,6 +413,8 @@ def calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume
         Raman intensity on ``frequencies_cm1`` in arbitrary units.
 
     """
+    validate_laser_wavelength(laser_wavelength_nm)
+    nu_L = 1.0e7 / laser_wavelength_nm
     raman_tensors = reader.get_raman_tensors()
     if raman_tensors is None or len(raman_tensors) == 0:
         return np.zeros(len(frequencies_cm1))
@@ -422,13 +431,11 @@ def calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume
     L = I3 / 3.0
     N = I3 if no_matrix else Calculator.compute_internal_field_tensor(L, epsilon_inf_i, epsilon_e)
 
-    nu_L = 1.0e7 / laser_wavelength_nm
-    hc_over_k = planck_si * speed_light_si * 100.0 / boltzmann_si
     spectrum = np.zeros(len(frequencies_cm1))
 
     for frequency, linewidth, is_selected, raman_tensor in zip(
             mode_frequencies, sigmas_cm1, selected, raman_tensors):
-        if not is_selected or abs(frequency) < 1.0:
+        if not is_selected or not valid_stokes_mode(frequency, nu_L, 1.0):
             continue
         R_eps = np.asarray(raman_tensor, dtype=complex)
         R_eff = R_eps if no_matrix else Calculator.compute_effective_raman_tensor(R_eps, N, N)
@@ -447,12 +454,7 @@ def calculate_powder_raman_spectrum(frequencies_cm1, reader, matrix=None, volume
         else:
             raise ValueError("polarisation must be one of 'VV', 'VH', 'HV' or 'Unpolarised'")
 
-        x = hc_over_k * frequency / temperature if temperature > 0 else 1.0e18
-        n_bose = 1.0 / np.expm1(x) if x > 1.0e-6 else 1.0 / x
-        nu_s = nu_L - frequency
-        if nu_s <= 0.0:
-            continue
-        strength = (nu_s ** 4) * (n_bose + 1.0) * intensity_factor / frequency
+        strength = stokes_prefactor(frequency, nu_L, temperature) * intensity_factor
         spectrum += strength * linewidth / ((frequencies_cm1 - frequency) ** 2 + linewidth ** 2)
 
     return spectrum * volume_fraction
