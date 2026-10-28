@@ -102,7 +102,11 @@ the layer thickness,
    \mathbf{E}_L(z,\nu_L)\,dz
 
 PDielec evaluates this integral numerically using Gauss-Legendre quadrature points inside
-each Raman-active layer.
+each Raman-active layer. The GUI derives one requested count from the thickest
+active layer and the points-per-micrometre setting, rounds it, and clamps it to
+5--1,000,000. Every active layer uses that count. Above 64 points, equal panels
+of 64-point rules round the total upwards to a multiple of 64. This is fixed
+quadrature; convergence should be checked for rapidly varying fields.
 
 Optical Fields
 --------------
@@ -407,11 +411,15 @@ alternatives for solving the optical propagation problem.
 **All modes — per Berreman q-channel-pair NAC** (GUI label: *All modes* or *All modes (EO)*)
    This level decomposes the incident and reciprocal scattered fields into Berreman
    propagation channels in each Raman-active layer.  Numerically distinct Berreman
-   eigenvectors that have the same propagation :math:`q_z` within tolerance are first
-   summed coherently into a single q-channel.  This is important at normal incidence
+   eigenvectors whose real reduced :math:`q_z` differs from a group's first
+   representative by at most :math:`10^{-4}` are summed coherently into a
+   single q-channel. The first matching group is used; this is not transitive
+   clustering. Equal real parts do not prove degeneracy of complex propagation
+   constants in absorbing media.  This is important at normal incidence
    and in other degenerate or nearly-degenerate cases, where the individual Berreman
    eigenvectors are not unique but their summed field in a propagation subspace is
-   unique.
+   unique. This exact-subspace argument does not establish the validity of
+   real-part-only grouping for general absorbing media.
 
    The NAC correction is then evaluated separately for every combination of incident
    q-channel :math:`i_L` and scattered q-channel :math:`j_S`.  For each pair a
