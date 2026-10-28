@@ -223,7 +223,8 @@ class TestJ9QEParser:
         factor = 0.5 * 2.7502 * chi2_pm_per_v_to_repsilon(r.volume)
         assert chi2[0, 0, 0] == pytest.approx(1.0 * factor)
         assert chi2[2, 2, 2] == pytest.approx(27.0 * factor)
-        assert chi2[1, 2, 1] == pytest.approx(15.0 * factor)
+        # QE writes the first index across each row, then the second index.
+        assert chi2[1, 2, 1] == pytest.approx(17.0 * factor)
 
     @pytest.mark.skipif(not _have_qe_tensors, reason="QE tensors.xml not present")
     def test_qe_elop_tns_xml_block(self):

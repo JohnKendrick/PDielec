@@ -659,6 +659,25 @@ in Rydberg atomic units, from which the physical susceptibility in pm/V is
 precedence over the log.  Each path then applies the common conversion above.
 The readers also average the tensor over the final unit-cell point group.
 
+QE writes its first Cartesian index fastest in both the log and ``ELOP_TNS``
+XML. Thus each printed row varies :math:`i`, successive rows vary :math:`j`,
+and successive blocks vary the field index :math:`k`; the stored tensor is
+:math:`\chi^{(2)}_{ijk}`. The reader preserves that ordering rather than
+transposing :math:`i` and :math:`j`. An exactly symmetric static tensor hides
+such a transposition, so symmetric examples alone cannot validate the parser.
+The conversion and log ordering are specified in
+`QE's el_opt source <https://github.com/QEF/q-e/blob/qe-7.5/PHonon/PH/el_opt.f90>`_;
+the XML ordering follows the Fortran array writer in
+`QE's xmltools source <https://github.com/QEF/q-e/blob/qe-7.5/upflib/xmltools.f90>`_.
+
+For the contracted CASTEP :math:`d` matrix, the field-product vector is
+:math:`(E_x^2,E_y^2,E_z^2,2E_yE_z,2E_xE_z,2E_xE_y)` and
+:math:`P^{(2)}/\epsilon_0=2d\,v`. Expanding to the full Cartesian
+:math:`\chi^{(2)}=2d` tensor already supplies both mixed-index contributions;
+no additional doubling of its off-diagonal components is needed.
+CASTEP identifies this output as the d-matrix in its
+`dielectric-response documentation <https://castep-docs.github.io/castep-docs/documentation/Phonons/Castep_Phonons/Dielectric-properties/>`_.
+
 The required response is the electronic mixed optical/static susceptibility.
 Using a static or second-harmonic susceptibility assumes negligible relevant
 dispersion.  A relaxed-ion Pockels tensor, the derivative of inverse

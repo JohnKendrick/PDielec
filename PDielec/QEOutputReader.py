@@ -191,8 +191,10 @@ class QEOutputReader(GenericOutputReader):
             ( ... )
             ...
 
-        The three matrices are the derivatives of the dielectric tensor with
-        respect to electric fields along x, y, and z, respectively.  QE states
+        The three blocks are the derivatives of the dielectric tensor with
+        respect to electric fields along x, y, and z, respectively.  Within
+        each block QE writes the first Cartesian index across a row and the
+        second index down the rows.  QE states
         that this Rydberg-a.u. electro-optic tensor should be multiplied by
         1/2 to obtain static chi^2, and by 2.7502 to convert to pm/V.
 
@@ -229,7 +231,7 @@ class QEOutputReader(GenericOutputReader):
                 values = [float(v.replace("D", "E").replace("d", "e")) for v in float_re.findall(data_line)]
                 if len(values) < 3:
                     continue
-                electro_optic[rows_read, :, ifield] = values[:3]
+                electro_optic[:, rows_read, ifield] = values[:3]
                 rows_read += 1
 
         # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
@@ -992,8 +994,9 @@ class QEOutputReader(GenericOutputReader):
 
         The ``ELOP_TNS`` element stores the same electro-optic tensor printed
         in the ph.x output log, but with the full XML precision.  Values are
-        arranged as three consecutive 3x3 matrices for electric fields along
-        x, y, and z.  The stored attribute is chi^2 converted to the reader
+        arranged in Fortran element order (first Cartesian index fastest),
+        with three consecutive blocks for fields along x, y, and z.
+        The stored attribute is chi^2 converted to the reader
         ``R_epsilon`` convention, with layout ``chi2[i, j, k]``.
 
         Parameters
@@ -1015,10 +1018,7 @@ class QEOutputReader(GenericOutputReader):
             logger.warning(f"  QE ELOP_TNS block contains {len(values)} values; expected 27")
             return False
 
-        electro_optic = np.zeros((3, 3, 3))
-        rows = np.array(values).reshape(9, 3)
-        for ifield in range(3):
-            electro_optic[:, :, ifield] = rows[ifield * 3:(ifield + 1) * 3, :]
+        electro_optic = np.array(values).reshape((3, 3, 3), order="F")
 
         # QE electro-optic tensor is d epsilon_ij / d E_k in Rydberg a.u.
         # QE documents chi^(2) = 0.5 * tensor, and 1 Rydberg-a.u. = 2.7502 pm/V.
