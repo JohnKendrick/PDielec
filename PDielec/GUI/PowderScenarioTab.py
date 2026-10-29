@@ -1419,17 +1419,10 @@ class PowderScenarioTab(ScenarioTab):
         Implements the macroscopic powder approach in ``Raman-Theory.tex`` for
         small ellipsoidal particles embedded in a non-absorbing matrix.
 
-        Two code paths are used depending on particle shape:
-
-        * **Sphere** — the depolarisation tensor L = I/3 is rotationally invariant, so
-          R_eff(Ω) = R @ R_eff_crystal @ R.T is a pure rank-2 tensor rotation
-          and the analytical rotational invariants (``eq-invariants1`` and
-          ``eq-Intensities``) are exact.
-        * **Non-sphere** — D^{particle} is diagonalised once in the crystal frame
-          (ΔD is orientation-invariant); for each of ``n_samples`` SO(3) orientations
-          the optical internal-field tensor is recomputed and used to evaluate the
-          effective bulk Raman tensor R_eff(Ω), whose contribution is
-          accumulated into the spectrum.
+        All supported shapes use analytical rotational invariants of the effective
+        Raman tensor. Shape and crystal axes co-rotate in the isotropic host;
+        particle modes and electro-optic corrections are computed once in the
+        particle frame before applying optical local fields.
 
         Parameters
         ----------
@@ -1510,7 +1503,6 @@ class PowderScenarioTab(ScenarioTab):
         nu_L = 1.0e7 / laser_nm          # laser frequency in cm^-1
         polarisation = self.settings["Raman laser polarisation"]
         temperature = self.settings["Raman temperature"]
-        n_samples = self.settings["Raman orientation samples"]
         chi2 = getattr(self.reader, "nonlinear_optical_susceptibility", None)
         eo_requested = self.settings.get("Raman electro-optic term", True)
         include_eo = (
@@ -1531,45 +1523,7 @@ class PowderScenarioTab(ScenarioTab):
 
         vs_cm1 = np.array(vs_cm1, dtype=float)
 
-        # Non-sphere: numerical SO(3) averaging.  The finite-particle EO
-        # correction is constructed once in the particle frame and does not
-        # by itself require orientation sampling.
-        if not is_sphere and has_correction_data:
-            logger.debug(f"{self.settings['Legend']} _calculate_raman: orientation numerical average ({n_samples} samples)")
-            n_freqs = len(vs_cm1)
-            _accumulated = [0.0]
-            _updated = [0]
-            _increment_per_sample = n_freqs / n_samples
-
-            def _progress_callback():
-                _accumulated[0] += _increment_per_sample
-                new_int = int(_accumulated[0])
-                if new_int > _updated[0]:
-                    self.notebook.progressbars_update(increment=new_int - _updated[0])
-                    _updated[0] = new_int
-                    QCoreApplication.processEvents()
-
-            spectrum = self._compute_orientation_sampled_spectrum(
-                L, epsilon_e, epsilon_inf_i, I3,
-                raman_tensors, frequencies_cm1, sigmas_cm1, modes_selected,
-                polarisation, nu_L, temperature, n_samples, vs_cm1,
-                no_matrix=is_none_matrix,
-                include_eo=include_eo,
-                chi2_repsilon=chi2,
-                progress_callback=_progress_callback)
-            # Flush any remaining fractional increments
-            remaining = n_freqs - _updated[0]
-            if remaining > 0:
-                self.notebook.progressbars_update(increment=remaining)
-            self.raman_spectrum = (spectrum * volume_fraction).tolist()
-            self.vs_cm1 = list(vs_cm1)
-            self.calculation_required = False
-            QCoreApplication.processEvents()
-            logger.debug(f"{self.settings['Legend']} Finished:: _calculate_raman")
-            return
-
-        # Sphere path (or non-sphere fallback when correction data unavailable):
-        # compute particle modes once in crystal frame, then use analytical invariants.
+        # Compute particle modes once, then average analytically for every shape.
         if has_correction_data:
             logger.debug(f"{self.settings['Legend']} _calculate_raman: applying particle frequency correction")
             loop_freqs, loop_raman, loop_sigmas, loop_selected = self._compute_particle_modes(
@@ -1587,7 +1541,7 @@ class PowderScenarioTab(ScenarioTab):
 
         # Fixed shape/crystal axes in an isotropic host rotate as one rank-two
         # effective tensor: eq-invariants1 and eq-Intensities also cover ellipsoids.
-        if not is_sphere:
+        if not is_sphere and not has_correction_data:
             logger.warning("%s _calculate_raman: polar response data unavailable; using TO tensors "
                            "with ellipsoid optical fields and analytic orientation invariants. "
                            "Particle frequency and EO corrections are omitted.", self.settings["Legend"])
@@ -1605,7 +1559,7 @@ class PowderScenarioTab(ScenarioTab):
             if polarisation in ("VV", "VH", "HV"):
                 vv, vh = Calculator.compute_powder_raman_intensities(R_eff)
                 intensity_factor = vv if polarisation == "VV" else vh
-            else:  # Unpolarised: 45α² + 7γ² + 5κ² (≠ VV+VH for antisymmetric tensors)
+            else:  # Unpolarised: VV + VH = 45α² + 7γ² + 5κ²
                 alpha = np.trace(R_eff) / 3.0
                 gamma_t = 0.5 * (R_eff + R_eff.T) - alpha * I3
                 kappa_t = 0.5 * (R_eff - R_eff.T)
@@ -2279,21 +2233,6 @@ class PowderScenarioTab(ScenarioTab):
         self.calculation_required = True
         self.settings["Raman electro-optic term"] = checked
 
-    def on_orientation_samples_cb_activated(self, index):
-        """Handle a change to the number of orientation samples.
-
-        Parameters
-        ----------
-        index : int
-            Index into the orientation sample count list.
-
-        """
-        counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
-        value = counts[index]
-        logger.debug(f"{self.settings['Legend']} on_orientation_samples_cb_activated {value}")
-        self.refresh_required = True
-        self.settings["Raman orientation samples"] = value
-
     def refresh_raman(self):
         """Refresh the raman settings in the GUI.
 
@@ -2313,10 +2252,6 @@ class PowderScenarioTab(ScenarioTab):
             self.polarisation_cb.setCurrentIndex(polarisations.index(pol))
         self.temperature_sb.setValue(self.settings["Raman temperature"])
         self.eo_term_cb.setChecked(self.settings.get("Raman electro-optic term", True))
-        counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
-        current = self.settings["Raman orientation samples"]
-        idx = counts.index(current) if current in counts else counts.index(256)
-        self.orientation_samples_cb.setCurrentIndex(idx)
         return
 
     def refresh_infrared(self):
@@ -2488,27 +2423,6 @@ class PowderScenarioTab(ScenarioTab):
         label = QLabel("Include electro-optic term", self)
         label.setToolTip(self.eo_term_cb.toolTip())
         form.addRow(label, self.eo_term_cb)
-        #
-        # Orientation samples for numerical powder averaging (non-spherical particles)
-        #
-        counts = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
-        self.orientation_samples_cb = QComboBox(self)
-        for c in counts:
-            self.orientation_samples_cb.addItem(str(c))
-        current = self.settings["Raman orientation samples"]
-        idx = counts.index(current) if current in counts else counts.index(256)
-        self.orientation_samples_cb.setCurrentIndex(idx)
-        self.orientation_samples_cb.setToolTip(
-            "Number of SO(3) orientations used for numerical powder averaging "
-            "(applies to non-spherical particles only; powers of 2 give optimal Sobol coverage)"
-        )
-        self.orientation_samples_cb.activated.connect(self.on_orientation_samples_cb_activated)
-        label = QLabel("Orientation samples", self)
-        label.setToolTip(
-            "Number of SO(3) orientations for numerical powder averaging "
-            "(non-spherical particles only; 256 is usually sufficient)"
-        )
-        form.addRow(label, self.orientation_samples_cb)
         return vbox, form
 
     def initialise_raman_settings(self):
@@ -2526,7 +2440,6 @@ class PowderScenarioTab(ScenarioTab):
         self.settings["Raman laser wavelength"] = 785
         self.settings["Raman laser polarisation"] = "VV"
         self.settings["Raman temperature"] = 298.0
-        self.settings["Raman orientation samples"] = 512
         self.settings["Raman electro-optic term"] = False
         self.raman_spectrum = []
         return

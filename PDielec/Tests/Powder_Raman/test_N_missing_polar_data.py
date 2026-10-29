@@ -140,3 +140,43 @@ def test_orientation_path_excludes_invalid_stokes_modes(frequency):
         no_matrix=True,
     )
     np.testing.assert_array_equal(values, [0.0])
+
+
+@pytest.mark.parametrize("polarisation", ["VV", "VH", "Unpolarised"])
+def test_particle_ellipsoid_uses_analytic_average(polarisation):
+    """Corrected particle spectra agree with quadrature without a sample setting."""
+    from PDielec.Constants import wavenumber
+
+    tab = powder_tab([0.2, 0.3, 0.5])
+    del tab.settings["Raman orientation samples"]
+    tab.settings["Raman laser polarisation"] = polarisation
+    tab.settings["Raman electro-optic term"] = True
+    tab.reader.nions = 1
+    tab.reader.volume = 100.0
+    tab.reader.masses = [10.0]
+    frequencies = np.array([100.0, 200.0, 300.0])
+    tab.reader.hessian = np.diag((frequencies * wavenumber) ** 2)
+    tab.reader.mass_weighted_normal_modes = np.eye(3).reshape(3, 1, 3)
+    tab.reader.born_charges = [np.diag([0.1, 0.2, 0.3])]
+    tab.reader.nonlinear_optical_susceptibility = np.ones((3, 3, 3)) * 0.1
+    tensors = [np.diag([1.0, 0.2, 0.3]), np.ones((3, 3)), np.diag([0.1, 0.4, 1.0])]
+    tab.reader.get_raman_tensors = lambda: tensors
+    settings = tab.notebook.settingsTab
+    settings.frequencies_cm1 = frequencies
+    settings.sigmas_cm1 = [5.0] * 3
+    settings.modes_selected = [True] * 3
+    axis = np.linspace(80, 400, 161)
+    tab._calculate_raman(axis)
+    analytic = np.array(tab.raman_spectrum)
+    sampled = tab._compute_orientation_sampled_spectrum(
+        np.diag([0.2, 0.3, 0.5]), 1.0, 2 * np.eye(3), np.eye(3),
+        tensors, frequencies, [5.0] * 3, [True] * 3,
+        polarisation, 20000.0, 0.0, 4096, axis,
+        include_eo=True, chi2_repsilon=tab.reader.nonlinear_optical_susceptibility,
+    )
+    np.testing.assert_allclose(analytic, sampled, rtol=0.01)
+    # Legacy scripts may still supply this key, but it cannot alter the result.
+    tab.settings["Raman orientation samples"] = 0
+    tab.calculation_required = True
+    tab._calculate_raman(axis)
+    np.testing.assert_array_equal(tab.raman_spectrum, analytic)
