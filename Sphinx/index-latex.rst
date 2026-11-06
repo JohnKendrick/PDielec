@@ -19,6 +19,7 @@ Contents
    theory_single_crystal
    PowderRaman
    CrystalRaman
+   RamanUnits
    analysis
    application_notes_1
    application_notes_2

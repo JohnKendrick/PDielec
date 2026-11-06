@@ -366,11 +366,11 @@ as well as the response needed for the particle phonon correction. Enabling
 the checkbox cannot supply missing data. The CASTEP ZnO example contains this
 response, and switching EO off gives a different spectrum.
 
-*Orientation samples* selects the number of numerical orientations for
-non-spherical particles, from 4 to 4096, initially 512. Increase it to check
-convergence of an anisotropic particle average. Spheres do not need this
-numerical sampling. Particle shape can affect both the mode frequencies and
-the Raman response, so a change in shape is not simply a rescaling of peaks.
+All supported particle shapes use analytical orientation averaging. There is
+no sample-count control or sampling-convergence parameter. Particle shape can
+affect both the mode frequencies and the Raman response, so a change in shape
+is not simply a rescaling of peaks. Particle-mode and electro-optic corrections
+are retained and calculated once in the particle frame.
 
 .. figure:: _static/Figures/gui/powder-raman-ellipsoid.png
    :width: 100%

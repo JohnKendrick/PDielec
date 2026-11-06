@@ -181,9 +181,8 @@ fraction in all four scenarios isolates these corrections. The particle
 model is the small-particle, quasistatic limit; the stored particle-size
 setting is not a measured GaN size or a finite-size Raman resonance.
 
-For spheres, the orientational average uses analytic tensor invariants.
-There is no orientation-sampling convergence parameter to tune for this
-case. For a symmetric Raman tensor, VV contains
+For all supported particle shapes, the orientational average uses analytic
+tensor invariants. There is no orientation-sampling convergence parameter. For a symmetric Raman tensor, VV contains
 :math:`45\alpha^2+4\gamma^2` and VH contains :math:`3\gamma^2`, where
 :math:`\alpha` is the isotropic part and :math:`\gamma` measures anisotropy.
 Thus a traceless isolated mode has VH/VV = 3/4. This is useful for the

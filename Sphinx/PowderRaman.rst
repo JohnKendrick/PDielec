@@ -222,9 +222,9 @@ The measure :math:`dg` is normalised to one. For fixed relative shape/crystal
 axes in an isotropic host, both the optical local-field tensors and the Raman
 tensor co-rotate, so :eq:`eq-powder-raman-rotation` also holds for nonspherical
 particles. The invariant expressions are therefore valid for these shapes too.
-The current GUI uses analytic invariants for spheres and samples rotations for
-nonspherical particle modes, averaging the fixed laboratory polarisation geometry.
-This is an implementation choice, not a restriction of the invariant identity.
+The GUI uses analytic invariants for all supported particle shapes. Particle
+frequencies, mode mixing and electro-optic corrections are calculated once in
+the particle frame; no orientation sample count is required.
 
 If Born-charge or Hessian data are unavailable, PDielec retains the supplied TO
 frequencies and Raman tensors and omits the particle frequency/EO correction.
@@ -264,3 +264,9 @@ local fields; this differs from embedding a particle in a host of permittivity o
 Explicit mode selection cannot override the stable Stokes conditions: contributing
 frequencies must be finite, at least 1 cm\ :sup:`−1`, and below the laser
 wavenumber. The shared Stokes factor has a finite zero-temperature limit.
+
+Numerical units and validation scope
+------------------------------------
+
+See :ref:`Raman-Units` for the common conversions, worked reader/powder/layer
+examples and the scope of validation associated with the package paper.

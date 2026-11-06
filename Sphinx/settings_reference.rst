@@ -262,9 +262,8 @@ particle-corrected phonons and the electro-optic contribution.
     population factor.
 
 ``Raman orientation samples``
-    Number of numerical orientations for non-spherical particles. The GUI
-    offers ``4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096``; default
-    ``512``. Increase to check convergence. Spheres use an analytic average.
+    Legacy setting, ignored. All supported powder particle shapes now use
+    analytical orientation averaging; the GUI no longer exposes this control.
 
 ``Raman electro-optic term``
     Boolean, default ``False`` for a new powder scenario. Includes the
@@ -409,8 +408,13 @@ NAC/EO corrections and the different coherence choices.
 
 ``Depth coherence``
     ``'Coherent amplitude'`` (default) integrates amplitudes over depth before
-    squaring. ``'Incoherent intensity'`` integrates local intensities. This is
-    a Raman emission choice, not the optical layer's propagation coherence.
+    squaring. ``'Incoherent intensity'`` integrates local intensities.
+    ``'Normalised incoherent intensity'`` divides each effective layer's local
+    intensity integral by its thickness, then sums the layer averages.
+    Equivalent neighbouring layers are merged first; zero-thickness layers
+    contribute zero. Both incoherent options disable coherent layer combination.
+    This calculator-wide Raman emission choice is separate from each optical
+    layer's propagation coherence.
 
 ``Approximate ES``
     Script-only boolean, default ``False``. If ``True``, evaluates the reciprocal
@@ -422,7 +426,9 @@ NAC/EO corrections and the different coherence choices.
 ``Coalesce equivalent layers``
     Script-only boolean, default ``True``. Merges adjacent equivalent coherent
     layers before Raman integration. ``False`` retains the original layer
-    boundaries and is useful for subdivision checks.
+    boundaries and is useful for subdivision checks. With ``Depth coherence``
+    set to ``'Normalised incoherent intensity'``, equivalent neighbouring layers
+    are always merged so their combined thickness defines the average.
 
 ``Raman electro-optic term``
     Boolean, default ``True`` for crystal scenarios. Includes χ⁽²⁾ in the

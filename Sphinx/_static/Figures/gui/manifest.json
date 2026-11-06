@@ -4669,31 +4669,6 @@
           "enabled": true
         },
         {
-          "type": "QComboBox",
-          "tooltip": "Number of SO(3) orientations used for numerical powder averaging (applies to non-spherical particles only; powers of 2 give optimal Sobol coverage)",
-          "choices": [
-            "4",
-            "8",
-            "16",
-            "32",
-            "64",
-            "128",
-            "256",
-            "512",
-            "1024",
-            "2048",
-            "4096"
-          ],
-          "value": "512",
-          "enabled": true
-        },
-        {
-          "type": "QLabel",
-          "tooltip": "Number of SO(3) orientations for numerical powder averaging (non-spherical particles only; 256 is usually sufficient)",
-          "text": "Orientation samples",
-          "enabled": true
-        },
-        {
           "type": "QLineEdit",
           "tooltip": "The legend will be used to describe the results in the plot",
           "text": "ZnO powder \u2014 EO on",
@@ -5230,31 +5205,6 @@
           "type": "QLabel",
           "tooltip": "Include the finite-particle electro-optic \u03c7\u207d\u00b2\u207e contribution using the same depolarisation-field kernel as the particle phonon frequencies.",
           "text": "Include electro-optic term",
-          "enabled": true
-        },
-        {
-          "type": "QComboBox",
-          "tooltip": "Number of SO(3) orientations used for numerical powder averaging (applies to non-spherical particles only; powers of 2 give optimal Sobol coverage)",
-          "choices": [
-            "4",
-            "8",
-            "16",
-            "32",
-            "64",
-            "128",
-            "256",
-            "512",
-            "1024",
-            "2048",
-            "4096"
-          ],
-          "value": "512",
-          "enabled": true
-        },
-        {
-          "type": "QLabel",
-          "tooltip": "Number of SO(3) orientations for numerical powder averaging (non-spherical particles only; 256 is usually sufficient)",
-          "text": "Orientation samples",
           "enabled": true
         },
         {
@@ -8965,7 +8915,6 @@
       "Raman laser wavelength": 532.0,
       "Raman laser polarisation": "VV",
       "Raman temperature": 298.0,
-      "Raman orientation samples": 512,
       "Raman electro-optic term": true
     }
   }

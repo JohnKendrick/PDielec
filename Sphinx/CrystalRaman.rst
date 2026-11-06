@@ -239,6 +239,34 @@ not determine phonon coherence.  When *Incoherent intensity* is selected, PDiele
 forces separate Raman-active layers to be combined as incoherent intensities,
 because there is then no well-defined layer amplitude to add coherently.
 
+*Normalised incoherent intensity* uses a depth average for each effective
+Raman-active layer, then sums those averages:
+
+.. math::
+   :label: eq-crystal-raman-depth-normalised-incoherent
+
+   I_m \propto \sum_L \frac{1}{d_L}
+   \int_L \left|
+   \mathbf{E}_S(z,\nu_S)^T
+   \tensorbf{R}^{(m)}_{L,lab}
+   \mathbf{E}_L(z,\nu_L)
+   \right|^2\,dz .
+
+Equivalent neighbouring layers are merged using the existing equivalence rules
+before normalisation, even when the script setting ``Coalesce equivalent layers``
+is false. Their combined thickness supplies :math:`d_L`. Layers that cannot be
+merged are averaged separately, and their intensities are added. Zero-thickness
+layers contribute zero. Both incoherent depth choices disable coherent layer
+combination; depth coherence is a calculator-wide setting, separate from each
+layer's optical propagation coherence.
+
+For a single layer with uniform fields the normalised intensity is independent
+of thickness. For an absorbing layer whose integrated signal saturates, the
+average decreases with increasing geometric thickness. Before the common Stokes
+factor, its raw overlap units are Å/amu, compared with Å²/amu for the unnormalised
+incoherent integral. This is a depth average, not absolute scattering power or a
+normalised collective phonon-state model.
+
 The mode intensity is then multiplied by the Stokes radiation and thermal factor,
 
 .. math::
@@ -761,40 +789,7 @@ does not automatically recover every unobserved final state or spectral window.
 Numerical conventions
 ---------------------
 
-.. list-table:: Theory-to-code conversions for the layered Raman calculation
-   :header-rows: 1
-   :widths: 28 36 36
-
-   * - Quantity
-     - Stored convention
-     - Conversion or consequence
-   * - Optical frequency
-     - Wavenumber in cm\ :sup:`−1`
-     - :math:`f_{Hz}=100c_{SI}\nu`, :math:`\omega=2\pi f_{Hz}`
-   * - Laser wavelength
-     - Nanometres
-     - :math:`\nu_L=10^7/\lambda_{nm}`
-   * - Optical depth and phase
-     - Depth in metres; :math:`\zeta,q_z` dimensionless
-     - :math:`k_0=2\pi100\nu`; propagation phase uses :math:`k_0q_z z`
-   * - Raman depth quadrature
-     - Weights in Å
-     - Metre-valued quadrature weights multiplied by :math:`10^{10}`
-   * - Raman tensor
-     - :math:`R_\epsilon` in :math:`\sqrt{\mathrm{Å}/\mathrm{amu}}`
-     - Multiply by :math:`\sqrt{10^{-10}/m_u}` for :math:`\sqrt{\mathrm m/\mathrm{kg}}`
-   * - Raw coherent overlap squared
-     - Å cubed per amu
-     - Multiply by :math:`10^{-30}/m_u` for cubic metres per kg
-   * - Local or normalized-profile weight
-     - Å squared per amu
-     - Multiply by :math:`10^{-20}/m_u` for square metres per kg
-   * - Stokes prefactor
-     - :math:`\nu_S^4(n+1)/\nu_m`, all wavenumbers in cm\ :sup:`−1`
-     - Applied once; excludes absolute radiation and collection constants
-   * - Broadened line
-     - :math:`I_m\sigma_m/[(\nu-\nu_m)^2+\sigma_m^2]`
-     - Full area :math:`\pi I_m`; width is HWHM
-
-Here :math:`m_u` is the atomic mass unit in kg. These conversions do not equate
-raw coherent and local observables or supply missing physical normalization.
+The common conversion table, implementation boundaries and worked examples are
+in :ref:`Raman-Units`. The raw coherent overlap and local-depth integral have
+different length dimensions; converting their units does not make them the same
+observable or supply an absolute Raman cross section.
