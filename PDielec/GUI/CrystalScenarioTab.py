@@ -52,10 +52,12 @@ from PDielec.GUI.ScenarioTab import ScenarioTab
 from PDielec.GUI.SingleCrystalLayer import ShowLayerWindow, SingleCrystalLayer
 from PDielec.LayeredRamanCalculator import (
     DEPTH_INTEGRATION_COHERENT,
-    DEPTH_INTEGRATION_INCOHERENT,
+    DEPTH_INTEGRATION_NORMALISED_INCOHERENT,
+    DEPTH_INTEGRATION_OPTIONS,
     FINAL_STATE_BULK_PHASE_MATCHED,
     FINAL_STATE_LOCAL_INCOHERENT,
     FINAL_STATE_MODEL_OPTIONS,
+    INCOHERENT_DEPTH_OPTIONS,
     MODAL_PAIR_COHERENT_ALL,
     MODAL_PAIR_GROUP_Q,
     MODAL_PAIR_INCOHERENT,
@@ -1657,10 +1659,10 @@ class CrystalScenarioTab(ScenarioTab):
         return coalesced
 
     @classmethod
-    def _select_finite_raman_layers(cls, layers, coalesce_equivalent=True):
-        """Return finite layers for Crystal Raman optical-field construction."""
+    def _select_finite_raman_layers(cls, layers, coalesce_equivalent=True, depth_integration=DEPTH_INTEGRATION_COHERENT):
+        """Return finite layers, merging equivalent neighbours for layer averages."""
         finite_layers = layers[1:-1]
-        if coalesce_equivalent:
+        if coalesce_equivalent or depth_integration == DEPTH_INTEGRATION_NORMALISED_INCOHERENT:
             return cls._coalesce_equivalent_layers(finite_layers)
         return finite_layers
 
@@ -1902,7 +1904,7 @@ class CrystalScenarioTab(ScenarioTab):
 
         # Depth coherence (was "Raman depth integration")
         self.depth_integration_cb = QComboBox(self)
-        self.depth_integration_cb.addItems([DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT])
+        self.depth_integration_cb.addItems(DEPTH_INTEGRATION_OPTIONS)
         idx = self.depth_integration_cb.findText(
             self.settings["Depth coherence"], Qt.MatchFixedString)
         if idx >= 0:
@@ -1910,9 +1912,13 @@ class CrystalScenarioTab(ScenarioTab):
         self.depth_integration_cb.activated.connect(self.on_depth_integration_cb_activated)
         self.depth_integration_cb.setToolTip(
             "How Raman sources are combined through the depth of each active layer:\n"
-            "'Coherent amplitude' integrates the complex amplitude before squaring; use for thin phase-stable films.\n"
-            "'Incoherent intensity' integrates local intensity; use for thick or bulk samples such as mm/cm layers.\n"
-            "Note: 'Incoherent intensity' also forces incoherent layer combination."
+            "'Coherent amplitude' integrates the complex amplitude before squaring.\n"
+            "'Incoherent intensity' integrates local intensity over depth (in Å).\n"
+            "'Normalised incoherent intensity' divides each layer integral by that layer's thickness,\n"
+            "then sums the layer averages. Zero-thickness layers contribute zero.\n"
+            "Equivalent neighbouring layers are merged before normalisation.\n"
+            "Both incoherent options force incoherent layer combination.\n"
+            "Thickness alone does not determine phonon coherence."
         )
         depth_label = QLabel("Depth coherence")
         depth_label.setToolTip(self.depth_integration_cb.toolTip())
@@ -1930,12 +1936,12 @@ class CrystalScenarioTab(ScenarioTab):
             "'Incoherent intensities' — sum |amplitude|² per layer (default).\n"
             "'Coherent amplitudes' — sum complex amplitudes before squaring;\n"
             "   use only when layers share a coherent optical phase.\n"
-            "Disabled when 'Depth coherence' is 'Incoherent intensity'."
+            "Disabled for either incoherent depth option."
         )
         self.layer_combination_label = QLabel("Layer combination")
         self.layer_combination_label.setToolTip(self.layer_combination_cb.toolTip())
         self.form.addRow(self.layer_combination_label, self.layer_combination_cb)
-        _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
+        _depth_is_incoherent = (self.settings["Depth coherence"] in INCOHERENT_DEPTH_OPTIONS)
         self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
         self.layer_combination_label.setEnabled(not _depth_is_incoherent)
 
@@ -2384,7 +2390,7 @@ class CrystalScenarioTab(ScenarioTab):
                 self.layer_combination_cb.setCurrentIndex(idx)
             _depth_is_incoherent = (
                 self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
-                == DEPTH_INTEGRATION_INCOHERENT
+                in INCOHERENT_DEPTH_OPTIONS
             )
             self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
             self.layer_combination_label.setEnabled(not _depth_is_incoherent)
@@ -2653,7 +2659,7 @@ class CrystalScenarioTab(ScenarioTab):
     def on_depth_integration_cb_activated(self, index):
         """Handle a change in the depth coherence combo box."""
         self.settings["Depth coherence"] = self.depth_integration_cb.currentText()
-        _depth_is_incoherent = (self.settings["Depth coherence"] == DEPTH_INTEGRATION_INCOHERENT)
+        _depth_is_incoherent = (self.settings["Depth coherence"] in INCOHERENT_DEPTH_OPTIONS)
         self.layer_combination_cb.setEnabled(not _depth_is_incoherent)
         self.layer_combination_label.setEnabled(not _depth_is_incoherent)
         self._update_modal_final_state_controls()
@@ -2748,7 +2754,7 @@ class CrystalScenarioTab(ScenarioTab):
         show_modal = self.settings.get("Layer NAC mode", "none") == "modal_pairs"
         depth_is_incoherent = (
             self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
-            == DEPTH_INTEGRATION_INCOHERENT
+            in INCOHERENT_DEPTH_OPTIONS
         )
         enable_model = show_modal and depth_is_incoherent
         self.modal_pair_final_state_cb.setEnabled(enable_model)
@@ -3497,6 +3503,7 @@ class CrystalScenarioTab(ScenarioTab):
         selected_layers = self._select_finite_raman_layers(
             self.layers,
             coalesce_equivalent=self.settings.get("Coalesce equivalent layers", True),
+            depth_integration=self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT),
         )
         gtm_layers = []
         for layer in selected_layers:

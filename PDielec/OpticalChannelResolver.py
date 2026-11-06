@@ -258,7 +258,8 @@ def compute_modal_fields_at_points(
 
         for offset, z_value in enumerate(z_array[layer_slice]):
             z_pos = layer_slice.start + offset
-            propagation = np.array(
+            # A zero-thickness layer has no propagation distance.
+            propagation = np.ones(4, dtype=np.complex128) if layer.thick == 0.0 else np.array(
                 [
                     np.exp(-layer.propagation_exponents[mode_idx] * (z_value - z_reference) / layer.thick)
                     for mode_idx in range(4)

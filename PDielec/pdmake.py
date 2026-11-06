@@ -174,6 +174,7 @@ test_powder_raman = [
 	"Powder_Raman/Crystal23",
 	"Powder_Raman/QE",
 	"Powder_Raman/Vasp",
+	"Powder_Raman/Particle_Shape",
     ]
 
 test_crystal_raman = [

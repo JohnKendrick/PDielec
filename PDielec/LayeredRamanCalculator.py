@@ -87,7 +87,9 @@ logger = logging.getLogger(__name__)
 
 DEPTH_INTEGRATION_COHERENT = "Coherent amplitude"
 DEPTH_INTEGRATION_INCOHERENT = "Incoherent intensity"
-DEPTH_INTEGRATION_OPTIONS = (DEPTH_INTEGRATION_COHERENT, DEPTH_INTEGRATION_INCOHERENT)
+DEPTH_INTEGRATION_NORMALISED_INCOHERENT = "Normalised incoherent intensity"
+INCOHERENT_DEPTH_OPTIONS = (DEPTH_INTEGRATION_INCOHERENT, DEPTH_INTEGRATION_NORMALISED_INCOHERENT)
+DEPTH_INTEGRATION_OPTIONS = (DEPTH_INTEGRATION_COHERENT,) + INCOHERENT_DEPTH_OPTIONS
 
 FINAL_STATE_BULK_PHASE_MATCHED = "Bulk phase matched"
 FINAL_STATE_LOCAL_INCOHERENT = "Local incoherent"
@@ -315,7 +317,7 @@ def _compute_raman_mode_worker(shared, mode_args):
 
     cp_L, cs_L = incident_jones
 
-    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+    if depth_integration in INCOHERENT_DEPTH_OPTIONS:
         I_m = 0.0
         for sl, R_crystal, G in zip(gl_layer_slices, mode_raman_tensors, rotation_matrices):
             R_lab = G @ np.asarray(R_crystal, dtype=complex) @ G.T
@@ -521,7 +523,7 @@ def _compute_modal_pair_mode_worker(shared, mode_idx):
                             group_key = "all" if coherent_layers else (layer_index, "all")
 
                         line_metadata[final_state_key] = (nu_m, line_sigma)
-                        if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+                        if depth_integration in INCOHERENT_DEPTH_OPTIONS:
                             local_key = (layer_index, sl.start, sl.stop)
                             integrand_key = (final_state_key, group_key, local_key)
                             if integrand_key not in local_integrands:
@@ -690,7 +692,7 @@ def _line_key(frequency_cm1, sigma_cm1):
 
 def _resolver_coherence_regime(depth_integration, final_state_model):
     """Return the final-state resolver regime matching the depth treatment."""
-    if depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+    if depth_integration in INCOHERENT_DEPTH_OPTIONS:
         if final_state_model == FINAL_STATE_LOCAL_INCOHERENT:
             return INCOHERENT_DEPTH
         return BULK_PHASE_MATCHED
@@ -707,7 +709,7 @@ def _modal_pair_final_state_q(q_pair, q_ext, depth_integration, final_state_mode
     pair-resolved q from eq-layer-qph.
     """
     if (
-        depth_integration == DEPTH_INTEGRATION_INCOHERENT
+        depth_integration in INCOHERENT_DEPTH_OPTIONS
         and final_state_model == FINAL_STATE_LOCAL_INCOHERENT
     ):
         return np.asarray(q_ext, dtype=float)
@@ -889,12 +891,19 @@ class LayeredRamanCalculator:
         If ``True``, evaluate E_S once at the laser frequency rather than at
         each mode's Stokes frequency.  E_S is reused from E_L only when both
         fields have the same system and signed angle.  Default is ``False``.
-    depth_integration : {'Coherent amplitude', 'Incoherent intensity'}, optional
+    depth_integration : str, optional
         How to combine the source along the depth of each Raman-active layer.
         ``'Coherent amplitude'`` integrates the complex amplitude before
         squaring as a legacy raw constant-profile overlap. ``'Incoherent
         intensity'`` integrates the local intensity. These have different
         length dimensions; thickness alone does not select the physical model.
+        ``'Normalised incoherent intensity'`` divides the local integral by
+        each layer's thickness before summing the layer averages. Raw units
+        are Å/amu rather than Å²/amu. Each zero-thickness layer contributes
+        zero. Each RamanLayer defines an averaging region; the GUI merges
+        equivalent neighbouring layers before constructing these regions.
+        This averaging does not supply
+        a spatial phonon correlation model or absolute units.
     final_state_model : {'Bulk phase matched', 'Local incoherent'}, optional
         Interpretation of modal pairs when ``depth_integration`` is incoherent.
         ``'Bulk phase matched'`` compares each internal ``q_pair`` with the
@@ -1090,6 +1099,23 @@ class LayeredRamanCalculator:
         self._gl_phys_weights = np.concatenate(w_parts)
         self._gl_layer_slices = slices
 
+    @property
+    def _gl_integration_weights(self):
+        """Return physical weights or unit-normalised weights for each layer.
+
+        Each layer average is added independently. A zero-thickness layer has
+        zero weights, so it contributes zero without a division by zero.
+        """
+        if self.depth_integration == DEPTH_INTEGRATION_NORMALISED_INCOHERENT:
+            weights = np.zeros_like(self._gl_phys_weights)
+            for layer_slice in self._gl_layer_slices:
+                physical = self._gl_phys_weights[layer_slice]
+                thickness = np.sum(physical)
+                if thickness > 0.0:
+                    weights[layer_slice] = physical / thickness
+            return weights
+        return self._gl_phys_weights
+
     def _get_field_at_gl_points(self, freq_cm1, system, angle_rad, z_arr):
         """Compute the electric field at the given z positions.
 
@@ -1204,7 +1230,7 @@ class LayeredRamanCalculator:
         cp_L, cs_L = self._incident_jones
         E_L = cp_L * E_L_out[0:3, sl] + cs_L * E_L_out[3:6, sl]
         R_E_L = R_lab @ E_L
-        w = self._gl_phys_weights[sl]
+        w = self._gl_integration_weights[sl]
 
         if self._detected_jones is None:
             integrand_p = np.einsum("ij,ij->j", E_S_out[0:3, sl], R_E_L)
@@ -1404,7 +1430,7 @@ class LayeredRamanCalculator:
             self.collection_angle_rad,
             self.collection_side,
         )
-        use_external_q_for_modal_nac = self.depth_integration == DEPTH_INTEGRATION_INCOHERENT
+        use_external_q_for_modal_nac = self.depth_integration in INCOHERENT_DEPTH_OPTIONS
 
         # Laser modal fields at laser frequency + incident angle
         if self._modal_laser_solution is None:
@@ -1566,7 +1592,7 @@ class LayeredRamanCalculator:
 
             return (
                 self._gl_layer_slices,
-                self._gl_phys_weights,
+                self._gl_integration_weights,
                 channels_L,
                 channels_S_base,
                 channels_S_by_frequency,
@@ -1671,7 +1697,7 @@ class LayeredRamanCalculator:
                                 line_q_ext = external_q_by_frequency[round(float(nu_m), 10)]
                                 R_lab = self._rotate_raman_tensor(R_crystal, rl.rotation_matrix)
 
-                                w = self._gl_phys_weights[sl]
+                                w = self._gl_integration_weights[sl]
                                 R_E_L = R_lab @ channel_L["field"]
                                 integrand = np.einsum("ij,ij->j", channel_S["field"], R_E_L)
                                 amp_ij = np.dot(w, integrand)
@@ -1728,7 +1754,7 @@ class LayeredRamanCalculator:
                                 local_key = (rl.layer_index, sl.start, sl.stop)
                                 line_metadata[final_state_key] = (nu_m, line_sigma)
                                 group_metadata[(final_state_key, group_key)] = (nu_m, line_sigma)
-                                if self.depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+                                if self.depth_integration in INCOHERENT_DEPTH_OPTIONS:
                                     integrand_key = (final_state_key, group_key, local_key)
                                     if integrand_key not in local_integrands:
                                         local_integrands[integrand_key] = [np.zeros_like(integrand), w]
@@ -2222,7 +2248,7 @@ class LayeredRamanCalculator:
             group_amps: dict = {}
             local_intens: dict = {}
 
-            if self.depth_integration == DEPTH_INTEGRATION_INCOHERENT:
+            if self.depth_integration in INCOHERENT_DEPTH_OPTIONS:
                 for rl, sl in zip(self.raman_layers, self._gl_layer_slices, strict=True):
                     if not self._layer_mode_is_selected(rl, mode_idx):
                         continue
@@ -2376,7 +2402,7 @@ class LayeredRamanCalculator:
             z_s,
             E_L_out,
             E_S_out_fixed,
-            self._gl_phys_weights,
+            self._gl_integration_weights,
             self._gl_layer_slices,
             rotation_matrices,
             self._incident_jones,
