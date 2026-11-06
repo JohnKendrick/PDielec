@@ -1,5 +1,8 @@
-# Examples/Raman/ZnO/Crystal
-## Crystal 17 calculation on ZnO
+# Examples/Powder_Raman/Crystal23
+## CRYSTAL17 calculation on ZnO
+
+Despite the directory name, the bundled output identifies itself as CRYSTAL17.
+The saved powder scenario is a ZnO sphere in PTFE with analytical averaging.
 
 The PDGui calculation in script.py calculates the powder Raman spectrum using a DFT calculation on ZnO 
 The DFT calculation uses an TZVP basis and PBE functional with the D3 dispersion correction.
@@ -17,7 +20,6 @@ changing the parsed susceptibility or the EO correction.
 | --------------------- | ------------------------------------------------- |
 | opt_raman.d12         | Input for a Raman calculation |
 | opt_raman.out         | Output for a Raman calculation |
-| optc020               | The optimised geometry |
 | TENS_IR.DAT           | The IR tensor          |
 | BORN.DAT              | The Born charge        |
 | TENS_RAMAN.DAT        | The Raman tensor       |
@@ -26,5 +28,16 @@ changing the parsed susceptibility or the EO correction.
 | results.ref.xlsx      | reference results for the test suite |
 | script.py             | script used by pdgui for the test suite |
 
-[Back](../README.md)
+Run the example scenarios from this directory:
+
+```sh
+../../../pdmake command.pdmake
+../../../pdmake --view command.pdmake
+```
+
+The first command compares `results.xlsx` with `results.ref.xlsx`; the second
+opens the saved scenarios interactively. Loading only the raw input with
+`pdgui` does not restore all settings in `script.py`.
+
+[Back to Powder Raman](../README.md)
 

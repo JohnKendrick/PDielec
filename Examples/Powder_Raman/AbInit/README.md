@@ -1,6 +1,6 @@
-# Examples/Raman/AbInit
+# Examples/Powder_Raman/AbInit
 ## ZnO Raman Calculation using AbInit
-This calculation uses the PEAD method.  The raman.abi input files produces several databases.
+This calculation uses the PEAD method.  The raman.abi input file produces several databases.
 The databases for steps 4 and 5 were merged before processing with anaddb.
 
 ```
@@ -8,31 +8,41 @@ mrgddb analysis.ddb ramano_DS4_DDB ramano_DS5_DDB
 anaddb < analysis.files
 ```
 
-The output in analysis.abo reports the Raman tensor in units of (amu_electron/bohr)^(1/2)
-To convert to amu/Angstrom^(1/2) requires multiplying the analysis.abo figures by 31.0585. 
-This gives:
+The script reads `raman.abo`. PDielec projects its atomic
+susceptibility derivatives onto the phonon modes and converts them to the
+shared dielectric-derivative convention `R_epsilon = sqrt(Vcell) dε/dQ`.
+No manual conversion of the printed `analysis.abo` Raman susceptibilities is
+needed; anaddb results are supplementary analysis.
 
-|  **Group**  |   **Raw/PDielec** | **Sum-rule corrected** | **Printed rsus converted** |
-| ------------|------------------ | -----------------------|--------------------------- |
-|  E2 low     | 0.0730969         | 0.0730968              | 0.0730969                  |
-|  A1 TO      | 0.0560663         | 0.0356425              | 0.0356426                  |
-|  E1 TO      | 0.0002049         | 0.00004965             | 0.00004965                 |
-|  E2 high    | 0.112456          | 0.112456               | 0.112456                   |
+The saved scenarios compare VV, VH and unpolarised scattering for ZnO spheres
+in PTFE, plus an unpolarised scenario with the EO term enabled. All use
+analytical orientation averaging. Legacy sample-count entries are ignored.
 
-
-| **Directory**                   | **Description**                                       |
+| **File**                   | **Description**                                       |
 | ------------------------------- | ----------------------------------------------------- |
 | opt.abi                         | AbInit optimisation input                             |
 | opt.abo                         | AbInit optimisation output                            |
-| raman.abi                       | AbInit Raman output                                   |
+| raman.abi                       | AbInit Raman input                                   |
 | raman.abo                       | AbInit Raman output                                   |
 | analysis.abi                    | anaddb input for the analysis step                    |
 | analysis.abo                    | anaddb output                                         |
 | analysis.ddb                    | the merged database                                   |
 | analysis.files                  | anaddb input                                          |
 | command.pdmake                  | part of the pdmake tests                              |
+| results.ref.xlsx               | reference workbook for regression comparison          |
 | script.py                       | part of the pdmake test system                        |
 | O.psp8,Zn.psp8                  | the pseudo-potentials used                            |
 
-[Back](../README.md)
+Run the example from this directory:
+
+```sh
+../../../pdmake command.pdmake
+../../../pdmake --view command.pdmake
+```
+
+The first command compares `results.xlsx` with `results.ref.xlsx`; the second
+opens the saved scenarios interactively. Loading only the raw input with
+`pdgui` does not restore all settings in `script.py`.
+
+[Back to Powder Raman](../README.md)
 
