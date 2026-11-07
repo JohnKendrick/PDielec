@@ -129,3 +129,34 @@ def test_normalised_depth_gui_disables_layer_coherence_and_enables_final_state_c
     assert scenario.layer_combination_cb.isEnabled()
     assert not scenario.modal_pair_final_state_cb.isEnabled()
     app.processEvents()
+
+
+@pytest.mark.parametrize("mode", ["modal_pairs", "All modes", "All modes (EO)", "Modal pairs", "Modal pairs (EO)"])
+def test_modal_pair_labels_and_legacy_settings_survive_eo_toggle(monkeypatch, mode):
+    """Old settings select the renamed entry and keep modal controls active."""
+    from types import SimpleNamespace
+
+    from qtpy.QtWidgets import QApplication, QComboBox, QLabel, QDoubleSpinBox
+
+    from PDielec.LayeredRamanCalculator import DEPTH_INTEGRATION_INCOHERENT
+
+    monkeypatch.setenv("QT_QPA_PLATFORM", "offscreen")
+    app = QApplication.instance() or QApplication([])
+    scenario = SimpleNamespace(
+        settings={"Layer NAC mode": mode, "Depth coherence": DEPTH_INTEGRATION_INCOHERENT},
+        reader=SimpleNamespace(nonlinear_optical_susceptibility=object()),
+        phonon_bc_cb=QComboBox(), _NAC_MODE_LABELS=CrystalScenarioTab._NAC_MODE_LABELS,
+        modal_pair_final_state_cb=QComboBox(), modal_pair_final_state_label=QLabel(),
+        modal_pair_q_tol_sb=QDoubleSpinBox(), modal_pair_q_tol_label=QLabel(),
+    )
+    scenario._populate_nac_combo = lambda has_eo: CrystalScenarioTab._populate_nac_combo(scenario, has_eo)
+    for enabled, label in [(False, "Modal pairs"), (True, "Modal pairs (EO)"), (False, "Modal pairs")]:
+        CrystalScenarioTab.on_eo_term_cb_toggled(scenario, enabled)
+        assert scenario.settings["Layer NAC mode"] == "modal_pairs"
+        assert scenario.phonon_bc_cb.currentData() == "modal_pairs"
+        assert scenario.phonon_bc_cb.currentText() == label
+        CrystalScenarioTab._update_modal_final_state_controls(scenario)
+        assert scenario.modal_pair_final_state_cb.isEnabled()
+        assert scenario.modal_pair_q_tol_sb.isEnabled()
+        assert scenario.phonon_bc_cb.count() == 4
+    app.processEvents()

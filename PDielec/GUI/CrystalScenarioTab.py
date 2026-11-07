@@ -58,10 +58,7 @@ from PDielec.LayeredRamanCalculator import (
     FINAL_STATE_LOCAL_INCOHERENT,
     FINAL_STATE_MODEL_OPTIONS,
     INCOHERENT_DEPTH_OPTIONS,
-    MODAL_PAIR_COHERENT_ALL,
     MODAL_PAIR_GROUP_Q,
-    MODAL_PAIR_INCOHERENT,
-    MODAL_PAIR_OPTIONS,
     LayeredRamanCalculator,
     RamanLayer,
     lorentzian_broaden,
@@ -92,6 +89,15 @@ _PORTO_POL_BY_AXIS = {
     "y": {"x": "p", "z": "s"},
     "z": {"x": "p", "y": "s"},
 }
+
+
+def _normalise_layer_nac_mode(settings):
+    """Map current and legacy modal-pair labels to the stable settings value."""
+    mode = settings.get("Layer NAC mode", "none")
+    if mode in ("All modes", "All modes (EO)", "Modal pairs", "Modal pairs (EO)"):
+        mode = "modal_pairs"
+        settings["Layer NAC mode"] = mode
+    return mode
 
 
 def _parse_porto_notation(porto):
@@ -1958,7 +1964,7 @@ class CrystalScenarioTab(ScenarioTab):
 
         # Layer NAC mode
         self.phonon_bc_cb = QComboBox(self)
-        nac_text = self.settings.get("Layer NAC mode", "none")
+        nac_text = _normalise_layer_nac_mode(self.settings)
         # Handle legacy 'Phonon boundary correction' values from older sessions
         if nac_text == "none":
             old_bc = self.settings.get("Phonon boundary correction", "none")
@@ -1975,34 +1981,15 @@ class CrystalScenarioTab(ScenarioTab):
             "'TO' — use bulk TO frequencies (no correction)\n"
             "'Snell's law' — NAC q from macroscopic scattering geometry\n"
             "'Dominant mode' — NAC q from dominant Berreman eigenmode in the active layer\n"
-            "'All modes' — per Berreman mode-pair NAC: sums |A^ij|² over (i_L, j_S) pairs\n"
+            "'Modal pairs' — NAC from incident/scattered Berreman mode pairs\n"
             "Labels show '(EO)' when χ⁽²⁾ is available and the electro-optic term is enabled."
         )
         label = QLabel("Layer NAC mode")
         label.setToolTip(self.phonon_bc_cb.toolTip())
         self.form.addRow(label, self.phonon_bc_cb)
 
-        # Modal-pair combination — visible only when Layer NAC mode = All modes
-        self.modal_pair_combination_cb = QComboBox(self)
-        self.modal_pair_combination_cb.addItems(list(MODAL_PAIR_OPTIONS))
-        idx = self.modal_pair_combination_cb.findText(
-            self.settings["Modal pair combination"], Qt.MatchFixedString)
-        if idx >= 0:
-            self.modal_pair_combination_cb.setCurrentIndex(idx)
-        self.modal_pair_combination_cb.activated.connect(self.on_modal_pair_combination_cb_activated)
-        self.modal_pair_combination_cb.setToolTip(
-            "How Berreman modal-pair amplitudes are combined (only active when Layer NAC mode = All modes):\n"
-            f"'{MODAL_PAIR_GROUP_Q}' — coherently sum pairs that share the same phonon q-vector\n"
-            "   and detector channel. Physically recommended.\n"
-            f"'{MODAL_PAIR_INCOHERENT}' — square each modal-pair amplitude independently.\n"
-            "   Diagnostic / pre-q-grouping compatibility mode.\n"
-            f"'{MODAL_PAIR_COHERENT_ALL}' — sum ALL pair amplitudes before squaring. DEBUG ONLY:\n"
-            "   mixes distinct phonon-momentum final states."
-        )
-        self.modal_pair_combination_label = QLabel("Modal pair combination")
-        self.modal_pair_combination_label.setToolTip(self.modal_pair_combination_cb.toolTip())
-        self.form.addRow(self.modal_pair_combination_label, self.modal_pair_combination_cb)
-
+        # Modal-pair combination defaults to grouped q channels. Diagnostic
+        # alternatives remain available through the script settings only.
         # Final-state model — relevant to incoherent-depth modal-pair calculations.
         self.modal_pair_final_state_cb = QComboBox(self)
         self.modal_pair_final_state_cb.addItems(list(FINAL_STATE_MODEL_OPTIONS))
@@ -2040,10 +2027,8 @@ class CrystalScenarioTab(ScenarioTab):
         self.modal_pair_q_tol_label.setToolTip(self.modal_pair_q_tol_sb.toolTip())
         self.form.addRow(self.modal_pair_q_tol_label, self.modal_pair_q_tol_sb)
 
-        # Only show this row when Layer NAC mode is "All modes"
-        _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
-        self.modal_pair_combination_label.setVisible(_show_modal)
-        self.modal_pair_combination_cb.setVisible(_show_modal)
+        # Only show this row when Layer NAC mode is "Modal pairs"
+        _show_modal = (_normalise_layer_nac_mode(self.settings) == "modal_pairs")
         self.modal_pair_final_state_label.setVisible(_show_modal)
         self.modal_pair_final_state_cb.setVisible(_show_modal)
         self.modal_pair_q_tol_label.setVisible(_show_modal)
@@ -2397,24 +2382,16 @@ class CrystalScenarioTab(ScenarioTab):
             has_eo = getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None
             self.eo_term_cb.setChecked(self.settings.get("Raman electro-optic term", True))
             self._populate_nac_combo(has_eo=has_eo and self.settings.get("Raman electro-optic term", True))
-            idx = self.phonon_bc_cb.findData(self.settings.get("Layer NAC mode", "none"))
+            idx = self.phonon_bc_cb.findData(_normalise_layer_nac_mode(self.settings))
             if idx >= 0:
                 self.phonon_bc_cb.setCurrentIndex(idx)
-            idx = self.modal_pair_combination_cb.findText(
-                self.settings.get("Modal pair combination", MODAL_PAIR_GROUP_Q),
-                Qt.MatchFixedString,
-            )
-            if idx >= 0:
-                self.modal_pair_combination_cb.setCurrentIndex(idx)
             idx = self.modal_pair_final_state_cb.findText(
                 self.settings.get("Modal pair final-state model", FINAL_STATE_BULK_PHASE_MATCHED),
                 Qt.MatchFixedString,
             )
             if idx >= 0:
                 self.modal_pair_final_state_cb.setCurrentIndex(idx)
-            _show_modal = (self.settings.get("Layer NAC mode", "none") == "modal_pairs")
-            self.modal_pair_combination_label.setVisible(_show_modal)
-            self.modal_pair_combination_cb.setVisible(_show_modal)
+            _show_modal = (_normalise_layer_nac_mode(self.settings) == "modal_pairs")
             self.modal_pair_final_state_label.setVisible(_show_modal)
             self.modal_pair_final_state_cb.setVisible(_show_modal)
             self.modal_pair_q_tol_label.setVisible(_show_modal)
@@ -2683,7 +2660,7 @@ class CrystalScenarioTab(ScenarioTab):
         self.settings["Raman electro-optic term"] = checked
         has_eo = getattr(self.reader, "nonlinear_optical_susceptibility", None) is not None
         self._populate_nac_combo(has_eo=has_eo and checked)
-        idx = self.phonon_bc_cb.findData(self.settings.get("Layer NAC mode", "none"))
+        idx = self.phonon_bc_cb.findData(_normalise_layer_nac_mode(self.settings))
         if idx >= 0:
             self.phonon_bc_cb.setCurrentIndex(idx)
         self.calculation_required = True
@@ -2694,7 +2671,7 @@ class CrystalScenarioTab(ScenarioTab):
         ("none",          "TO"),
         ("geometry",      "Snell's law"),
         ("dominant_mode", "Dominant mode"),
-        ("modal_pairs",   "All modes"),
+        ("modal_pairs",   "Modal pairs"),
     ]
 
     def _populate_nac_combo(self, has_eo):
@@ -2723,20 +2700,12 @@ class CrystalScenarioTab(ScenarioTab):
     def on_phonon_bc_cb_activated(self, index):
         """Handle a change in the layer NAC mode combo box."""
         self.settings["Layer NAC mode"] = self.phonon_bc_cb.currentData()
-        _show_modal = (self.settings["Layer NAC mode"] == "modal_pairs")
-        self.modal_pair_combination_label.setVisible(_show_modal)
-        self.modal_pair_combination_cb.setVisible(_show_modal)
+        _show_modal = (_normalise_layer_nac_mode(self.settings) == "modal_pairs")
         self.modal_pair_final_state_label.setVisible(_show_modal)
         self.modal_pair_final_state_cb.setVisible(_show_modal)
         self.modal_pair_q_tol_label.setVisible(_show_modal)
         self.modal_pair_q_tol_sb.setVisible(_show_modal)
         self._update_modal_final_state_controls()
-        self.calculation_required = True
-        self.refresh_required = True
-
-    def on_modal_pair_combination_cb_activated(self, index):
-        """Handle a change in the modal-pair combination combo box."""
-        self.settings["Modal pair combination"] = self.modal_pair_combination_cb.currentText()
         self.calculation_required = True
         self.refresh_required = True
 
@@ -2751,7 +2720,7 @@ class CrystalScenarioTab(ScenarioTab):
         """Enable final-state controls only where they affect modal-pair results."""
         if not hasattr(self, "modal_pair_final_state_cb"):
             return
-        show_modal = self.settings.get("Layer NAC mode", "none") == "modal_pairs"
+        show_modal = _normalise_layer_nac_mode(self.settings) == "modal_pairs"
         depth_is_incoherent = (
             self.settings.get("Depth coherence", DEPTH_INTEGRATION_COHERENT)
             in INCOHERENT_DEPTH_OPTIONS
@@ -3575,7 +3544,7 @@ class CrystalScenarioTab(ScenarioTab):
         )
 
         # Layer NAC mode: 'none', 'geometry', 'dominant_mode', 'modal_pairs'
-        layer_nac_mode = self.settings.get("Layer NAC mode", "none")
+        layer_nac_mode = _normalise_layer_nac_mode(self.settings)
         # Handle legacy 'Phonon boundary correction' values from old sessions
         if layer_nac_mode == "none":
             old_bc = self.settings.get("Phonon boundary correction", "none")
