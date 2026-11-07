@@ -433,10 +433,10 @@ alternatives for solving the optical propagation problem.
    eigenvalue by incident polarization; it does not maximize modal field
    strength. Both solves use the original stack and its superstrate index.
    This is an equal-frequency directional estimate, not the per-branch finite
-   Stokes momentum used by *All modes*. General anisotropic outgoing-channel
+   Stokes momentum used by *Modal pairs*. General anisotropic outgoing-channel
    tracking is not supplied by this approximation.
 
-**All modes — per Berreman q-channel-pair NAC** (GUI label: *All modes* or *All modes (EO)*)
+**Modal pairs — per Berreman q-channel-pair NAC** (GUI label: *Modal pairs* or *Modal pairs (EO)*)
    This level decomposes the incident and reciprocal scattered fields into Berreman
    propagation channels in each Raman-active layer.  Numerically distinct Berreman
    eigenvectors whose real reduced :math:`q_z` differs from a group's first
@@ -725,7 +725,7 @@ When the electro-optic option is enabled, :math:`\tensorbs{\chi}^{(2)}` data are
 and any level other than *TO* is
 selected, PDielec applies the EO correction to every NAC-rotated Raman tensor before
 computing the Raman spectrum.  The GUI labels for the three NAC levels then show an
-*(EO)* suffix (*Snell's law (EO)*, *Dominant mode (EO)*, *All modes (EO)*) to make
+*(EO)* suffix (*Snell's law (EO)*, *Dominant mode (EO)*, *Modal pairs (EO)*) to make
 clear that the electro-optic correction is active.  A log message also confirms this
 at calculation time.
 

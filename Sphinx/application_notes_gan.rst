@@ -19,7 +19,7 @@ example, not a powder measurement reported in either paper.
 
 .. important::
 
-   PDGui's *All modes* treatment resolves internal optical-mode pairs for
+   PDGui's *Modal pairs* treatment resolves internal optical-mode pairs for
    the directional, zone-centre non-analytical correction (NAC). It does
    not calculate finite-wavevector phonon-polariton dispersion. The separate
    ``polariton_response.py`` script illustrates that additional physics.
@@ -313,11 +313,12 @@ Choosing the NAC treatment
    * - Dominant mode
      - ``dominant_mode``
      - One direction from the dominant internal optical mode
-   * - All modes
+   * - Modal pairs
      - ``modal_pairs``
      - Resolve incident and scattered internal mode pairs
 
-For *All modes*, use *Modal pair combination = Group q channels*,
+For *Modal pairs*, keep the default grouped q channels (the script setting
+``Modal pair combination = 'Group q channels'``), and select
 *Modal-pair final-state model = Bulk phase matched* and
 *Modal pair q-angle tolerance = 90 degrees*. Keep the EO option off;
 otherwise the GUI may append ``(EO)`` to the NAC label. The Settings Tab
@@ -332,7 +333,7 @@ The optical-pair momentum is
 
 In a birefringent material, interchanging ordinary and extraordinary
 polarisations changes these internal wavevectors even when the external
-rays are unchanged. *All modes* retains this information. *Group q
+rays are unchanged. *Modal pairs* retains this information. *Group q
 channels* adds amplitudes leading to the same phonon final state before
 squaring, and adds intensities for distinct final states. It does not
 simply add the intensities of every optical pair independently.
@@ -348,7 +349,7 @@ polar-band interval in the scripts, this window also includes
 Reading the results against Mina et al.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. list-table:: Regenerated integrated intensity, All modes / Snell's law
+.. list-table:: Regenerated integrated intensity, Modal pairs / Snell's law
    :header-rows: 1
 
    * - External incidence
@@ -540,7 +541,7 @@ channel intensities.
 --------------------------------------------
 
 Load ``gan_incoherent_models.py`` from
-``GaN/ModalPairs/IncoherentModels``. The 32 scenarios keep *All modes*,
+``GaN/ModalPairs/IncoherentModels``. The 32 scenarios keep *Modal pairs*,
 *Group q channels* and *Depth coherence = Incoherent intensity*. They
 repeat the four polarisations at 0 and 2 degrees for two final-state
 models and two q-angle tolerances, 0 and 90 degrees.

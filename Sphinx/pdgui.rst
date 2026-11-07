@@ -447,7 +447,7 @@ The *Layer NAC mode* chooses the phonon-frequency treatment:
        wavevector for the non-analytic correction. This is the default.
    * - Dominant mode
      - Use the dominant internal optical eigenmode to determine that direction.
-   * - All modes
+   * - Modal pairs
      - Resolve incident/scattered internal propagation-channel pairs, allowing
        more than one corrected frequency for an original TO mode.
 
@@ -459,19 +459,23 @@ optical propagation with the transfer/scattering matrix. See
 
 .. figure:: _static/Figures/gui/crystal-raman-all-modes.png
    :width: 100%
-   :alt: All modes EO selection exposing modal-pair combination, final-state model and q-angle tolerance.
+   :alt: Crystal Raman Scenario tab with Modal pairs (EO), Bulk phase matched final-state model and 90-degree q-angle tolerance.
 
-   The additional controls shown for All modes (EO).
+   The Crystal Raman Scenario tab with Modal pairs (EO) selected. Incoherent
+   depth enables the Bulk phase matched final-state model and q-angle tolerance.
+   Group q channels is the default; diagnostic combination options are available
+   through scripting.
 
-*Modal pair combination* offers Group q channels (default), Incoherent pairs
-and Coherent all pairs. Group q channels combines amplitudes for the same
-phonon final state before summing intensities over different states. The other
-two choices are diagnostic alternatives. *Modal-pair final-state model*
+Modal pairs uses Group q channels by default, combining amplitudes for the
+same phonon final state before summing intensities over different states.
+The diagnostic alternatives Incoherent pairs and Coherent all pairs are
+available only through the ``Modal pair combination`` script setting; there
+is no combination dropdown in the GUI. *Modal-pair final-state model*
 distinguishes Bulk phase matched from Local incoherent for incoherent-depth,
 grouped-q calculations. In the bulk model *Modal pair q-angle tolerance*,
 initially 90°, controls the accepted directions relative to the external
 momentum transfer. It is inactive for Local incoherent. Controls are enabled
-only where their combination is meaningful; a hidden All modes control does
+only where their combination is meaningful; a hidden Modal pairs control does
 not change the Snell's-law calculation.
 
 The layer-table columns and editor are shared with Crystal Infrared. Raman
@@ -840,7 +844,7 @@ and should be recorded when reporting results.
 The powder Raman wavelength in nm is stored as ``Raman laser wavelength``.
 The crystal NAC selector uses
 ``Layer NAC mode`` values ``none``, ``geometry``, ``dominant_mode`` and
-``modal_pairs`` for TO, Snell's law, Dominant mode and All modes respectively.
+``modal_pairs`` for TO, Snell's law, Dominant mode and Modal pairs respectively.
 Use the saved script as the starting point rather than guessing visible-label
 spellings. In an interactive script, request a refresh after changing settings.
 

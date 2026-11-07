@@ -2369,7 +2369,7 @@
     "crystal-raman-all-modes": {
       "size": [
         1100,
-        1200
+        1000
       ],
       "controls": [
         {
@@ -2531,17 +2531,18 @@
         },
         {
           "type": "QComboBox",
-          "tooltip": "How Raman sources are combined through the depth of each active layer:\n'Coherent amplitude' integrates the complex amplitude before squaring; use for thin phase-stable films.\n'Incoherent intensity' integrates local intensity; use for thick or bulk samples such as mm/cm layers.\nNote: 'Incoherent intensity' also forces incoherent layer combination.",
+          "tooltip": "How Raman sources are combined through the depth of each active layer:\n'Coherent amplitude' integrates the complex amplitude before squaring.\n'Incoherent intensity' integrates local intensity over depth (in \u00c5).\n'Normalised incoherent intensity' divides each layer integral by that layer's thickness,\nthen sums the layer averages. Zero-thickness layers contribute zero.\nEquivalent neighbouring layers are merged before normalisation.\nBoth incoherent options force incoherent layer combination.\nThickness alone does not determine phonon coherence.",
           "choices": [
             "Coherent amplitude",
-            "Incoherent intensity"
+            "Incoherent intensity",
+            "Normalised incoherent intensity"
           ],
           "value": "Incoherent intensity",
           "enabled": true
         },
         {
           "type": "QComboBox",
-          "tooltip": "How separate Raman-active layers are combined:\n'Incoherent intensities' \u2014 sum |amplitude|\u00b2 per layer (default).\n'Coherent amplitudes' \u2014 sum complex amplitudes before squaring;\n   use only when layers share a coherent optical phase.\nDisabled when 'Depth coherence' is 'Incoherent intensity'.",
+          "tooltip": "How separate Raman-active layers are combined:\n'Incoherent intensities' \u2014 sum |amplitude|\u00b2 per layer (default).\n'Coherent amplitudes' \u2014 sum complex amplitudes before squaring;\n   use only when layers share a coherent optical phase.\nDisabled for either incoherent depth option.",
           "choices": [
             "Incoherent intensities",
             "Coherent amplitudes"
@@ -2557,25 +2558,14 @@
         },
         {
           "type": "QComboBox",
-          "tooltip": "Layer NAC mode \u2014 phonon frequency correction for layered crystal Raman:\n'TO' \u2014 use bulk TO frequencies (no correction)\n'Snell's law' \u2014 NAC q from macroscopic scattering geometry\n'Dominant mode' \u2014 NAC q from dominant Berreman eigenmode in the active layer\n'All modes' \u2014 per Berreman mode-pair NAC: sums |A^ij|\u00b2 over (i_L, j_S) pairs\nLabels show '(EO)' when \u03c7\u207d\u00b2\u207e is available and the electro-optic term is enabled.",
+          "tooltip": "Layer NAC mode \u2014 phonon frequency correction for layered crystal Raman:\n'TO' \u2014 use bulk TO frequencies (no correction)\n'Snell's law' \u2014 NAC q from macroscopic scattering geometry\n'Dominant mode' \u2014 NAC q from dominant Berreman eigenmode in the active layer\n'Modal pairs' \u2014 NAC from incident/scattered Berreman mode pairs\nLabels show '(EO)' when \u03c7\u207d\u00b2\u207e is available and the electro-optic term is enabled.",
           "choices": [
             "TO",
             "Snell's law (EO)",
             "Dominant mode (EO)",
-            "All modes (EO)"
+            "Modal pairs (EO)"
           ],
-          "value": "All modes (EO)",
-          "enabled": true
-        },
-        {
-          "type": "QComboBox",
-          "tooltip": "How Berreman modal-pair amplitudes are combined (only active when Layer NAC mode = All modes):\n'Group q channels' \u2014 coherently sum pairs that share the same phonon q-vector\n   and detector channel. Physically recommended.\n'Incoherent pairs' \u2014 square each modal-pair amplitude independently.\n   Diagnostic / pre-q-grouping compatibility mode.\n'Coherent all pairs' \u2014 sum ALL pair amplitudes before squaring. DEBUG ONLY:\n   mixes distinct phonon-momentum final states.",
-          "choices": [
-            "Group q channels",
-            "Incoherent pairs",
-            "Coherent all pairs"
-          ],
-          "value": "Group q channels",
+          "value": "Modal pairs (EO)",
           "enabled": true
         },
         {
@@ -2692,13 +2682,13 @@
         },
         {
           "type": "QLabel",
-          "tooltip": "How Raman sources are combined through the depth of each active layer:\n'Coherent amplitude' integrates the complex amplitude before squaring; use for thin phase-stable films.\n'Incoherent intensity' integrates local intensity; use for thick or bulk samples such as mm/cm layers.\nNote: 'Incoherent intensity' also forces incoherent layer combination.",
+          "tooltip": "How Raman sources are combined through the depth of each active layer:\n'Coherent amplitude' integrates the complex amplitude before squaring.\n'Incoherent intensity' integrates local intensity over depth (in \u00c5).\n'Normalised incoherent intensity' divides each layer integral by that layer's thickness,\nthen sums the layer averages. Zero-thickness layers contribute zero.\nEquivalent neighbouring layers are merged before normalisation.\nBoth incoherent options force incoherent layer combination.\nThickness alone does not determine phonon coherence.",
           "text": "Depth coherence",
           "enabled": true
         },
         {
           "type": "QLabel",
-          "tooltip": "How separate Raman-active layers are combined:\n'Incoherent intensities' \u2014 sum |amplitude|\u00b2 per layer (default).\n'Coherent amplitudes' \u2014 sum complex amplitudes before squaring;\n   use only when layers share a coherent optical phase.\nDisabled when 'Depth coherence' is 'Incoherent intensity'.",
+          "tooltip": "How separate Raman-active layers are combined:\n'Incoherent intensities' \u2014 sum |amplitude|\u00b2 per layer (default).\n'Coherent amplitudes' \u2014 sum complex amplitudes before squaring;\n   use only when layers share a coherent optical phase.\nDisabled for either incoherent depth option.",
           "text": "Layer combination",
           "enabled": false
         },
@@ -2710,14 +2700,8 @@
         },
         {
           "type": "QLabel",
-          "tooltip": "Layer NAC mode \u2014 phonon frequency correction for layered crystal Raman:\n'TO' \u2014 use bulk TO frequencies (no correction)\n'Snell's law' \u2014 NAC q from macroscopic scattering geometry\n'Dominant mode' \u2014 NAC q from dominant Berreman eigenmode in the active layer\n'All modes' \u2014 per Berreman mode-pair NAC: sums |A^ij|\u00b2 over (i_L, j_S) pairs\nLabels show '(EO)' when \u03c7\u207d\u00b2\u207e is available and the electro-optic term is enabled.",
+          "tooltip": "Layer NAC mode \u2014 phonon frequency correction for layered crystal Raman:\n'TO' \u2014 use bulk TO frequencies (no correction)\n'Snell's law' \u2014 NAC q from macroscopic scattering geometry\n'Dominant mode' \u2014 NAC q from dominant Berreman eigenmode in the active layer\n'Modal pairs' \u2014 NAC from incident/scattered Berreman mode pairs\nLabels show '(EO)' when \u03c7\u207d\u00b2\u207e is available and the electro-optic term is enabled.",
           "text": "Layer NAC mode",
-          "enabled": true
-        },
-        {
-          "type": "QLabel",
-          "tooltip": "How Berreman modal-pair amplitudes are combined (only active when Layer NAC mode = All modes):\n'Group q channels' \u2014 coherently sum pairs that share the same phonon q-vector\n   and detector channel. Physically recommended.\n'Incoherent pairs' \u2014 square each modal-pair amplitude independently.\n   Diagnostic / pre-q-grouping compatibility mode.\n'Coherent all pairs' \u2014 sum ALL pair amplitudes before squaring. DEBUG ONLY:\n   mixes distinct phonon-momentum final states.",
-          "text": "Modal pair combination",
           "enabled": true
         },
         {
@@ -2753,6 +2737,224 @@
             "Move"
           ],
           "enabled": true
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Show the material properties in a new window",
+          "text": "air",
+          "enabled": true
+        },
+        {
+          "type": "QDoubleSpinBox",
+          "tooltip": "Define the thin film thickness in the defined thickness units",
+          "text": "1.000",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "1.000",
+          "enabled": false
+        },
+        {
+          "type": "QComboBox",
+          "tooltip": "Set the units to be used for thickness; either angs nm, um, mm or cm",
+          "choices": [
+            "ang",
+            "nm",
+            "um",
+            "mm",
+            "cm"
+          ],
+          "value": "um",
+          "enabled": false
+        },
+        {
+          "type": "QSpinBox",
+          "tooltip": "Define the h dimension of the unique direction",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QSpinBox",
+          "tooltip": "Define the k dimension of the unique direction",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QSpinBox",
+          "tooltip": "Define the l dimension of the unique direction",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QDoubleSpinBox",
+          "tooltip": "Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below",
+          "text": "0.00",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0.00",
+          "enabled": false
+        },
+        {
+          "type": "QComboBox",
+          "tooltip": "Change optional settings for the layer",
+          "choices": [
+            "Coherent",
+            "Incoherent (intensity)",
+            "Incoherent (phase averaging)",
+            "Incoherent (non-reflective)"
+          ],
+          "value": "Coherent",
+          "enabled": true
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Move this layer up the list of layers",
+          "text": "",
+          "enabled": false
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Move this layer down the list of layers",
+          "text": "",
+          "enabled": false
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Delete this layer",
+          "text": "",
+          "enabled": false
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Show the material properties in a new window",
+          "text": "air",
+          "enabled": true
+        },
+        {
+          "type": "QDoubleSpinBox",
+          "tooltip": "Define the thin film thickness in the defined thickness units",
+          "text": "1.000",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "1.000",
+          "enabled": false
+        },
+        {
+          "type": "QComboBox",
+          "tooltip": "Set the units to be used for thickness; either angs nm, um, mm or cm",
+          "choices": [
+            "ang",
+            "nm",
+            "um",
+            "mm",
+            "cm"
+          ],
+          "value": "um",
+          "enabled": false
+        },
+        {
+          "type": "QSpinBox",
+          "tooltip": "Define the h dimension of the unique direction",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QSpinBox",
+          "tooltip": "Define the k dimension of the unique direction",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QSpinBox",
+          "tooltip": "Define the l dimension of the unique direction",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0",
+          "enabled": false
+        },
+        {
+          "type": "QDoubleSpinBox",
+          "tooltip": "Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below",
+          "text": "0.00",
+          "enabled": false
+        },
+        {
+          "type": "QLineEdit",
+          "tooltip": "",
+          "text": "0.00",
+          "enabled": false
+        },
+        {
+          "type": "QComboBox",
+          "tooltip": "Change optional settings for the layer",
+          "choices": [
+            "Coherent",
+            "Incoherent (intensity)",
+            "Incoherent (phase averaging)",
+            "Incoherent (non-reflective)"
+          ],
+          "value": "Coherent",
+          "enabled": true
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Move this layer up the list of layers",
+          "text": "",
+          "enabled": false
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Move this layer down the list of layers",
+          "text": "",
+          "enabled": false
+        },
+        {
+          "type": "QPushButton",
+          "tooltip": "Delete this layer",
+          "text": "",
+          "enabled": false
         },
         {
           "type": "QPushButton",
@@ -3247,7 +3449,8 @@
           "text": "Delete this scenario",
           "enabled": true
         }
-      ]
+      ],
+      "capture_method": "Qt widget"
     },
     "layer-crystal": {
       "size": [

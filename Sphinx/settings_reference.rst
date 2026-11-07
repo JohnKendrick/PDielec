@@ -439,11 +439,17 @@ NAC/EO corrections and the different coherence choices.
     ``'none'`` uses bulk TO modes; ``'geometry'`` (default, displayed as
     *Snell's law*) obtains phonon momentum from the macroscopic geometry;
     ``'dominant_mode'`` uses the dominant internal Berreman mode;
-    ``'modal_pairs'`` (*All modes*) resolves the internal optical mode pairs.
+    ``'modal_pairs'`` (*Modal pairs*) resolves the internal optical mode pairs.
+    The GUI displays *Modal pairs (EO)* when the electro-optic term is active.
+    The earlier labels ``'All modes'`` and ``'All modes (EO)'`` remain accepted
+    as settings values and are converted to ``'modal_pairs'``; the current
+    display labels are also accepted. Saved scripts using ``'modal_pairs'``
+    continue to work unchanged.
     GUI labels may append *(EO)*; that suffix is not part of the stored value.
 
 ``Modal pair combination``
-    Used with ``Layer NAC mode = 'modal_pairs'``. ``'Group q channels'``
+    Script-only setting; there is no GUI dropdown. Used with
+    ``Layer NAC mode = 'modal_pairs'``. ``'Group q channels'``
     (default) combines amplitudes sharing a phonon momentum and detector
     channel. ``'Incoherent pairs'`` squares pairs separately for comparison
     with older calculations. ``'Coherent all pairs'`` is a diagnostic option
